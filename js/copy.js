@@ -40,10 +40,11 @@ const Copy = {
   forRarity: (n) => `${n.toLocaleString('en-US')} rarity`,
   forSpeed: (n) => `+ ${n.toLocaleString('en-US')} speed`,
   next: 'Next question',
-  // Stumped: skip a question. Mario and the parrot drop in, always on the
-  // player's side. Each list plays through before any line repeats.
+  // Stumped: skip a question. Mario and Esmeralda, a great green macaw, drop
+  // in, always on the player's side. Each list plays through before any line
+  // repeats.
   stumped: 'Stumped',
-  parrot: 'The parrot',
+  parrot: 'Esmeralda',
   stumpedMario: [
     "I didn't know that one either.",
     "You'll get the next one, I'm sure.",

@@ -5,7 +5,7 @@
 
 ## 1. Intent
 
-The owner asked for a way to move on from a question the player cannot answer: a "Stumped" button with its own color, placed away from Answer so nobody presses it by accident, and Mario and a parrot appearing on screen to say something when it is pressed. The parrot is drawn from the owner's photo of a great green macaw.
+The owner asked for a way to move on from a question the player cannot answer: a "Stumped" button with its own color, placed away from Answer so nobody presses it by accident, and Mario and a parrot appearing on screen to say something when it is pressed. The parrot is Esmeralda, a great green macaw drawn from the owner's photo.
 
 ## 2. Action
 
@@ -20,6 +20,5 @@ The owner asked for a way to move on from a question the player cannot answer: a
 
 ## 4. Gaps
 
-- The parrot has no name; the card calls it "The parrot".
 - The card has no motion; it appears with the result.
 - The share text and end screen do not tell a stumped question from a timed-out one.

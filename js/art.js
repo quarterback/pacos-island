@@ -110,8 +110,8 @@ const Art = (() => {
   // Mario on his own, whatever the current rider, for the Stumped card.
   function mario(scale = 1) { const was = rider; rider = 'mario'; const c = paco('stand', 0, scale); rider = was; return c; }
 
-  // ---- the parrot -------------------------------------------------------
-  // A great green macaw on a perch, facing left toward Mario. 40 x 52.
+  // ---- Esmeralda --------------------------------------------------------
+  // Esmeralda, a great green macaw, on a perch facing left toward Mario. 40 x 52.
   function drawParrot(g) {
     const G = ['#D6F26A', '#9BD43C', '#6DB52E', '#3F8A2A', '#22562A'], B = ['#9EE6F0', '#3FB6D8', '#1E7FB0'];
     // tail: long, green above with blue at the tip
