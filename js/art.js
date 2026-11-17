@@ -631,11 +631,14 @@ const Art = (() => {
   }
 
   // ---- the night market in Pueblo Tilmeca -------------------------------
-  // A market street at night, seen close up: shopfronts, stalls, papel
-  // picado and strings of bulbs overhead, a bandstand halfway and the
-  // church at the end. The street is drawn on its own layer, darkened to
-  // moonlight, laid over a starry sky, and then lit: windows, doorways,
-  // bulbs, stall lanterns, street lamps. 3600 x 240.
+  // A market street at night, seen close up: places to eat all along it,
+  // a taco cart, a girl selling empanadas, a corner bar and other bars,
+  // clothing and souvenir shops, papel picado and strings of bulbs
+  // overhead, and the church at the end. The street is drawn on its own
+  // layer, darkened to moonlight and laid over a starry sky, then lit. The
+  // shops have a layer of their own so their goods show inside the light:
+  // outsides in moonlight, then lit insides, then what stands out front.
+  // 3600 x 240.
   const MARKET = { w: 3600, h: 240, stopX: (i) => 175 + i * 520, ground: () => 214 };
   const PAPEL = ['#F0478F', '#FFC43A', '#22AEC4', '#8ED04A', '#F28C28', '#B77BE0'];
   function facade(g, x, y, w, h, wall, trim, lights) {
@@ -661,20 +664,6 @@ const Art = (() => {
       ell(g, x + 5, fy + 5, 1.6, 1.6, rgba('#FFFFFF', 0.55));
     }
   }
-  function bandstand(g, x, y) {
-    box(g, x - 52, y - 12, 104, 12, 2, lin(g, 0, y - 12, 0, y, C.wall));
-    for (const px of [x - 44, x - 15, x + 15, x + 44]) { g.fillStyle = lin(g, px - 2, 0, px + 2, 0, [C.wall[0], C.wall[2]]); g.fillRect(px - 2, y - 66, 4, 54); }
-    g.beginPath(); g.moveTo(x - 56, y - 64); g.quadraticCurveTo(x, y - 106, x + 56, y - 64); g.closePath(); g.fillStyle = lin(g, 0, y - 100, 0, y - 64, ['#9BE0D6', '#3FB3AE', '#1E7F89']); g.fill();
-    g.fillStyle = C.pink[1]; g.fillRect(x - 56, y - 66, 112, 3);
-    line(g, [[x, y - 92], [x, y - 102]], C.ink, 1); ell(g, x, y - 104, 2.4, 2.4, C.sun[2]);
-    // a marimba and a guitar on the stage
-    box(g, x - 30, y - 30, 40, 5, 1, lin(g, 0, y - 30, 0, y - 25, C.wood));
-    for (let k = 0; k < 9; k++) { g.fillStyle = C.wood[k % 2 ? 1 : 0]; g.fillRect(x - 29 + k * 4.3, y - 33 - (k % 3), 3.4, 4); }
-    line(g, [[x - 26, y - 25], [x - 26, y - 13]], C.wood[3], 1.4); line(g, [[x + 6, y - 25], [x + 6, y - 13]], C.wood[3], 1.4);
-    ell(g, x + 28, y - 22, 6, 7, lin(g, 0, y - 29, 0, y - 15, ['#E7B06A', '#B98A52'])); ell(g, x + 28, y - 22, 1.8, 1.8, '#3A2A1A');
-    line(g, [[x + 28, y - 28], [x + 30, y - 46]], C.wood[3], 1.6);
-    for (const [nx, ny] of [[x - 16, y - 50], [x + 8, y - 56], [x - 2, y - 44]]) { ell(g, nx, ny, 2.2, 1.7, C.ink, -0.4); line(g, [[nx + 2, ny], [nx + 2, ny - 8]], C.ink, 0.8); }
-  }
   function market() {
     const { w, h } = MARKET, S = MARKET.stopX, y = MARKET.ground();
     const [c, sky] = canvas(w, h); const r = noise(55);
@@ -692,7 +681,7 @@ const Art = (() => {
     let i = 0;
     for (let x = 0; x < S(6) - 120; i++) {
       const fw = 70 + Math.floor(r() * 50), fh = 96 + Math.floor(r() * 30);
-      if (Math.abs(x + fw / 2 - S(3)) > 110) facade(g, x, y - 18, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length], lights);
+      facade(g, x, y - 18, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length], lights);
       x += fw;
     }
     // papel picado strung across the street, all the way along
@@ -708,26 +697,25 @@ const Art = (() => {
     for (let k = 0; k < 5; k++) box(g, S(0) - 152 + k * 17, y - 42, 13, 12, 2, lin(g, 0, y - 42, 0, y - 30, ['#9ED8EA', '#2B6E8F']));
     g.fillStyle = C.stripe2; g.fillRect(S(0) - 160, y - 24, 96, 3);
     for (const wx of [S(0) - 140, S(0) - 86]) { ell(g, wx, y - 6, 7, 7, lin(g, 0, y - 13, 0, y + 1, C.tire)); ell(g, wx, y - 6, 3, 3, C.rim[1]); }
-    // stalls along the street
-    const stalls = [[S(1) - 70, C.coral[0]], [S(1) - 20, '#22AEC4'], [S(1) + 30, C.coral[2]], [S(4) - 60, C.pink[1]], [S(4) - 10, '#B77BE0'], [S(4) + 40, C.coral[2]], [S(5) - 60, '#F28C28'], [S(5) - 10, '#22AEC4'], [S(5) + 40, C.pink[1]]];
-    stalls.forEach(([sx, col], k) => stall(g, sx, y - 1, col, 300 + k));
-    // fruit crates at the fruit stalls
-    for (let k = 0; k < 4; k++) { const fx = S(1) - 76 + k * 40; box(g, fx, y - 8, 16, 8, 1, C.wood[1]); for (let m = 0; m < 6; m++) ell(g, fx + 3 + (m % 3) * 5, y - 9 - Math.floor(m / 3) * 3, 2.6, 2.4, ['#F28C28', '#FFC43A', '#8ED04A', '#E0352B'][k]); }
     // the taco stand: a cart with an umbrella and steam
-    const tx = S(2);
+    const tx = S(1);
     box(g, tx - 30, y - 30, 60, 22, 3, lin(g, 0, y - 30, 0, y - 8, ['#FFFFFF', '#E8EEF2']));
     g.fillStyle = C.stripe2; g.fillRect(tx - 30, y - 24, 60, 4); box(g, tx - 34, y - 33, 68, 4, 1, C.motor[1]);
     for (const wx of [tx - 20, tx + 20]) { ell(g, wx, y - 6, 6, 6, lin(g, 0, y - 12, 0, y, C.tire)); ell(g, wx, y - 6, 2.4, 2.4, C.rim[1]); }
     line(g, [[tx, y - 33], [tx, y - 76]], C.motor[1], 1.6);
     g.beginPath(); g.moveTo(tx - 40, y - 70); g.quadraticCurveTo(tx, y - 92, tx + 40, y - 70); g.closePath(); g.fillStyle = lin(g, tx - 40, 0, tx + 40, 0, ['#E0352B', '#FFFFFF', '#3B8E38']); g.fill();
     for (let k = 0; k < 3; k++) { g.beginPath(); g.moveTo(tx - 10 + k * 10, y - 36); g.bezierCurveTo(tx - 16 + k * 10, y - 44, tx - 4 + k * 10, y - 50, tx - 10 + k * 10, y - 58); g.strokeStyle = rgba('#FFFFFF', 0.7); g.lineWidth = 1.2; g.stroke(); }
-    // the bandstand
-    bandstand(g, S(3), y);
-    for (const px of [S(3) - 66, S(3) + 66]) { line(g, [[px, y], [px, y - 22]], C.wood[3], 3, 'butt'); ell(g, px, y - 32, 18, 14, C.leaf); ell(g, px - 3, y - 36, 10, 8, C.leafHi); }
-    // flower buckets
-    for (let k = 0; k < 7; k++) { const fx = S(4) - 70 + k * 22; box(g, fx, y - 10, 12, 10, 2, C.motor[0]); for (let m = 0; m < 7; m++) ell(g, fx + 2 + (m % 4) * 3, y - 13 - Math.floor(m / 4) * 4 - (m % 2), 2.2, 2.2, [C.pink[1], C.sun[2], '#B77BE0', '#FFFFFF', '#F28C28'][(k + m) % 5]); }
-    // pottery: clay pots and blue and white jugs
-    for (let k = 0; k < 8; k++) { const px = S(5) - 76 + k * 22, tall = k % 3 === 1; const col = k % 2 ? lin(g, 0, y - 20, 0, y, ['#FFFFFF', '#C9E7FA']) : lin(g, 0, y - 20, 0, y, ['#E58A55', '#B9592E', '#8A3F1E']); ell(g, px, y - (tall ? 12 : 8), tall ? 7 : 9, tall ? 12 : 8, col); box(g, px - 3.5, y - (tall ? 26 : 18), 7, 4, 1, col); if (k % 2) for (const dy of [-3, 2]) { g.fillStyle = rgba('#1C5FA8', 0.85); g.fillRect(px - (tall ? 6 : 8), y - (tall ? 12 : 8) + dy, tall ? 12 : 16, 1.6); } }
+    // the shops: places to eat all along the street, bars, the corner bar,
+    // clothing and souvenir shops. Each is [x, width, kind].
+    const shops = [
+      [270, 96, 'eat'], [420, 92, 'eat'],
+      [830, 100, 'eat'], [1000, 94, 'bar'], [1320, 96, 'eat'],
+      [S(3) - 72, 144, 'corner'], [1890, 92, 'eat'], [2040, 96, 'bar'],
+      [S(4) - 130, 100, 'clothes'], [S(4) - 20, 104, 'clothes'], [2440, 92, 'eat'],
+      [S(5) - 140, 104, 'souvenir'], [S(5) - 26, 110, 'souvenir'], [2960, 96, 'eat'],
+    ];
+    // the empanada seller's table
+    const ex = S(2);
     // the church at the end of the street, up a few steps
     const cx = S(6);
     for (let k = 0; k < 4; k++) { g.fillStyle = lin(g, 0, y - k * 5 - 5, 0, y - k * 5, [C.wall[0], C.wall[2]]); g.fillRect(cx - 70 + k * 6, y - k * 5 - 5, 140 - k * 12, 5); }
@@ -745,9 +733,10 @@ const Art = (() => {
     }
     papelPicado(g, cx - 82, cx + 82, cy - 116, 999);
     palm(g, cx - 120, y - 2, 52); palm(g, cx + 120, y - 2, 48, -1);
-    // street lamps along the sidewalk
+    // street lamps at the curb, where no shop stands
+    const inShop = (x0, x1) => shops.some(([sx, sw]) => x0 < sx + sw && x1 > sx) || (x1 > ex - 30 && x0 < ex + 50);
     const lamps = [];
-    for (let lx = S(0) + 200; lx < S(6) - 160; lx += 420) { if (Math.abs(lx - S(3)) < 120) continue; line(g, [[lx, y - 18], [lx, y - 86]], '#2A3440', 2.4); box(g, lx - 5, y - 96, 10, 11, 2, '#2A3440'); lamps.push(lx); }
+    for (let lx = S(0) + 200; lx < S(6) - 160; lx += 210) { if (inShop(lx - 8, lx + 8) || Math.abs(lx - tx) < 50) continue; line(g, [[lx, y - 18], [lx, y - 86]], '#2A3440', 2.4); box(g, lx - 5, y - 96, 10, 11, 2, '#2A3440'); lamps.push(lx); }
 
     // moonlight: darken everything on the street layer, then lay it on the sky
     g.globalCompositeOperation = 'source-atop';
@@ -756,26 +745,27 @@ const Art = (() => {
     sky.drawImage(d, 0, 0);
 
     // the lights
+    const pool = (x0, y0, rx, ry, a) => { sky.save(); sky.translate(x0, y0); sky.scale(1, ry / rx); ell(sky, 0, 0, rx, rx, rad(sky, 0, 0, 0, rx, [rgba('#FFC86B', a), rgba('#FFC86B', 0)])); sky.restore(); };
     const L = sky, warm = (x0, y0, rr, a = 0.5) => ell(L, x0, y0, rr, rr, rad(L, x0, y0, 0, rr, [rgba('#FFC86B', a), rgba('#FFC86B', 0)]));
+    const shopTop = y - 82, hidden = (lx, lw, ly, lh) => ly + lh > shopTop && inShop(lx, lx + lw);
     for (const [kind, lx, ly, lw, lh] of lights) {
-      if (lx + lw > cx - 84) continue; // behind the church's tower
+      if (lx + lw > cx - 84 || hidden(lx, lw, ly, lh)) continue; // behind the church's tower or a shop
       warm(lx + lw / 2, ly + lh / 2, kind === 'door' ? 26 : 20, kind === 'door' ? 0.3 : 0.35);
       box(L, lx, ly, lw, lh, kind === 'door' ? 9 : 3, lin(L, 0, ly, 0, ly + lh, ['#FFF1C2', '#FFC86B', '#E8963A']));
       if (kind === 'window') { L.fillStyle = rgba('#7A4A1E', 0.55); L.fillRect(lx + lw / 2 - 0.6, ly, 1.2, lh); L.fillRect(lx, ly + lh / 2 - 0.6, lw, 1.2); }
     }
     // strings of bulbs along the papel picado
-    const bulbs = (x0, x1, y0) => { for (let t = 0.04; t < 1; t += 0.072) { const bx = x0 + (x1 - x0) * t, by = y0 + 24 * t * (1 - t) - 1; ell(L, bx, by, 6, 6, rad(L, bx, by, 0, 6, [rgba('#FFE9A8', 0.55), rgba('#FFE9A8', 0)])); ell(L, bx, by, 1.4, 1.4, '#FFF6D6'); } };
+    const bulb = (bx, by, rr = 6) => { ell(L, bx, by, rr, rr, rad(L, bx, by, 0, rr, [rgba('#FFE9A8', 0.55), rgba('#FFE9A8', 0)])); ell(L, bx, by, 1.4, 1.4, '#FFF6D6'); };
+    const bulbs = (x0, x1, y0) => { for (let t = 0.04; t < 1; t += 0.072) bulb(x0 + (x1 - x0) * t, y0 + 24 * t * (1 - t) - 1); };
     for (let x = 0; x < S(6) - 100; x += 140) bulbs(x, x + 140, 30 + (x / 140 % 2) * 6);
     bulbs(cx - 82, cx + 82, cy - 116);
-    // a lantern over each stall, and the light it throws on the street
-    for (const [sx] of stalls) { warm(sx + 21, y - 30, 30, 0.4); ell(L, sx + 21, y - 26, 2.4, 3, '#FFF1C2'); ell(L, sx + 21, y + 4, 34, 6, rgba('#FFC86B', 0.18)); }
     // the taco cart's bulb under the umbrella
-    warm(tx, y - 62, 40, 0.45); ell(L, tx, y - 66, 2.2, 2.6, '#FFF1C2'); ell(L, tx, y + 4, 40, 6, rgba('#FFC86B', 0.2));
-    // bulbs around the bandstand roof, and its glow
-    warm(S(3), y - 40, 80, 0.3);
-    for (let k = 0; k <= 12; k++) { const bx = S(3) - 56 + k * (112 / 12); ell(L, bx, y - 66, 5, 5, rad(L, bx, y - 66, 0, 5, [rgba('#FFE9A8', 0.6), rgba('#FFE9A8', 0)])); ell(L, bx, y - 66, 1.3, 1.3, '#FFF6D6'); }
+    warm(tx, y - 62, 40, 0.45); ell(L, tx, y - 66, 2.2, 2.6, '#FFF1C2'); pool(tx, y + 4, 48, 9, 0.3);
     // street lamps
-    for (const lx of lamps) { warm(lx, y - 90, 46, 0.45); ell(L, lx, y - 90, 3, 3.6, '#FFF6D6'); ell(L, lx, y + 4, 44, 7, rgba('#FFC86B', 0.2)); }
+    for (const lx of lamps) { warm(lx, y - 90, 46, 0.45); ell(L, lx, y - 90, 3, 3.6, '#FFF6D6'); pool(lx, y + 4, 52, 10, 0.3); }
+    // light from every shop and the empanada lamp, thrown on the street
+    for (const [sx, sw] of shops) pool(sx + sw / 2, y - 4, sw * 0.7, 16, 0.32);
+    pool(ex + 8, y - 4, 52, 14, 0.32);
     // the bus's headlights and lit windows
     for (let k = 0; k < 5; k++) box(L, S(0) - 152 + k * 17, y - 42, 13, 12, 2, lin(L, 0, y - 42, 0, y - 30, ['#FFF1C2', '#FFC86B']));
     warm(S(0) - 64, y - 16, 20, 0.6); ell(L, S(0) - 66, y - 16, 2.4, 2.4, '#FFF6D6');
@@ -784,6 +774,88 @@ const Art = (() => {
     box(L, cx - 16, cy - 46, 32, 46, 16, lin(L, 0, cy - 46, 0, cy, ['#FFF1C2', '#FFC86B', '#E8963A']));
     warm(cx, cy - 76, 22, 0.5); ell(L, cx, cy - 76, 11, 11, lin(L, 0, cy - 87, 0, cy - 65, ['#FFE08A', '#FF7AB0', '#5FD3E8']));
     for (const bx of [cx - 82, cx + 58]) { warm(bx + 12, cy - 131, 18, 0.45); box(L, bx + 6, cy - 140, 12, 18, 6, lin(L, 0, cy - 140, 0, cy - 122, ['#FFF1C2', '#FFC86B'])); }
+
+    // ---- the shops, on their own layer: outsides in moonlight, then lit
+    // insides with their goods, then what stands out front in the shop light
+    const [sl, u] = canvas(w, h);
+    const SHOPWALL = [['#F4E3C8', '#E2C9A2'], ['#CFE9E4', '#A9D3CB'], ['#F7D1D9', '#E6AAB9'], ['#FFF0B8', '#EFD68A'], ['#D9E6F5', '#B6CBE6']];
+    const BOTTLE = ['#3B8E38', '#C98F12', '#E8EEF2', '#7A2B2A', '#22AEC4', '#F28C28'];
+    shops.forEach(([x, sw, kind], k) => {
+      const wall = SHOPWALL[k % SHOPWALL.length], awn = PAPEL[(k * 2 + 1) % PAPEL.length], awnLight = '#FFF4DC';
+      u.fillStyle = lin(u, x, 0, x + sw, 0, [wall[0], wall[1]]); u.fillRect(x, shopTop, sw, y - 18 - shopTop);
+      if (kind === 'corner') { poly(u, [[x + sw, shopTop - 6], [x + sw + 18, shopTop + 4], [x + sw + 18, y - 14], [x + sw, y - 18]], lin(u, x + sw, 0, x + sw + 18, 0, [wall[1], '#9C8A70'])); }
+      // the awning, striped, with a scalloped edge
+      for (let sx = x - 4; sx < x + sw + 4; sx += 8) { poly(u, [[sx, shopTop - 2], [sx + 8, shopTop - 2], [sx + 9, shopTop + 10], [sx + 1, shopTop + 10]], ((sx - x) / 8) % 2 ? awnLight : awn); u.beginPath(); u.arc(sx + 5, shopTop + 10, 4, 0, Math.PI); u.fillStyle = ((sx - x) / 8) % 2 ? awnLight : awn; u.fill(); }
+      box(u, x + sw / 2 - 20, shopTop - 14, 40, 11, 2, kind === 'bar' || kind === 'corner' ? '#7A2B2A' : '#1E6F86');
+    });
+    u.globalCompositeOperation = 'source-atop'; u.fillStyle = rgba('#0B1A3A', 0.36); u.fillRect(0, 0, w, h); u.globalCompositeOperation = 'source-over';
+    const glowsAfter = [];
+    shops.forEach(([x, sw, kind], k) => {
+      const ox = x + 6, ow = sw - 12, top = shopTop + 14, bot = y - 18, rr = noise(900 + k);
+      u.fillStyle = lin(u, 0, top, 0, bot, ['#FFE7B0', '#F6B860', '#C9822F']); u.fillRect(ox, top, ow, bot - top);
+      glowsAfter.push([x + sw / 2, top + 6]);
+      if (kind === 'eat') {
+        box(u, ox + 4, top + 4, 18, 13, 1, '#2B2F33'); for (let m = 0; m < 4; m++) line(u, [[ox + 7, top + 7 + m * 2.6], [ox + 18, top + 7 + m * 2.6]], rgba('#FFFFFF', 0.7), 0.6);
+        line(u, [[ox + 26, top + 12], [ox + ow - 4, top + 12]], C.wood[3], 1.4);
+        for (let m = 0; ox + 30 + m * 9 < ox + ow - 4; m++) ell(u, ox + 30 + m * 9, top + 8.5, 3.4, 3.2, ['#B9592E', '#FFFFFF', '#3B8E38'][m % 3]);
+        box(u, ox + 3, bot - 18, ow - 6, 18, 1, lin(u, 0, bot - 18, 0, bot, ['#FFFFFF', '#C9D5DB']));
+        for (let m = 0; m < ow - 8; m += 6) { u.fillStyle = PAPEL[(m / 6 + k) % PAPEL.length]; u.fillRect(ox + 4 + m, bot - 16, 5, 3); }
+        ell(u, ox + ow / 2, bot - 21, 9, 3, '#3A4048');
+        for (let m = 0; m < 2; m++) { u.beginPath(); u.moveTo(ox + ow / 2 - 3 + m * 6, bot - 24); u.bezierCurveTo(ox + ow / 2 - 7 + m * 6, bot - 30, ox + ow / 2 + 1 + m * 6, bot - 34, ox + ow / 2 - 3 + m * 6, bot - 40); u.strokeStyle = rgba('#FFFFFF', 0.75); u.lineWidth = 1; u.stroke(); }
+      } else if (kind === 'bar' || kind === 'corner') {
+        for (const sy2 of [top + 14, top + 28]) { line(u, [[ox + 3, sy2], [ox + ow - 3, sy2]], '#5E3B1A', 1.6); for (let bx = ox + 6; bx < ox + ow - 6; bx += 5) { const col = BOTTLE[Math.floor(rr() * BOTTLE.length)], bh = 7 + rr() * 3; u.fillStyle = col; u.fillRect(bx, sy2 - bh, 3, bh); u.fillRect(bx + 0.8, sy2 - bh - 3, 1.4, 3); } }
+        box(u, ox + 2, bot - 16, ow - 4, 16, 1, lin(u, 0, bot - 16, 0, bot, ['#8A5530', '#5E3B1A']));
+        line(u, [[ox + 2, bot - 16], [ox + ow - 2, bot - 16]], '#C9822F', 1.4);
+      } else if (kind === 'clothes') {
+        for (const sy2 of [top + 14, top + 30]) { line(u, [[ox + 3, sy2], [ox + ow - 3, sy2]], '#5E3B1A', 1.4); for (let bx = ox + 5; bx < ox + ow - 10; bx += 12) for (let m = 0; m < 3; m++) { u.fillStyle = PAPEL[Math.floor(rr() * PAPEL.length)]; u.fillRect(bx, sy2 - 3 - m * 3, 10, 2.6); } }
+      } else {
+        for (const sy2 of [top + 14, top + 30]) { line(u, [[ox + 3, sy2], [ox + ow - 3, sy2]], '#5E3B1A', 1.4); for (let bx = ox + 7; bx < ox + ow - 6; bx += 10) { if (rr() < 0.5) { ell(u, bx, sy2 - 5, 3.6, 4.6, PAPEL[Math.floor(rr() * PAPEL.length)]); ell(u, bx - 1.4, sy2 - 6, 0.9, 0.7, '#2B2F33'); ell(u, bx + 1.4, sy2 - 6, 0.9, 0.7, '#2B2F33'); } else { ell(u, bx, sy2 - 4, 3.4, 4, lin(u, 0, sy2 - 8, 0, sy2, ['#E58A55', '#8A3F1E'])); } } }
+      }
+    });
+    // what stands out front, in the shop light
+    const chair = (cx2, col) => { line(u, [[cx2, y - 18], [cx2, y - 32]], col, 1.4); line(u, [[cx2 + 6, y - 18], [cx2 + 6, y - 26]], col, 1.4); box(u, cx2, y - 27, 7, 2, 0.8, col); };
+    shops.forEach(([x, sw, kind], k) => {
+      const mid = x + sw / 2;
+      if (kind === 'eat') {
+        for (const [tx2, col] of [[x + sw * 0.28, '#E0352B'], [x + sw * 0.72, '#FFFFFF']]) { chair(tx2 - 14, col); chair(tx2 + 8, col); line(u, [[tx2, y - 18], [tx2, y - 30]], col, 1.6); box(u, tx2 - 10, y - 32, 20, 3, 1, col); ell(u, tx2 - 3, y - 34, 2.4, 1.2, '#FFF1C2'); }
+        poly(u, [[x + sw - 4, y - 18], [x + sw + 2, y - 44], [x + sw + 8, y - 18]], C.wood[2]); box(u, x + sw - 3, y - 42, 10, 16, 1, '#2B2F33');
+      } else if (kind === 'bar' || kind === 'corner') {
+        for (let m = 0; m < (kind === 'corner' ? 4 : 2); m++) { const sx = x + 16 + m * (sw - 32) / Math.max(1, (kind === 'corner' ? 3 : 1)); line(u, [[sx - 4, y - 18], [sx, y - 34]], '#2A3440', 1.2); line(u, [[sx + 4, y - 18], [sx, y - 34]], '#2A3440', 1.2); ell(u, sx, y - 35, 5, 1.8, '#C21A68'); }
+        if (kind === 'corner') { line(u, [[x + sw + 6, shopTop - 4], [x + sw + 6, shopTop - 22]], '#2A3440', 1.4); ell(u, x + sw + 6, shopTop - 30, 9, 9, '#7A2B2A'); poly(u, [[x + sw + 1, shopTop - 34], [x + sw + 11, shopTop - 34], [x + sw + 6, shopTop - 29]], '#FFE9A8'); line(u, [[x + sw + 6, shopTop - 29], [x + sw + 6, shopTop - 25]], '#FFE9A8', 0.8); line(u, [[x + sw + 3, shopTop - 25], [x + sw + 9, shopTop - 25]], '#FFE9A8', 0.8); glowsAfter.push([x + sw + 6, shopTop - 30]); }
+      } else if (kind === 'clothes') {
+        line(u, [[x + 6, y - 18], [x + 6, y - 64]], '#2A3440', 1.4); line(u, [[x + sw - 6, y - 18], [x + sw - 6, y - 64]], '#2A3440', 1.4); line(u, [[x + 6, y - 62], [x + sw - 6, y - 62]], '#2A3440', 1.4);
+        for (let hx = x + 12, m = 0; hx < x + sw - 12; hx += 13, m++) {
+          if (m % 2) { poly(u, [[hx - 4, y - 60], [hx + 4, y - 60], [hx + 8, y - 30], [hx - 8, y - 30]], '#FFFFFF'); for (let q = 0; q < 6; q++) ell(u, hx - 5 + q * 2, y - 36 + (q % 2) * 2, 1.1, 1.1, PAPEL[(q + m) % PAPEL.length]); }
+          else { const col = PAPEL[(m + k) % PAPEL.length]; poly(u, [[hx - 5, y - 60], [hx + 5, y - 60], [hx + 8, y - 56], [hx + 5, y - 54], [hx + 5, y - 40], [hx - 5, y - 40], [hx - 5, y - 54], [hx - 8, y - 56]], col); }
+        }
+        for (let m = 0; m < 3; m++) { ell(u, x + 20 + m * 22, y - 66, 9, 2.2, C.straw[1]); ell(u, x + 20 + m * 22, y - 68, 4.4, 3, C.straw[0]); }
+      } else {
+        line(u, [[x + 4, y - 18], [x + 4, y - 66]], C.wood[3], 2); line(u, [[x + sw - 4, y - 18], [x + sw - 4, y - 66]], C.wood[3], 2);
+        for (let m = 0; m < 6; m++) { u.beginPath(); u.moveTo(x + 4, y - 62 + m * 2); u.quadraticCurveTo(mid, y - 30 + m * 2, x + sw - 4, y - 62 + m * 2); u.strokeStyle = PAPEL[(m + k) % PAPEL.length]; u.lineWidth = 2; u.stroke(); }
+        for (let m = 0; m < 4; m++) ell(u, x + 14, y - 22 - m * 3, 10, 2.4, C.straw[m % 2]);
+        for (let m = 0; m < 3; m++) { const px = x + sw - 18 - m * 12; ell(u, px, y - 24, 5, 6, lin(u, 0, y - 30, 0, y - 18, ['#E58A55', '#8A3F1E'])); }
+      }
+    });
+    // the empanada seller: a girl behind a small table with a tray and a basket
+    const gx = ex - 6;
+    poly(u, [[gx - 6, y - 60], [gx + 6, y - 60], [gx + 10, y - 26], [gx - 10, y - 26]], lin(u, 0, y - 60, 0, y - 26, ['#F0478F', '#C21A68']));
+    poly(u, [[gx - 4, y - 50], [gx + 4, y - 50], [gx + 6, y - 28], [gx - 6, y - 28]], rgba('#FFFFFF', 0.9));
+    line(u, [[gx - 5, y - 58], [gx + 2, y - 44], [gx + 14, y - 40]], '#B8794E', 2.6); line(u, [[gx + 5, y - 58], [gx + 10, y - 46], [gx + 16, y - 40]], '#B8794E', 2.6);
+    box(u, gx - 1.6, y - 64, 3.2, 5, 1, '#B8794E');
+    ell(u, gx, y - 68, 5.6, 6.2, '#B8794E');
+    u.beginPath(); u.ellipse(gx - 0.6, y - 70, 6.2, 5.4, 0, Math.PI, 0); u.closePath(); u.fillStyle = '#2B1A12'; u.fill();
+    ell(u, gx - 5, y - 68, 2.2, 4, '#2B1A12'); line(u, [[gx - 5.4, y - 64], [gx - 7, y - 50]], '#2B1A12', 2.2); ell(u, gx - 7, y - 49, 1.4, 1.4, '#F0478F');
+    ell(u, gx + 4, y - 74, 2, 2, '#FFC43A'); ell(u, gx + 4, y - 74, 0.8, 0.8, '#F28C28');
+    ell(u, gx + 2.2, y - 68.6, 0.7, 0.8, C.ink); u.beginPath(); u.arc(gx + 2.6, y - 65.6, 1.6, 0.2, Math.PI - 0.6); u.strokeStyle = '#6A2E1A'; u.lineWidth = 0.6; u.stroke();
+    box(u, ex - 8, y - 38, 44, 4, 1, lin(u, 0, y - 38, 0, y - 34, ['#FFFFFF', '#E8EEF2']));
+    u.fillStyle = '#FFFFFF'; u.fillRect(ex - 8, y - 34, 44, 16); for (let m = 0; m < 5; m++) { u.fillStyle = PAPEL[m]; u.fillRect(ex - 8, y - 32 + m * 3, 44, 1.4); }
+    box(u, ex - 2, y - 41, 24, 3, 1, '#C9D5DB');
+    for (let m = 0; m < 5; m++) { const mx2 = ex + 1 + m * 4.4; u.beginPath(); u.arc(mx2, y - 40, 3, Math.PI, 0); u.closePath(); u.fillStyle = lin(u, 0, y - 43, 0, y - 40, ['#F6C66A', '#D98E2F']); u.fill(); }
+    ell(u, ex + 30, y - 41, 7, 3.6, lin(u, 0, y - 45, 0, y - 37, C.straw)); ell(u, ex + 30, y - 43, 5, 1.6, '#F0478F');
+    line(u, [[ex + 40, y - 18], [ex + 40, y - 58]], '#2A3440', 1.4); glowsAfter.push([ex + 40, y - 60]);
+    sky.drawImage(sl, 0, 0);
+    for (const [gx2, gy2] of glowsAfter) { warm(gx2, gy2, 22, 0.4); ell(L, gx2, gy2, 1.8, 2.2, '#FFF6D6'); }
+    for (const [x, sw] of shops) for (let bx = x; bx <= x + sw; bx += 9) bulb(bx, shopTop + 13, 4);
     return c;
   }
 
