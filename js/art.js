@@ -212,6 +212,14 @@ const Art = (() => {
       for (let x = 2; x < 96; x += 6) ell(g, x + (x % 12 ? 2 : 0), 47 + (x % 12 ? 0 : 4), 2.4, 1.3, rgba('#FFFFFF', 0.35));
       g.drawImage(walker(0), 12, 3, 66, 40);
     }
+    else if (trip === 'fly') { g.fillStyle = lin(g, 0, 0, 0, 56, ['#3FA9E6', '#84D0EE', '#D6F3F1']); g.fillRect(0, 0, 96, 56); cloud(g, 20, 44, 0.5); cloud(g, 80, 14, 0.4); g.drawImage(flier(0), 8, 2, 80, 52); }
+    else if (trip === 'market') {
+      g.fillStyle = lin(g, 0, 0, 0, 56, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 56);
+      facade(g, -4, 50, 52, 46, HOUSE[1], '#22AEC4'); facade(g, 48, 50, 52, 46, HOUSE[3], '#F0478F');
+      papelPicado(g, -4, 100, 3, 7);
+      g.fillStyle = lin(g, 0, 48, 0, 56, ['#E6D3B4', '#CDB591']); g.fillRect(0, 48, 96, 8);
+      g.drawImage(walker(0), 14, 10, 66, 40);
+    }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
     else { g.fillStyle = lin(g, 0, 0, 0, 56, [C.deep[2], C.deep[5]]); g.fillRect(0, 0, 96, 56); g.drawImage(diver(0), 8, 6, 72, 43); for (const [x, y, s] of [[80, 16, 2], [84, 9, 1.5], [82, 3, 1]]) ell(g, x, y, s, s, rgba('#FFFFFF', 0.7)); }
     return c.toDataURL();
@@ -544,6 +552,191 @@ const Art = (() => {
   }
 
   // ---- under the bay: surface to the canyon floor -----------------------
+  // ---- Esmeralda's flight: over the bay to her nest ---------------------
+  // Esmeralda carries the rider high over the coast from the boat trip,
+  // which is drawn at half size below, and lands at her nest in a ceiba
+  // tree on Paco's Island. The strip is 2400 x 240.
+  const FLIGHT = {
+    w: 2400, h: 240,
+    // the boat trip's places, halved, then the nest
+    stopX: (i) => [121, 362, 587, 1087, 1337, 1837, 2150][i],
+    ground: (x) => Math.round(84 + 14 * Math.sin(x / 170) - Math.max(0, x - 1950) * 0.02),
+  };
+  // Esmeralda in flight, facing right, with the rider on her back. 86 x 56.
+  function flier(frame = 0) {
+    const [c, g] = canvas(86, 56);
+    const G = ['#D6F26A', '#9BD43C', '#6DB52E', '#3F8A2A', '#22562A'], B = ['#9EE6F0', '#3FB6D8', '#1E7FB0'];
+    const up = frame === 0;
+    const wing = (near) => {
+      const tip = up ? [[30, 2], [44, 0]] : [[26, 52], [46, 50]];
+      g.beginPath(); g.moveTo(40, 27); g.lineTo(tip[0][0], tip[0][1]); g.quadraticCurveTo(38, up ? 6 : 46, tip[1][0], tip[1][1]); g.lineTo(52, 27); g.closePath();
+      g.fillStyle = lin(g, 0, up ? 2 : 52, 0, 27, near ? [B[1], [0.45, G[2]], G[1]] : [B[2], [0.45, G[3]], G[2]]); g.fill();
+      for (let k = 0; k < 4; k++) line(g, [[42 + k * 2.4, 27], [32 + k * 3.4, up ? 6 : 48]], rgba(G[4], 0.3), 0.6);
+    };
+    g.save(); g.translate(0, 0);
+    wing(false);
+    // tail: long, red with a blue tip, as on the great green macaw
+    poly(g, [[30, 27], [30, 31], [2, 40], [4, 34]], lin(g, 2, 0, 30, 0, [B[1], [0.35, '#E8221C'], G[2]]));
+    ell(g, 44, 29, 17, 7.5, lin(g, 0, 21, 0, 37, [G[0], G[1], G[2], G[3]]));
+    ell(g, 63, 23, 8, 7, lin(g, 0, 16, 0, 30, [G[0], G[1], G[2]]));
+    ell(g, 68.5, 18, 4.2, 3, lin(g, 0, 15, 0, 21, ['#FF6A4D', '#E8221C']), 0.3);
+    ell(g, 66, 24, 3.6, 3.6, lin(g, 0, 20, 0, 28, ['#FAD3DD', '#E7A9BC']));
+    for (let i = 0; i < 3; i++) line(g, [[63.5, 22.6 + i * 1.3], [68.4, 23 + i * 1.2]], rgba(C.ink, 0.45), 0.35);
+    ell(g, 65, 21.4, 1.4, 1.4, '#FFF4C7'); ell(g, 65.3, 21.4, 0.85, 0.95, C.ink);
+    g.beginPath(); g.moveTo(69.5, 19.5); g.quadraticCurveTo(78, 19.6, 77, 28.4); g.quadraticCurveTo(74.6, 25.6, 70, 27); g.closePath();
+    g.fillStyle = lin(g, 70, 19, 77, 28, ['#6E7680', '#3A4048', '#1E2328']); g.fill();
+    // the rider, small, on her back
+    g.save(); g.translate(26, 4); g.scale(0.42, 0.42); drawPaco(g, 0, 0, 'stand', 0); g.restore();
+    wing(true);
+    g.restore();
+    return rim(c);
+  }
+  function nestTree(g, x, base) {
+    // a ceiba: a straight pale trunk, buttress roots and a flat wide crown
+    poly(g, [[x - 16, base], [x - 5, base - 26], [x - 5, base - 118], [x + 5, base - 118], [x + 5, base - 26], [x + 16, base]], lin(g, x - 16, 0, x + 16, 0, ['#D9D2C4', '#B9B0A0', '#8E8576']));
+    for (const [bx, by, rx] of [[x - 34, base - 124, 26], [x, base - 132, 34], [x + 34, base - 124, 26], [x - 14, base - 140, 22], [x + 18, base - 142, 22]]) { ell(g, bx, by + 3, rx, 9, rgba(C.leafDk, 0.5)); ell(g, bx, by, rx, 8, lin(g, 0, by - 8, 0, by + 8, [C.leafHi, C.leaf, '#3B8E38'])); }
+    // the nest on top
+    ell(g, x + 2, base - 150, 15, 6, lin(g, 0, base - 156, 0, base - 144, C.straw));
+    for (let i = 0; i < 9; i++) line(g, [[x - 11 + i * 3, base - 153], [x - 8 + i * 3, base - 146]], rgba(C.straw[3], 0.7), 0.7);
+  }
+  function flight() {
+    const { w, h } = FLIGHT, S = FLIGHT.stopX;
+    const [c, g] = canvas(w, h); const r = noise(41);
+    const skyGrad = () => lin(g, 0, 0, 0, h, ['#2F98DE', '#4FB2E8', '#7FCBEE', '#B4E3F2', '#DDF3F1']);
+    g.fillStyle = skyGrad(); g.fillRect(0, 0, w, h);
+    sun(g, 300, 40);
+    // the coast far below: the boat trip's strip, from its hills down, at half size
+    const coastCanvas = coast(), sy = 26, top = h - (COAST.h - sy) / 2;
+    g.drawImage(coastCanvas, 0, sy, COAST.w, COAST.h - sy, 0, top, COAST.w / 2, (COAST.h - sy) / 2);
+    // fade the far end of the coast into the sky, so it has no hard edge
+    g.fillStyle = skyGrad();
+    for (let x = COAST.w / 2 - 90; x < COAST.w / 2; x += 2) { g.globalAlpha = (x - COAST.w / 2 + 90) / 90; g.fillRect(x, top - 2, 2, 60); }
+    g.globalAlpha = 1;
+    // open sea past the end of the coast, under Paco's Island
+    g.fillStyle = lin(g, 0, top + 57, 0, h, [C.sea[1], C.sea[3], C.sea[5]]); g.fillRect(COAST.w / 2 - 2, top + 57, w, h - top - 57);
+    // haze that fades in from the sky, so the ground reads as far below
+    g.fillStyle = lin(g, 0, top, 0, h, [rgba('#DDF3F1', 0), [0.3, rgba('#DDF3F1', 0.45)], rgba('#DDF3F1', 0.12)]); g.fillRect(0, top, w, h - top);
+    // Paco's Island rises at the end, with the ceiba and the nest
+    g.beginPath(); g.moveTo(1880, h); g.quadraticCurveTo(1960, 150, 2150, 158); g.quadraticCurveTo(2300, 162, w, 180); g.lineTo(w, h); g.closePath();
+    g.fillStyle = lin(g, 0, 150, 0, h, C.near); g.fill();
+    canopy(g, r, 1920, w, (x) => 158 + Math.abs(x - 2150) * 0.12, () => h, 7, 9);
+    nestTree(g, S(6), 228);
+    // clouds at flying height, some in front of the ground
+    for (let x = 60; x < w; x += 210 + r() * 160) cloud(g, x, 40 + r() * 70, 0.7 + r() * 0.7);
+    for (let i = 0; i < 18; i++) bird(g, 100 + r() * (w - 200), 120 + r() * 40);
+    return c;
+  }
+
+  // ---- market day in Pueblo Tilmeca -------------------------------------
+  // A market street seen close up: shopfronts, stalls, papel picado
+  // overhead, a bandstand halfway and the church at the end. 3600 x 240.
+  const MARKET = { w: 3600, h: 240, stopX: (i) => 175 + i * 520, ground: () => 214 };
+  const PAPEL = ['#F0478F', '#FFC43A', '#22AEC4', '#8ED04A', '#F28C28', '#B77BE0'];
+  function facade(g, x, y, w, h, wall, trim) {
+    g.fillStyle = lin(g, x, 0, x + w, 0, [wall[0], [0.6, wall[1]], wall[2]]); g.fillRect(x, y - h, w, h);
+    g.fillStyle = trim; g.fillRect(x - 2, y - h - 5, w + 4, 6); g.fillRect(x, y - 8, w, 3);
+    const doors = Math.max(1, Math.floor(w / 44));
+    for (let i = 0; i < doors; i++) {
+      const dx = x + (w / doors) * (i + 0.5);
+      box(g, dx - 9, y - 36, 18, 36, 9, lin(g, 0, y - 36, 0, y, ['#8A5530', '#5E3B1A']));
+      box(g, dx - 9, y - h + 12, 18, 20, 3, lin(g, 0, y - h + 12, 0, y - h + 32, ['#9ED8EA', '#2B6E8F']));
+      for (const sx of [dx - 15, dx + 9]) { g.fillStyle = trim; g.fillRect(sx, y - h + 12, 6, 20); }
+      for (let k = 0; k < 4; k++) ell(g, dx - 7 + k * 4.6, y - h + 33, 2.4, 2, PAPEL[(k + i) % PAPEL.length]);
+    }
+  }
+  function papelPicado(g, x0, x1, y, seed) {
+    const r = noise(seed);
+    g.beginPath(); g.moveTo(x0, y); g.quadraticCurveTo((x0 + x1) / 2, y + 12, x1, y); g.strokeStyle = rgba(C.ink, 0.5); g.lineWidth = 0.6; g.stroke();
+    for (let x = x0 + 6; x < x1 - 8; x += 13) {
+      const t = (x - x0) / (x1 - x0), fy = y + 12 * 4 * t * (1 - t) * 0.5 + 1, col = PAPEL[Math.floor(r() * PAPEL.length)];
+      g.beginPath(); g.moveTo(x, fy); g.lineTo(x + 10, fy); g.lineTo(x + 10, fy + 11); for (let k = 4; k >= 0; k--) g.lineTo(x + k * 2.5, fy + (k % 2 ? 9 : 12)); g.closePath();
+      g.fillStyle = rgba(col, 0.92); g.fill();
+      ell(g, x + 5, fy + 5, 1.6, 1.6, rgba('#FFFFFF', 0.55));
+    }
+  }
+  function bandstand(g, x, y) {
+    box(g, x - 52, y - 12, 104, 12, 2, lin(g, 0, y - 12, 0, y, C.wall));
+    for (const px of [x - 44, x - 15, x + 15, x + 44]) { g.fillStyle = lin(g, px - 2, 0, px + 2, 0, [C.wall[0], C.wall[2]]); g.fillRect(px - 2, y - 66, 4, 54); }
+    g.beginPath(); g.moveTo(x - 56, y - 64); g.quadraticCurveTo(x, y - 106, x + 56, y - 64); g.closePath(); g.fillStyle = lin(g, 0, y - 100, 0, y - 64, ['#9BE0D6', '#3FB3AE', '#1E7F89']); g.fill();
+    g.fillStyle = C.pink[1]; g.fillRect(x - 56, y - 66, 112, 3);
+    line(g, [[x, y - 92], [x, y - 102]], C.ink, 1); ell(g, x, y - 104, 2.4, 2.4, C.sun[2]);
+    // a marimba and a guitar on the stage
+    box(g, x - 30, y - 30, 40, 5, 1, lin(g, 0, y - 30, 0, y - 25, C.wood));
+    for (let k = 0; k < 9; k++) { g.fillStyle = C.wood[k % 2 ? 1 : 0]; g.fillRect(x - 29 + k * 4.3, y - 33 - (k % 3), 3.4, 4); }
+    line(g, [[x - 26, y - 25], [x - 26, y - 13]], C.wood[3], 1.4); line(g, [[x + 6, y - 25], [x + 6, y - 13]], C.wood[3], 1.4);
+    ell(g, x + 28, y - 22, 6, 7, lin(g, 0, y - 29, 0, y - 15, ['#E7B06A', '#B98A52'])); ell(g, x + 28, y - 22, 1.8, 1.8, '#3A2A1A');
+    line(g, [[x + 28, y - 28], [x + 30, y - 46]], C.wood[3], 1.6);
+    for (const [nx, ny] of [[x - 16, y - 50], [x + 8, y - 56], [x - 2, y - 44]]) { ell(g, nx, ny, 2.2, 1.7, C.ink, -0.4); line(g, [[nx + 2, ny], [nx + 2, ny - 8]], C.ink, 0.8); }
+  }
+  function market() {
+    const { w, h } = MARKET, S = MARKET.stopX, y = MARKET.ground();
+    const [c, g] = canvas(w, h); const r = noise(55);
+    skyFill(g, w, h); sun(g, 380, 34);
+    for (let x = 120; x < w; x += 300 + r() * 160) cloud(g, x, 26 + r() * 20, 0.8 + r() * 0.3);
+    // hills behind the town
+    g.beginPath(); g.moveTo(0, 120); for (let x = 0; x <= w; x += 4) g.lineTo(x, ridgeY(x, 96, 30, 0.006, 1.3)); g.lineTo(w, 140); g.lineTo(0, 140); g.closePath(); g.fillStyle = lin(g, 0, 60, 0, 140, C.far); g.fill();
+    // a row of shopfronts the length of the street
+    const walls = [HOUSE[1], HOUSE[2], HOUSE[3], HOUSE[4], C.wall, ['#FFD9B8', '#F8B98A', '#E3965E']];
+    const trims = ['#22AEC4', '#F0478F', '#3B8E38', '#F28C28', '#1C5FA8', '#C21A68'];
+    let i = 0;
+    for (let x = 0; x < S(6) - 120; i++) {
+      const fw = 70 + Math.floor(r() * 50), fh = 96 + Math.floor(r() * 30);
+      if (Math.abs(x + fw / 2 - S(3)) > 110) facade(g, x, y - 18, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length]);
+      x += fw;
+    }
+    // papel picado strung across the street, all the way along
+    for (let x = 0; x < S(6) - 100; x += 140) papelPicado(g, x, x + 140, 30 + (x / 140 % 2) * 6, 60 + x);
+    // the street: a sidewalk, then plaza tiles
+    g.fillStyle = lin(g, 0, y - 18, 0, y, ['#E9DCC4', '#D7C6A6']); g.fillRect(0, y - 18, w, 18);
+    g.fillStyle = lin(g, 0, y, 0, h, ['#E6D3B4', '#CDB591', '#B39A74']); g.fillRect(0, y, w, h - y);
+    for (let x = 0; x < w; x += 12) for (let ty = y + 2; ty < h; ty += 8) { g.fillStyle = rgba(((x / 12 + (ty - y) / 8) % 2) ? '#FFFFFF' : C.ink, 0.07); g.fillRect(x + ((ty - y) / 8 % 2) * 6, ty, 11, 7); }
+    // the bus stop: a sign, a bench and a small bus
+    line(g, [[S(0) + 40, y], [S(0) + 40, y - 44]], C.motor[1], 2); box(g, S(0) + 32, y - 54, 16, 12, 2, '#1C5FA8'); ell(g, S(0) + 40, y - 48, 3.4, 3.4, '#FFFFFF');
+    box(g, S(0) - 30, y - 12, 44, 4, 1, C.wood[1]); line(g, [[S(0) - 26, y - 8], [S(0) - 26, y]], C.wood[3], 2); line(g, [[S(0) + 10, y - 8], [S(0) + 10, y]], C.wood[3], 2);
+    box(g, S(0) - 160, y - 48, 96, 40, 8, lin(g, 0, y - 48, 0, y - 8, ['#FFE08A', '#FFC43A', '#C98F12']));
+    for (let k = 0; k < 5; k++) box(g, S(0) - 152 + k * 17, y - 42, 13, 12, 2, lin(g, 0, y - 42, 0, y - 30, ['#9ED8EA', '#2B6E8F']));
+    g.fillStyle = C.stripe2; g.fillRect(S(0) - 160, y - 24, 96, 3);
+    for (const wx of [S(0) - 140, S(0) - 86]) { ell(g, wx, y - 6, 7, 7, lin(g, 0, y - 13, 0, y + 1, C.tire)); ell(g, wx, y - 6, 3, 3, C.rim[1]); }
+    // stalls along the street
+    const stalls = [[S(1) - 70, C.coral[0]], [S(1) - 20, '#22AEC4'], [S(1) + 30, C.coral[2]], [S(4) - 60, C.pink[1]], [S(4) - 10, '#B77BE0'], [S(4) + 40, C.coral[2]], [S(5) - 60, '#F28C28'], [S(5) - 10, '#22AEC4'], [S(5) + 40, C.pink[1]]];
+    stalls.forEach(([sx, col], k) => stall(g, sx, y - 1, col, 300 + k));
+    // fruit crates at the fruit stalls
+    for (let k = 0; k < 4; k++) { const fx = S(1) - 76 + k * 40; box(g, fx, y - 8, 16, 8, 1, C.wood[1]); for (let m = 0; m < 6; m++) ell(g, fx + 3 + (m % 3) * 5, y - 9 - Math.floor(m / 3) * 3, 2.6, 2.4, ['#F28C28', '#FFC43A', '#8ED04A', '#E0352B'][k]); }
+    // the taco stand: a cart with an umbrella and steam
+    const tx = S(2);
+    box(g, tx - 30, y - 30, 60, 22, 3, lin(g, 0, y - 30, 0, y - 8, ['#FFFFFF', '#E8EEF2']));
+    g.fillStyle = C.stripe2; g.fillRect(tx - 30, y - 24, 60, 4); box(g, tx - 34, y - 33, 68, 4, 1, C.motor[1]);
+    for (const wx of [tx - 20, tx + 20]) { ell(g, wx, y - 6, 6, 6, lin(g, 0, y - 12, 0, y, C.tire)); ell(g, wx, y - 6, 2.4, 2.4, C.rim[1]); }
+    line(g, [[tx, y - 33], [tx, y - 76]], C.motor[1], 1.6);
+    g.beginPath(); g.moveTo(tx - 40, y - 70); g.quadraticCurveTo(tx, y - 92, tx + 40, y - 70); g.closePath(); g.fillStyle = lin(g, tx - 40, 0, tx + 40, 0, ['#E0352B', '#FFFFFF', '#3B8E38']); g.fill();
+    for (let k = 0; k < 3; k++) { g.beginPath(); g.moveTo(tx - 10 + k * 10, y - 36); g.bezierCurveTo(tx - 16 + k * 10, y - 44, tx - 4 + k * 10, y - 50, tx - 10 + k * 10, y - 58); g.strokeStyle = rgba('#FFFFFF', 0.7); g.lineWidth = 1.2; g.stroke(); }
+    // the bandstand
+    bandstand(g, S(3), y);
+    for (const px of [S(3) - 90, S(3) + 90]) { line(g, [[px, y], [px, y - 22]], C.wood[3], 3, 'butt'); ell(g, px, y - 32, 18, 14, C.leaf); ell(g, px - 3, y - 36, 10, 8, C.leafHi); }
+    // flower buckets
+    for (let k = 0; k < 7; k++) { const fx = S(4) - 70 + k * 22; box(g, fx, y - 10, 12, 10, 2, C.motor[0]); for (let m = 0; m < 7; m++) ell(g, fx + 2 + (m % 4) * 3, y - 13 - Math.floor(m / 4) * 4 - (m % 2), 2.2, 2.2, [C.pink[1], C.sun[2], '#B77BE0', '#FFFFFF', '#F28C28'][(k + m) % 5]); }
+    // pottery: clay pots and blue and white jugs
+    for (let k = 0; k < 8; k++) { const px = S(5) - 76 + k * 22, tall = k % 3 === 1; const col = k % 2 ? lin(g, 0, y - 20, 0, y, ['#FFFFFF', '#C9E7FA']) : lin(g, 0, y - 20, 0, y, ['#E58A55', '#B9592E', '#8A3F1E']); ell(g, px, y - (tall ? 12 : 8), tall ? 7 : 9, tall ? 12 : 8, col); box(g, px - 3.5, y - (tall ? 26 : 18), 7, 4, 1, col); if (k % 2) for (const dy of [-3, 2]) { g.fillStyle = rgba('#1C5FA8', 0.85); g.fillRect(px - (tall ? 6 : 8), y - (tall ? 12 : 8) + dy, tall ? 12 : 16, 1.6); } }
+    // the church at the end of the street, up a few steps
+    const cx = S(6);
+    for (let k = 0; k < 4; k++) { g.fillStyle = lin(g, 0, y - k * 5 - 5, 0, y - k * 5, [C.wall[0], C.wall[2]]); g.fillRect(cx - 70 + k * 6, y - k * 5 - 5, 140 - k * 12, 5); }
+    const cy = y - 20;
+    g.fillStyle = lin(g, cx - 56, 0, cx + 56, 0, [C.wall[0], C.wall[1], C.wall[2]]); g.fillRect(cx - 52, cy - 100, 104, 100);
+    poly(g, [[cx - 56, cy - 100], [cx + 56, cy - 100], [cx, cy - 136]], lin(g, 0, cy - 136, 0, cy - 100, C.wall));
+    g.fillStyle = C.pink[1]; g.fillRect(cx - 52, cy - 102, 104, 3);
+    box(g, cx - 16, cy - 46, 32, 46, 16, lin(g, 0, cy - 46, 0, cy, ['#8A5530', '#5E3B1A']));
+    ell(g, cx, cy - 76, 11, 11, lin(g, 0, cy - 87, 0, cy - 65, ['#FFE08A', '#F0478F', '#22AEC4']));
+    for (const bx of [cx - 82, cx + 58]) {
+      g.fillStyle = lin(g, bx, 0, bx + 24, 0, [C.wall[0], C.wall[2]]); g.fillRect(bx, cy - 150, 24, 150);
+      box(g, bx + 6, cy - 140, 12, 18, 6, '#3B5E7A'); ell(g, bx + 12, cy - 128, 3.4, 3.4, C.sun[2]);
+      g.beginPath(); g.ellipse(bx + 12, cy - 150, 12, 11, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, cy - 161, 0, cy - 150, [C.sun[0], C.sun[2]]); g.fill();
+      line(g, [[bx + 12, cy - 161], [bx + 12, cy - 172]], C.ink, 1.2); line(g, [[bx + 8, cy - 168], [bx + 16, cy - 168]], C.ink, 1.2);
+    }
+    papelPicado(g, cx - 82, cx + 82, cy - 116, 999);
+    palm(g, cx - 120, y - 2, 52); palm(g, cx + 120, y - 2, 48, -1);
+    return c;
+  }
+
   const DEEP = { w: 480, h: 1875, surface: 75, bottom: 1800 };
   const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 66000;
   DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / FULL);
@@ -611,5 +804,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();
