@@ -31,6 +31,16 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<section id="splash" class="splash" aria-labelledby="splashWord" hidden>
+  <canvas id="splashArt" class="splash-art" aria-hidden="true"></canvas>
+  <div class="splash-box">
+    <h1 id="splashWord" class="splash-word"></h1>
+    <p id="splashLine" class="splash-line"></p>
+    <button id="splashStart" class="btn primary wide splash-start" type="button"></button>
+    <button id="splashHow" class="text-link splash-how" type="button"></button>
+    <p id="splashCredit" class="splash-credit"></p>
+  </div>
+</section>
 <main class="page">
   <div class="scene" id="scene">
     <div class="hud" id="hud" hidden>
@@ -41,7 +51,7 @@
   </div>
 
   <section id="title" class="screen" aria-labelledby="titleHead">
-    <h1 id="titleHead" class="wordmark"></h1>
+    <h1 id="titleHead" class="wordmark" tabindex="-1"></h1>
     <p class="lede" id="intro"></p>
     <fieldset class="trips modes" id="levels">
       <legend id="levelLegend"></legend>
@@ -170,6 +180,7 @@
 <script src="js/engine.js"></script>
 <script src="js/copy.js"></script>
 <script src="js/music.js"></script>
+<script src="js/splash.js"></script>
 <script src="js/art.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/app.js"></script>

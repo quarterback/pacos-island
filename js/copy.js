@@ -6,7 +6,8 @@
 'use strict';
 const Copy = {
   title: "Paco’s Island",
-  intro: 'Paco the iguana shows you around his island. The rarer your answer, the farther he takes you.',
+  // The title screen
+  splash: { line: 'The rarer your answer, the farther Paco takes you.', start: 'Start', how: 'How to play' },
   howHeading: 'How to play',
   how: [
     'Type a right answer before time runs out. Wrong guesses cost only time.',

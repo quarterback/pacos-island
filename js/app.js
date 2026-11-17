@@ -104,7 +104,8 @@
   // ---- title ----
   function showTitle() {
     $('titleHead').textContent = Copy.title;
-    $('intro').textContent = state.level === 'mario' ? Copy.marioIntro : Copy.intro;
+    // The title screen carries the pitch; here only Mario's mode needs an introduction.
+    $('intro').textContent = state.level === 'mario' ? Copy.marioIntro : ''; $('intro').hidden = state.level !== 'mario';
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
@@ -397,6 +398,22 @@
   $('importNo').addEventListener('click', () => $('importDialog').close());
 
   // ---- start ----
+  // The title screen opens every visit, unless the page was opened with a
+  // link from another device. Start is the first tap, so music can begin.
+  function closeSplash(then) {
+    Splash.stop(); $('splash').hidden = true; document.querySelector('.page').inert = false;
+    if (Music.isOn()) Music.set(true);
+    then();
+  }
+  if (!/^#move=/.test(location.hash)) {
+    $('splashWord').textContent = Copy.title; $('splashLine').textContent = Copy.splash.line;
+    $('splashStart').textContent = Copy.splash.start; $('splashHow').textContent = Copy.splash.how; $('splashCredit').textContent = Copy.credit;
+    $('splash').hidden = false; document.querySelector('.page').inert = true;
+    Splash.start($('splashArt'), state.level);
+    $('splashStart').addEventListener('click', () => closeSplash(() => $('titleHead').focus({ preventScroll: true })));
+    $('splashHow').addEventListener('click', () => closeSplash(() => { $('how').open = true; $('how').scrollIntoView({ block: 'center' }); $('howHead').focus(); }));
+    $('splashStart').focus();
+  }
   Scene.init($('scene')).then(() => { if (!Scene.ready) { const p = document.createElement('p'); p.className = 'note'; p.style.padding = '0 20px'; p.textContent = Copy.noScene; $('scene').after(p); } });
   showTitle();
   checkImport();
