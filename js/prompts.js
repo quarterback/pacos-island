@@ -331,6 +331,13 @@ const Prompts = (() => {
   // Only simple letter rules open a set: starts with a letter, or has one.
   const simple = (q) => /\.(starts|has)-[a-z]$/.test(q.id);
   for (const q of pool) q.opener = OPENERS.has(q.id) || (q.angle && q.ease >= 10);
+  // Letter questions stay as a rare twist: only "starts with" and only on
+  // lists people can run through in their head (countries, capitals, states,
+  // presidents, elements, team nicknames). Song, movie, food and other title
+  // lists are asked whole. The rest stay in the pool so old rounds still
+  // load, but no new round deals them.
+  const LETTER_LISTS = new Set(['countries', 'capitals', 'states', 'statecaps', 'presidents', 'elements', 'nba', 'nfl', 'mlb', 'nhl']);
+  for (const q of pool) if (q.kind === 'letter' && !(LETTER_LISTS.has(q.universe) && /\.starts-[a-z]$/.test(q.id))) q.retired = true;
   // What kind of question each one is, so a round can vary its rhythm.
   for (const q of pool) q.shape ||= q.kind === 'letter' ? 'letter' : 'category';
 
@@ -348,15 +355,16 @@ const Prompts = (() => {
     starter: ['opener', 'opener', 'gentle', 'gentle', 'medium', 'medium', 'medium'],
     mario: ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'],
   };
-  const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
-  for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
+  const live = pool.filter((q) => !q.retired);
+  const byLevel = { opener: live.filter((q) => q.opener), easy: [], medium: [], hard: [] };
+  for (const q of live) if (!q.opener) byLevel[q.level].push(q);
   // Mario skips letter counting and "has no letter" rules.
   // Gentle slots use openers only once the other easy ones run out, so the
   // openers last.
   byLevel.gentle = byLevel.easy.filter((q) => q.kind === 'list' || simple(q));
   // A slot borrows from a nearby level before it repeats a question.
   // Mario's sets reach for the milder medium questions before a repeat.
-  byLevel.mild = pool.filter((q) => !q.opener && q.level === 'medium' && (q.kind === 'list' || simple(q)));
+  byLevel.mild = live.filter((q) => !q.opener && q.level === 'medium' && (q.kind === 'list' || simple(q)));
   const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard', 'gentle', 'opener'], hard: ['hard', 'medium', 'gentle', 'opener'] };
   byLevel.medium.push(...byLevel.easy);
   // ageOf(id): how many days or rounds since the player saw a question,
@@ -370,9 +378,9 @@ const Prompts = (() => {
     // first, then yesterday's lists.
     const fresh = (q) => !lastLists.has(q.universe) && !lastLists.has('s:' + subjectOf(q));
     const rests = [fresh, (q) => !lastLists.has(q.universe), () => true];
-    // Letter questions are a twist, so a round holds at most two (one for
-    // new players and in Mario's mode).
-    const LETTER_MAX = { paco: 2, starter: 1, mario: 1 }[level] ?? 2;
+    // Letter questions are a twist, so a round holds at most one, and none
+    // for new players or in Mario's mode.
+    const LETTER_MAX = { paco: 1, starter: 0, mario: 0 }[level] ?? 1;
     // No more than two questions of one kind in a round (three plain
     // category questions).
     const SHAPE_MAX = { category: 3, letter: LETTER_MAX };
@@ -416,7 +424,7 @@ const Prompts = (() => {
         }
         if (pick) break;
       }
-      if (!pick) pick = shuffle(pool, r).find((q) => !set.includes(q) && !lists.has(q.universe) && !subjects[subjectOf(q)]) || shuffle(pool, r).find((q) => !set.includes(q));
+      if (!pick) pick = shuffle(live, r).find((q) => !set.includes(q) && !lists.has(q.universe) && !subjects[subjectOf(q)]) || shuffle(live, r).find((q) => !set.includes(q));
       set.push(pick); lists.add(pick.universe);
       subjects[subjectOf(pick)] = (subjects[subjectOf(pick)] || 0) + 1;
       if (pick.kind === 'letter') letterCount++;

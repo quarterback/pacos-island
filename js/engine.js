@@ -43,6 +43,34 @@ const Engine = (() => {
     return best && !tie ? { item: best, typo: true } : null;
   }
 
+  // Questions about people also take part of a name. "Aniston" counts for
+  // "Name a famous Jennifer," "Will" for "Name a famous Smith" and "Lovelace"
+  // for a famous scientist: the last name, or the name without the word the
+  // question already gives. A part shared by two answers counts for neither.
+  const SKIP_PART = new Set(['jr', 'sr', 'ii', 'iii', 'the', 'of', 'and', 'de', 'la', 'le', 'van', 'von', 'mr', 'mrs', 'ms', 'dr']);
+  const partCache = new Map();
+  function partNames(q) {
+    if (partCache.has(q.id)) return partCache.get(q.id);
+    const given = new Set(P.norm(q.text).split(' '));
+    const owners = new Map();
+    for (const a of q.answers) for (const n of allNames(a.item)) {
+      const w = P.norm(n).split(' ');
+      if (w.length < 2) continue;
+      const rest = w.filter((x) => !given.has(x));
+      const parts = [w[w.length - 1], w.slice(1).join(' '), rest.join(' ')];
+      if (rest.length < w.length) parts.push(...rest);
+      for (const p of parts) {
+        if (p.length < 3 || SKIP_PART.has(p) || p === w.join(' ')) continue;
+        if (!owners.has(p)) owners.set(p, new Set());
+        owners.get(p).add(a.item);
+      }
+    }
+    const out = [];
+    for (const [p, its] of owners) if (its.size === 1) out.push({ name: p, aliases: [], of: [...its][0] });
+    partCache.set(q.id, out);
+    return out;
+  }
+
   // status: ok (on the list), off (real, but this question rules it out), no (not on any list)
   function match(q, input) {
     const typed = P.norm(input || '');
@@ -54,6 +82,8 @@ const Engine = (() => {
     const find = (items) => { for (const t of tries) { const h = findIn(items, t); if (h) return h; } return null; };
     const hit = find(q.answers.map((a) => a.item));
     if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
+    const part = q.shape === 'people' ? findIn(partNames(q), typed) : null;
+    if (part) return { status: 'ok', item: part.item.of, typo: part.typo };
     const near = find(u.items);
     if (near) return { status: 'off', item: near.item };
     return { status: 'no' };

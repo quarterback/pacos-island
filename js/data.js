@@ -3126,12 +3126,33 @@ The Odd Couple
 I Love Lucy
 Welcome Back, Kotter|Welcome Back Kotter
 Living Single
-Ramy
-Pen15
 Difficult People
 Younger
 Rhoda
-Sanford and Son`),
+1 The Cosby Show|Cosby Show|Cosby
+2 Everybody Loves Raymond|Raymond
+2 Diff'rent Strokes|Different Strokes|Diffrent Strokes
+Kate & Allie|Kate and Allie
+Just Shoot Me!|Just Shoot Me
+Becker
+Veronica's Closet
+Rules of Engagement
+The Mindy Project|Mindy Project
+Master of None
+Girls5eva
+Kevin Can Wait
+Bored to Death
+4 Louie
+4 Search Party
+4 Ghosts
+4 Car 54, Where Are You?|Car 54
+4 The Patty Duke Show|Patty Duke Show
+4 High Maintenance
+4 Mr. Mayor
+4 Great News
+4 Whitney
+4 Brooklyn Bridge
+4 The Phil Silvers Show|Sgt. Bilko`),
     angle('roman_planets', 'science', 'crossover', 'Name a planet named after a Roman god.', `
 1 Mars
 1 Venus

@@ -26,9 +26,11 @@ The old pool was one list per topic ("Name a country") plus letter cuts of it ("
 | `everyday` | Ordinary life, the way a Family Feud survey asks | "Name something you'd find in a junk drawer." "Name a room in a house." |
 | `crossover` | Two worlds meet | "Name a planet named after a Roman god." "Name a Disney movie that became a Broadway musical." |
 | `category` | A plain list | "Name a cheese." "Name a soap opera." |
-| `letter` | A letter rule on a list | "Name a cheese whose name starts with B." |
+| `letter` | A letter rule on a list | "Name a country whose name starts with B." |
 
-Letter questions are a twist, never the backbone. The pool keeps only "starts with" and "has the letter" rules. A round holds at most two letter questions, and only one for new players and in Mario's mode.
+Letter questions are a rare twist. Players find them annoying on anything but lists they can run through in their head, so new rounds only deal "starts with" questions on countries, capitals, states, state capitals, presidents, elements and team nicknames. A round holds at most one, and none for new players or in Mario's mode. Song, movie, food and other title lists are always asked whole. Do not write a new letter question to fill a gap; write a new whole question.
+
+People questions take part of a name: the last name ("Aniston" for a famous Jennifer), or what is left once the word the question already gives is dropped ("Will" for a famous Smith). The engine does this for every question with the `people` shape, so the answer lines only need full names and any nicknames.
 
 ## How a round is built
 
