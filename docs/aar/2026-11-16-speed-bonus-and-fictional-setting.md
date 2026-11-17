@@ -24,6 +24,11 @@ The owner asked for three things:
 - `node tools/check.mjs` found 0 problems.
 - A full day played in headless Chrome had no page errors, and the speed bonus recorded on every answer.
 - A text search of the code, docs and page found no real place names in the setting.
+- Editorial checks on the new copy, run after the first commit, which the repo rules don't allow:
+  - prosekeep check: 0 findings.
+  - plain-language-default check: 0 problems.
+  - red-pen-editor inspect: flagged only pairs created by the export filling every template with the same sample values.
+  No copy changed as a result.
 
 ## 4. Gaps
 
