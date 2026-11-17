@@ -23,3 +23,4 @@ The owner asked whether the game can go on Cloudflare and whether it needs a bui
 ## 4. Gaps
 
 - No live deploy was run from this workspace, because it has no Cloudflare credentials. The first real deploy happens when the owner imports the repo.
+- The first commit of this run picked up Wrangler's local cache folder (.wrangler) from the test run. A follow up commit removed it and added a .gitignore for it.
