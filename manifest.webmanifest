@@ -1,0 +1,17 @@
+{
+  "name": "Paco's Island",
+  "short_name": "Paco's Island",
+  "description": "Pacos Island is a daily trivia game where you try to find answers to random questions.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#095565",
+  "theme_color": "#095565",
+  "categories": ["games", "trivia"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

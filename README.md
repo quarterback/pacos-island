@@ -63,6 +63,8 @@ python3 tools/rarity.py
 - `js/engine.js`: days, matching, scoring and trips
 - `js/copy.js`: every line players read
 - `js/art.js`, `js/scene.js`: the 32 bit style art, drawn in code, and the Pixi scene
+- `manifest.webmanifest`, `sw.js`: make the game installable as an app and keep it working offline
+- `tools/icon.html`, `tools/icon.py`: rebuild the app icons in `icons/` from the game's art
 - `js/app.js`: screens, saved progress and moving progress between devices
 - `fonts/`: owner-licensed PP Fuji and PP Neue Montreal files
 - `vendor/pixi.min.js`: PixiJS 8, MIT license

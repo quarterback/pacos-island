@@ -171,3 +171,11 @@ dialog p { margin: 0 0 16px; }
   .all { columns: 1; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* computers: the scene sits beside the game and stays in view */
+@media (min-width: 960px) {
+  .page { max-width: 1160px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: 48px; align-items: start; padding: 40px 32px calc(40px + var(--sab)); }
+  .scene { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: 40px; border-radius: 8px; }
+  .screen, .page > .note { grid-column: 2; padding: 0; }
+  .wordmark { font-size: 64px; }
+}

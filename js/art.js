@@ -92,7 +92,8 @@ const Art = (() => {
     }
     g.restore();
   }
-  function paco(pose = 'stand', frame = 0) { const [c, g] = canvas(76, 44); drawPaco(g, 0, 0, pose, frame); return rim(c); }
+  // scale above 1 draws Paco larger and sharp, without the rim, for the app icon
+  function paco(pose = 'stand', frame = 0, scale = 1) { const [c, g] = canvas(76 * scale, 44 * scale); g.scale(scale, scale); drawPaco(g, 0, 0, pose, frame); return scale === 1 ? rim(c) : c; }
 
   // Paco in a panga with an outboard motor. 132 x 60.
   function boat(frame = 0) {

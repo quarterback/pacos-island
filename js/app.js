@@ -329,4 +329,6 @@
   showTitle();
   checkImport();
   window.PacoDebug = { state: () => state, day, questions: () => questions };
+  // the service worker keeps the game working offline once it has loaded
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();

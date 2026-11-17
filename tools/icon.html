@@ -1,0 +1,18 @@
+<!doctype html>
+<!-- Draws the app icons from the game's own art. Run: python3 tools/icon.py -->
+<html><head><meta charset="utf-8"><style>html, body { margin: 0; } canvas { display: block; }</style></head><body>
+<canvas id="c"></canvas>
+<script src="../js/rarity.js"></script><script src="../js/data.js"></script><script src="../js/prompts.js"></script><script src="../js/engine.js"></script>
+<script src="../js/art.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), S = Number(q.get('size') || 512), pad = q.get('maskable') ? 0.2 : 0.06;
+  const c = document.getElementById('c'); c.width = c.height = S; const g = c.getContext('2d');
+  const lin = (y0, y1, cols) => { const gr = g.createLinearGradient(0, y0, 0, y1); cols.forEach((col, i) => gr.addColorStop(i / (cols.length - 1), col)); return gr; };
+  g.fillStyle = lin(0, S * 0.6, ['#3FA9E6', '#84D0EE', '#D6F3F1']); g.fillRect(0, 0, S, S * 0.6);
+  g.fillStyle = lin(S * 0.6, S * 0.78, ['#43CBD2', '#1390AC']); g.fillRect(0, S * 0.6, S, S * 0.18);
+  g.fillStyle = lin(S * 0.76, S, ['#FFF0BF', '#E4BE74']); g.fillRect(0, S * 0.76, S, S * 0.24);
+  const w = S * (1 - pad * 2), k = w / 76, p = Art.paco('stand', 0, k);
+  g.fillStyle = 'rgba(13,35,64,0.18)'; g.beginPath(); g.ellipse(S / 2, S * 0.5 + p.height * 0.47, w * 0.34, S * 0.025, 0, 0, Math.PI * 2); g.fill();
+  g.drawImage(p, S * pad, S * 0.5 - p.height * 0.5);
+  document.title = 'ready';
+</script></body></html>
