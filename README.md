@@ -44,6 +44,10 @@ pip install wordfreq
 python3 tools/rarity.py
 ```
 
+## Share card
+
+`icons/og.png` is the 1200 × 630 image shown when a link to the game is shared. `tools/og.html` draws it from the game's own art, and `python3 tools/og.py` rebuilds it (it needs Playwright and Chrome). The page's Open Graph and Twitter card tags load it from GitHub at `raw.githubusercontent.com/quarterback/pacos-island/main/icons/og.png`, so the card works before the game has its own domain.
+
 ## Files
 
 - `index.html`, `css/style.css`: the page
