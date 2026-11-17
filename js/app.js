@@ -8,19 +8,28 @@
 'use strict';
 (() => {
   const $ = (id) => document.getElementById(id);
-  const KEY = 'pacos-island.v1';
+  const KEY = 'pacos-island.v2';
   const SECONDS = Engine.SECONDS;
   const day = Engine.dayNumber();
   const questions = Prompts.forDay(day);
 
   // ---- saved progress ----
-  const fresh = () => ({ v: 1, id: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)), lifetime: 0, trip: 'boat', days: {} });
-  function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return s; } catch (e) { /* storage blocked or empty */ } return fresh(); }
+  const fresh = () => ({ v: 2, id: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)), lifetime: 0, trip: 'boat', days: {} });
+  function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 2) return s; } catch (e) { /* storage blocked or empty */ } return fresh(); }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage blocked: progress lasts this visit */ } }
   let state = load();
   const today = () => (state.days[day] ||= { trip: state.trip, answers: [], started: {}, done: false, counted: false });
   const dayScore = (rec) => rec.answers.reduce((s, a) => s + (a.points || 0), 0);
-  const bucket = (pts) => (pts == null || pts === 0 ? 0 : pts < 35 ? 1 : pts < 70 ? 2 : pts < 100 ? 3 : 4);
+  const bucket = (pts) => (!pts ? 0 : pts < 5000 ? 1 : pts < 12000 ? 2 : pts < 20000 ? 3 : 4);
+  const fmt = (n) => n.toLocaleString('en-US');
+  const clockText = (secs) => { const s = Math.round(secs); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countUp(el, to) {
+    if (reduced) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 900;
+    const step = (now) => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(Math.round(to * e)); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
 
   // ---- answer counts across players (optional) ----
   async function api(method, params) {
@@ -34,12 +43,12 @@
     } catch (e) { return null; } finally { clearTimeout(t); }
   }
 
-  // ---- the trip bar ----
+  // ---- the score over the scene ----
   function tripBar(rec) {
     const score = dayScore(rec), r = Engine.reached(rec.trip, score);
-    $('tripBar').hidden = false;
-    $('tripScore').textContent = score;
-    $('tripWhere').textContent = rec.trip === 'dive' ? `Depth ${r.label}` : r.next ? `Next stop: ${r.next.label}` : `At ${r.label}`;
+    $('hud').hidden = false;
+    $('tripScore').textContent = fmt(score);
+    $('tripWhere').textContent = rec.trip === 'dive' ? Copy.hudDepth(r.label) : r.next ? Copy.hudNext(r.next.label) : Copy.hudAt(r.label);
     Scene.setTrip(rec.trip); Scene.score(score);
   }
 
@@ -60,13 +69,14 @@
       inp.disabled = !open.includes(t.id) || !!(rec && rec.answers.length);
       inp.checked = (rec ? rec.trip : state.trip) === t.id;
       inp.addEventListener('change', () => { state.trip = t.id; save(); Scene.setTrip(t.id); Scene.score(0, true); });
+      const img = document.createElement('img'); img.alt = ''; img.src = Art.icon(t.id);
       const lab = document.createElement('label'); lab.htmlFor = inp.id; lab.textContent = t.name;
-      row.append(inp, lab);
+      row.append(inp, img, lab);
       if (!open.includes(t.id)) { const s = document.createElement('span'); s.className = 'lock'; s.textContent = Copy.tripOpens(t.opens); row.append(s); }
       box.append(row);
     }
     $('startBtn').textContent = rec && rec.done ? Copy.seeResults : rec && rec.answers.length ? Copy.resume : Copy.start;
-    $('tripBar').hidden = true;
+    $('hud').hidden = true;
     Scene.setTrip(rec ? rec.trip : state.trip); Scene.score(rec ? dayScore(rec) : 0, true);
     swap('title');
   }
@@ -116,9 +126,8 @@
   function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; }
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
-    const left = SECONDS - (Date.now() - rec.started[current.i]) / 1000;
     lock();
-    rec.answers.push({ pid: current.q.id, name: null, points: 0 }); save();
+    rec.answers.push({ pid: current.q.id, name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS }); save();
     $('note').className = 'note bad'; $('note').textContent = Copy.timeUp;
     after(rec);
   }
@@ -131,21 +140,24 @@
     if (m.status === 'no') { note.className = 'note bad'; note.textContent = Copy.wrong; $('answerInput').select(); return; }
     if (m.status === 'off') { note.className = 'note bad'; note.textContent = Copy.off(m.item.name); $('answerInput').select(); return; }
     const rec = today(); if (rec.answers.length !== current.i) return;
-    const left = SECONDS - (Date.now() - rec.started[current.i]) / 1000;
+    const secs = Math.min(SECONDS, (Date.now() - rec.started[current.i]) / 1000);
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
     const crowd = await api('POST', { day, prompt: current.q.id, answer: m.item.name, player: state.id });
     const sh = Engine.shares(current.q, crowd);
-    const p = Engine.points(sh.shares, m.item.name), fast = Engine.speedBonus(left);
-    rec.answers.push({ pid: current.q.id, name: m.item.name, points: p.points + fast, rarity: p.points, speed: fast, rarer: p.rarer }); save();
+    const how = Engine.commonness(sh.shares, m.item.name), sc = Engine.score(how.c, secs);
+    rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, rarer: how.rarer, secs }); save();
     $('resultName').textContent = m.item.name;
-    $('resultPts').textContent = Copy.points(p.points + fast);
-    $('resultRarer').textContent = `${Copy.split(p.points, fast)} ${Copy.rarer(p.rarer)}`;
+    countUp($('resultPts'), sc.total);
+    $('resultRarity').textContent = Copy.forRarity(sc.rarity);
+    $('resultSpeed').textContent = Copy.forSpeed(sc.speed);
+    $('resultRarer').textContent = Copy.rarer(how.rarer);
+    $('resultSay').textContent = `${m.item.name}. ${Copy.points(sc.total)}.`;
     after(rec);
   });
   function after(rec) {
     $('result').hidden = false;
-    if (!rec.answers[rec.answers.length - 1].name) { $('resultName').textContent = Copy.noAnswer; $('resultPts').textContent = Copy.points(0); $('resultRarer').textContent = ''; }
+    if (!rec.answers[rec.answers.length - 1].name) { $('resultName').textContent = Copy.noAnswer; $('resultPts').textContent = '0'; $('resultRarity').textContent = ''; $('resultSpeed').textContent = ''; $('resultRarer').textContent = ''; $('resultSay').textContent = Copy.noAnswer; }
     $('nextBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
     squares(rec, -1); tripBar(rec);
     $('nextBtn').focus();
@@ -164,12 +176,32 @@
     swap('end'); tripBar(rec);
     const headline = rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label);
     $('endHead').textContent = headline;
-    $('endTotal').textContent = Copy.todayTotal(score, state.lifetime);
     $('endNext').textContent = rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
+    // the score sheet, World Six style: every line adds up to the total
+    $('sheetHead').textContent = Copy.sheetHead;
+    const sheet = $('sheet'); sheet.innerHTML = '';
+    let rarity = 0, speed = 0, secs = 0;
+    questions.forEach((q, i) => {
+      const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS };
+      rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0;
+      const li = document.createElement('li');
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = bucket(a.points);
+      const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || Copy.noAnswer;
+      const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
+      li.append(sq, nm, pt);
+      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; li.append(sp); }
+      sheet.append(li);
+    });
+    $('rarityLabel').textContent = Copy.rarityTotal; $('rarityTotal').textContent = fmt(rarity);
+    $('speedLabel').textContent = Copy.speedTotal; $('speedTotal').textContent = '+' + fmt(speed);
+    $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
+    $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
+    $('endLifetime').textContent = Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
     $('endUnlock').textContent = justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
-    const sq = rec.answers.map((a) => ['⬜', '🟦', '🟩', '🟨', '🟥'][bucket(a.points)]).join('');
-    $('shareText').textContent = Copy.share(day, headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me'), score, sq);
+    const rows = rec.answers.map((a) => `${['⬜', '🟦', '🟩', '🟨', '🟥'][bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
+    const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
+    $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('answersHead').textContent = Copy.yourAnswers;
     $('comeBack').textContent = Copy.comeBack(Engine.nextReset().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
@@ -186,7 +218,7 @@
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
       const pm = document.createElement('p'); pm.className = 'a-mine' + (mine.name ? '' : ' none');
       const nm = document.createElement('span'); nm.textContent = mine.name || Copy.noAnswer;
-      const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = mine.points;
+      const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(mine.points || 0);
       pm.append(nm, pt);
       const det = document.createElement('details'); const sum = document.createElement('summary'); sum.textContent = `${Copy.everyAnswer} (${q.answers.length})`;
       const all = document.createElement('ul'); all.className = 'all';
@@ -227,7 +259,7 @@
     history.replaceState(null, '', location.pathname);
     let incoming = null; try { incoming = unpack(m[1]); } catch (e) { /* bad link */ }
     $('importHead').textContent = Copy.importHeading;
-    if (!incoming || incoming.v !== 1) { $('importBody').textContent = Copy.importBad; $('importYes').hidden = true; $('importNo').textContent = Copy.close; $('importDialog').showModal(); return; }
+    if (!incoming || incoming.v !== 2) { $('importBody').textContent = Copy.importBad; $('importYes').hidden = true; $('importNo').textContent = Copy.close; $('importDialog').showModal(); return; }
     $('importBody').textContent = Copy.importBody(incoming.lifetime || 0);
     $('importYes').textContent = Copy.importYes; $('importNo').textContent = Copy.importNo;
     $('importYes').onclick = () => { state = incoming; save(); $('importDialog').close(); showTitle(); };

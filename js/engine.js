@@ -8,13 +8,7 @@
    tier guess in data.js. Real counts take over as they come in, blended
    with the guess so one early player can't swing a share.
 
-   Points for an answer = 10 + 90 x (share of answers more common than
-   yours). The most common answer earns 10. An answer nobody else gave
-   earns close to 100. This keeps a small list and a long list on the same
-   scale.
-
-   Speed bonus: an accepted answer also earns up to 20 points for time left
-   on the clock, 20 x (seconds left / 25), rounded. */
+   Points: see the scoring block below. */
 'use strict';
 const Engine = (() => {
   const P = typeof Prompts !== 'undefined' ? Prompts : require('./prompts.js');
@@ -78,25 +72,45 @@ const Engine = (() => {
     for (const a of q.answers) { const n = a.item.name; out[n] = ((crowd.counts[n] || 0) + BLEND * guess[n]) / (total + BLEND); }
     return { shares: out, total, estimated: total < SETTLED };
   }
-  const SECONDS = 25, SPEED_MAX = 20;
-  const speedBonus = (secondsLeft) => Math.round(SPEED_MAX * Math.max(0, Math.min(SECONDS, secondsLeft)) / SECONDS);
-  function points(sh, name) {
+  // Scoring follows World Six (quarterback/worldy-bug, SCORING.md), with
+  // rarity in place of distance.
+  //   c  = how common your answer was: the share of today's answers that
+  //        were yours or more common (1 for the most common, near 0 for
+  //        an answer almost nobody gave)
+  //   R  = 20,000 x e^(-(c / 0.231)^0.65)           rarity points
+  //   q  = R / 20,000
+  //   b  = 1.5 x q^3 x e^(-t / 10)                  speed factor, t in seconds
+  //   total = round(R x (1 + b)); rarity = round(R); speed = total - rarity
+  // A rare answer makes speed worth more. A fast, common answer earns
+  // almost no bonus. There is no whole-day multiplier.
+  const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65, SPEED_MAX = 1.5, TAU = 10;
+  const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
+  function score(c, seconds) {
+    const R = rarityPoints(c), q = R / RARITY_MAX;
+    const b = SPEED_MAX * q ** 3 * Math.exp(-Math.max(0, seconds) / TAU);
+    const total = Math.round(R * (1 + b)), rarity = Math.round(R);
+    return { total, rarity, speed: total - rarity };
+  }
+  function commonness(sh, name) {
     const mine = sh[name]; let more = 0;
     for (const k in sh) if (sh[k] > mine + 1e-9) more += sh[k];
-    return { points: Math.round(10 + 90 * more), rarer: Math.min(99, Math.round(more * 100)) };
+    return { c: 1 - more, rarer: Math.min(99, Math.round(more * 100)) };
   }
 
   // ---- trips ----
+  // Stops are day scores. They were set by simulating players across the
+  // question pool: a typical day reaches Playa Ondarena or Pueblo Tilmeca,
+  // and about one day in ten reaches the island.
   const TRIPS = {
     boat: { id: 'boat', name: "Boat to Paco's Island", opens: 0, stops: [
-      [0, 'the Ixtaluz pier'], [60, 'Peñas Cantoras'], [140, 'Boca Tamarilla'], [220, 'Caleta Pochota'], [300, 'Playa Ondarena'], [390, 'Pueblo Tilmeca'], [480, 'Playa Zinzuna'], [580, "Paco's Island"]] },
-    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 1500, stops: [
-      [0, 'the beach'], [120, 'the village'], [240, 'the river'], [360, 'the waterfall'], [470, 'the jungle trail'], [580, 'the upper waterfall']] },
-    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 6000, marks: [
+      [0, 'the Ixtaluz pier'], [6000, 'Peñas Cantoras'], [12000, 'Boca Tamarilla'], [18000, 'Caleta Pochota'], [24000, 'Playa Ondarena'], [31000, 'Pueblo Tilmeca'], [39000, 'Playa Zinzuna'], [48000, "Paco's Island"]] },
+    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 100000, stops: [
+      [0, 'the beach'], [10000, 'the village'], [20000, 'the river'], [30000, 'the waterfall'], [39000, 'the jungle trail'], [48000, 'the upper waterfall']] },
+    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 400000, marks: [
       [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
   };
-  const MAX_DAY = 7 * (100 + SPEED_MAX);
-  const depth = (score) => Math.round(1400 * Math.pow(Math.min(score, MAX_DAY) / MAX_DAY, 2));
+  const FULL_DAY = 60000;
+  const depth = (s) => Math.round(1400 * Math.pow(Math.min(s, FULL_DAY) / FULL_DAY, 2));
   function reached(trip, score) {
     if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + ' m', depth: depth(score) };
     const stops = TRIPS[trip].stops; let at = stops[0];
@@ -107,6 +121,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, SPEED_MAX, speedBonus, match, shares, guessShares, points, TRIPS, MAX_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, guessShares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

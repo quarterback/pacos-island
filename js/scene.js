@@ -1,13 +1,13 @@
 /* Paco's Island: the trip scene.
 
-   A 240 x 120 Pixi stage, scaled up in CSS with no smoothing. The trip's
+   A 384 x 192 Pixi stage, scaled up in CSS with no smoothing. The trip's
    strip from art.js scrolls behind Paco. Score drives his position: on the
    boat and the ATV it moves him along the stops, on the dive it takes him
    down. If WebGL is unavailable the scene stays hidden and the game still
    works. */
 'use strict';
 const Scene = (() => {
-  const W = 240, H = 120;
+  const W = 384, H = 192;
   let app = null, ready = false, world, bg, rider, frames = [], dots = [];
   let trip = 'boat', target = 0, current = 0, lastFrameAt = 0, frame = 0;
   const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,7 +38,7 @@ const Scene = (() => {
     if (!strips[t]) strips[t] = tex(t === 'boat' ? Art.coast() : t === 'atv' ? Art.hill() : Art.deep());
     bg = new PIXI.Sprite(strips[t]); world.addChild(bg);
     frames = [0, 1].map((f) => tex(t === 'boat' ? Art.boat(f) : t === 'atv' ? Art.atv(f) : Art.diver(f)));
-    dots = Array.from({ length: t === 'atv' ? 0 : 8 }, () => { const s = new PIXI.Sprite(dot()); s.alpha = 0; world.addChild(s); return { s, life: 0 }; });
+    dots = Array.from({ length: t === 'atv' ? 0 : 14 }, () => { const s = new PIXI.Sprite(dot()); s.alpha = 0; world.addChild(s); return { s, life: 0 }; });
     rider = new PIXI.Sprite(frames[0]); world.addChild(rider);
     current = target; place(performance.now());
   }
@@ -51,29 +51,29 @@ const Scene = (() => {
     const a = stops[i], b = stops[i + 1];
     const f = b ? (score - a[0]) / (b[0] - a[0]) : 0;
     const x = geo.stopX(i) + f * (b ? geo.stopX(i + 1) - geo.stopX(i) : 0);
-    return { x, y: trip === 'boat' ? geo.horizon + 18 : geo.ground(x) };
+    return { x, y: trip === 'boat' ? geo.horizon + 44 : geo.ground(x) };
   }
 
   function place(now) {
     const p = spot(current), moving = Math.abs(target - current) > 0.5;
     if (moving && now - lastFrameAt > 140) { frame ^= 1; lastFrameAt = now; rider.texture = frames[frame]; }
     const bob = reduced ? 0 : Math.round(Math.sin(now / 420));
-    if (trip === 'boat') { rider.x = Math.round(p.x - 22); rider.y = Math.round(p.y - 18 + bob); }
-    else if (trip === 'atv') { rider.x = Math.round(p.x - 20); rider.y = Math.round(p.y - 25); }
-    else { rider.x = Math.round(p.x - 17 + (reduced ? 0 : Math.sin(now / 900) * 6)); rider.y = Math.round(p.y - 8 + bob); }
+    if (trip === 'boat') { rider.x = Math.round(p.x - 52); rider.y = Math.round(p.y - 38 + bob); }
+    else if (trip === 'atv') { rider.x = Math.round(p.x - 46); rider.y = Math.round(p.y - 57); }
+    else { rider.x = Math.round(p.x - 33 + (reduced ? 0 : Math.sin(now / 900) * 8)); rider.y = Math.round(p.y - 18 + bob); }
     // camera
     const sw = bg.texture.width, sh = bg.texture.height;
-    if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 48))); }
+    if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 80))); }
     else {
-      world.x = -Math.max(0, Math.min(sw - W, Math.round(p.x - 80)));
-      world.y = trip === 'boat' ? -26 : -Math.max(0, Math.min(sh - H, Math.round(p.y - 82)));
+      world.x = -Math.max(0, Math.min(sw - W, Math.round(p.x - 130)));
+      world.y = trip === 'boat' ? 0 : -Math.max(0, Math.min(sh - H, Math.round(p.y - 140)));
     }
     // wake behind the boat, bubbles above the diver
     for (const d of dots) {
       if (d.life <= 0 && !reduced && (trip === 'dive' || moving) && Math.random() < 0.06) {
         d.life = 1;
-        d.s.x = trip === 'boat' ? rider.x - 2 - Math.random() * 10 : rider.x + 26;
-        d.s.y = trip === 'boat' ? rider.y + 15 + Math.random() * 3 : rider.y + 2;
+        d.s.x = trip === 'boat' ? rider.x - 4 - Math.random() * 16 : rider.x + 52;
+        d.s.y = trip === 'boat' ? rider.y + 38 + Math.random() * 4 : rider.y + 8;
       }
       if (d.life > 0) { d.life -= 0.02; d.s.alpha = d.life; if (trip === 'dive') d.s.y -= 0.4; else d.s.x -= 0.3; }
       else d.s.alpha = 0;

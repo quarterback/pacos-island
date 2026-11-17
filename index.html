@@ -15,10 +15,11 @@
 </head>
 <body>
 <main class="page">
-  <div class="scene" id="scene"></div>
-  <div class="trip-bar" id="tripBar" hidden>
-    <p class="trip-where" id="tripWhere"></p>
-    <p class="trip-score"><span id="tripScore">0</span> <span class="unit">points</span></p>
+  <div class="scene" id="scene">
+    <div class="hud" id="hud" hidden>
+      <p class="hud-where" id="tripWhere"></p>
+      <p class="hud-score" id="tripScore">0</p>
+    </div>
   </div>
 
   <section id="title" class="screen" aria-labelledby="titleHead">
@@ -27,7 +28,7 @@
     <fieldset class="trips" id="trips">
       <legend id="tripLegend"></legend>
     </fieldset>
-    <button class="btn primary" id="startBtn" type="button"></button>
+    <button class="btn primary wide" id="startBtn" type="button"></button>
     <details class="how">
       <summary id="howHead"></summary>
       <ul id="howList"></ul>
@@ -55,17 +56,29 @@
     <p class="note" id="note" role="status" aria-live="polite"></p>
     <div class="result" id="result" hidden>
       <p class="result-name" id="resultName"></p>
-      <p class="result-pts" id="resultPts"></p>
+      <p class="result-pts" id="resultPts" aria-hidden="true"></p>
+      <p class="result-split"><span id="resultRarity"></span> <span id="resultSpeed" class="speed"></span></p>
       <p class="result-rarer" id="resultRarer"></p>
-      <button class="btn primary" id="nextBtn" type="button"></button>
+      <p class="sr" id="resultSay" role="status" aria-live="polite"></p>
+      <button class="btn primary wide" id="nextBtn" type="button"></button>
     </div>
   </section>
 
   <section id="end" class="screen" hidden aria-labelledby="endHead">
     <h1 class="end-head" id="endHead" tabindex="-1"></h1>
-    <p class="lede" id="endTotal"></p>
     <p class="end-note" id="endNext"></p>
+
+    <h2 class="sub" id="sheetHead"></h2>
+    <ol class="sheet" id="sheet"></ol>
+    <dl class="totals">
+      <div><dt id="rarityLabel"></dt><dd id="rarityTotal"></dd></div>
+      <div><dt id="speedLabel"></dt><dd id="speedTotal"></dd></div>
+      <div class="grand"><dt id="totalLabel"></dt><dd id="grandTotal"></dd></div>
+      <div><dt id="timeLabel"></dt><dd id="timeTotal"></dd></div>
+    </dl>
+    <p class="end-note" id="endLifetime"></p>
     <p class="end-note" id="endUnlock"></p>
+
     <div class="share">
       <pre class="share-text" id="shareText"></pre>
       <div class="share-actions">
@@ -74,6 +87,7 @@
       </div>
       <p class="note" id="copyNote" role="status" aria-live="polite"></p>
     </div>
+
     <h2 class="sub" id="answersHead"></h2>
     <ol class="answers" id="answers"></ol>
     <p class="note" id="estNote"></p>
