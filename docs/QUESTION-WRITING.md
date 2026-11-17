@@ -70,6 +70,10 @@ The fields are an id (letters and underscores), a subject, a kind, the question,
 
 Subjects in use: food, drink, tv, movies, music, books, stage, people, style, home, holidays, nature, kids, games, art, awards, science, history, geo, sports, words, money, tech, basics. Prefer the subjects that have fewer questions.
 
+## Mining open data
+
+`tools/mine/` holds the tools and notes for finding questions in open data: Family Feud survey prompts (ProtoQA), fact lists from Wikidata, everyday prompts from ConceptNet and subject gaps from Open Trivia DB. Mined material is raw input. Every question still gets rewritten in house style, and every answer list is checked for completeness by hand. The data license and credits are in `LICENSE-DATA.md`.
+
 ## Before you commit
 
 1. `python3 tools/rarity.py` to score new answers.
@@ -80,4 +84,4 @@ Subjects in use: food, drink, tv, movies, music, books, stage, people, style, ho
 
 ## What the pool still needs
 
-More whole-list questions, especially easy ones in food, TV, music, books, style, holidays, nature and kids. At about five whole-list questions a round, the pool needs around 600 of them to go four months without leaning on letter questions or repeats.
+More whole-list questions, especially easy ones in TV, music, books, style, holidays, nature, kids, art and tech. The pool has 363 whole questions. At about five a round, it needs around 600 to go four months without leaning on letter questions or repeats.

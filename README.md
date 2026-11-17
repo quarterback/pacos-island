@@ -71,7 +71,7 @@ python3 tools/rarity.py
 
 ## Licenses
 
-The game's own code and text are released under CC0 (see `LICENSE`). These files keep their own licenses and are not covered by CC0:
+The game's own code and interface text are released under CC0 (see `LICENSE`). The question and answer data is released under CC BY-SA 4.0, with credit to Wikidata, ProtoQA, ConceptNet and Open Trivia DB (see `LICENSE-DATA.md`). These files keep their own licenses and are not covered by CC0:
 
 - `fonts/`: PP Fuji and PP Neue Montreal, commercial fonts licensed to Ron Bronson by Pangram Pangram
 - `vendor/pixi.min.js`: PixiJS, MIT license (`vendor/pixi.LICENSE`)

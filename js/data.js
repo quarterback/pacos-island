@@ -9313,6 +9313,2482 @@ Glo Worm`),
 2 Duck Hunt
 2 Pac-Mania
 Tapper`),
+    angle('hanks_movies', 'movies', 'people', 'Name a movie starring Tom Hanks.', `
+1 Forrest Gump
+1 Toy Story
+1 Saving Private Ryan
+1 The Green Mile
+1 Catch Me If You Can
+1 The Da Vinci Code
+1 Toy Story 2
+1 Toy Story 3
+1 Cast Away
+1 Apollo 13
+1 The Terminal
+1 Angels & Demons|Angels and Demons
+1 Toy Story 4
+1 Bridge of Spies
+1 Captain Phillips
+1 Philadelphia
+2 Sleepless in Seattle
+2 Inferno
+2 Cloud Atlas
+2 You've Got Mail
+2 Road to Perdition
+2 Sully
+2 The Polar Express
+2 The Post
+2 Elvis
+2 Big
+2 Extremely Loud and Incredibly Close
+2 Saving Mr. Banks
+2 Charlie Wilson's War
+2 Asteroid City
+2 Toy Story 5
+3 A League of Their Own
+3 Larry Crowne
+3 The Ladykillers
+3 Splash
+3 A Man Called Otto
+3 Borat Subsequent Moviefilm
+3 The Circle
+3 Greyhound
+3 The Money Pit
+3 The Bonfire of the Vanities
+3 News of the World
+3 Pinocchio
+3 Joe Versus the Volcano
+3 A Beautiful Day in the Neighborhood
+3 Turner & Hooch|Turner and Hooch
+3 The Phoenician Scheme
+3 Bachelor Party
+3 A Hologram for the King
+3 Here
+3 The 'Burbs
+4 That Thing You Do!|That Thing You Do
+4 The Man with One Red Shoe
+4 Dragnet
+4 Radio Flyer
+4 Volunteers
+4 Finch
+4 The Great Buck Howard
+4 Nothing in Common
+4 He Knows You're Alone
+4 Punchline
+4 Every Time We Say Goodbye
+4 Ithaca
+5 Freaky Tales`),
+    angle('roberts_movies', 'movies', 'people', 'Name a movie starring Julia Roberts.', `
+1 Pretty Woman
+1 Ocean's Eleven
+1 Notting Hill
+1 Erin Brockovich
+2 Charlotte's Web
+2 Closer
+2 Ocean's Twelve
+2 Mona Lisa Smile
+2 Valentine's Day
+2 Hook
+2 Eat Pray Love
+2 My Best Friend's Wedding
+2 Charlie Wilson's War
+2 Mirror Mirror
+2 Wonder
+2 The Pelican Brief
+2 Runaway Bride
+3 August: Osage County|August
+3 Everyone Says I Love You
+3 Steel Magnolias
+3 Sleeping with the Enemy
+3 Confessions of a Dangerous Mind
+3 Larry Crowne
+3 Money Monster
+3 The Mexican
+3 The Player
+3 Conspiracy Theory
+3 Flatliners
+3 America's Sweethearts
+3 Prêt-à-Porter
+3 Mystic Pizza
+3 Stepmom
+3 Michael Collins
+3 Ticket to Paradise
+3 Duplicity
+3 Leave the World Behind
+3 I Love Trouble
+3 Something to Talk About
+3 The Secret in Their Eyes
+3 Dying Young
+3 Mother's Day
+4 Fireflies in the Garden
+4 Mary Reilly
+4 After the Hunt
+4 Ben Is Back
+4 The Normal Heart
+4 Full Frontal
+4 Love, Wedding, Marriage
+5 Satisfaction
+5 Grand Champion`),
+    angle('streep_movies', 'movies', 'people', 'Name a movie starring Meryl Streep.', `
+1 The Deer Hunter
+1 Kramer vs. Kramer
+1 Out of Africa
+1 Fantastic Mr. Fox
+1 A.I. Artificial Intelligence
+1 The Devil Wears Prada
+1 Mamma Mia!|Mamma Mia
+1 The Hours
+2 Manhattan
+2 The Bridges of Madison County
+2 Death Becomes Her
+2 Don't Look Up
+2 The Iron Lady
+2 Mary Poppins Returns
+2 Little Women
+2 Into the Woods
+2 The Post
+2 Lemony Snicket's A Series of Unfortunate Events
+2 Adaptation
+2 Doubt
+2 Julie & Julia|Julie and Julia
+2 Sophie's Choice
+2 Mamma Mia! Here We Go Again
+2 Marvin's Room
+2 Julia
+3 August: Osage County|August
+3 The Manchurian Candidate
+3 Silkwood
+3 The Devil Wears Prada 2
+3 Postcards from the Edge
+3 The French Lieutenant's Woman
+3 Lions for Lambs
+3 The River Wild
+3 It's Complicated
+3 The Giver
+3 Florence Foster Jenkins
+3 The House of the Spirits
+3 Rendition
+3 Heartburn
+3 She-Devil
+3 One True Thing
+3 Evil Angels
+3 The Prom
+3 Music of the Heart
+3 The Laundromat
+3 A Prairie Home Companion
+3 Prime
+3 The Homesman
+3 Suffragette
+3 Hope Springs
+3 Falling in Love
+3 Ironweed
+3 Defending Your Life
+4 Stuck on You
+4 Evening
+4 Before and After
+4 Still of the Night
+4 Ricki and the Flash
+4 Let Them All Talk
+4 Dancing at Lughnasa
+4 Plenty
+4 The Seduction of Joe Tynan
+4 Dark Matter`),
+    angle('bullock_movies', 'movies', 'people', 'Name a movie starring Sandra Bullock.', `
+1 Gravity
+1 Minions
+1 Crash
+1 Speed
+2 The Proposal
+2 The Blind Side
+2 Demolition Man
+2 Bullet Train
+2 The Lake House
+2 Extremely Loud and Incredibly Close
+2 Ocean's 8
+2 Miss Congeniality
+2 Bird Box
+2 Practical Magic
+2 28 Days
+2 The Net
+2 A Time to Kill
+3 While You Were Sleeping
+3 The Heat
+3 Miss Congeniality 2: Armed and Fabulous|Miss Congeniality 2
+3 Two Weeks Notice
+3 Murder by Numbers
+3 All About Steve
+3 Speed 2: Cruise Control|Speed 2
+3 Premonition
+3 The Lost City
+3 Infamous
+3 The Vanishing
+3 Our Brand Is Crisis
+3 Forces of Nature
+3 In Love and War
+3 Divine Secrets of the Ya-Ya Sisterhood
+3 Practical Magic 2
+4 The Unforgivable
+4 Hope Floats
+4 The Thing Called Love
+4 Love Potion No. 9
+4 Wrestling Ernest Hemingway
+4 Two If by Sea
+4 Gun Shy
+4 Fire on the Amazon
+4 Loverboy
+4 Who Do I Gotta Kill?
+4 Hangmen
+5 When the Party's Over`),
+    angle('denzel_movies', 'movies', 'people', 'Name a movie starring Denzel Washington.', `
+1 Philadelphia
+1 American Gangster
+2 Gladiator II
+2 Training Day
+2 Déjà Vu
+2 The Book of Eli
+2 The Equalizer
+2 Man on Fire
+2 Inside Man
+2 Flight
+2 The Pelican Brief
+2 Glory
+3 The Bone Collector
+3 The Manchurian Candidate
+3 Unstoppable
+3 Crimson Tide
+3 The Magnificent Seven
+3 Fences
+3 John Q
+3 Malcolm X
+3 Safe House
+3 2 Guns
+3 The Hurricane
+3 Remember the Titans
+3 The Equalizer 2
+3 The Little Things
+3 The Taking of Pelham 123
+3 The Siege
+3 Cry Freedom
+3 Out of Time
+3 The Equalizer 3
+3 Courage Under Fire
+3 Virtuosity
+3 A Soldier's Story
+3 Fallen
+3 Roman J. Israel, Esq.
+3 Ricochet
+3 The Great Debaters
+3 Much Ado About Nothing
+3 The Preacher's Wife
+4 He Got Game
+4 The Tragedy of Macbeth
+4 Devil in a Blue Dress
+4 Power
+4 Mo' Better Blues
+4 Mississippi Masala
+4 Highest 2 Lowest
+4 Antwone Fisher
+4 Heart Condition
+4 Carbon Copy
+4 The Mighty Quinn
+4 For Queen and Country
+5 The Take`),
+    angle('will_smith_movies', 'movies', 'people', 'Name a movie starring Will Smith.', `
+1 Independence Day
+1 Suicide Squad
+1 Men in Black
+1 Aladdin
+1 I Am Legend
+1 I, Robot
+1 The Pursuit of Happyness
+1 Shark Tale
+2 Men in Black II
+2 Men in Black 3
+2 Hancock
+2 Hitch
+2 Bad Boys
+2 Wild Wild West
+2 After Earth
+2 Seven Pounds
+2 Enemy of the State
+2 Ali
+2 Focus
+2 Bad Boys for Life
+3 Bad Boys II
+3 Collateral Beauty
+3 Bad Boys: Ride or Die|Bad Boys
+3 King Richard
+3 Jersey Girl
+3 Gemini Man
+3 The Legend of Bagger Vance
+3 Anchorman 2: The Legend Continues|Anchorman 2
+3 Spies in Disguise
+3 Concussion
+3 Winter's Tale
+3 Made in America
+3 Bright
+4 Emancipation
+4 Six Degrees of Separation
+4 Where the Day Takes You
+4 Hampstead`),
+    angle('dicaprio_movies', 'movies', 'people', 'Name a movie starring Leonardo DiCaprio.', `
+1 Titanic
+1 Inception
+1 The Departed
+1 Catch Me If You Can
+1 The Wolf of Wall Street
+1 Django Unchained
+1 The Revenant
+1 Shutter Island
+1 Once Upon a Time in Hollywood
+1 Gangs of New York
+1 The Aviator
+1 Blood Diamond
+1 The Great Gatsby
+2 One Battle After Another
+2 The Beach
+2 Don't Look Up
+2 Killers of the Flower Moon
+2 What's Eating Gilbert Grape
+2 Body of Lies
+2 The Quick and the Dead
+2 J. Edgar
+2 The Man in the Iron Mask
+2 Revolutionary Road
+2 Romeo + Juliet
+2 This Boy's Life
+2 Marvin's Room
+2 The Basketball Diaries
+2 Total Eclipse
+3 Celebrity
+3 Critters 3
+3 Poison Ivy
+3 The 11th Hour
+3 Before the Flood
+3 Don's Plum`),
+    angle('witherspoon_movies', 'movies', 'people', 'Name a movie starring Reese Witherspoon.', `
+1 American Psycho
+1 Sing
+2 Walk the Line
+2 Legally Blonde
+2 Monsters vs. Aliens
+2 Cruel Intentions
+2 Inherent Vice
+2 Sing 2
+3 Wild
+3 Just like Heaven
+3 Water for Elephants
+3 Pleasantville
+3 This Means War
+3 Legally Blonde 2: Red, White & Blonde|Legally Blonde 2|Legally Blonde 2: Red, White and Blonde
+3 Sweet Home Alabama
+3 How Do You Know
+3 Mud
+3 Four Christmases
+3 A Wrinkle in Time
+3 Rendition
+3 Vanity Fair
+3 Little Nicky
+3 Election
+3 The Incredible Burt Wonderstone
+3 Hot Pursuit
+3 Penelope
+3 Fear
+3 The Man in the Moon
+4 Twilight
+4 The Importance of Being Earnest
+4 Freeway
+4 Home Again
+4 A Far Off Place
+4 The Good Lie
+4 Devil's Knot
+4 Your Place or Mine
+4 S.F.W.
+4 Jack the Bear
+4 You're Cordially Invited
+4 Overnight Delivery
+4 Best Laid Plans`),
+    angle('aniston_movies', 'movies', 'people', 'Name a movie starring Jennifer Aniston.', `
+1 Bruce Almighty
+2 The Iron Giant
+2 We're the Millers
+2 Just Go with It
+2 He's Just Not That Into You
+2 Horrible Bosses
+2 Marley & Me|Marley and Me
+3 The Bounty Hunter
+3 Along Came Polly
+3 The Switch
+3 Horrible Bosses 2
+3 Wanderlust
+3 The Break-Up
+3 Office Space
+3 Office Christmas Party
+3 Murder Mystery
+3 Rumor Has It
+3 Leprechaun
+3 Love Happens
+3 The Good Girl
+3 She's the One
+3 Derailed
+3 Mother's Day
+4 The Object of My Affection
+4 Rock Star
+4 Friends with Money
+4 Cake
+4 She's Funny That Way
+4 Management
+4 Picture Perfect
+4 Mac and Me
+4 Dumplin'
+4 Murder Mystery 2
+4 Life of Crime
+4 'Til There Was You
+4 The Yellow Birds
+4 Dream for an Insomniac`),
+    angle('sandler_movies', 'movies', 'people', 'Name a movie starring Adam Sandler.', `
+1 Hotel Transylvania
+2 50 First Dates
+2 Click
+2 Pixels
+2 Just Go with It
+2 Grown Ups
+2 You Don't Mess with the Zohan
+2 Hotel Transylvania 2
+3 Anger Management
+3 Big Daddy
+3 Happy Gilmore
+3 The Hot Chick
+3 Grown Ups 2
+3 Blended
+3 Hotel Transylvania 3: Summer Vacation|Hotel Transylvania 3
+3 Uncut Gems
+3 I Now Pronounce You Chuck and Larry
+3 Jack and Jill
+3 The Longest Yard
+3 Bedtime Stories
+3 Mr. Deeds
+3 That's My Boy
+3 Funny People
+3 Spanglish
+3 Murder Mystery
+3 Little Nicky
+3 Punch-Drunk Love
+3 Reign Over Me
+3 The Wedding Singer
+3 Jay Kelly
+3 Airheads
+3 Coneheads
+3 Billy Madison
+3 The Waterboy
+3 The Animal
+3 Spaceman
+3 Deuce Bigalow: Male Gigolo|Deuce Bigalow
+4 The Cobbler
+4 Deuce Bigalow: European Gigolo|Deuce Bigalow
+4 Men, Women & Children|Men, Women and Children
+4 Hubie Halloween
+4 Hustle
+4 Happy Gilmore 2
+4 The Ridiculous 6
+4 Bulletproof
+4 The Meyerowitz Stories
+4 Eight Crazy Nights
+4 Leo
+4 Bucky Larson: Born to Be a Star|Bucky Larson
+4 Mixed Nuts
+4 The Do-Over
+4 Murder Mystery 2
+4 Top Five
+4 Sandy Wexler
+4 The Week Of
+4 You Are So Not Invited to My Bat Mitzvah
+4 Dirty Work
+4 Going Overboard
+5 Shakes the Clown`),
+    angle('best_actress', 'awards', 'people', 'Name an actress who won the Oscar for best actress.', `
+1 Audrey Hepburn
+1 Elizabeth Taylor|Taylor
+1 Natalie Portman|Portman
+1 Meryl Streep|Streep
+1 Nicole Kidman|Kidman
+1 Cate Blanchett|Blanchett
+1 Kate Winslet|Winslet
+1 Julia Roberts|Roberts
+1 Sophia Loren|Loren
+1 Gwyneth Paltrow|Paltrow
+1 Katharine Hepburn
+1 Sandra Bullock|Bullock
+1 Ingrid Bergman|Bergman
+1 Jane Fonda|Fonda
+1 Jennifer Lawrence|Lawrence
+1 Halle Berry|Berry
+1 Grace Kelly|Kelly
+1 Cher
+1 Charlize Theron|Theron
+1 Jodie Foster|Foster
+1 Emma Stone|Stone
+1 Barbra Streisand|Streisand
+1 Bette Davis|Davis
+1 Vivien Leigh|Leigh
+1 Julianne Moore|Moore
+1 Joan Crawford|Crawford
+1 Susan Sarandon|Sarandon
+1 Reese Witherspoon|Witherspoon
+1 Helen Mirren|Mirren
+1 Mary Pickford|Pickford
+1 Diane Keaton|Keaton
+1 Maggie Smith|Smith
+1 Julie Andrews|Andrews
+1 Liza Minnelli|Minnelli
+1 Shirley MacLaine|MacLaine
+1 Marion Cotillard|Cotillard
+1 Renée Zellweger|Zellweger
+1 Hilary Swank|Swank
+1 Sally Field|Field
+1 Brie Larson|Larson
+1 Jessica Lange|Lange
+1 Emma Thompson|Thompson
+1 Glenda Jackson|Jackson
+1 Claudette Colbert|Colbert
+1 Olivia de Havilland|Havilland
+1 Kathy Bates|Bates
+1 Anne Bancroft|Bancroft
+1 Frances McDormand|McDormand
+1 Ginger Rogers|Rogers
+1 Michelle Yeoh|Yeoh
+1 Jessica Chastain|Chastain
+1 Joan Fontaine|Fontaine
+1 Simone Signoret|Signoret
+1 Faye Dunaway|Dunaway
+1 Julie Christie|Christie
+1 Helen Hunt|Hunt
+1 Anna Magnani|Magnani
+1 Holly Hunter|Hunter
+1 Ellen Burstyn|Burstyn
+1 Helen Hayes|Hayes
+1 Patricia Neal|Neal
+1 Marlee Matlin|Matlin
+1 Joanne Woodward|Woodward
+1 Olivia Colman|Colman
+1 Jane Wyman|Wyman
+1 Sissy Spacek|Spacek
+1 Louise Fletcher|Fletcher
+1 Janet Gaynor|Gaynor
+1 Loretta Young|Young
+1 Luise Rainer|Rainer
+1 Norma Shearer|Shearer
+1 Jennifer Jones|Jones
+1 Mikey Madison|Madison
+1 Jessica Tandy|Tandy
+1 Susan Hayward|Hayward
+1 Shirley Booth|Booth
+1 Greer Garson|Garson
+1 Geraldine Page|Page
+1 Judy Holliday|Holliday
+1 Marie Dressler|Dressler
+2 Jessie Buckley|Buckley`),
+    angle('best_actor', 'awards', 'people', 'Name an actor who won the Oscar for best actor.', `
+1 Marlon Brando|Brando
+1 Leonardo DiCaprio|DiCaprio
+1 Robert De Niro|Niro
+1 Tom Hanks|Hanks
+1 Will Smith|Smith
+1 Al Pacino|Pacino
+1 Jack Nicholson|Nicholson
+1 Russell Crowe|Crowe
+1 Bing Crosby|Crosby
+1 John Wayne|Wayne
+1 Anthony Hopkins|Hopkins
+1 Nicolas Cage|Cage
+1 Humphrey Bogart|Bogart
+1 Denzel Washington|Washington
+1 Paul Newman|Newman
+1 Clark Gable|Gable
+1 Dustin Hoffman
+1 Daniel Day-Lewis|Day-Lewis
+1 Gary Oldman|Oldman
+1 Sidney Poitier|Poitier
+1 Jon Voight|Voight
+1 Henry Fonda|Fonda
+1 Sean Penn|Penn
+1 Michael Douglas|Douglas
+1 Gregory Peck|Peck
+1 James Stewart|Stewart
+1 Gary Cooper|Cooper
+1 Laurence Olivier|Olivier
+1 Charlton Heston|Heston
+1 Robert Duvall|Duvall
+1 Matthew McConaughey|McConaughey
+1 James Cagney|Cagney
+1 Philip Seymour Hoffman
+1 Joaquin Phoenix|Phoenix
+1 Kevin Spacey|Spacey
+1 Cillian Murphy|Murphy
+1 Roberto Benigni|Benigni
+1 Spencer Tracy|Tracy
+1 Jeremy Irons|Irons
+1 Ben Kingsley|Kingsley
+1 Gene Hackman|Hackman
+1 Colin Firth|Firth
+1 Jeff Bridges|Bridges
+1 Burt Lancaster|Lancaster
+1 Brendan Fraser|Fraser
+1 Jamie Foxx|Foxx
+1 Alec Guinness|Guinness
+1 Forest Whitaker|Whitaker
+1 Rami Malek|Malek
+1 Jack Lemmon|Lemmon
+1 Eddie Redmayne|Redmayne
+1 Adrien Brody|Brody
+1 Geoffrey Rush|Rush
+1 Ernest Borgnine|Borgnine
+1 Maximilian Schell|Schell
+1 William Hurt|Hurt
+1 William Holden|Holden
+1 Yul Brynner|Brynner
+1 Jean Dujardin|Dujardin
+1 Casey Affleck|Affleck
+1 Richard Dreyfuss|Dreyfuss
+1 David Niven|Niven
+1 Lee Marvin|Marvin
+1 Charles Laughton|Laughton
+1 F. Murray Abraham|Abraham
+1 George C. Scott|Scott
+1 Rod Steiger|Steiger
+1 Michael B. Jordan|Jordan
+1 Emil Jannings|Jannings
+1 Rex Harrison|Harrison
+1 Fredric March|March
+1 Lionel Barrymore|Barrymore
+1 Paul Muni|Muni
+1 Peter Finch|Finch
+1 Ray Milland|Milland
+1 Art Carney|Carney
+1 Cliff Robertson|Robertson
+1 Broderick Crawford|Crawford
+1 Paul Scofield|Scofield
+2 George Arliss|Arliss
+2 Warner Baxter|Baxter
+2 José Ferrer|Ferrer
+2 Robert Donat|Donat
+2 Ronald Colman|Colman
+2 Paul Lukas|Lukas
+2 Wallace Beery|Beery
+2 Victor McLaglen|McLaglen`),
+    angle('supporting_actress', 'awards', 'people', 'Name a winner of the Oscar for best supporting actress.', `
+1 Angelina Jolie|Jolie
+1 Meryl Streep|Streep
+1 Cate Blanchett|Blanchett
+1 Ingrid Bergman|Bergman
+1 Penélope Cruz|Cruz
+1 Anne Hathaway|Hathaway
+1 Whoopi Goldberg|Goldberg
+1 Catherine Zeta-Jones|Zeta-Jones
+1 Judi Dench|Dench
+1 Maggie Smith|Smith
+1 Renée Zellweger|Zellweger
+1 Kim Basinger|Basinger
+1 Rachel Weisz|Weisz
+1 Jessica Lange|Lange
+1 Jennifer Connelly|Connelly
+1 Juliette Binoche|Binoche
+1 Goldie Hawn|Hawn
+1 Zoe Saldaña|Saldaña
+1 Viola Davis
+1 Jamie Lee Curtis|Curtis
+1 Lupita Nyong'o|Nyong'o
+1 Geena Davis
+1 Alicia Vikander|Vikander
+1 Laura Dern|Dern
+1 Vanessa Redgrave|Redgrave
+1 Tilda Swinton|Swinton
+1 Helen Hayes|Hayes
+1 Jennifer Hudson|Hudson
+1 Patricia Arquette|Arquette
+1 Anjelica Huston|Huston
+1 Anne Baxter|Baxter
+1 Anna Paquin|Paquin
+1 Marisa Tomei|Tomei
+1 Mira Sorvino|Sorvino
+1 Shelley Winters|Winters
+1 Octavia Spencer|Spencer
+1 Mary Astor|Astor
+1 Hattie McDaniel|McDaniel
+1 Allison Janney|Janney
+1 Rita Moreno|Moreno
+1 Melissa Leo
+1 Mary Steenburgen|Steenburgen
+1 Donna Reed|Reed
+1 Cloris Leachman|Leachman
+1 Teresa Wright|Wright
+1 Patty Duke|Duke
+1 Dianne Wiest|Wiest
+1 Ethel Barrymore|Barrymore
+1 Eva Marie Saint|Saint
+1 Marcia Gay Harden|Harden
+1 Olympia Dukakis|Dukakis
+1 Regina King|King
+1 Dorothy Malone|Malone
+1 Maureen Stapleton|Stapleton
+2 Gloria Grahame|Grahame
+2 Shirley Jones|Jones
+2 Peggy Ashcroft|Ashcroft
+2 Ruth Gordon|Gordon
+2 Lee Grant|Grant
+2 Alice Brady|Brady
+2 Mercedes McCambridge|McCambridge
+2 Fay Bainter|Bainter
+2 Margaret Rutherford|Rutherford
+2 Linda Hunt|Hunt
+2 Claire Trevor|Trevor
+2 Kim Hunter|Hunter
+2 Celeste Holm|Holm
+2 Jane Darwell|Darwell
+2 Mercedes Ruehl|Ruehl
+2 Katina Paxinou|Paxinou
+2 Mo'Nique
+2 Brenda Fricker|Fricker
+2 Wendy Hiller|Hiller
+2 Gale Sondergaard|Sondergaard
+2 Josephine Hull|Hull
+2 Jo Van Fleet|Fleet
+2 Tatum O'Neal|O'Neal
+2 Miyoshi Umeki|Umeki
+2 Amy Madigan|Madigan
+2 Anne Revere|Revere
+2 Ariana DeBose|DeBose
+2 Sandy Dennis|Dennis
+2 Estelle Parsons|Parsons
+2 Lila Kedrova|Kedrova
+2 Beatrice Straight|Straight
+2 Eileen Heckart|Heckart
+3 Youn Yuh-jung|Yuh-jung
+3 Da'Vine Joy Randolph|Randolph`),
+    angle('animated_oscar', 'awards', 'crossover', 'Name a movie that won the Oscar for best animated feature.', `
+1 Shrek
+1 Frozen
+1 Spirited Away
+1 WALL-E
+1 Zootopia
+1 Encanto
+1 Finding Nemo
+1 Ratatouille
+1 Toy Story 3
+1 Inside Out
+1 Up
+1 The Incredibles
+1 Big Hero 6
+1 Brave
+1 Toy Story 4
+1 Coco
+1 Spider-Man: Into the Spider-Verse|Spider-Man
+1 Soul
+1 Rango
+1 Happy Feet
+1 Wallace & Gromit: The Curse of the Were-Rabbit|Wallace & Gromit|Wallace and Gromit: The Curse of the Were-Rabbit
+1 KPop Demon Hunters
+2 The Boy and the Heron
+2 Flow
+2 Guillermo del Toro's Pinocchio`),
+    angle('sevens', 'words', 'crossover', 'Name something there are seven of.', `
+1 Days of the week|Days|Week
+1 Dwarfs|Seven Dwarfs
+1 Deadly sins|Sins|Seven deadly sins
+1 Wonders of the world|Wonders|Seven Wonders
+1 Continents
+1 Seas|Seven seas
+1 Colors of the rainbow|Rainbow|Colors
+2 Notes in a scale|Notes|Musical notes
+2 Harry Potter books|Harry Potter
+2 Narnia books|Chronicles of Narnia
+2 Hills of Rome|Seven hills
+2 Brides for Seven Brothers
+2 Samurai|Seven Samurai
+2 Chakras
+2 Sisters|Seven Sisters|Pleiades
+2 Habits|Seven Habits of Highly Effective People
+2 Swans a-swimming
+2 Sacraments
+2 Archangels
+2 Wonders of the Ancient World
+4 Virtues|Heavenly virtues
+4 Liberal arts
+4 Kingdoms|Seven Kingdoms
+4 Seals|Seven seals`),
+    angle('not_green_veg', 'food', 'trait', 'Name a vegetable that isn\'t green.', `
+1 Carrot|Carrots
+1 Corn
+1 Potato|Potatoes
+1 Tomato|Tomatoes
+1 Onion|Onions
+2 Beet|Beets
+2 Cauliflower
+2 Sweet potato|Yam
+2 Pumpkin
+2 Red pepper|Yellow pepper|Orange pepper|Bell pepper
+2 Radish|Radishes
+2 Eggplant
+2 Turnip
+2 Parsnip
+2 Mushroom|Mushrooms
+2 Squash|Butternut squash|Yellow squash
+2 Red cabbage|Purple cabbage
+2 Garlic
+Rutabaga
+Red onion
+White asparagus
+Jicama
+Daikon
+Shallot
+Purple carrot
+Taro
+Cassava|Yuca
+Rhubarb`),
+    angle('disney_rides', 'geo', 'place', 'Name a ride at a Disney park.', `
+1 Space Mountain
+1 Splash Mountain
+1 It's a Small World|Small World
+1 Pirates of the Caribbean
+1 Haunted Mansion
+1 Big Thunder Mountain Railroad|Big Thunder Mountain|Big Thunder
+1 Mad Tea Party|Teacups|Tea Cups
+2 Tower of Terror|The Twilight Zone Tower of Terror
+2 Matterhorn Bobsleds|Matterhorn
+2 Dumbo the Flying Elephant|Dumbo
+2 Peter Pan's Flight|Peter Pan
+2 Jungle Cruise
+2 Soarin'|Soarin
+2 Expedition Everest
+2 Test Track
+2 Rock 'n' Roller Coaster
+2 Seven Dwarfs Mine Train
+2 Star Wars: Rise of the Resistance|Rise of the Resistance
+2 Millennium Falcon: Smugglers Run|Smugglers Run
+2 Indiana Jones Adventure
+2 Toy Story Mania!|Toy Story Mania
+2 Slinky Dog Dash
+2 Guardians of the Galaxy: Cosmic Rewind|Cosmic Rewind
+2 Tiana's Bayou Adventure
+2 Avatar Flight of Passage|Flight of Passage
+2 Spaceship Earth
+2 Kilimanjaro Safaris
+2 Buzz Lightyear's Space Ranger Spin|Buzz Lightyear
+2 Mickey & Minnie's Runaway Railway|Runaway Railway
+2 Radiator Springs Racers
+2 Incredicoaster
+2 TRON Lightcycle / Run|TRON Lightcycle Run|Tron
+2 Remy's Ratatouille Adventure|Ratatouille ride
+2 Frozen Ever After
+2 Winnie the Pooh|The Many Adventures of Winnie the Pooh
+2 Autopia
+2 Carousel|Prince Charming Regal Carrousel|King Arthur Carrousel
+2 Monorail
+Alice in Wonderland
+Mr. Toad's Wild Ride
+Snow White's Enchanted Wish
+Pinocchio's Daring Journey
+Casey Jr. Circus Train
+Storybook Land Canal Boats
+Astro Orbiter
+Tomorrowland Speedway
+PeopleMover|Tomorrowland Transit Authority PeopleMover
+Country Bear Jamboree
+Enchanted Tiki Room
+Mission: SPACE|Mission Space
+Kali River Rapids
+Na'vi River Journey
+Dinosaur
+Star Tours
+Gran Fiesta Tour
+Living with the Land
+Journey into Imagination
+Grizzly River Run
+Goofy's Sky School
+Pixar Pal-A-Round|Mickey's Fun Wheel
+Haunted Mansion Holiday`),
+    angle('pairs', 'home', 'everyday', 'Name something that comes in pairs.', `
+1 Shoes
+1 Socks
+1 Gloves
+1 Earrings
+1 Twins
+1 Eyes
+1 Ears
+1 Glasses|Eyeglasses|Sunglasses
+2 Mittens
+2 Pants|Jeans|Trousers
+2 Scissors
+2 Chopsticks
+2 Dice
+2 Skis
+2 Boots
+2 Hands
+2 Feet
+2 Legs
+2 Arms
+2 Lungs
+2 Kidneys
+2 Headphones|Earbuds
+2 Contact lenses|Contacts
+2 Salt and pepper shakers|Salt and pepper
+2 Speakers
+2 Oars
+2 Drumsticks
+2 Knitting needles
+2 Cufflinks
+2 Pliers
+2 Tweezers
+2 Bookends
+2 Binoculars
+2 Dumbbells
+2 Wings
+2 Skates|Roller skates|Ice skates
+Pillowcases
+Candlesticks
+Maracas
+Cymbals
+Tongs
+Wedding rings
+Sneakers
+Slippers
+Hiking poles|Ski poles`),
+    angle('eggs_ways', 'food', 'everyday', 'Name a way to cook an egg.', `
+1 Scrambled
+1 Fried
+1 Hard-boiled|Hard boiled|Boiled
+1 Poached
+1 Over easy
+1 Sunny side up
+1 Omelet|Omelette
+2 Soft-boiled|Soft boiled
+2 Over medium
+2 Over hard
+2 Deviled
+2 Baked|Shirred
+2 Eggs Benedict
+2 Frittata
+2 Basted
+2 Coddled
+2 Quiche
+2 Egg salad
+2 Egg drop|Egg drop soup
+2 Pickled
+2 Microwaved
+Steamed
+Huevos rancheros
+Shakshuka
+Egg in a hole|Toad in the hole|Egg in a basket
+Tamagoyaki
+Soufflé|Souffle
+Scotch egg
+Sous vide`),
+    angle('london_sights', 'geo', 'place', 'Name a famous sight in London.', `
+1 Big Ben
+1 Tower Bridge
+1 Tower of London
+1 Buckingham Palace
+1 London Eye
+1 Westminster Abbey
+1 Houses of Parliament|Palace of Westminster|Parliament
+2 St. Paul's Cathedral|St Paul's Cathedral|St. Paul's
+2 Trafalgar Square
+2 Piccadilly Circus
+2 British Museum
+2 Hyde Park
+2 London Bridge
+2 The Shard|Shard
+2 Covent Garden
+2 Natural History Museum
+2 Tate Modern
+2 National Gallery
+2 Kensington Palace
+2 Abbey Road
+2 Camden Market|Camden
+2 Oxford Street
+2 Harrods
+2 Downing Street|10 Downing Street
+2 Madame Tussauds
+2 Shakespeare's Globe|The Globe|Globe Theatre
+2 Borough Market
+2 Notting Hill
+2 Wembley Stadium|Wembley
+2 Regent's Park
+2 Victoria and Albert Museum|V&A
+2 Science Museum
+2 Millennium Bridge
+2 Leicester Square
+2 Greenwich|Royal Observatory
+2 Kew Gardens
+2 The Gherkin|Gherkin
+2 Cutty Sark
+Hampton Court Palace
+Windsor Castle
+Platform 9¾|Platform 9 3/4
+St. James's Park
+Marble Arch
+Carnaby Street
+Portobello Road
+Sky Garden
+Churchill War Rooms
+Royal Albert Hall
+Wimbledon
+Battersea Power Station
+O2 Arena|The O2
+Changing of the Guard`),
+    angle('hats', 'style', 'category', 'Name a kind of hat.', `
+1 Baseball cap|Cap|Ball cap
+1 Cowboy hat
+1 Top hat
+1 Beanie
+1 Beret
+1 Sombrero
+1 Fedora
+2 Bowler|Derby
+2 Fez
+2 Panama hat|Panama
+2 Bucket hat
+2 Sun hat
+2 Visor
+2 Trucker hat
+2 Stetson
+2 Newsboy cap|Newsboy
+2 Fascinator
+2 Pillbox`),
+    angle('power_tools', 'home', 'category', 'Name a power tool.', `
+1 Drill|Power drill|Cordless drill
+1 Chainsaw
+1 Circular saw
+1 Jigsaw
+1 Sander|Belt sander|Orbital sander
+2 Table saw
+2 Miter saw|Chop saw
+2 Nail gun
+2 Router
+2 Angle grinder|Grinder
+2 Impact driver
+2 Reciprocating saw|Sawzall
+2 Leaf blower
+2 Hedge trimmer
+2 Weed eater|String trimmer|Weed whacker
+2 Lawn mower|Lawnmower
+2 Heat gun
+2 Band saw
+2 Drill press
+2 Staple gun
+2 Pressure washer|Power washer
+2 Rotary tool|Dremel
+2 Hammer drill
+2 Planer
+2 Glue gun|Hot glue gun
+Scroll saw
+Oscillating tool|Multi-tool
+Jackhammer
+Air compressor
+Shop vac|Wet/dry vac
+Tile saw
+Biscuit joiner
+Snowblower
+Soldering iron`),
+    angle('fruit_salad', 'food', 'everyday', 'Name a fruit you\'d find in a fruit salad.', `
+1 Grapes|Grape
+1 Strawberries|Strawberry
+1 Pineapple
+1 Watermelon
+1 Cantaloupe
+1 Apple|Apples
+1 Banana|Bananas
+1 Orange|Oranges
+2 Blueberries|Blueberry
+2 Honeydew
+2 Kiwi
+2 Mango
+2 Peach|Peaches
+2 Raspberries|Raspberry
+2 Blackberries|Blackberry
+2 Cherries|Cherry
+2 Pear|Pears
+2 Mandarin oranges|Mandarin|Clementine|Tangerine
+2 Papaya
+2 Pomegranate
+2 Plum
+2 Nectarine
+2 Apricot
+Dragon fruit
+Star fruit|Starfruit
+Passion fruit
+Lychee
+Guava
+Fig
+Coconut
+Maraschino cherries
+Grapefruit`),
+    angle('ballpark_snacks', 'food', 'place', 'Name a snack you\'d buy at a ballpark.', `
+1 Hot dog|Hot dogs
+1 Popcorn
+1 Peanuts
+1 Nachos
+1 Pretzel|Soft pretzel
+1 Cracker Jack
+1 Beer
+2 Cotton candy
+2 Soda|Pop|Coke
+2 Ice cream|Ice cream sandwich|Dippin' Dots
+2 Sunflower seeds|Seeds
+2 French fries|Fries
+2 Hamburger|Burger
+2 Pizza
+2 Chicken tenders|Chicken fingers
+2 Churros|Churro
+2 Candy
+2 Bratwurst|Brats|Sausage
+2 Funnel cake
+2 Garlic fries
+2 Water
+2 Lemonade
+Corn dog
+Italian ice
+Cheesesteak
+Crab fries
+Fried dough
+Kettle corn
+Malt cup
+Fish tacos
+Elote`),
+    angle('talking_animal_movies', 'movies', 'trait', 'Name a movie with talking animals.', `
+1 The Lion King|Lion King
+1 Babe
+1 Charlotte's Web
+1 Finding Nemo
+1 Madagascar
+1 Zootopia
+1 Shrek
+1 Dr. Dolittle|Doctor Dolittle
+1 Ice Age
+1 Kung Fu Panda
+2 Finding Dory
+2 Bambi
+2 Dumbo
+2 Lady and the Tramp
+2 101 Dalmatians|One Hundred and One Dalmatians
+2 The Jungle Book|Jungle Book
+2 Homeward Bound
+2 Chicken Run
+2 Bee Movie
+2 Ratatouille
+2 Stuart Little
+2 Paddington
+2 Fantastic Mr. Fox
+2 The Secret Life of Pets
+2 Sing
+2 Rio
+2 Bolt
+2 Over the Hedge
+2 Robin Hood
+2 The Aristocats|Aristocats
+2 The Fox and the Hound
+2 Cats & Dogs|Cats and Dogs
+2 Beverly Hills Chihuahua
+2 Happy Feet`),
+    angle('robot_movies', 'movies', 'trait', 'Name a movie with a robot in it.', `
+1 WALL-E|Wall-E
+1 The Terminator|Terminator
+1 RoboCop
+1 Transformers
+1 I, Robot|I Robot
+1 Star Wars
+1 Big Hero 6
+2 The Iron Giant
+2 Short Circuit
+2 Real Steel
+2 Ex Machina
+2 Robots
+2 Bicentennial Man
+2 A.I. Artificial Intelligence|A.I.|AI
+2 Chappie
+2 Pacific Rim
+2 The Wild Robot
+2 Blade Runner
+2 Metropolis
+2 Lost in Space
+2 Forbidden Planet
+2 Interstellar
+2 Bumblebee
+2 Avengers: Age of Ultron|Age of Ultron
+2 Megan|M3GAN
+2 Terminator 2: Judgment Day|Terminator 2|T2
+2 Star Wars: A New Hope
+2 Batteries Not Included|*batteries not included
+2 Robot & Frank
+2 The Mitchells vs. the Machines
+2 Ron's Gone Wrong
+2 Westworld
+2 The Stepford Wives
+2 Short Circuit 2
+Moon
+Her
+Alita: Battle Angel|Alita
+The Creator
+Atlas`),
+    angle('flippers', 'nature', 'crossover', 'Name something that has flippers.', `
+1 Seal
+1 Dolphin
+1 Penguin
+1 Sea turtle|Turtle
+1 Scuba diver|Diver
+1 Whale
+1 Sea lion
+1 Pinball machine|Pinball
+2 Walrus
+2 Manatee
+2 Platypus
+2 Otter|Sea otter
+2 Dugong
+2 Snorkeler
+2 Orca|Killer whale
+2 Swimmer
+2 Frogman
+Plesiosaur`),
+    angle('goodbye_languages', 'words', 'wordplay', 'Name a way to say goodbye in another language.', `
+1 Adiós|Adios
+1 Au revoir
+1 Ciao
+1 Sayonara|Sayōnara
+1 Aloha
+1 Auf Wiedersehen
+1 Arrivederci
+2 Hasta la vista
+2 Hasta luego
+2 Bon voyage
+2 Tschüss|Tschuss
+2 Adieu
+2 Shalom
+2 Do svidaniya|Dasvidaniya
+2 Tchau
+2 Salut
+2 Namaste
+2 Vale
+2 Tot ziens
+2 Hej då|Hej da
+2 Ha det
+2 Farvel
+2 Zai jian|Zàijiàn
+2 Annyeong|Annyeonghi gaseyo
+2 Ma'a salama|Ma'a as-salama|Maasalama
+2 Kwaheri
+2 Slán
+2 Cheerio
+2 Ta-ta|Ta ta
+2 Hasta mañana|Hasta manana
+2 À bientôt|A bientot
+2 Bis später|Bis spater
+2 Addio
+2 Até logo|Ate logo
+2 Do widzenia
+2 Hoşça kal|Hosca kal
+2 Näkemiin|Nakemiin
+2 Head aega
+2 Viszlát|Viszlat
+2 Selamat tinggal
+2 Paalam
+2 Tạm biệt|Tam biet
+2 La revedere
+2 Ahoj
+2 Dovidenia
+2 Namárië
+2 Khuda hafiz
+2 Phir milenge
+2 Mata ne
+2 Ja mata
+2 Jaa ne`),
+    angle('itis', 'science', 'wordplay', 'Name a medical condition that ends in "itis."', `
+1 Arthritis
+1 Tonsillitis
+1 Appendicitis
+1 Bronchitis
+1 Tendinitis|Tendonitis
+1 Laryngitis
+1 Sinusitis
+1 Conjunctivitis|Pink eye
+1 Hepatitis
+1 Meningitis
+2 Gastritis
+2 Dermatitis
+2 Colitis
+2 Pancreatitis
+2 Bursitis
+2 Gingivitis
+2 Otitis|Ear infection
+2 Encephalitis
+2 Plantar fasciitis|Fasciitis
+2 Diverticulitis
+2 Pneumonitis
+2 Cellulitis
+2 Nephritis
+2 Mastitis
+2 Rhinitis
+2 Cystitis
+2 Phlebitis
+2 Pharyngitis
+2 Esophagitis
+2 Vasculitis
+2 Myocarditis
+2 Pericarditis
+2 Osteomyelitis
+2 Uveitis
+2 Neuritis
+2 Iritis
+2 Keratitis
+2 Spondylitis
+2 Blepharitis
+2 Stomatitis
+2 Vaginitis
+2 Epididymitis
+2 Prostatitis
+2 Labyrinthitis
+2 Costochondritis
+2 Epicondylitis|Tennis elbow
+2 Synovitis
+2 Gastroenteritis
+2 Endocarditis
+2 Peritonitis
+2 Polio|Poliomyelitis`),
+    angle('consoles', 'games', 'category', 'Name a video game console.', `
+1 PlayStation|PS1
+1 Xbox
+1 Nintendo Switch|Switch
+1 Wii
+1 Nintendo|NES|Nintendo Entertainment System
+1 Game Boy|Gameboy
+1 Atari|Atari 2600
+1 Sega Genesis|Genesis|Mega Drive
+1 PlayStation 2|PS2
+1 PlayStation 5|PS5
+2 PlayStation 3|PS3
+2 PlayStation 4|PS4
+2 Xbox 360
+2 Xbox One
+2 Xbox Series X|Series X|Xbox Series S
+2 Nintendo 64|N64
+2 Super Nintendo|SNES|Super NES
+2 GameCube|Nintendo GameCube
+2 Wii U
+2 Nintendo DS|DS
+2 Nintendo 3DS|3DS
+2 PSP|PlayStation Portable
+2 Dreamcast|Sega Dreamcast
+2 Game Boy Advance|GBA
+2 Game Boy Color
+2 Nintendo Switch 2|Switch 2
+2 Steam Deck
+2 Sega Saturn|Saturn
+2 PS Vita|PlayStation Vita
+2 Intellivision
+2 ColecoVision
+2 Sega Master System|Master System
+2 Game Gear|Sega Game Gear
+2 Atari Jaguar|Jaguar
+2 TurboGrafx-16|TurboGrafx
+2 Neo Geo
+2 Virtual Boy
+2 3DO
+2 Magnavox Odyssey|Odyssey
+2 Ouya
+2 Atari Lynx|Lynx
+2 Sega CD
+2 Sega 32X|32X
+2 N-Gage
+2 Meta Quest|Oculus Quest|Quest`),
+    angle('table_games', 'games', 'crossover', 'Name a game played on its own kind of table.', `
+1 Pool|Billiards
+1 Ping-pong|Table tennis|Ping pong
+1 Foosball
+1 Air hockey
+1 Poker
+1 Blackjack
+2 Roulette
+2 Craps
+2 Snooker
+2 Shuffleboard|Table shuffleboard
+2 Beer pong
+2 Baccarat
+2 Pinball
+2 Bumper pool
+2 Carrom
+2 Sic bo
+Mahjong
+Bridge
+Teqball`),
+    angle('construction_gear', 'home', 'everyday', 'Name something a construction worker wears.', `
+1 Hard hat|Helmet
+1 Boots|Work boots|Steel-toe boots
+1 Safety vest|Vest|Reflective vest|Orange vest
+1 Gloves|Work gloves
+1 Tool belt
+1 Safety glasses|Goggles
+2 Ear plugs|Earplugs|Ear protection|Earmuffs
+2 Overalls
+2 Jeans
+2 Flannel shirt|Flannel
+2 Dust mask|Mask|Respirator
+2 Knee pads
+2 Harness|Safety harness
+2 Jacket|Work jacket
+2 T-shirt
+2 Sunscreen
+2 Bandana`),
+    angle('doctor_tools', 'science', 'everyday', 'Name something a doctor uses.', `
+1 Stethoscope
+1 Thermometer
+1 Needle|Syringe|Shot
+1 Tongue depressor
+1 Gloves
+1 Blood pressure cuff|Sphygmomanometer
+1 Scalpel
+2 Otoscope
+2 Reflex hammer|Hammer
+2 X-ray|X-ray machine
+2 Bandages|Gauze
+2 Clipboard|Chart
+2 Mask|Face mask
+2 Scale
+2 Penlight|Flashlight
+2 Prescription pad
+2 Lab coat|White coat
+2 Cotton swab|Swab
+2 Forceps
+2 Scissors
+2 Stitches|Sutures
+2 Computer
+2 Ultrasound
+2 MRI
+2 Defibrillator
+2 IV|IV drip
+2 Pulse oximeter
+2 Eye chart
+2 Microscope
+2 Exam table
+Scrubs
+Catheter
+Speculum
+Splint
+Cast
+Crutches
+Wheelchair
+Gurney|Stretcher`),
+    angle('pirate_gear', 'kids', 'everyday', 'Name something a pirate has.', `
+1 Eye patch|Eyepatch
+1 Parrot
+1 Hook|Hook hand
+1 Peg leg|Wooden leg
+1 Sword|Cutlass
+1 Ship
+1 Treasure|Treasure chest|Gold
+1 Hat|Pirate hat|Tricorn
+1 Treasure map|Map
+2 Flag|Jolly Roger|Skull and crossbones
+2 Telescope|Spyglass
+2 Cannon|Cannons
+2 Rum
+2 Earring
+2 Bandana
+2 Boots
+2 Beard
+2 Crew
+2 Plank
+2 Pistol|Flintlock
+2 Compass
+2 Anchor
+2 Doubloons|Coins
+2 Bottle
+2 Rope
+2 Sails
+2 Crow's nest
+2 Wheel|Ship's wheel
+2 Shovel
+2 Monkey
+Dagger
+Gold tooth
+Bottle of rum
+Barrel`),
+    angle('hawaii_things', 'geo', 'place', 'Name something Hawaii is known for.', `
+1 Beaches|Beach
+1 Volcanoes|Volcano
+1 Surfing
+1 Hula|Hula dancing|Hula dancers
+1 Leis|Lei
+1 Pineapple|Pineapples
+1 Luau|Luaus
+1 Aloha
+1 Palm trees
+2 Ukulele
+2 Poke
+2 Spam|Spam musubi
+2 Shave ice
+2 Macadamia nuts
+2 Kona coffee|Coffee
+2 Pearl Harbor
+2 Waikiki
+2 Diamond Head
+2 Hawaiian shirts|Aloha shirts
+2 Rainbows
+2 Whales|Humpback whales
+2 Sea turtles|Honu
+2 Waterfalls
+2 Snorkeling
+2 Mai tai
+2 Coconuts
+2 Hibiscus
+2 Plate lunch
+2 Loco moco
+2 Mahi-mahi
+2 Sunsets
+2 Tiki torches
+2 Grass skirts
+2 Pipeline|Banzai Pipeline
+2 Kilauea
+2 Mauna Kea
+2 King Kamehameha|Kamehameha
+2 Hula girl
+2 Lava
+2 Ohana`),
+    angle('famous_franks', 'people', 'people', 'Name a famous Frank.', `
+1 Frank Sinatra
+1 Frank Lloyd Wright
+1 Anne Frank
+2 Frank Zappa
+2 Frank Ocean
+2 Frank Gifford
+2 Frankie Valli
+2 Frankie Avalon
+2 Frankie Muniz
+2 Frank Capra
+2 Frank Stallone
+2 Frank Gehry
+2 Frank Thomas
+2 Frank Robinson
+2 Frank Langella
+2 Frank Oz
+2 Frank Abagnale
+2 Frank Herbert
+2 Frank Baum|L. Frank Baum
+2 Frank McCourt
+2 Frank Darabont
+2 Frank Miller
+2 Frank Underwood
+2 Frank Costanza
+2 Frank Gallagher
+2 Frank Reynolds
+2 Frank Burns
+2 Frank Grillo
+2 Frank Caliendo
+2 Frank Sinatra Jr.
+2 Frankie Knuckles
+2 Frankie Lymon
+2 Frank Lampard
+2 Frank Ribéry|Frank Ribery
+2 Frank Rijkaard
+2 Frank Shorter
+2 Frank Borman
+2 Frank Church
+2 Frank Wolf
+2 Frank Lautenberg
+2 Frank Murkowski
+2 Frank Purdue|Frank Perdue
+2 Frank James`),
+    angle('glove_sports', 'sports', 'trait', 'Name a sport where players wear gloves.', `
+1 Boxing
+1 Baseball
+1 Hockey|Ice hockey
+1 Golf
+1 Softball
+2 Football
+2 Cricket
+2 Lacrosse
+2 Field hockey
+2 Goalkeeping|Soccer
+2 Skiing
+2 Cycling
+2 Racquetball
+2 Kickboxing
+2 MMA|Mixed martial arts
+2 Weightlifting
+2 Rock climbing|Climbing
+2 Motocross|Motorcycle racing
+2 Auto racing|Racing|NASCAR|Formula One
+2 Fencing
+2 Equestrian|Horseback riding
+2 Handball
+2 Rowing
+2 Sailing
+2 Bobsled
+2 Snowboarding`),
+    angle('appetizers', 'food', 'category', 'Name an appetizer.', `
+1 Chicken wings|Wings|Buffalo wings
+1 Mozzarella sticks|Cheese sticks
+1 Nachos
+1 Spinach dip|Spinach and artichoke dip
+1 Shrimp cocktail
+1 Bruschetta
+1 Chips and salsa|Salsa
+1 Egg rolls|Spring rolls
+2 Deviled eggs
+2 Stuffed mushrooms
+2 Potato skins
+2 Calamari
+2 Onion rings
+2 Bloomin' onion|Blooming onion
+2 Guacamole
+2 Hummus
+2 Cheese plate|Charcuterie|Cheese board
+2 Pigs in a blanket
+2 Meatballs
+2 Jalapeño poppers|Poppers
+2 Quesadilla
+2 Sliders
+2 Crab cakes
+2 Dumplings|Potstickers
+2 Edamame
+2 Crab rangoon
+2 Caprese
+2 Garlic bread
+2 Soup
+2 Salad
+2 Oysters
+2 Fried pickles
+2 Queso
+2 Pretzel bites
+2 Mini quiche
+2 Antipasto
+2 Tapas
+2 Samosas
+2 Satay
+2 Ceviche
+2 Arancini
+2 Lettuce wraps
+2 Cheese fries
+2 Toasted ravioli
+2 Fried green tomatoes`),
+    angle('music_cities', 'music', 'place', 'Name a city famous for its music.', `
+1 Nashville
+1 New Orleans
+1 Memphis
+1 Detroit
+1 Vienna
+1 Liverpool
+1 Austin
+1 Seattle
+1 Los Angeles
+1 New York
+2 Chicago
+2 Atlanta
+2 Kansas City
+2 London
+2 Manchester
+2 Havana
+2 Rio de Janeiro|Rio
+2 Salzburg
+2 Paris
+2 Berlin
+2 Seoul
+2 Kingston
+2 Bristol
+2 Muscle Shoals
+2 Clarksdale
+2 Branson
+2 Minneapolis
+2 Philadelphia
+2 Athens|Athens, Georgia`),
+    angle('baseball_legends', 'sports', 'people', 'Name a legendary baseball player.', `
+1 Babe Ruth
+1 Jackie Robinson
+1 Hank Aaron
+1 Mickey Mantle
+1 Willie Mays
+1 Joe DiMaggio
+1 Lou Gehrig
+1 Derek Jeter
+1 Ted Williams
+1 Ty Cobb
+2 Roberto Clemente
+2 Cal Ripken Jr.|Cal Ripken
+2 Nolan Ryan
+2 Pete Rose
+2 Sandy Koufax
+2 Barry Bonds
+2 Ken Griffey Jr.|Ken Griffey
+2 Stan Musial
+2 Yogi Berra
+2 Shohei Ohtani|Ohtani
+2 Cy Young
+2 Honus Wagner
+2 Walter Johnson
+2 Satchel Paige
+2 Josh Gibson
+2 Reggie Jackson
+2 Rickey Henderson
+2 Tony Gwynn
+2 Mike Trout
+2 Albert Pujols
+2 Ichiro Suzuki|Ichiro
+2 Mariano Rivera
+2 Bob Gibson
+2 Johnny Bench
+2 Tom Seaver
+2 Randy Johnson
+2 Greg Maddux
+2 Pedro Martínez|Pedro Martinez
+2 David Ortiz|Big Papi
+2 Alex Rodriguez|A-Rod
+2 Mark McGwire
+2 Sammy Sosa
+2 Roger Clemens
+2 Frank Robinson
+2 Ernie Banks
+2 Rogers Hornsby
+2 Christy Mathewson
+2 Lefty Grove
+2 Jimmie Foxx
+2 Mel Ott
+2 Warren Spahn
+2 Brooks Robinson
+2 Carl Yastrzemski
+2 George Brett
+2 Mike Schmidt
+2 Ozzie Smith
+2 Wade Boggs
+2 Rod Carew
+2 Jim Thome
+2 Chipper Jones
+2 Clayton Kershaw
+2 Aaron Judge
+2 Fernando Valenzuela
+2 Dennis Eckersley
+2 Kirby Puckett
+2 Joe Morgan
+2 Lou Brock`),
+    angle('peanut_candy', 'food', 'trait', 'Name a candy with peanuts in it.', `
+1 Snickers
+1 Reese's Peanut Butter Cups|Reese's|Reese's Cups
+1 Peanut M&M's|M&M's|Peanut M&Ms
+1 PayDay|Pay Day
+1 Baby Ruth
+1 Butterfinger
+2 Reese's Pieces
+2 Mr. Goodbar|Mr Goodbar
+2 Nutrageous
+2 Goo Goo Cluster
+2 Salted Nut Roll
+2 Peanut brittle
+2 Take 5
+2 Planters peanut bar|Peanut bar
+2 Snickers Peanut Butter
+2 Chick-O-Stick
+2 Squirrel Nut Zippers
+2 Peanut Chews|Goldenberg's Peanut Chews
+2 Cracker Jack
+2 Chunky
+2 Oh Henry!|Oh Henry
+2 Abba-Zaba
+2 Clark Bar
+2 Butterfinger Bites
+2 Twix Peanut Butter
+2 Peanut clusters|Chocolate peanut clusters
+2 Boston Baked Beans
+2 Mary Jane`),
+    angle('govt_agencies', 'history', 'wordplay', 'Name a U.S. government agency known by three letters.', `
+1 FBI|Federal Bureau of Investigation
+1 CIA|Central Intelligence Agency
+1 IRS|Internal Revenue Service
+1 DEA|Drug Enforcement Administration
+1 FDA|Food and Drug Administration
+1 EPA|Environmental Protection Agency
+1 NSA|National Security Agency
+1 DMV|Department of Motor Vehicles
+2 FAA|Federal Aviation Administration
+2 FCC|Federal Communications Commission
+2 SEC|Securities and Exchange Commission
+2 TSA|Transportation Security Administration
+2 CDC|Centers for Disease Control and Prevention
+2 ATF|Bureau of Alcohol, Tobacco, Firearms and Explosives
+2 NIH|National Institutes of Health
+2 SBA|Small Business Administration
+2 SSA|Social Security Administration
+2 DHS|Department of Homeland Security
+2 DOJ|Department of Justice
+2 DOD|Department of Defense
+2 DOT|Department of Transportation
+2 DOE|Department of Energy
+2 FTC|Federal Trade Commission
+2 GSA|General Services Administration
+2 NPS|National Park Service
+2 GAO|Government Accountability Office
+2 CBO|Congressional Budget Office
+2 OMB|Office of Management and Budget
+2 HHS|Department of Health and Human Services
+2 HUD|Department of Housing and Urban Development
+2 FHA|Federal Housing Administration
+2 FEC|Federal Election Commission
+2 NRC|Nuclear Regulatory Commission
+2 CBP|Customs and Border Protection
+2 ICE|Immigration and Customs Enforcement
+2 FED|Fed|Federal Reserve
+2 NEA|National Endowment for the Arts
+2 NSF|National Science Foundation
+2 OPM|Office of Personnel Management
+2 DIA|Defense Intelligence Agency
+2 TVA|Tennessee Valley Authority`),
+    angle('kitchen_things', 'home', 'place', 'Name something you\'d find in a kitchen.', `
+1 Refrigerator|Fridge
+1 Stove|Oven|Range
+1 Microwave
+1 Sink
+1 Dishwasher
+1 Toaster
+1 Pots|Pot|Pans|Pan|Pots and pans
+1 Plates|Dishes|Plate
+1 Silverware|Forks|Knives|Spoons|Cutlery|Utensils
+1 Cups|Mugs|Glasses
+1 Coffee maker|Coffee pot|Keurig
+1 Table|Kitchen table
+2 Cabinets|Cupboards|Cabinet
+2 Counter|Countertop
+2 Blender
+2 Spatula
+2 Cutting board
+2 Bowls|Bowl
+2 Kettle|Teakettle
+2 Trash can|Garbage can|Trash
+2 Paper towels
+2 Dish soap|Soap
+2 Sponge
+2 Dish towel|Towel
+2 Oven mitts|Pot holders
+2 Mixer|Stand mixer
+2 Can opener
+2 Whisk
+2 Ladle
+2 Colander|Strainer
+2 Measuring cups
+2 Rolling pin
+2 Food processor
+2 Air fryer
+2 Toaster oven
+2 Spice rack|Spices
+2 Salt and pepper
+2 Pantry
+2 Drawers|Junk drawer
+2 Chairs|Stools
+2 Apron
+2 Cookbook|Cookbooks
+2 Timer
+2 Tongs
+2 Grater
+2 Peeler
+2 Knife block
+2 Fruit bowl
+2 Crock-Pot|Slow cooker
+2 Instant Pot
+2 Rice cooker
+2 Baking sheet|Cookie sheet
+2 Aluminum foil|Foil
+2 Plastic wrap
+2 Tupperware|Containers
+2 Island|Kitchen island
+2 Faucet
+2 Garbage disposal
+2 Freezer
+2 Magnets
+2 Calendar
+2 Clock
+Hood|Range hood
+Dish rack|Drying rack`),
+    angle('bathroom_things', 'home', 'place', 'Name something you\'d find in a bathroom.', `
+1 Toilet
+1 Sink
+1 Shower
+1 Bathtub|Tub
+1 Toilet paper
+1 Towels|Towel
+1 Toothbrush
+1 Toothpaste
+1 Soap
+1 Mirror
+1 Shampoo
+2 Conditioner
+2 Hair dryer|Blow dryer
+2 Razor
+2 Shaving cream
+2 Floss|Dental floss
+2 Mouthwash
+2 Deodorant
+2 Lotion
+2 Bath mat|Rug
+2 Shower curtain
+2 Plunger
+2 Toilet brush
+2 Scale
+2 Medicine cabinet
+2 Trash can|Wastebasket
+2 Hand towel
+2 Washcloth
+2 Loofah
+2 Body wash
+2 Cotton balls
+2 Q-tips|Cotton swabs
+2 Makeup
+2 Hairbrush|Brush|Comb
+2 Tissues|Kleenex
+2 Air freshener
+2 Nail clippers
+2 Tweezers
+2 Bath bombs
+2 Rubber duck|Rubber ducky
+2 Curling iron
+2 Straightener|Flat iron
+2 Toilet seat
+2 Faucet
+2 Fan|Exhaust fan
+2 Night light
+2 Candle
+2 Magazine|Magazines
+2 Medicine|Pills|Aspirin
+2 Band-Aids|Bandages
+2 Sunscreen
+2 Perfume|Cologne
+2 Bidet
+2 Hamper
+2 Hand soap
+Shower cap
+Bubble bath
+Epsom salt`),
+    angle('garage_things', 'home', 'place', 'Name something you\'d find in a garage.', `
+1 Car
+1 Tools|Toolbox
+1 Lawn mower|Lawnmower|Mower
+1 Bicycle|Bike|Bikes
+1 Boxes
+1 Garbage can|Trash can|Recycling bin
+2 Ladder
+2 Workbench
+2 Shelves
+2 Rake
+2 Shovel|Snow shovel
+2 Hose|Garden hose
+2 Paint|Paint cans
+2 Freezer|Extra fridge|Refrigerator
+2 Garage door opener
+2 Motor oil|Oil
+2 Spare tire|Tires
+2 Christmas decorations|Holiday decorations|Decorations
+2 Sports equipment|Balls
+2 Camping gear|Tent
+2 Cooler
+2 Grill
+2 Leaf blower
+2 Snowblower
+2 Weed eater|Weed whacker|String trimmer
+2 Wheelbarrow
+2 Power tools|Drill|Saw
+2 Hammer
+2 Screwdriver
+2 Wrench
+2 Extension cord
+2 Broom
+2 Wagon
+2 Car jack|Jack
+2 Jumper cables
+2 Antifreeze
+2 Fertilizer
+2 Pegboard
+2 Junk
+2 Spiders|Spider webs|Cobwebs
+2 Mouse|Mice
+2 Washer|Dryer|Washer and dryer
+2 Water heater
+2 Kayak|Canoe
+2 Golf clubs
+2 Skateboard
+2 Scooter
+2 Motorcycle
+2 Sled
+2 Fishing poles|Fishing rods`),
+    angle('desk_things', 'home', 'place', 'Name something you\'d find on an office desk.', `
+1 Computer|Laptop
+1 Phone|Telephone
+1 Pens|Pen
+1 Pencils|Pencil
+1 Stapler
+1 Paper|Papers|Paperwork
+1 Keyboard
+1 Mouse
+1 Monitor|Screen
+2 Calendar
+2 Sticky notes|Post-it notes|Post-its
+2 Notepad|Notebook
+2 Tape|Tape dispenser
+2 Scissors
+2 Paper clips
+2 Coffee mug|Mug|Coffee
+2 Lamp|Desk lamp
+2 Photos|Pictures|Picture frame
+2 Plant
+2 Calculator
+2 Highlighter|Highlighters
+2 Rubber bands
+2 Mouse pad
+2 Pencil holder|Pen cup
+2 Eraser
+2 Ruler
+2 Business cards
+2 Folders|File folders
+2 Inbox|In-tray
+2 Water bottle
+2 Snacks
+2 Hand sanitizer
+2 Tissues
+2 Name plate|Nameplate
+2 Headphones
+2 Charger
+2 Clock
+2 Envelopes
+2 Binder
+2 Hole punch
+2 Staple remover
+2 Paperweight
+2 Desk organizer
+2 Clipboard
+2 Thumbtacks
+2 Correction fluid|White-out|Wite-Out
+2 Stamp
+2 Planner
+2 Printer`),
+    angle('movie_theater', 'movies', 'place', 'Name something you\'d see at a movie theater.', `
+1 Popcorn
+1 Screen
+1 Seats|Seat
+1 Candy
+1 Soda|Drinks
+1 Tickets|Ticket
+1 Previews|Trailers
+1 Movie posters|Posters
+2 Nachos
+2 Hot dogs
+2 Concession stand|Snack bar
+2 Projector
+2 Ushers|Usher
+2 Box office|Ticket booth
+2 Arcade games|Arcade
+2 Cupholders|Cup holder
+2 Exit signs
+2 3D glasses
+2 Recliners
+2 Butter|Popcorn butter
+2 Sticky floor
+2 Kids|Families|People
+2 Couples|Dates
+2 Ticket stubs
+2 Cardboard cutouts|Standees
+2 Restrooms|Bathroom
+2 Lobby
+2 Curtains
+2 Speakers
+2 Credits
+2 Cell phones|Phones
+2 Icee|Slushie
+2 Junior Mints
+2 Milk Duds
+2 Twizzlers
+2 Sour Patch Kids
+2 Raisinets
+2 Pretzels
+2 Ice cream
+2 Water`),
+    angle('newspaper_sections', 'words', 'everyday', 'Name a section of a newspaper.', `
+1 Sports
+1 Comics|Funnies|Comic strips
+1 Weather
+1 Obituaries|Obits
+1 Classifieds|Classified ads|Want ads
+1 Front page|Headlines
+2 Business|Finance
+2 Opinion|Op-ed|Editorials|Editorial
+2 Entertainment|Arts
+2 Crossword|Puzzles|Sudoku
+2 Horoscopes|Horoscope
+2 Advice column|Dear Abby
+2 Letters to the editor|Letters
+2 Local news|Metro|Local
+2 World news|International
+2 National news|National
+2 Politics
+2 Lifestyle|Style
+2 Food
+2 Travel
+2 Real estate
+2 Coupons|Ads
+2 TV listings|TV guide
+2 Movie listings|Movies
+2 Book reviews|Books
+2 Science
+2 Health
+2 Technology|Tech
+2 Society pages|Weddings|Wedding announcements
+2 Stock market|Stocks
+2 Gossip
+2 Fashion
+2 Home and garden|Home
+2 Autos|Cars
+2 Education
+2 Religion
+2 Sunday magazine|Magazine
+2 Police blotter|Crime`),
+    angle('car_brands', 'tech', 'category', 'Name a car brand.', `
+1 Ford
+1 Toyota
+1 Honda
+1 Chevrolet|Chevy
+1 BMW
+1 Mercedes-Benz|Mercedes
+1 Tesla
+1 Nissan
+1 Jeep
+1 Volkswagen|VW
+1 Ferrari
+1 Porsche
+1 Audi
+1 Hyundai
+1 Kia
+1 Subaru
+1 Mazda
+1 Dodge
+1 Cadillac
+1 Lexus
+2 Lamborghini
+2 Rolls-Royce|Rolls Royce
+2 Bentley
+2 Jaguar
+2 Land Rover|Range Rover
+2 Volvo
+2 Buick
+2 GMC
+2 Chrysler
+2 Ram
+2 Lincoln
+2 Acura
+2 Infiniti
+2 Mitsubishi
+2 Fiat
+2 Alfa Romeo
+2 Maserati
+2 Aston Martin
+2 McLaren
+2 Bugatti
+2 Mini
+2 Genesis
+2 Rivian
+2 Lucid
+2 Polestar
+2 Peugeot
+2 Renault
+2 Citroën|Citroen
+2 Skoda|Škoda
+2 Seat
+2 Suzuki
+2 Saab
+2 Pontiac
+2 Oldsmobile
+2 Plymouth
+2 Saturn
+2 Mercury
+2 Hummer
+2 DeLorean
+2 Studebaker
+2 AMC
+2 Lotus
+2 Opel
+2 Dacia
+2 BYD
+2 Geely
+2 Tata
+2 Mahindra
+2 Daewoo
+2 Isuzu
+2 Smart
+2 Scion
+2 Datsun
+2 Pagani
+2 Koenigsegg
+2 Lancia
+2 Vauxhall
+2 Holden
+2 Proton
+2 Lada`),
+    angle('superheroes', 'movies', 'people', 'Name a superhero.', `
+1 Superman
+1 Batman
+1 Spider-Man|Spiderman
+1 Wonder Woman
+1 Iron Man
+1 Captain America
+1 The Hulk|Hulk
+1 Thor
+1 Black Panther
+1 Wolverine
+1 The Flash|Flash
+1 Aquaman
+2 Black Widow
+2 Captain Marvel
+2 Green Lantern
+2 Hawkeye
+2 Doctor Strange
+2 Ant-Man
+2 Deadpool
+2 Storm
+2 Cyclops
+2 Jean Grey|Phoenix
+2 Rogue
+2 Gambit
+2 Professor X
+2 Daredevil
+2 Robin
+2 Batgirl
+2 Supergirl
+2 Catwoman
+2 Green Arrow
+2 Cyborg
+2 Shazam
+2 Martian Manhunter
+2 The Thing|Thing
+2 Human Torch
+2 Mister Fantastic|Mr. Fantastic
+2 Invisible Woman
+2 Silver Surfer
+2 Scarlet Witch
+2 Vision
+2 Falcon
+2 Winter Soldier
+2 Star-Lord
+2 Groot
+2 Rocket|Rocket Raccoon
+2 Gamora
+2 Drax
+2 Nightcrawler
+2 Beast
+2 Iceman
+2 Colossus
+2 Kitty Pryde|Shadowcat
+2 Ms. Marvel
+2 She-Hulk
+2 Luke Cage
+2 Jessica Jones
+2 Iron Fist
+2 Punisher
+2 Blade
+2 Moon Knight
+2 Shang-Chi
+2 Nova
+2 Hellboy
+2 Spawn
+2 The Incredibles|Mr. Incredible|Elastigirl
+2 Static|Static Shock
+2 Blue Beetle
+2 Hawkgirl
+2 Zatanna
+2 Nightwing
+2 Squirrel Girl
+2 Miles Morales
+2 Spider-Gwen|Ghost-Spider
+2 Wasp
+2 War Machine
+2 Captain Planet
+2 Underdog
+2 Mighty Mouse
+2 The Tick
+2 Invincible
+2 Homelander`),
+    angle('ghibli', 'movies', 'category', 'Name a Studio Ghibli movie.', `
+1 Spirited Away
+1 My Neighbor Totoro|Totoro
+1 Howl's Moving Castle
+1 Princess Mononoke
+1 Kiki's Delivery Service
+1 Ponyo
+2 Castle in the Sky|Laputa
+2 Grave of the Fireflies
+2 The Wind Rises
+2 The Boy and the Heron
+2 Nausicaä of the Valley of the Wind|Nausicaa
+2 Porco Rosso
+2 Whisper of the Heart
+2 Arrietty|The Secret World of Arrietty
+2 The Cat Returns
+2 Only Yesterday
+2 Pom Poko
+2 From Up on Poppy Hill
+2 The Tale of the Princess Kaguya|Princess Kaguya
+2 When Marnie Was There
+2 Tales from Earthsea
+2 My Neighbors the Yamadas
+2 Ocean Waves
+2 Earwig and the Witch`),
+    angle('apple_products', 'tech', 'category', 'Name an Apple product.', `
+1 iPhone
+1 iPad
+1 MacBook|MacBook Pro|MacBook Air
+1 AirPods
+1 Apple Watch
+1 iMac
+1 iPod
+2 Mac
+2 Mac mini
+2 Mac Pro
+2 Mac Studio
+2 Apple TV
+2 HomePod
+2 Vision Pro|Apple Vision Pro
+2 AirTag
+2 Apple Pencil
+2 Magic Mouse
+2 Magic Keyboard
+2 iPod nano
+2 iPod shuffle
+2 iPod touch
+2 iPad Pro
+2 iPad mini
+2 iPad Air
+2 AirPods Pro
+2 AirPods Max
+2 Apple II
+2 Macintosh
+2 Newton
+2 Lisa
+2 eMac
+2 iBook
+2 PowerBook
+2 Power Mac
+2 Pro Display XDR
+2 Studio Display
+2 Apple Card
+2 iTunes
+2 Siri
+2 FaceTime`),
+    angle('shapes', 'science', 'category', 'Name a shape.', `
+1 Circle
+1 Square
+1 Triangle
+1 Rectangle
+1 Oval
+1 Star
+1 Heart
+1 Diamond
+2 Pentagon
+2 Hexagon
+2 Octagon
+2 Trapezoid
+2 Parallelogram
+2 Rhombus
+2 Cube
+2 Sphere
+2 Cylinder
+2 Cone
+2 Pyramid
+2 Crescent
+2 Ellipse
+2 Arrow
+2 Cross
+2 Spiral
+2 Heptagon
+2 Nonagon
+2 Decagon
+2 Dodecagon
+2 Polygon
+2 Kite
+2 Prism
+2 Torus|Donut
+2 Semicircle
+2 Quadrilateral
+2 Octahedron
+2 Tetrahedron
+2 Dodecahedron
+2 Icosahedron
+2 Hexagonal prism
+2 Teardrop
+2 Trefoil
+2 Arch`),
+    angle('norse_gods', 'history', 'category', 'Name a Norse god.', `
+1 Thor
+1 Odin
+1 Loki
+2 Freya|Freyja
+2 Frigg|Frigga
+2 Baldur|Balder
+2 Heimdall
+2 Tyr|Týr
+2 Hel
+2 Freyr|Frey
+2 Njord|Njörd
+2 Bragi
+2 Idun|Iðunn|Idunn
+2 Sif
+2 Vidar|Víðarr
+2 Vali
+2 Hodr|Hod|Höðr
+2 Ullr|Ull
+2 Forseti
+2 Skadi|Skaði
+2 Mimir
+2 Aegir|Ægir
+2 Ran|Rán
+2 Hermod
+2 Sol|Sól
+2 Mani|Máni`),
+    angle('computer_brands', 'tech', 'category', 'Name a computer brand.', `
+1 Apple|Mac
+1 Dell
+1 HP|Hewlett-Packard
+1 Lenovo
+1 Microsoft|Surface
+1 Acer
+1 Asus
+1 IBM
+2 Samsung
+2 Toshiba
+2 Sony|Vaio
+2 Compaq
+2 Gateway
+2 Alienware
+2 Razer
+2 MSI
+2 LG
+2 Google|Chromebook|Pixelbook
+2 Huawei
+2 Xiaomi
+2 Framework
+2 Fujitsu
+2 Panasonic|Toughbook
+2 Commodore
+2 Atari
+2 Packard Bell
+2 eMachines
+2 Sun Microsystems|Sun
+2 Silicon Graphics|SGI
+2 NeXT
+2 Tandy|Radio Shack
+2 Texas Instruments|TI
+2 Kaypro
+2 Osborne
+2 Amiga
+2 Sinclair
+2 Acorn
+2 Wang
+2 Digital Equipment Corporation|DEC
+2 Cray
+2 System76
+2 Origin PC
+2 CyberPowerPC
+2 Medion
+2 Clevo`),
   ];
 
 
