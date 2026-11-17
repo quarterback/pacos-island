@@ -104,7 +104,7 @@ const Engine = (() => {
   const FULL_DAY = 66000;
   const depth = (s) => Math.round(1400 * Math.pow(Math.min(s, FULL_DAY) / FULL_DAY, 2));
   function reached(trip, score) {
-    if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + ' m', depth: depth(score) };
+    if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + (depth(score) === 1 ? ' meter' : ' meters'), depth: depth(score) };
     const stops = TRIPS[trip].stops; let at = stops[0];
     for (const s of stops) if (score >= s[0]) at = s;
     const i = stops.indexOf(at), next = stops[i + 1] || null;

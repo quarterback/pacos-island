@@ -73,6 +73,26 @@ const Copy = {
   markAhead: '🏝️',
   share: (day, line, rows, rarity, speed, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\nTotal ${total}\nTime ${time}`,
 
+  // Endless mode: a new set of seven questions each round, with every trip open.
+  // Screens: docs/endless-mode-screens.md.
+  endless: {
+    modeLegend: 'Choose how to play',
+    daily: "Today's trip",
+    dailyNote: 'Seven questions, the same for everyone.',
+    name: 'Endless mode',
+    note: 'A new set of seven questions each round, with every trip open.',
+    start: (round) => `Start round ${round}`,
+    resume: (round) => `Finish round ${round}`,
+    progress: (round, i) => `Round ${round}, question ${i} of 7`,
+    sheetHead: (round) => `Round ${round}`,
+    passedMark: (mark, depth) => `You passed ${mark} at ${depth}.`,
+    again: 'Play another round',
+    changeTrip: 'Change trip',
+    tripLegend: (round) => `Choose a trip for round ${round}`,
+    leave: "Back to today's trip",
+    repeats: 'You have played every set of questions. The sets start over from here.',
+  },
+
   moveHeading: 'Move my progress',
   moveBody: 'Open this link on your other device. It brings your points, open trips and past days with it.',
   copyLink: 'Copy link',
