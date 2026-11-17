@@ -35,7 +35,7 @@
   function tidy() {
     const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
     for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
-    state.endless ||= { round: 0, rounds: {}, seen: [], repeated: false };
+    state.endless ||= { round: 0, rounds: {}, seen: [] };
     for (const k of Object.keys(state.endless.rounds)) if (!ok(state.endless.rounds[k])) delete state.endless.rounds[k];
     if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
   }
@@ -73,7 +73,6 @@
     const rough = prev && dayScore(prev) < 12000;
     const shape = state.level === 'paco' && (state.lifetime < 50000 || e.round < 3 || rough) ? 'starter' : state.level;
     const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, shape, ageOf, lastLists).map((q) => q.id);
-    if (!e.warned && set.some((id) => lastSeen.has(id))) { e.repeated = true; e.warned = true; }
     e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set); if (e.seen.length > 1400) e.seen = e.seen.slice(-1400);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
     save();
@@ -125,8 +124,6 @@
     $('modeDaily').textContent = Copy.endless.daily; $('modeDailyNote').textContent = Copy.endless.dailyNote;
     $('modeEndless').textContent = Copy.endless.name; $('modeEndlessNote').textContent = Copy.endless.note;
     $('mode-daily').checked = !endless; $('mode-endless').checked = endless;
-    $('repeatNote').textContent = endless && E().repeated ? Copy.endless.repeats : ''; $('repeatNote').hidden = !$('repeatNote').textContent;
-    if (endless && E().repeated) { E().repeated = false; save(); }
     $('leaveBtn').hidden = !picking; $('leaveBtn').textContent = Copy.endless.leave;
     const open = endless ? Object.keys(Engine.TRIPS) : Engine.opened(state.lifetime);
     const box = $('trips'); box.querySelectorAll('.trip').forEach((n) => n.remove());
@@ -153,6 +150,11 @@
   }
   for (const lv of ['paco', 'mario']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
   $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('mario'); });
+  // Music is off until the player turns it on; Music remembers the choice.
+  const musicBtn = $('musicBtn');
+  musicBtn.textContent = Copy.music;
+  musicBtn.setAttribute('aria-pressed', String(Music.isOn()));
+  musicBtn.addEventListener('click', () => { Music.toggle(); musicBtn.setAttribute('aria-pressed', String(Music.isOn())); });
   $('startBtn').addEventListener('click', () => {
     if (mode === 'endless' && roundDone()) newRound(state.trip);
     picking = false;
@@ -193,7 +195,8 @@
     $('answerBtn').textContent = Copy.answer;
     $('answerForm').hidden = false; $('answerInput').value = ''; $('answerInput').disabled = false; $('answerBtn').disabled = false;
     $('note').textContent = ''; $('note').className = 'note';
-    $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('skipBtn').hidden = true;
+    $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('cameo').hidden = true;
+    $('stumpedBtn').hidden = false; $('stumpedBtn').textContent = Copy.stumped; $('stumpedBtn').disabled = false;
     if (!rec.started[i]) { rec.started[i] = Date.now(); save(); }
     runClock(rec.started[i], secondsFor(rec));
     $('answerInput').focus();
@@ -211,26 +214,34 @@
     delete $('clock').dataset.said;
     draw(); timer = setInterval(draw, 100);
   }
-  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; $('skipBtn').hidden = true; }
+  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; $('stumpedBtn').hidden = true; }
   // When the clock runs out the question stays open in island time: no
   // clock, guessing goes on, a right answer earns a flat few points, and
-  // Skip moves on with none. A reload in island time comes back to it,
-  // since the start time is saved.
+  // Stumped still moves on with none. A reload in island time comes back to
+  // it, since the start time is saved.
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
     current.island = true;
     $('clock').classList.add('island'); $('clock').classList.remove('low');
     $('clockFill').style.width = '0%'; $('clockNum').textContent = Copy.islandTime;
     $('note').className = 'note'; $('note').textContent = Copy.islandNote;
-    $('skipBtn').textContent = Copy.skip; $('skipBtn').hidden = false;
   }
   const elapsed = (rec, i) => (Date.now() - rec.started[i]) / 1000;
-  $('skipBtn').addEventListener('click', () => {
+  // Stumped moves on with no points, in time or in island time, and counts
+  // as skipped. Mario and the parrot drop in.
+  $('stumpedBtn').addEventListener('click', () => {
     if (!current) return;
     const rec = today(); if (rec.answers.length !== current.i) return;
     lock();
     rec.answers.push({ pid: current.q.id, name: null, skip: true, points: 0, rarity: 0, speed: 0, secs: elapsed(rec, current.i) }); save();
     $('note').className = 'note'; $('note').textContent = '';
+    // Step through both lists so every line plays before one repeats.
+    const n = state.stumped = (state.stumped || 0) + 1; save();
+    $('cameoMario').textContent = Copy.stumpedMario[(n - 1) % Copy.stumpedMario.length];
+    $('cameoParrot').textContent = Copy.stumpedParrot[(n - 1) % Copy.stumpedParrot.length];
+    $('cameoParrotName').textContent = Copy.parrot;
+    if (!$('cameoMarioArt').firstChild) { $('cameoMarioArt').append(Art.mario(3)); $('cameoParrotArt').append(Art.parrot(3)); }
+    $('cameo').hidden = false;
     after(rec);
   });
   $('answerForm').addEventListener('submit', async (e) => {
@@ -286,7 +297,7 @@
     $('endNext').textContent = mark ? Copy.endless.passedMark('the ' + mark[1].replace(/^The /, '').replace(/^./, (c) => c.toLowerCase()), `${fmt(mark[0])} meters`)
       : rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
     // the score sheet, World Six style: every line adds up to the total
-    $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
+    $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead;
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, island = 0, secs = 0;
     questions.forEach((q, i) => {
@@ -302,7 +313,7 @@
       if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = a.island ? Copy.islandTime : `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
       const more = document.createElement('div'); more.className = 'more';
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
-      const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead(q.answers.length);
+      const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead;
       const all = document.createElement('ul'); all.className = 'all';
       const sh = Engine.shares(q);
       [...q.answers].sort((x, y) => sh[y.item.name] - sh[x.item.name] || x.item.name.localeCompare(y.item.name)).forEach((x) => {

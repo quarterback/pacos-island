@@ -21,4 +21,3 @@ In endless mode a player gets a new set of seven questions each round and can ta
 - Numbers one through nine are spelled out in sentences. Round and question numbers stay as figures.
 - Labels, buttons and fragments take no period. Only full sentences do.
 - Depths read "26 meters". `Engine.reached` now returns that form for the dive.
-- When a player has seen every set, show `Copy.endless.repeats` once on the next title or change trip screen.

@@ -37,6 +37,7 @@
       <p class="hud-where" id="tripWhere"></p>
       <p class="hud-score" id="tripScore">0</p>
     </div>
+    <button class="music-toggle" id="musicBtn" type="button" aria-pressed="false"></button>
   </div>
 
   <section id="title" class="screen" aria-labelledby="titleHead">
@@ -52,7 +53,6 @@
       <div class="mode"><input type="radio" name="mode" id="mode-daily" value="daily"><label for="mode-daily" id="modeDaily"></label><span class="mode-note" id="modeDailyNote"></span></div>
       <div class="mode"><input type="radio" name="mode" id="mode-endless" value="endless"><label for="mode-endless" id="modeEndless"></label><span class="mode-note" id="modeEndlessNote"></span></div>
     </fieldset>
-    <p class="note" id="repeatNote"></p>
     <fieldset class="trips" id="trips">
       <legend id="tripLegend"></legend>
     </fieldset>
@@ -81,14 +81,18 @@
     <div class="clock" id="clock">
       <div class="clock-track"><div class="clock-fill" id="clockFill"></div></div>
       <p class="clock-num" id="clockNum" aria-hidden="true"></p>
-      <button class="btn quiet" id="skipBtn" type="button" hidden></button>
     </div>
     <p class="note" id="note" role="status" aria-live="polite"></p>
+    <button class="btn stumped" id="stumpedBtn" type="button"></button>
     <div class="result" id="result" hidden>
       <p class="result-name" id="resultName"></p>
       <p class="result-pts" id="resultPts" aria-hidden="true"></p>
       <p class="result-split"><span id="resultRarity"></span> <span id="resultSpeed" class="speed"></span></p>
       <p class="sr" id="resultSay" role="status" aria-live="polite"></p>
+      <div class="cameo" id="cameo" hidden>
+        <div class="cameo-who"><span class="cameo-art" id="cameoMarioArt"></span><p><strong>Mario</strong> <span id="cameoMario"></span></p></div>
+        <div class="cameo-who parrot"><p><strong id="cameoParrotName"></strong> <span id="cameoParrot"></span></p><span class="cameo-art" id="cameoParrotArt"></span></div>
+      </div>
       <button class="btn primary wide" id="nextBtn" type="button"></button>
     </div>
   </section>
@@ -99,7 +103,6 @@
     <p class="end-note" id="endNext"></p>
 
     <h2 class="sub" id="sheetHead"></h2>
-    <p class="sheet-hint" id="sheetHint"></p>
     <ol class="sheet" id="sheet"></ol>
     <dl class="totals">
       <div><dt id="rarityLabel"></dt><dd id="rarityTotal"></dd></div>
@@ -166,6 +169,7 @@
 <script src="js/prompts.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/copy.js"></script>
+<script src="js/music.js"></script>
 <script src="js/art.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/app.js"></script>

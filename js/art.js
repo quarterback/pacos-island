@@ -107,6 +107,40 @@ const Art = (() => {
   // scale above 1 draws Paco larger and sharp, without the rim, for the app icon
   function paco(pose = 'stand', frame = 0, scale = 1) { const [c, g] = canvas(76 * scale, 44 * scale); g.scale(scale, scale); drawPaco(g, 0, 0, pose, frame); return scale === 1 ? rim(c) : c; }
 
+  // Mario on his own, whatever the current rider, for the Stumped card.
+  function mario(scale = 1) { const was = rider; rider = 'mario'; const c = paco('stand', 0, scale); rider = was; return c; }
+
+  // ---- Esmeralda --------------------------------------------------------
+  // Esmeralda, a great green macaw, on a perch facing left toward Mario. 40 x 52.
+  function drawParrot(g) {
+    const G = ['#D6F26A', '#9BD43C', '#6DB52E', '#3F8A2A', '#22562A'], B = ['#9EE6F0', '#3FB6D8', '#1E7FB0'];
+    // tail: long, green above with blue at the tip
+    poly(g, [[25, 33], [31, 33], [38, 51], [33, 52]], lin(g, 0, 33, 0, 52, [G[2], G[3], [0.7, B[1]], B[2]]));
+    // body
+    ell(g, 20, 29, 9.5, 13.5, lin(g, 0, 16, 0, 43, [G[0], G[1], [0.6, G[2]], G[3]]), -0.18);
+    // wing, its flight feathers blue
+    g.save(); g.beginPath(); g.ellipse(25, 30, 7, 12.5, -0.22, 0, TAU); g.closePath();
+    g.fillStyle = lin(g, 0, 18, 0, 43, [G[1], G[2], G[3]]); g.fill(); g.clip();
+    g.fillStyle = lin(g, 0, 34, 0, 44, [B[0], B[1], B[2]]); g.fillRect(16, 35, 18, 12);
+    for (let y = 24; y < 44; y += 3.2) line(g, [[19, y], [31, y + 2.4]], rgba(G[4], 0.35), 0.6);
+    g.restore();
+    // feet on the perch
+    for (const x of [16.5, 22.5]) { line(g, [[x, 41], [x - 1.4, 45.5]], '#5E6670', 1.6); line(g, [[x, 41], [x + 1.6, 45.5]], '#5E6670', 1.6); }
+    box(g, 0, 44.5, 40, 3.4, 1.7, lin(g, 0, 44, 0, 48, C.wood));
+    // head
+    ell(g, 16, 13, 8.4, 7.8, lin(g, 0, 5, 0, 21, [G[0], G[1], G[2]]));
+    ell(g, 10.5, 8.2, 4.6, 3.2, lin(g, 0, 5, 0, 11, ['#FF6A4D', '#E8221C', '#B5121A']), -0.3); // red forehead
+    ell(g, 13.2, 14.2, 4.3, 4.3, lin(g, 0, 10, 0, 19, ['#FAD3DD', '#E7A9BC'])); // bare pink face
+    for (let i = 0; i < 4; i++) line(g, [[10.5, 12.4 + i * 1.3], [15.6, 12.9 + i * 1.2]], rgba(C.ink, 0.45), 0.35);
+    ell(g, 14.3, 12.4, 1.5, 1.5, '#FFF4C7'); ell(g, 14.1, 12.4, 0.9, 1, C.ink); ell(g, 13.8, 12, 0.35, 0.35, C.white);
+    // hooked beak, dark grey
+    g.beginPath(); g.moveTo(10, 10.2); g.quadraticCurveTo(3, 10.6, 3.6, 18.6); g.quadraticCurveTo(6, 15.6, 9.6, 17); g.closePath();
+    g.fillStyle = lin(g, 3, 10, 10, 18, ['#6E7680', '#3A4048', '#1E2328']); g.fill();
+    g.beginPath(); g.moveTo(9.8, 16.4); g.quadraticCurveTo(6.4, 17, 6.8, 19.4); g.quadraticCurveTo(9.5, 19.4, 11, 17.4); g.closePath(); g.fillStyle = '#2A2F36'; g.fill();
+    ell(g, 6.2, 11.6, 1.6, 0.7, rgba('#FFFFFF', 0.3), -0.4);
+  }
+  function parrot(scale = 1) { const [c, g] = canvas(40 * scale, 52 * scale); g.scale(scale, scale); drawParrot(g); return c; }
+
   // Paco in a panga with an outboard motor. 132 x 60.
   function boat(frame = 0) {
     const [c, g] = canvas(130, 58);
@@ -577,5 +611,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();
