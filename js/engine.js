@@ -77,8 +77,8 @@ const Engine = (() => {
   // almost no bonus. There is no whole-day multiplier.
   const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65, SPEED_MAX = 1.5, TAU = 10;
   const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
-  // Levels. Carlos's mode, the easier one, gives more time and pays half.
-  const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, carlos: { seconds: 35, pay: 0.5 } };
+  // Levels. Mario's mode, the easier one, gives more time and pays half.
+  const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, mario: { seconds: 35, pay: 0.5 } };
   function score(c, seconds, level = 'paco') {
     const R = rarityPoints(c), q = R / RARITY_MAX, pay = LEVELS[level].pay;
     const b = SPEED_MAX * q ** 3 * Math.exp(-Math.max(0, seconds) / TAU);

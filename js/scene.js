@@ -91,7 +91,7 @@ const Scene = (() => {
   }
 
   function score(s, instant) { target = s; if (instant || reduced) current = s; }
-  // Redraw the rider, after Art.setRider switches between Paco and Carlos.
+  // Redraw the rider, after Art.setRider switches between Paco and Mario.
   function refresh() { if (ready) setTrip(trip, true); }
   return { init, setTrip, score, refresh, get ready() { return ready; } };
 })();

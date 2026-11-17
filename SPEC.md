@@ -53,9 +53,9 @@ A question spells out an acronym the first time it uses it: "a National Football
 The title screen offers two levels:
 
 - **Paco's mode** is the full game: two openers, three medium and two hard questions, 25 seconds each, full points.
-- **Carlos's mode** is the easier one. Carlos is Paco's iguana twin brother and his rival on the island; he wears a red cap, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 35 seconds, and every score is halved.
+- **Mario's mode** is the easier one. Mario is Paco's iguana twin brother and his rival on the island; he is teal with an orange bandana, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 35 seconds, and every score is halved.
 
-Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer, the end screen suggests Carlos's mode. Shares from Carlos's mode say so: "Paco's Island, day 1, Carlos's mode." The level is locked while a set is under way.
+Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer, the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
 
 ### A set of seven
 

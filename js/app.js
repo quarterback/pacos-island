@@ -26,12 +26,12 @@
   // ---- the day's set and endless rounds ----
   // Every record keeps its question ids. Records from before the question
   // pool changed have none; their points stay in lifetime and the records go.
-  // Levels: Paco's mode, or Carlos's easier mode. Each daily level has its
+  // Levels: Paco's mode, or Mario's easier mode. Each daily level has its
   // own set and record; endless rounds keep the level they were played at.
   const newRecord = (qids, trip, level) => ({ trip, level, qids, answers: [], started: {}, done: false, counted: false });
-  const levelOf = (rec) => (rec && rec.level === 'carlos' ? 'carlos' : 'paco');
+  const levelOf = (rec) => (rec && rec.level === 'mario' ? 'mario' : 'paco');
   const secondsFor = (rec) => Engine.LEVELS[levelOf(rec)].seconds;
-  const dayKey = () => (state.level === 'carlos' ? `${day}c` : String(day));
+  const dayKey = () => (state.level === 'mario' ? `${day}m` : String(day));
   function tidy() {
     const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
     for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
@@ -40,6 +40,10 @@
     if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
   }
   tidy();
+  // Saves from when the easier level was briefly called Carlos's mode
+  if (state.level === 'carlos') state.level = 'mario';
+  for (const [k, r] of Object.entries(state.days)) { if (r.level === 'carlos') r.level = 'mario'; if (k.endsWith('c')) { state.days[k.slice(0, -1) + 'm'] = r; delete state.days[k]; } }
+  for (const r of Object.values(state.endless.rounds)) if (r.level === 'carlos') r.level = 'mario';
   state.level ||= 'paco';
   Art.setRider(state.level);
   if (TEST_MODE && state.mode === 'endless') mode = 'endless';
@@ -89,18 +93,18 @@
   // ---- title ----
   function showTitle() {
     $('titleHead').textContent = Copy.title;
-    $('intro').textContent = state.level === 'carlos' ? Copy.carlosIntro : Copy.intro;
+    $('intro').textContent = state.level === 'mario' ? Copy.marioIntro : Copy.intro;
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
     const endless = mode === 'endless';
     const rec = endless ? (roundDone() ? null : roundRec()) : state.days[dayKey()];
-    // level: Paco's mode or Carlos's mode, locked once a set is under way
+    // level: Paco's mode or Mario's mode, locked once a set is under way
     $('levels').hidden = picking;
     $('levelLegend').textContent = Copy.level.legend;
     $('levelPaco').textContent = Copy.level.paco; $('levelPacoNote').textContent = Copy.level.pacoNote;
-    $('levelCarlos').textContent = Copy.level.carlos; $('levelCarlosNote').textContent = Copy.level.carlosNote;
-    for (const lv of ['paco', 'carlos']) { const r = $('level-' + lv); r.checked = state.level === lv; r.disabled = !!(rec && rec.answers.length && !rec.done); }
+    $('levelMario').textContent = Copy.level.mario; $('levelMarioNote').textContent = Copy.level.marioNote;
+    for (const lv of ['paco', 'mario']) { const r = $('level-' + lv); r.checked = state.level === lv; r.disabled = !!(rec && rec.answers.length && !rec.done); }
     const nextN = E().round + (roundDone() ? 1 : 0);
     $('tripLegend').textContent = picking ? Copy.endless.tripLegend(nextN) : Copy.tripLegend;
     for (const id of ['titleHead', 'intro', 'how', 'credit']) $(id).hidden = picking;
@@ -135,8 +139,8 @@
   function setLevel(lv) {
     state.level = lv; save(); Art.setRider(lv); Scene.refresh(); showTitle();
   }
-  for (const lv of ['paco', 'carlos']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
-  $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('carlos'); });
+  for (const lv of ['paco', 'mario']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
+  $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('mario'); });
   $('startBtn').addEventListener('click', () => {
     if (mode === 'endless' && roundDone()) newRound(state.trip);
     picking = false;
@@ -241,8 +245,8 @@
   function showEnd() {
     const rec = today(), score = dayScore(rec), r = Engine.reached(rec.trip, score);
     swap('end'); tripBar(rec);
-    // Carlos takes the trip in his mode
-    const who = (line) => (levelOf(rec) === 'carlos' ? line.replace(/^Paco/, 'Carlos') : line);
+    // Mario takes the trip in his mode
+    const who = (line) => (levelOf(rec) === 'mario' ? line.replace(/^Paco/, 'Mario') : line);
     const headline = who(rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label));
     $('endHead').textContent = headline;
     const endless = mode === 'endless';
@@ -292,10 +296,10 @@
     $('changeTripBtn').hidden = !endless; $('leaveEndBtn').hidden = !endless;
     $('againBtn').classList.toggle('primary', endless); $('againBtn').classList.toggle('quiet', !endless);
     $('share').hidden = endless;
-    // A rough set in Paco's mode suggests Carlos's easier one: under 12,000
+    // A rough set in Paco's mode suggests Mario's easier one: under 12,000
     // points, or three or more questions with no answer.
     const rough = levelOf(rec) === 'paco' && (score < 12000 || rec.answers.filter((x) => !x.name).length >= 3);
-    $('suggest').hidden = !rough; $('suggestText').textContent = Copy.suggestCarlos; $('suggestBtn').textContent = Copy.playCarlos;
+    $('suggest').hidden = !rough; $('suggestText').textContent = Copy.suggestMario; $('suggestBtn').textContent = Copy.playMario;
     // Earlier rounds: one line per finished round before this one, newest
     // first, never added up. Left out after round 1.
     const earlier = endless ? Object.keys(E().rounds).map(Number).filter((n) => n < E().round && E().rounds[n].done).sort((x, y) => y - x) : [];
@@ -308,8 +312,8 @@
       li.append(a, b); $('earlierList').append(li);
     }
     const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
-    const line = headline.replace(/^(Paco|Carlos) (got|walked|drove|took) you/, '$1 $2 me');
-    $('shareText').textContent = Copy.share(levelOf(rec) === 'carlos' ? `${day}, ${Copy.carlosTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
+    const line = headline.replace(/^(Paco|Mario) (got|walked|drove|took) you/, '$1 $2 me');
+    $('shareText').textContent = Copy.share(levelOf(rec) === 'mario' ? `${day}, ${Copy.marioTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();

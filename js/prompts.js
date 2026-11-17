@@ -280,16 +280,16 @@ const Prompts = (() => {
   // Two openers, three medium, two hard. Each question comes from a different
   // list, no subject takes more than its share, and at most three of the
   // seven are letter questions.
-  // Carlos's mode, the easier level, runs two openers and five easy ones.
+  // Mario's mode, the easier level, runs two openers and five easy ones.
   const SHAPE = ['opener', 'opener', 'medium', 'medium', 'medium', 'hard', 'hard'];
-  const CARLOS_SHAPE = ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'];
+  const MARIO_SHAPE = ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'];
   const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
   for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
-  // Carlos skips letter counting and "has no letter" rules.
+  // Mario skips letter counting and "has no letter" rules.
   byLevel.gentle = [...byLevel.easy.filter((q) => q.kind === 'list' || simple(q)), ...byLevel.opener];
   byLevel.medium.push(...byLevel.easy);
   function makeSet(seed, avoid = new Set(), level = 'paco') {
-    const shape = level === 'carlos' ? CARLOS_SHAPE : SHAPE;
+    const shape = level === 'mario' ? MARIO_SHAPE : SHAPE;
     const r = rng(seed);
     const lists = new Set(), subjects = {}; let letterCount = 0;
     const set = [];
@@ -333,12 +333,12 @@ const Prompts = (() => {
     }
     return days;
   };
-  const DAYS = buildDays('paco', 20261117), CARLOS_DAYS = buildDays('carlos', 20261118);
+  const DAYS = buildDays('paco', 20261117), MARIO_DAYS = buildDays('mario', 20261118);
 
   const byId = new Map(pool.map((q) => [q.id, q]));
-  const forDay = (n, level = 'paco') => (level === 'carlos' ? CARLOS_DAYS : DAYS)[(n - 1) % DAYS.length];
+  const forDay = (n, level = 'paco') => (level === 'mario' ? MARIO_DAYS : DAYS)[(n - 1) % DAYS.length];
   const get = (id) => byId.get(id);
   const universe = (id) => UNI[id];
-  return { pool, DAYS, CARLOS_DAYS, forDay, makeSet, get, universe, norm, letters };
+  return { pool, DAYS, MARIO_DAYS, forDay, makeSet, get, universe, norm, letters };
 })();
 if (typeof module !== 'undefined') module.exports = Prompts;
