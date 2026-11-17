@@ -12,7 +12,8 @@ const Copy = {
   how: [
     'Type a right answer before time runs out. Wrong guesses cost only time.',
     "When the clock runs out, it's island time. Keep guessing for a few points, or press Stumped.",
-    'Rarer answers earn more points, up to 20,000.',
+    'Rarer answers earn more points, up to 108,000.',
+    'Your marks: 🐚 common, 🦀 uncommon, 🐢 rare, 🦎 a deep cut, 🥥 island time, 🌊 no answer.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
   ],
   tripLegend: 'Choose a trip',
@@ -21,6 +22,24 @@ const Copy = {
   resume: "Finish today's trip",
   seeResults: "See today's results",
   home: 'Home',
+  // Your scores: every finished day on this device
+  scores: {
+    link: 'Your scores',
+    head: 'Your scores',
+    back: 'Back',
+    none: "Finish a day's trip and its score shows up here.",
+    played: 'Days played',
+    streak: 'Current streak',
+    best: 'Best streak',
+    bestDay: 'Best day',
+    average: 'Average',
+    lifetime: 'Lifetime points',
+    days: (n) => `${n.toLocaleString('en-US')} ${n === 1 ? 'day' : 'days'}`,
+    everyDay: 'Every day',
+    mario: "Mario's mode",
+  },
+  // iPhone Safari deletes a site's saved data after seven days without a visit
+  keepTip: "Safari deletes saved scores after seven days without a visit. Add Paco's Island to your Home Screen to keep them.",
   credit: 'A game by Ron Bronson',
   music: 'Music',
 
@@ -101,6 +120,11 @@ const Copy = {
   unlocked: (trip) => `You opened the ${trip}. Pick it on tomorrow's trip.`,
   tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', market: 'night market', fly: 'flight', dive: 'dive' },
   copyResult: 'Copy my result',
+  // the benchmark: a field of simulated players on the same questions
+  beat: (n) => `Better than ${n}% of simulated players`,
+  beatShort: (n) => `better than ${n}%`,
+  // the key to the marks, with that level's thresholds
+  markKey: (t) => ['🌊 No answer', `🐚 Under ${t[0]}`, `🦀 Under ${t[1]}`, `🐢 Under ${t[2]}`, `🦎 ${t[2]} and up`, '🥥 Island time'],
   copied: 'Copied',
   copyFailed: 'Your browser blocked copying. Select the text above and copy it.',
   noAnswer: 'No answer',
@@ -109,7 +133,7 @@ const Copy = {
   apTime: (d) => { const h = d.getHours(), m = d.getMinutes(); if (!m && h === 0) return 'midnight'; if (!m && h === 12) return 'noon'; return `${h % 12 || 12}${m ? ':' + String(m).padStart(2, '0') : ''} ${h < 12 ? 'a.m.' : 'p.m.'}`; },
   comeBack: (time) => `New questions at ${time} your time`,
 
-  // Share marks, from no answer to 20,000 points and up.
+  // Share marks, from no answer to a deep cut. Thresholds live in app.js (bucket).
   // Island time answers get the coconut; skips get the wave.
   marks: ['🌊', '🐚', '🦀', '🐢', '🦎'],
   islandMark: '🥥',
@@ -153,8 +177,8 @@ const Copy = {
     leave: "Back to today's trip",
   },
 
-  moveHeading: 'Play on another device',
-  moveBody: 'Open this link on your other device to bring your points and trips.',
+  moveHeading: 'Back up your scores',
+  moveBody: 'Save this link somewhere safe, or open it on another device. It brings your scores, points and trips.',
   copyLink: 'Copy link',
   close: 'Close',
   importHeading: 'Use the points from your other device?',

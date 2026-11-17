@@ -67,6 +67,7 @@
       <legend id="tripLegend"></legend>
     </fieldset>
     <button class="btn primary wide" id="startBtn" type="button"></button>
+    <button class="text-link" id="scoresBtn" type="button"></button>
     <button class="text-link" id="leaveBtn" type="button" hidden></button>
     <details class="how" id="how">
       <summary id="howHead"></summary>
@@ -121,11 +122,15 @@
       <div class="grand"><dt id="totalLabel"></dt><dd id="grandTotal"></dd></div>
       <div><dt id="timeLabel"></dt><dd id="timeTotal"></dd></div>
     </dl>
+    <p class="beat" id="endBeat"></p>
     <p class="end-note" id="endLifetime"></p>
     <p class="end-note" id="endUnlock"></p>
+    <p class="keep-tip" id="endKeep" hidden></p>
+    <button class="text-link" id="endScoresBtn" type="button"></button>
 
     <div class="share" id="share">
       <pre class="share-text" id="shareText"></pre>
+      <p class="mark-key" id="markKey"></p>
       <div class="share-actions">
         <button class="btn primary" id="copyBtn" type="button"></button>
         <button class="btn quiet" id="moveBtn" type="button"></button>
@@ -150,6 +155,17 @@
     </div>
 
     <p class="credit" id="comeBack"></p>
+  </section>
+
+  <section id="scores" class="screen" hidden aria-labelledby="scoresHead">
+    <button class="text-link home-link" id="scoresBack" type="button"></button>
+    <h1 class="end-head" id="scoresHead" tabindex="-1"></h1>
+    <p class="end-note" id="scoresNone"></p>
+    <dl class="totals" id="scoresStats"></dl>
+    <h2 class="sub" id="scoresDaysHead"></h2>
+    <ol class="sheet" id="scoresList"></ol>
+    <p class="keep-tip" id="scoresKeep" hidden></p>
+    <button class="btn quiet wide" id="backupBtn" type="button"></button>
   </section>
 </main>
 

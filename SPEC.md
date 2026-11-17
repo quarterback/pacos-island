@@ -57,7 +57,7 @@ The title screen offers two levels:
 - **Paco's mode** is the full game: two openers, three medium and two hard questions, 25 seconds each, full points.
 - **Mario's mode** is the easier one. Mario is Paco's iguana twin brother and his rival on the island; he is teal with an orange bandana, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 40 seconds, and every score is halved.
 
-Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer in time (skipped or answered in island time), the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
+Each level has its own daily set. After a rough set in Paco's mode, under 64,800 points or three or more questions with no answer in time (skipped or answered in island time), the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
 
 ### A set of seven
 
@@ -110,7 +110,7 @@ From the shares, **c** is how common your answer is: the shares of the right ans
 
 ### Rarity points
 
-R = 20,000 × e^(−(c ÷ 0.231)^0.65)
+R = 108,000 × e^(−(c ÷ 0.231)^0.65)
 
 This is World Six's distance curve with c in place of miles. It is smooth, with no bands, and it falls steeply near the top, so a slightly rarer answer still moves the number. The most familiar answer earns about 1,500. An answer at c = 0.1 earns about 11,200, and one at c = 0.02 earns about 16,300. The least familiar answers on long lists come close to 20,000.
 
@@ -119,7 +119,7 @@ This is World Six's distance curve with c in place of miles. It is smooth, with 
 Every right answer on the clock earns a speed bonus, common answers included. It holds full for 5 seconds, falls sharply after 10 and is close to 0 by 15:
 
 - f = 1 for t up to 5 seconds, then e^(−((t − 5) ÷ 7)³), where t is seconds from the question appearing to the accepted answer. f is 0.92 at 8 seconds, 0.70 at 10, 0.37 at 12, 0.05 at 15 and 0 by 20.
-- speed = f × (1,500 + 0.25 × R)
+- speed = f × (8,100 + 0.25 × R)
 - total = round(R + speed), rarity = round(R), speed = total − rarity. Mario's mode halves both.
 
 A fast answer to an easy question more than doubles its points, and the bonus still grows with rarity. Rarity matters most: a rare answer given slowly beats a common answer given fast, and a middle answer given slowly beats the most familiar answer given fast. Wrong guesses before the right one cost only the time they take. Island time answers get no speed bonus.
@@ -128,20 +128,22 @@ A fast answer to an easy question more than doubles its points, and the bonus st
 
 | Answer | Time | Rarity | Speed | Total |
 | --- | ---: | ---: | ---: | ---: |
-| The most common answer | 3 s | 1,497 | 1,875 | 3,372 |
-| Middle of the pack (c = 0.5) | 5 s | 3,834 | 2,458 | 6,292 |
-| Middle of the pack (c = 0.5) | 12 s | 3,834 | 904 | 4,738 |
-| Uncommon (c = 0.1) | 5 s | 11,195 | 4,298 | 15,493 |
-| Rare (c = 0.02) | 5 s | 16,312 | 5,578 | 21,890 |
-| Rare (c = 0.02) | 12 s | 16,312 | 2,052 | 18,364 |
-| Rare (c = 0.02) | 20 s | 16,312 | 0 | 16,312 |
-| Any answer in island time | over 25 s | 0 | 0 | 500 |
+| The most common answer | 3 s | 8,085 | 10,121 | 18,206 |
+| Middle of the pack (c = 0.5) | 5 s | 20,702 | 13,276 | 33,978 |
+| Middle of the pack (c = 0.5) | 12 s | 20,702 | 4,884 | 25,586 |
+| Uncommon (c = 0.1) | 5 s | 60,451 | 23,213 | 83,664 |
+| Rare (c = 0.02) | 5 s | 88,083 | 30,120 | 118,203 |
+| Rare (c = 0.02) | 12 s | 88,083 | 11,080 | 99,163 |
+| Rare (c = 0.02) | 20 s | 88,083 | 1 | 88,084 |
+| Any answer in island time | over 25 s | 0 | 0 | 2,700 |
 
 ### The day
 
 A day's score is the sum of the seven question scores. As in World Six, the end screen shows every question's rarity and speed points, then the rarity total, the speed total, an island time total when there is one, the grand total and the total time, and the lines add up. Island time rows read "Island time" in place of the rarity and speed split, and skips read "Skipped." The total time counts island time in full. Each question has one row there. Selecting a row opens its question and every right answer with the rarity points each one earns, so nothing on the screen is listed twice. There is no whole-day multiplier.
 
-With the World Six speed bonus, a simulation of players across the question pool put the middle day at about 32,000 and the top tenth past 52,000. The spread out speed bonus raises days by about 30% for a player who answers in 3 to 17 seconds (middle day about 37,500, top tenth about 54,000) and by about 50% for a player who answers every question within 8 seconds. A question can score up to 26,500 in theory, with the least familiar answer on a long list in the first 5 seconds.
+Points use a pinball scale: every value is the original World Six style scale times 5.4 (`POINTS` in `js/engine.js`), so a question can score up to 143,100 and a perfect day comes to 1,001,700. Real scores land wherever they land; nothing is rounded to make them tidy.
+
+There is no fixed "typical day." Instead the end screen benchmarks each run against a field of 1,000 simulated players on the same seven questions: "Better than 73% of simulated players." Each simulated player gives an answer as often as real players would (its share), misses about one question in eight and answers in 3 to 17 seconds. The field is seeded by the set, so every player's run on the same set is measured against the same field, and endless rounds get a field for their own set. Your scores shows the same figure for every past day. On a sample day the field's middle score was about 155,000, its top tenth started near 224,000 and its best was about 342,000.
 
 ## Trips
 
@@ -149,12 +151,12 @@ Your trip shows the day's score as a place. Trips open with lifetime points and 
 
 | Trip | Opens at | What the score moves |
 | --- | --- | --- |
-| Boat to Paco's Island | Start | Along the water taxi route: the Ixtaluz pier (0), Peñas Cantoras (7,000), Boca Tamarilla (13,500), Caleta Pochota (20,000), Playa Ondarena (27,000), Pueblo Tilmeca (35,000), Playa Zinzuna (44,000), Paco's Island (54,000) |
-| Walk to Cascada Ixtalita | 50,000 lifetime points | On foot up from the island's beach through the village: the beach (0), the church plaza (9,000), the river bridge (18,000), the mural stairs (27,000), the cobblestone lane (36,000), the craft stalls (45,000), Cascada Ixtalita (54,000) |
-| ATV across Paco's Island | 110,000 lifetime points | Up from the island's beach: the beach (0), the village (11,000), the river (22,500), the waterfall (33,500), the jungle trail (44,000), the upper waterfall (54,000) |
-| Night market in Pueblo Tilmeca | 200,000 lifetime points | On foot down the market street at night, under strings of lights: past places to eat and bars all along it: the bus stop (0), the taco stand (9,000), the empanada seller (18,000), the corner bar (27,000), the clothing shops (36,000), the souvenir shops (45,000), the church steps (54,000) |
-| Fly with Esmeralda | 300,000 lifetime points | Esmeralda, the great green macaw, carries Paco over the bay, with the boat route far below: the Ixtaluz lighthouse (0), Peñas Cantoras (9,000), Boca Tamarilla (18,000), Playa Ondarena (27,000), Pueblo Tilmeca (36,000), Paco's Island (45,000), Esmeralda's nest in a ceiba tree (54,000) |
-| Dive into Bahía Ixtaluz | 450,000 lifetime points | Down: depth = 1,400 m × (score ÷ 66,000)². The reef at Peñas Cantoras and the old ferry wreck (41 m) come early, and the canyon floor is a 66,000 point day. |
+| Boat to Paco's Island | Start | Along the water taxi route: the Ixtaluz pier (0), Peñas Cantoras (37,800), Boca Tamarilla (72,900), Caleta Pochota (108,000), Playa Ondarena (145,800), Pueblo Tilmeca (189,000), Playa Zinzuna (237,600), Paco's Island (291,600) |
+| Walk to Cascada Ixtalita | 270,000 lifetime points | On foot up from the island's beach through the village: the beach (0), the church plaza (48,600), the river bridge (97,200), the mural stairs (145,800), the cobblestone lane (194,400), the craft stalls (243,000), Cascada Ixtalita (291,600) |
+| ATV across Paco's Island | 594,000 lifetime points | Up from the island's beach: the beach (0), the village (59,400), the river (121,500), the waterfall (180,900), the jungle trail (237,600), the upper waterfall (291,600) |
+| Night market in Pueblo Tilmeca | 1,080,000 lifetime points | On foot down the market street at night, under strings of lights: past places to eat and bars all along it: the bus stop (0), the taco stand (48,600), the empanada seller (97,200), the corner bar (145,800), the clothing shops (194,400), the souvenir shops (243,000), the church steps (291,600) |
+| Fly with Esmeralda | 1,620,000 lifetime points | Esmeralda, the great green macaw, carries Paco over the bay, with the boat route far below: the Ixtaluz lighthouse (0), Peñas Cantoras (48,600), Boca Tamarilla (97,200), Playa Ondarena (145,800), Pueblo Tilmeca (194,400), Paco's Island (243,000), Esmeralda's nest in a ceiba tree (291,600) |
+| Dive into Bahía Ixtaluz | 2,430,000 lifetime points | Down: depth = 1,400 m × (score ÷ 356,400)². The reef at Peñas Cantoras and the old ferry wreck (41 m) come early, and the canyon floor is a 356,400 point day. |
 
 At a typical day's score, the walk opens around day 2, the ATV around day 3 and the dive around day 11. The market and the flight open between the ATV and the dive; their stops use the walk's spacing. (Before the speed bonus was spread out, the ATV took about four days and the dive about 14.)
 
@@ -176,7 +178,7 @@ Every place is invented: Bahía Ixtaluz, the town of Puerto Ixtaluz and its pier
 
 - Where Paco got you ("Paco got you to Pueblo Tilmeca."), with the day's score and your lifetime points.
 - How far the next stop was, and how many points until the next trip opens.
-- Share text in World Six's format: the day, where Paco got you, one line per question with an island mark and its points (🌊 skipped or no answer, 🥥 answered in island time, 🐚 under 5,000, 🦀 5,000 to 11,999, 🐢 12,000 to 19,999, 🦎 20,000 and up), then rarity, speed, island time when there is any, total and time. No link.
+- Share text in World Six's format: the day, where Paco got you, one line per question with an island mark and its points (🌊 skipped or no answer, 🥥 answered in island time, 🐚 under 27,000, 🦀 under 64,800, 🐢 under 108,000, 🦎 108,000 and up; half those in Mario's mode), then rarity, speed, island time when there is any, total and time. No link.
 - Every question with your answer, and a list of every right answer, most familiar first, with the rarity points each one is worth.
 - The same marks show in the score sheet and in the row of seven during play, where questions still ahead show 🏝️.
 

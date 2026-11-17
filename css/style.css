@@ -63,6 +63,18 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .btn.splash-start { min-height: 60px; font-size: 21px; }
 .text-link.splash-how { display: inline-block; margin-top: 12px; }
 .splash-credit { margin: 14px 0 0; font-size: 15px; color: var(--mist); }
+.beat { margin: 0 0 10px; font-weight: 600; font-size: 18px; color: var(--sun); }
+.beat:empty { display: none; }
+.mark-key { margin: 8px 0 16px; font-size: 14px; line-height: 1.6; color: var(--mist); }
+.mark-key span { white-space: nowrap; }
+.keep-tip { margin: 16px 0 0; padding: 12px 14px; border-radius: 8px; background: var(--bay-deep); color: var(--foam); font-size: 15px; }
+.keep-tip + .btn { margin-top: 16px; }
+#scores .totals { margin-top: 8px; }
+#scores .sheet .when { font-weight: 600; }
+#scores .sheet .what { grid-column: 2 / 4; font-size: 14px; color: var(--mist); }
+#scores .day-row { display: grid; grid-template-columns: 16px 1fr auto; gap: 2px 12px; align-items: baseline; padding: 4px 0; font-size: 15px; }
+#scores .day-row .q { grid-column: 2 / 4; color: var(--mist); font-size: 13px; }
+#backupBtn { margin-top: 24px; }
 .music-toggle { position: absolute; right: 10px; bottom: 10px; min-height: 36px; padding: 6px 12px; border: 2px solid var(--mist); border-radius: 6px; background: var(--ink); color: var(--foam); font: 500 14px/1 var(--read); cursor: pointer; }
 .music-toggle[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--ink); }
 .music-toggle:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }

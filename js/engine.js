@@ -103,19 +103,24 @@ const Engine = (() => {
   //   c  = how common your answer is: the shares of the right answers as
   //        familiar as yours or more (1 for the most familiar, near 0 for
   //        the least familiar on a long list)
-  //   R  = 20,000 x e^(-(c / 0.231)^0.65)           rarity points
+  //   R  = 108,000 x e^(-(c / 0.231)^0.65)          rarity points
   // The speed bonus pays every right answer, common ones included, and
   // grows with rarity:
   //   f  = 1 through 5 seconds, then e^(-((t - 5) / 7)^3)
   //        (0.70 at 10 seconds, 0.05 at 15, near 0 by 20)
-  //   speed = f x (1,500 + 0.25 x R)
+  //   speed = f x (8,100 + 0.25 x R)
   //   total = round(R + speed); rarity = round(R); speed = total - rarity
   // A rare answer given slowly still beats a common answer given fast.
-  // Island time: after the clock runs out, a right answer earns a flat 500
+  // Island time: after the clock runs out, a right answer earns a flat 2,700
   // with no rarity or speed points. Only a skip scores 0. The level's pay
-  // applies to both. There is no whole-day multiplier.
-  const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65;
-  const SPEED_FLAT = 1500, SPEED_SHARE = 0.25, HOLD = 5, FADE = 7, ISLAND = 500;
+  // applies to both. There is no whole-day multiplier. A question tops out
+  // at 143,100 and a perfect day at 1,001,700.
+  // Pinball scale: every point value is the original scale times POINTS, so
+  // a perfect day comes to about a million (1,001,700) and real scores land
+  // wherever they land. Change POINTS to rescale the whole game.
+  const POINTS = 5.4, pt = (n) => Math.round(n * POINTS);
+  const SECONDS = 25, RARITY_MAX = pt(20000), SCALE = 0.231, SHAPE = 0.65;
+  const SPEED_FLAT = pt(1500), SPEED_SHARE = 0.25, HOLD = 5, FADE = 7, ISLAND = pt(500);
   const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
   const speedFactor = (seconds) => { const t = Math.max(0, seconds - HOLD) / FADE; return Math.exp(-t * t * t); };
   // Levels. Mario's mode, the easier one, gives more time and pays half.
@@ -127,6 +132,35 @@ const Engine = (() => {
     return { total, rarity, speed: total - rarity };
   }
   const islandScore = (level = 'paco') => ({ total: Math.round(ISLAND * LEVELS[level].pay), rarity: 0, speed: 0 });
+  // ---- the benchmark ----
+  // A field of simulated players on one set of questions. Each gives an
+  // answer as often as players would (its share), misses about one question
+  // in eight and answers in 3 to 17 seconds. The field is seeded by its key,
+  // so everyone's run on the same set is measured against the same players.
+  const FIELD = 1000, MISS = 0.12, fields = new Map();
+  function field(qs, level, key) {
+    const k = `${key}|${level}`; if (fields.has(k)) return fields.get(k);
+    let h = 2166136261; for (const ch of k) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
+    let st = h >>> 0; const rnd = () => { st = (Math.imul(st, 1664525) + 1013904223) >>> 0; return st / 4294967296; };
+    const prepared = qs.map((q) => { const sh = shares(q); return q.answers.map((a) => ({ share: sh[a.item.name], c: commonness(sh, a.item.name).c })); });
+    const out = [];
+    for (let i = 0; i < FIELD; i++) {
+      let total = 0;
+      for (const opts of prepared) {
+        if (rnd() < MISS) continue;
+        let r = rnd(), pick = opts[opts.length - 1];
+        for (const o of opts) { r -= o.share; if (r <= 0) { pick = o; break; } }
+        total += score(pick.c, 3 + rnd() * 14, level).total;
+      }
+      out.push(total);
+    }
+    out.sort((x, y) => x - y);
+    fields.set(k, out);
+    return out;
+  }
+  // The share of the field a score beats, as a whole percent, 0 to 99.
+  function beats(sorted, total) { let lo = 0, hi = sorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] < total) lo = m + 1; else hi = m; } return Math.min(99, Math.floor((lo / sorted.length) * 100)); }
+
   function commonness(sh, name) {
     const mine = sh[name]; let more = 0;
     for (const k in sh) if (sh[k] > mine + 1e-9) more += sh[k];
@@ -139,20 +173,20 @@ const Engine = (() => {
   // and about one day in ten reaches the island.
   const TRIPS = {
     boat: { id: 'boat', name: "Boat to Paco's Island", opens: 0, stops: [
-      [0, 'the Ixtaluz pier'], [7000, 'Peñas Cantoras'], [13500, 'Boca Tamarilla'], [20000, 'Caleta Pochota'], [27000, 'Playa Ondarena'], [35000, 'Pueblo Tilmeca'], [44000, 'Playa Zinzuna'], [54000, "Paco's Island"]] },
-    walk: { id: 'walk', name: 'Walk to Cascada Ixtalita', opens: 50000, stops: [
-      [0, 'the beach'], [9000, 'the church plaza'], [18000, 'the river bridge'], [27000, 'the mural stairs'], [36000, 'the cobblestone lane'], [45000, 'the craft stalls'], [54000, 'Cascada Ixtalita']] },
-    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 110000, stops: [
-      [0, 'the beach'], [11000, 'the village'], [22500, 'the river'], [33500, 'the waterfall'], [44000, 'the jungle trail'], [54000, 'the upper waterfall']] },
+      [0, 'the Ixtaluz pier'], [pt(7000), 'Peñas Cantoras'], [pt(13500), 'Boca Tamarilla'], [pt(20000), 'Caleta Pochota'], [pt(27000), 'Playa Ondarena'], [pt(35000), 'Pueblo Tilmeca'], [pt(44000), 'Playa Zinzuna'], [pt(54000), "Paco's Island"]] },
+    walk: { id: 'walk', name: 'Walk to Cascada Ixtalita', opens: pt(50000), stops: [
+      [0, 'the beach'], [pt(9000), 'the church plaza'], [pt(18000), 'the river bridge'], [pt(27000), 'the mural stairs'], [pt(36000), 'the cobblestone lane'], [pt(45000), 'the craft stalls'], [pt(54000), 'Cascada Ixtalita']] },
+    atv: { id: 'atv', name: "ATV across Paco's Island", opens: pt(110000), stops: [
+      [0, 'the beach'], [pt(11000), 'the village'], [pt(22500), 'the river'], [pt(33500), 'the waterfall'], [pt(44000), 'the jungle trail'], [pt(54000), 'the upper waterfall']] },
     // The market and the flight use the walk's spacing between stops.
-    market: { id: 'market', name: 'Night market in Pueblo Tilmeca', opens: 200000, stops: [
-      [0, 'the bus stop'], [9000, 'the taco stand'], [18000, 'the empanada seller'], [27000, 'the corner bar'], [36000, 'the clothing shops'], [45000, 'the souvenir shops'], [54000, 'the church steps']] },
-    fly: { id: 'fly', name: "Fly with Esmeralda", opens: 300000, stops: [
-      [0, 'the Ixtaluz lighthouse'], [9000, 'Peñas Cantoras'], [18000, 'Boca Tamarilla'], [27000, 'Playa Ondarena'], [36000, 'Pueblo Tilmeca'], [45000, "Paco's Island"], [54000, "Esmeralda's nest"]] },
-    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 450000, marks: [
+    market: { id: 'market', name: 'Night market in Pueblo Tilmeca', opens: pt(200000), stops: [
+      [0, 'the bus stop'], [pt(9000), 'the taco stand'], [pt(18000), 'the empanada seller'], [pt(27000), 'the corner bar'], [pt(36000), 'the clothing shops'], [pt(45000), 'the souvenir shops'], [pt(54000), 'the church steps']] },
+    fly: { id: 'fly', name: "Fly with Esmeralda", opens: pt(300000), stops: [
+      [0, 'the Ixtaluz lighthouse'], [pt(9000), 'Peñas Cantoras'], [pt(18000), 'Boca Tamarilla'], [pt(27000), 'Playa Ondarena'], [pt(36000), 'Pueblo Tilmeca'], [pt(45000), "Paco's Island"], [pt(54000), "Esmeralda's nest"]] },
+    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: pt(450000), marks: [
       [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
   };
-  const FULL_DAY = 66000;
+  const FULL_DAY = pt(66000);
   const depth = (s) => Math.round(1400 * Math.pow(Math.min(s, FULL_DAY) / FULL_DAY, 2));
   function reached(trip, score) {
     if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + (depth(score) === 1 ? ' meter' : ' meters'), depth: depth(score) };
@@ -164,6 +198,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, POINTS, pt, field, beats, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;
