@@ -64,11 +64,6 @@ const Engine = (() => {
     const out = {}; q.answers.forEach((a, i) => { out[a.item.name] = w[i] / sum; });
     return out;
   }
-  // Where an answer ranks on its question, 1 being the most familiar.
-  function rank(q, name) {
-    const sh = shares(q), mine = sh[name];
-    return { rank: 1 + q.answers.filter((a) => sh[a.item.name] > mine).length, of: q.answers.length };
-  }
   // Scoring follows World Six (quarterback/worldy-bug, SCORING.md), with
   // rarity in place of distance.
   //   c  = how common your answer is: the shares of the right answers as
@@ -91,7 +86,7 @@ const Engine = (() => {
   function commonness(sh, name) {
     const mine = sh[name]; let more = 0;
     for (const k in sh) if (sh[k] > mine + 1e-9) more += sh[k];
-    return { c: 1 - more, rarer: Math.min(99, Math.round(more * 100)) };
+    return { c: 1 - more };
   }
 
   // ---- trips ----
@@ -118,6 +113,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, rank, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

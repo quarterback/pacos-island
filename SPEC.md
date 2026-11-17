@@ -46,7 +46,7 @@ Every answer has a fixed **familiarity score** in `js/rarity.js`. Scores never c
 
 On a question, each right answer gets a **share**: its weight, 10^(score ÷ 2), over the total weight of all the right answers. One tier more familiar is about 2.5 times the weight.
 
-From the shares, **c** is how common your answer is: the shares of the right answers as familiar as yours or more. It is 1 for the most familiar answer and close to 0 for the least familiar answer on a long list. Because c comes from where an answer sits among the others, a 6 answer question and a 55 answer question score on the same scale. The result also shows where the answer ranks: "Number 14 of 32 right answers, most familiar first."
+From the shares, **c** is how common your answer is: the shares of the right answers as familiar as yours or more. It is 1 for the most familiar answer and close to 0 for the least familiar answer on a long list. Because c comes from where an answer sits among the others, a 6 answer question and a 55 answer question score on the same scale.
 
 ### Rarity points
 

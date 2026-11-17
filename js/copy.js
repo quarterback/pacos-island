@@ -11,8 +11,8 @@ const Copy = {
   how: [
     'Each question has a fixed list of right answers.',
     'Type one before the clock runs out. Wrong guesses cost only time.',
-    'Every right answer has a set rarity. The most familiar answer earns about 1,500 points, and the least familiar earns up to 20,000.',
-    'Fast answers earn a speed bonus. The rarer your answer, the bigger the bonus can be.',
+    'Rarer answers earn more points, up to 20,000.',
+    'Answering fast adds a speed bonus, which grows with rarity.',
     'Everyone gets the same seven questions each day.',
   ],
   tripLegend: 'Choose a trip',
@@ -34,7 +34,6 @@ const Copy = {
   points: (n) => `${n.toLocaleString('en-US')} points`,
   forRarity: (n) => `${n.toLocaleString('en-US')} for rarity`,
   forSpeed: (n) => `+${n.toLocaleString('en-US')} for speed`,
-  rank: (r, n) => (r === 1 ? `The most familiar of ${n} right answers.` : r === n ? `The least familiar of ${n} right answers.` : `Number ${r} of ${n} right answers, most familiar first.`),
   next: 'Next question',
   finish: 'See where Paco got you',
 

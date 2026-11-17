@@ -131,19 +131,17 @@
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
     const how = Engine.commonness(Engine.shares(current.q), m.item.name), sc = Engine.score(how.c, secs);
-    const place = Engine.rank(current.q, m.item.name);
-    rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, rarer: how.rarer, secs }); save();
+    rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
     $('resultRarity').textContent = Copy.forRarity(sc.rarity);
     $('resultSpeed').textContent = Copy.forSpeed(sc.speed);
-    $('resultRarer').textContent = Copy.rank(place.rank, place.of);
     $('resultSay').textContent = `${m.item.name}. ${Copy.points(sc.total)}.`;
     after(rec);
   });
   function after(rec) {
     $('result').hidden = false;
-    if (!rec.answers[rec.answers.length - 1].name) { $('resultName').textContent = Copy.noAnswer; $('resultPts').textContent = '0'; $('resultRarity').textContent = ''; $('resultSpeed').textContent = ''; $('resultRarer').textContent = ''; $('resultSay').textContent = Copy.noAnswer; }
+    if (!rec.answers[rec.answers.length - 1].name) { $('resultName').textContent = Copy.noAnswer; $('resultPts').textContent = '0'; $('resultRarity').textContent = ''; $('resultSpeed').textContent = ''; $('resultSay').textContent = Copy.noAnswer; }
     $('nextBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
     squares(rec, -1); tripBar(rec);
     $('nextBtn').focus();
