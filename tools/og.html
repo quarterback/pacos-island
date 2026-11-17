@@ -20,5 +20,8 @@ canvas { position: absolute; left: 0; top: 0; width: 1200px; height: 630px; }
   g.drawImage(strip, X, 0, 600, 240, 0, 75, 600, 240);
   const b = Art.boat(0);
   g.drawImage(b, 400, 75 + Art.COAST.horizon + 55 - b.height + 9);
+  // Esmeralda overhead, with Paco's twin Mario on her back
+  Art.setRider('mario'); const f = Art.flier(0); Art.setRider('paco');
+  g.drawImage(f, 300, 38);
   document.title = 'ready';
 </script></body></html>

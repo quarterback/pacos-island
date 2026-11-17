@@ -1,7 +1,7 @@
 {
   "name": "Paco's Island",
   "short_name": "Paco's Island",
-  "description": "Pacos Island is a daily trivia game where you try to find answers to random questions.",
+  "description": "A daily trivia game. The rarer your answer, the farther Paco the iguana takes you.",
   "id": "/",
   "start_url": "/",
   "scope": "/",
