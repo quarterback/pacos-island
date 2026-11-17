@@ -21,6 +21,7 @@ const Copy = {
   start: "Start today's trip",
   resume: "Finish today's trip",
   seeResults: "See today's results",
+  home: 'Home',
   credit: 'A game by Ron Bronson',
 
   progress: (i) => `Question ${i} of 7`,

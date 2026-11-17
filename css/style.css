@@ -123,6 +123,7 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .result .btn { margin-top: 24px; }
 
 /* end */
+.home-link { margin: 0 0 12px; }
 .end-head { margin: 0 0 8px; font: 700 34px/1.05 var(--show); color: var(--sun); text-shadow: 2px 2px 0 var(--ink); }
 .end-head:focus { outline: none; }
 .end-note { margin: 0 0 6px; color: var(--mist); }

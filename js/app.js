@@ -170,6 +170,8 @@
     const trip = today().trip; mode = 'endless'; state.mode = 'endless'; picking = false;
     state.trip = trip; newRound(trip); showQuestion();
   });
+  // Home: back to the start screen from the end of a set.
+  $('homeBtn').addEventListener('click', () => { picking = false; showTitle(); });
   $('changeTripBtn').addEventListener('click', () => { mode = 'endless'; state.mode = 'endless'; picking = true; save(); showTitle(); });
 
   function swap(id) { for (const s of ['title', 'play', 'end']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
@@ -322,6 +324,7 @@
     $('endUnlock').textContent = endless ? '' : justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
     // Endless rounds end on the round buttons; the daily end keeps sharing,
     // and in test mode also offers another round.
+    $('homeBtn').textContent = Copy.home;
     $('roundActions').hidden = !TEST_MODE;
     $('againBtn').textContent = Copy.endless.again; $('changeTripBtn').textContent = Copy.endless.changeTrip; $('leaveEndBtn').textContent = Copy.endless.leave;
     $('changeTripBtn').hidden = !endless; $('leaveEndBtn').hidden = !endless;
