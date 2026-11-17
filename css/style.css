@@ -44,6 +44,16 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .hud p { margin: 0; padding: 6px 10px; border-radius: 6px; background: var(--ink); }
 .hud-where { font-weight: 500; font-size: 14px; line-height: 1.25; max-width: 60%; }
 .hud-score { font: 700 22px/1 var(--show); color: var(--sun); font-variant-numeric: tabular-nums; }
+.btn.stumped { display: block; margin-top: 40px; background: var(--coral); border-color: var(--coral); color: var(--ink); }
+.btn.stumped:hover { background: #F590BC; }
+.cameo { display: grid; gap: 10px; margin: 16px 0 20px; }
+.cameo-who { display: flex; align-items: center; gap: 12px; }
+.cameo-who.parrot { justify-content: flex-end; text-align: right; }
+.cameo-who p { margin: 0; padding: 10px 14px; border-radius: 10px; background: var(--bay-lift); font-size: 17px; line-height: 1.35; }
+.cameo-who strong { display: block; font-size: 14px; color: var(--sun); }
+.cameo-art canvas { display: block; width: 100%; height: auto; }
+.cameo-who:first-child .cameo-art { flex: none; width: 114px; }
+.cameo-who.parrot .cameo-art { flex: none; width: 76px; }
 .music-toggle { position: absolute; right: 10px; bottom: 10px; min-height: 36px; padding: 6px 12px; border: 2px solid var(--mist); border-radius: 6px; background: var(--ink); color: var(--foam); font: 500 14px/1 var(--read); cursor: pointer; }
 .music-toggle[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--ink); }
 .music-toggle:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }

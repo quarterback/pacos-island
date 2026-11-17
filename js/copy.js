@@ -10,7 +10,7 @@ const Copy = {
   howHeading: 'How to play',
   how: [
     'Type a right answer before time runs out. Wrong guesses cost only time.',
-    "When the clock runs out, it's island time. Keep guessing for a few points, or skip.",
+    "When the clock runs out, it's island time. Keep guessing for a few points, or press Stumped.",
     'Rarer answers earn more points, up to 20,000.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
   ],
@@ -31,15 +31,26 @@ const Copy = {
   wrong: 'Not on the list. Try another.',
   off: (name) => `${name} is real, but it doesn't fit this question.`,
   typo: (name) => `Counted as ${name}`,
-  // Island time: the clock has run out, the question stays open.
+  // Island time: the clock has run out, the question stays open until a
+  // right answer or Stumped.
   islandTime: 'Island time',
   islandNote: "Time's up. A right answer still earns a few points.",
-  skip: 'Skip',
-  skipped: 'Skipped',
+  skipped: 'Stumped',
   points: (n) => `${n.toLocaleString('en-US')} points`,
   forRarity: (n) => `${n.toLocaleString('en-US')} rarity`,
   forSpeed: (n) => `+ ${n.toLocaleString('en-US')} speed`,
   next: 'Next question',
+  // Stumped: skip a question. Mario and the parrot drop in; the parrot
+  // repeats the end of what Mario says.
+  stumped: 'Stumped',
+  parrot: 'The parrot',
+  stumpedLines: [
+    ['That one stumps everybody.', 'Stumps everybody!'],
+    ["Even Paco wouldn't know that one.", "Paco wouldn't know!"],
+    ['No points, but no harm done.', 'No harm done!'],
+    ["Shake it off. The next one's yours.", "Next one's yours!"],
+    ['It happens to the best of us.', 'Best of us!'],
+  ],
   finish: 'See where Paco got you',
 
   where: {

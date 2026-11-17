@@ -195,7 +195,8 @@
     $('answerBtn').textContent = Copy.answer;
     $('answerForm').hidden = false; $('answerInput').value = ''; $('answerInput').disabled = false; $('answerBtn').disabled = false;
     $('note').textContent = ''; $('note').className = 'note';
-    $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('skipBtn').hidden = true;
+    $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('cameo').hidden = true;
+    $('stumpedBtn').hidden = false; $('stumpedBtn').textContent = Copy.stumped; $('stumpedBtn').disabled = false;
     if (!rec.started[i]) { rec.started[i] = Date.now(); save(); }
     runClock(rec.started[i], secondsFor(rec));
     $('answerInput').focus();
@@ -213,26 +214,31 @@
     delete $('clock').dataset.said;
     draw(); timer = setInterval(draw, 100);
   }
-  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; $('skipBtn').hidden = true; }
+  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; $('stumpedBtn').hidden = true; }
   // When the clock runs out the question stays open in island time: no
   // clock, guessing goes on, a right answer earns a flat few points, and
-  // Skip moves on with none. A reload in island time comes back to it,
-  // since the start time is saved.
+  // Stumped still moves on with none. A reload in island time comes back to
+  // it, since the start time is saved.
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
     current.island = true;
     $('clock').classList.add('island'); $('clock').classList.remove('low');
     $('clockFill').style.width = '0%'; $('clockNum').textContent = Copy.islandTime;
     $('note').className = 'note'; $('note').textContent = Copy.islandNote;
-    $('skipBtn').textContent = Copy.skip; $('skipBtn').hidden = false;
   }
   const elapsed = (rec, i) => (Date.now() - rec.started[i]) / 1000;
-  $('skipBtn').addEventListener('click', () => {
+  // Stumped moves on with no points, in time or in island time, and counts
+  // as skipped. Mario and the parrot drop in.
+  $('stumpedBtn').addEventListener('click', () => {
     if (!current) return;
     const rec = today(); if (rec.answers.length !== current.i) return;
     lock();
     rec.answers.push({ pid: current.q.id, name: null, skip: true, points: 0, rarity: 0, speed: 0, secs: elapsed(rec, current.i) }); save();
     $('note').className = 'note'; $('note').textContent = '';
+    const [said, echo] = Copy.stumpedLines[(Engine.dayNumber() + current.i) % Copy.stumpedLines.length];
+    $('cameoMario').textContent = said; $('cameoParrot').textContent = echo; $('cameoParrotName').textContent = Copy.parrot;
+    if (!$('cameoMarioArt').firstChild) { $('cameoMarioArt').append(Art.mario(3)); $('cameoParrotArt').append(Art.parrot(3)); }
+    $('cameo').hidden = false;
     after(rec);
   });
   $('answerForm').addEventListener('submit', async (e) => {

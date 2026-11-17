@@ -81,14 +81,18 @@
     <div class="clock" id="clock">
       <div class="clock-track"><div class="clock-fill" id="clockFill"></div></div>
       <p class="clock-num" id="clockNum" aria-hidden="true"></p>
-      <button class="btn quiet" id="skipBtn" type="button" hidden></button>
     </div>
     <p class="note" id="note" role="status" aria-live="polite"></p>
+    <button class="btn stumped" id="stumpedBtn" type="button"></button>
     <div class="result" id="result" hidden>
       <p class="result-name" id="resultName"></p>
       <p class="result-pts" id="resultPts" aria-hidden="true"></p>
       <p class="result-split"><span id="resultRarity"></span> <span id="resultSpeed" class="speed"></span></p>
       <p class="sr" id="resultSay" role="status" aria-live="polite"></p>
+      <div class="cameo" id="cameo" hidden>
+        <div class="cameo-who"><span class="cameo-art" id="cameoMarioArt"></span><p><strong>Mario</strong> <span id="cameoMario"></span></p></div>
+        <div class="cameo-who parrot"><p><strong id="cameoParrotName"></strong> <span id="cameoParrot"></span></p><span class="cameo-art" id="cameoParrotArt"></span></div>
+      </div>
       <button class="btn primary wide" id="nextBtn" type="button"></button>
     </div>
   </section>
