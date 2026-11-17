@@ -78,10 +78,11 @@ const Prompts = (() => {
     presidents: 'Name a U.S. president whose last name',
     constellations: 'Name a constellation whose name',
     greek: 'Name a Greek letter whose name',
-    nato: 'Name a word from the phonetic alphabet pilots use, where A is Alfa, that',
+    nato: 'Name a word from the phonetic alphabet pilots use to spell over the radio that',
     bible: 'Name a book of the Bible whose name',
   };
-  const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the U.S. spelling.', bible: ' Numbered books like 1 Kings count once.' };
+  // Notes after a question. None of them may name a right answer.
+  const TAIL = { mexico: " The capital's own district counts.", elements: ' Use the U.S. spelling.', bible: ' Books in numbered parts count once.' };
 
   const RULES = [];
   for (const L of 'abcdefghijklmnopqrstuvwxyz') {
@@ -95,7 +96,7 @@ const Prompts = (() => {
   for (const n of [10, 11, 12]) RULES.push({ key: 'min-' + n, says: `has ${n} letters or more`, test: (s) => letters(s).length >= n });
   RULES.push({ key: 'words', says: 'is more than one word', test: (s) => words(s).length > 1 });
   RULES.push({ key: 'same-ends', says: 'starts and ends with the same letter', test: (s) => { const l = letters(s); return l.length > 1 && l[0] === l[l.length - 1]; } });
-  RULES.push({ key: 'double', says: 'has a double letter in it, like the SS in Mississippi', test: (s) => /(.)\1/.test(letters(s)) });
+  RULES.push({ key: 'double', says: 'has the same letter twice in a row', test: (s) => /(.)\1/.test(letters(s)) });
 
   // Build the answer set: each item that qualifies, with the names that do.
   function cut(universe, test) {
@@ -134,8 +135,8 @@ const Prompts = (() => {
   }
   const REGION_NAME = { northeast: 'the Northeast', midwest: 'the Midwest', south: 'the South', west: 'the West' };
   for (const [k, names] of Object.entries(D.REGION)) groups.push({ id: `states.${k}`, universe: 'states', test: byNames(names), whole: `Name a U.S. state in ${REGION_NAME[k]}, as the Census Bureau draws it.` });
-  groups.push({ id: 'bible.nt', universe: 'bible', test: byNames(D.NEW_TESTAMENT), whole: 'Name a book of the New Testament. Numbered books like 1 Peter count once.' });
-  groups.push({ id: 'bible.ot', universe: 'bible', test: (n, it) => !D.NEW_TESTAMENT.includes(it.name), whole: 'Name a book of the Old Testament. Numbered books like 1 Kings count once.' });
+  groups.push({ id: 'bible.nt', universe: 'bible', test: byNames(D.NEW_TESTAMENT), whole: 'Name a book of the New Testament. Books in numbered parts count once.' });
+  groups.push({ id: 'bible.ot', universe: 'bible', test: (n, it) => !D.NEW_TESTAMENT.includes(it.name), whole: 'Name a book of the Old Testament. Books in numbered parts count once.' });
 
   for (const g of groups) {
     const all = cut(UNI[g.universe], g.test);
@@ -164,12 +165,12 @@ const Prompts = (() => {
     ['countries.borders-brazil', 'countries', 'Name a country that shares a border with Brazil.', byNames(BORDERS.brazil)],
     ['states.all', 'states', 'Name a U.S. state.', () => true],
     ['states.canada', 'states', 'Name a U.S. state that borders Canada, by land or across a Great Lake.', byNames(D.STATE_LISTS.canada)],
-    ['states.mississippi', 'states', 'Name a U.S. state that touches the Mississippi River.', byNames(D.STATE_LISTS.mississippi)],
+    ['states.mississippi', 'states', 'Name a U.S. state along the great river that flows past St. Louis, Memphis and New Orleans.', byNames(D.STATE_LISTS.mississippi)],
     ['states.colonies', 'states', 'Name a state that was one of the original 13 colonies.', byNames(D.STATE_LISTS.colonies)],
     ['states.atlantic', 'states', 'Name a U.S. state on the Atlantic coast.', byNames(D.STATE_LISTS.atlantic)],
     ['states.great-lakes', 'states', 'Name a U.S. state that touches one of the Great Lakes.', byNames(D.STATE_LISTS.greatLakes)],
     ['statecaps.all', 'statecaps', 'Name a U.S. state capital.', () => true],
-    ['mexico.all', 'mexico', 'Name a Mexican state. Mexico City counts.', () => true],
+    ['mexico.all', 'mexico', "Name a Mexican state. The capital's own district counts.", () => true],
     ['mexico.pacific', 'mexico', 'Name a Mexican state on the Pacific coast. The Gulf of California counts.', byNames(D.MX_PACIFIC)],
     ['nba.all', 'nba', 'Name a National Basketball Association (NBA) team, by nickname.', () => true],
     ['nfl.all', 'nfl', 'Name a National Football League (NFL) team, by nickname.', () => true],
@@ -188,13 +189,13 @@ const Prompts = (() => {
     ['pixar.toy-story', 'pixar', 'Name a Pixar movie that is not part of the Toy Story series.', (n, it) => !it.name.startsWith('Toy Story')],
     ['bond.all', 'bond', 'Name an official James Bond movie.', () => true],
     ['princesses.all', 'princesses', 'Name one of the 13 official Disney princesses.', () => true],
-    ['starwars.all', 'starwars', 'Name a Star Wars movie from the main saga, Episodes I to IX, by its subtitle, like A New Hope.', () => true],
+    ['starwars.all', 'starwars', 'Name a Star Wars movie from the main saga, Episodes I to IX, by the subtitle that follows the episode number.', () => true],
     ['friends.all', 'friends', 'Name one of the six main characters on the TV show Friends.', () => true],
     ['avengers.all', 'avengers', 'Name one of the six heroes in the first Avengers movie, from 2012.', () => true],
     ['dwarfs.all', 'dwarfs', "Name one of the seven dwarfs in Disney's Snow White.", () => true],
-    ['swift.all', 'swift', 'Name a Taylor Swift studio album.', () => true],
+    ['swift.all', 'swift', 'Name a Taylor Swift studio album, other than her self-titled debut.', (n, it) => it.name !== 'Taylor Swift'],
     ['beatles.all', 'beatles', 'Name a Beatles song that hit No. 1 on the Billboard Hot 100 chart in the U.S.', () => true],
-    ['thriller.all', 'thriller', "Name a song on Michael Jackson's album Thriller.", () => true],
+    ['thriller.all', 'thriller', "Name a song on Michael Jackson's 1982 album, the best-selling album of all time.", () => true],
     ['bts.all', 'bts', 'Name a member of the K-pop group BTS.', () => true],
     ['potter.all', 'potter', 'Name a Harry Potter book.', () => true],
     ['narnia.all', 'narnia', 'Name a book in The Chronicles of Narnia.', () => true],
@@ -203,7 +204,7 @@ const Prompts = (() => {
     ['planets.all', 'planets', 'Name a planet in our solar system.', () => true],
     ['continents.all', 'continents', 'Name a continent.', () => true],
     ['rainbow.all', 'rainbow', 'Name a color of the rainbow.', () => true],
-    ['reindeer.all', 'reindeer', "Name one of Santa's reindeer. Rudolph counts.", () => true],
+    ['reindeer.all', 'reindeer', "Name one of Santa's reindeer.", () => true],
     ['chess.all', 'chess', 'Name a chess piece.', () => true],
     ['monopoly.all', 'monopoly', 'Name a property on the U.S. Monopoly board. Railroads and utilities count.', () => true],
     ['monopoly.avenue', 'monopoly', 'Name a Monopoly property whose name ends in "Avenue."', (n, it) => it.name.endsWith('Avenue')],
@@ -211,10 +212,10 @@ const Prompts = (() => {
     ['clueweapons.all', 'clueweapons', 'Name a weapon in the classic board game Clue.', () => true],
     ['cluerooms.all', 'cluerooms', 'Name a room in the classic board game Clue.', () => true],
     ['rubik.all', 'rubik', "Name a color on a classic Rubik's Cube.", () => true],
-    ['poker.all', 'poker', 'Name a hand in poker, like a full house.', () => true],
+    ['poker.all', 'poker', 'Name a ranked hand in poker.', () => true],
     ['wonders.all', 'wonders', 'Name one of the Seven Wonders of the Ancient World.', () => true],
     ['henry.all', 'henry', 'Name one of the six wives of King Henry VIII of England.', () => true],
-    ['olympians.all', 'olympians', 'Name one of the Olympian gods of Greek myth. Dionysus and Hestia both count.', () => true],
+    ['olympians.all', 'olympians', 'Name one of the twelve Olympian gods of Greek myth.', () => true],
     ['bills.all', 'bills', 'Name a person whose portrait is on a U.S. paper bill in use today.', () => true],
     ['teams.shared', 'teams', 'Name a team nickname used in two of the big U.S. and Canadian pro leagues for football, basketball, baseball and hockey.', (n, it) => it.leagues.length > 1],
     ['teams.birds', 'teams', 'Name a U.S. or Canadian pro football, basketball, baseball or hockey team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'])],
@@ -232,16 +233,16 @@ const Prompts = (() => {
     ['presidents.1800s', 'presidents', 'Name a U.S. president who served in the 1800s, by last name.', byNames(D.PRES_LISTS.the1800s)],
     ['elements.first-20', 'elements', 'Name one of the first 20 elements on the periodic table.', (n, it) => it.z <= 20],
     ['elements.first-10', 'elements', 'Name one of the first 10 elements on the periodic table.', (n, it) => it.z <= 10],
-    ['elements.one-letter', 'elements', 'Name an element whose chemical symbol is one letter, like O for oxygen.', (n, it) => it.symbol.length === 1],
-    ['elements.odd-symbol', 'elements', "Name an element whose symbol doesn't start with the first letter of its English name, like Fe for iron.", (n, it) => it.symbol[0].toLowerCase() !== letters(it.name)[0]],
+    ['elements.one-letter', 'elements', 'Name an element whose chemical symbol is a single letter.', (n, it) => it.symbol.length === 1],
+    ['elements.odd-symbol', 'elements', 'Name an element whose chemical symbol starts with a different letter than its English name does.', (n, it) => it.symbol[0].toLowerCase() !== letters(it.name)[0]],
     ['elements.noble', 'elements', 'Name a noble gas.', byNames(D.ELEMENT_LISTS.noble)],
     ['elements.halogens', 'elements', 'Name a halogen.', byNames(D.ELEMENT_LISTS.halogens)],
     ['elements.alkali', 'elements', 'Name an alkali metal.', byNames(D.ELEMENT_LISTS.alkali)],
     ['elements.over-100', 'elements', 'Name an element with an atomic number above 100.', (n, it) => it.z > 100],
-    ['constellations.zodiac', 'constellations', 'Name a constellation of the zodiac. Scorpio and Capricorn count.', byNames(D.ZODIAC)],
+    ['constellations.zodiac', 'constellations', "Name a constellation of the zodiac. The sign's everyday name counts.", byNames(D.ZODIAC)],
     ['greek.all', 'greek', 'Name a letter of the Greek alphabet.', () => true],
-    ['nato.all', 'nato', 'Name a word from the phonetic alphabet pilots and police radios use, where A is Alfa and B is Bravo.', () => true],
-    ['bible.all', 'bible', 'Name a book of the Bible. Numbered books like 1 Kings count once.', () => true],
+    ['nato.all', 'nato', 'Name a word from the phonetic alphabet pilots and police use to spell out letters over the radio.', () => true],
+    ['bible.all', 'bible', 'Name a book of the Bible. Books in numbered parts count once.', () => true],
   ];
   for (const [id, universe, text, test] of lists) add({ id, universe, kind: 'list', text, answers: cut(UNI[universe], test) });
 

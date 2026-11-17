@@ -29,6 +29,16 @@ for (const q of P.pool) {
   for (const a of q.answers) if (E.match(q, a.item.name).status !== 'ok') fail(`${q.id}: ${a.item.name} does not match itself`);
 }
 for (const d of P.DAYS) if (new Set(d.map((q) => q.universe)).size !== 7) fail('a day repeats a list');
+// No question may name one of its own right answers. "America" is an
+// accepted name for the United States and also part of "North America".
+const OK_IN_TEXT = new Set(['america']);
+for (const q of P.pool) {
+  const t = ` ${P.norm(q.text)} `;
+  for (const ans of q.answers) for (const n of [ans.item.name, ...ans.item.aliases]) {
+    const k = P.norm(n);
+    if (k.length >= 2 && !OK_IN_TEXT.has(k) && t.includes(` ${k} `)) { fail(`${q.id} names its own answer "${n}": ${q.text}`); break; }
+  }
+}
 for (const d of P.DAYS.slice(0, 60)) if (!d[0].opener || !d[1].opener) fail('a day does not open with two easy questions');
 const cont = new Set(Object.values(Data.CONTINENT).flat());
 for (const it of Data.UNIVERSES.countries.items) if (!cont.has(it.name)) fail(`${it.name} has no continent`);

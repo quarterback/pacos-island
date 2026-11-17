@@ -46,6 +46,8 @@ Only simple letter rules (starts with a letter, has a letter) can be openers. Th
 
 ### Wording
 
+A question never names one of its own right answers, in an example, a note or the subject itself. Edge cases still count as right answers without being named (Rudolph, Hestia, Scorpio, Mexico City). `tools/check.mjs` fails if a question's wording contains one of its answers.
+
 A question spells out an acronym the first time it uses it: "a National Football League (NFL) team." Questions that cross leagues name the sports in place of the acronyms: "a U.S. or Canadian pro football, basketball, baseball or hockey team."
 
 ### Levels
