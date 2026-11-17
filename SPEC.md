@@ -22,7 +22,15 @@ There are three kinds of question:
 - The 118 chemical elements, with atomic numbers and symbols.
 - The NBA, NFL, MLB and NHL teams by nickname, and where each team plays.
 - The 40 last names of US presidents, with party and era.
-- The 88 constellations, the 24 Greek letters, the 26 NATO phonetic alphabet words, and the books of the Bible. Numbered books count once: Kings covers 1 and 2 Kings.
+- The 88 constellations, the 24 Greek letters, the 26 words of the pilots' phonetic alphabet, and the books of the Bible. Numbered books count once: Kings covers 1 and 2 Kings.
+- **Teams by place:** the city or state in each NFL, NBA, MLB and NHL team's name, so questions can ask "Name a city or state with a National Football League (NFL) team." Nickname questions also accept the full team name ("Dallas Cowboys").
+- **World sports:** countries that have won the men's World Cup (Spain won in 2026), clubs that have won the Champions League or the European Cup (Paris Saint-Germain won in 2025 and 2026), the 20 Premier League clubs of the 2026–27 season, and the 23 cities that have hosted the Summer Olympics.
+- **Movies and TV:** every Best Picture winner through One Battle After Another (2026 ceremony), the 31 Pixar films through Toy Story 5, the 25 official James Bond films, the 13 official Disney princesses, the nine Star Wars saga films, the six Friends, the six original Avengers and the seven dwarfs.
+- **Music:** Taylor Swift's 12 studio albums, the Beatles songs that hit No. 1 in the U.S., the songs on Michael Jackson's Thriller and the members of BTS.
+- **Books:** the Harry Potter books, The Chronicles of Narnia, Jane Austen's novels and Shakespeare's plays.
+- **Games and puzzles:** Monopoly properties, the suspects, weapons and rooms in Clue, chess pieces, Rubik's Cube colors and poker hands.
+- **Things most people learned in school:** planets, continents, rainbow colors, Santa's reindeer, the Seven Wonders of the Ancient World, the Olympian gods, Henry VIII's wives and the faces on U.S. paper money.
+- Lists that change, like the Premier League, the Best Picture winners and the Pixar films, were checked against current sources in November 2026.
 
 **Rules** (`js/prompts.js`): has a letter, starts with a letter, ends with a letter, has no letter, has N letters or fewer or more, is more than one word, starts and ends with the same letter, and has a double letter.
 
@@ -34,7 +42,20 @@ Every question gets an ease score: the number of its answers most people know. A
 
 Some questions are marked as **openers**: whole lists anyone can answer (a US state, an NFL team, a country in Europe, a sign of the zodiac) and easy letter questions on the most familiar lists (countries, US states, world capitals, NBA and NFL teams, presidents).
 
-The pool has 640 questions, 120 of them openers.
+Only simple letter rules (starts with a letter, has a letter) can be openers. The pool has 945 questions, 125 of them openers.
+
+### Wording
+
+A question spells out an acronym the first time it uses it: "a National Football League (NFL) team." Questions that cross leagues name the sports in place of the acronyms: "a U.S. or Canadian pro football, basketball, baseball or hockey team."
+
+### Levels
+
+The title screen offers two levels:
+
+- **Paco's mode** is the full game: two openers, three medium and two hard questions, 25 seconds each, full points.
+- **Carlos's mode** is the easier one. Carlos is Paco's iguana twin brother and his rival on the island; he wears a red cap, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 35 seconds, and every score is halved.
+
+Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer, the end screen suggests Carlos's mode. Shares from Carlos's mode say so: "Paco's Island, day 1, Carlos's mode." The level is locked while a set is under way.
 
 ### A set of seven
 

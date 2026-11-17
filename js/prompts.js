@@ -36,8 +36,15 @@ const Prompts = (() => {
     nba: 'sports', nfl: 'sports', mlb: 'sports', nhl: 'sports', teams: 'sports',
     elements: 'science', constellations: 'science',
     presidents: 'history', bible: 'books', greek: 'words', nato: 'words',
+    nflcities: 'sports', nbacities: 'sports', mlbcities: 'sports', nhlcities: 'sports', worldcup: 'sports', ucl: 'sports', premier: 'sports', olympics: 'sports',
+    bestpicture: 'movies', pixar: 'movies', bond: 'movies', princesses: 'movies', starwars: 'movies', friends: 'movies', avengers: 'movies', dwarfs: 'movies',
+    swift: 'music', beatles: 'music', thriller: 'music', bts: 'music',
+    potter: 'books', narnia: 'books', austen: 'books', shakespeare: 'books',
+    planets: 'basics', continents: 'basics', rainbow: 'basics', reindeer: 'basics',
+    chess: 'games', monopoly: 'games', cluesuspects: 'games', clueweapons: 'games', cluerooms: 'games', rubik: 'games', poker: 'games',
+    wonders: 'history', henry: 'history', olympians: 'history', bills: 'history',
   };
-  const SUBJECT_MAX = { geo: 3, sports: 2 };
+  const SUBJECT_MAX = { geo: 3, sports: 2, movies: 2, music: 2 };
   // Lists most players know little about come up less often.
   const LIST_WEIGHT = { mexico: 0.4, constellations: 0.6 };
 
@@ -49,14 +56,29 @@ const Prompts = (() => {
     statecaps: 'Name a U.S. state capital whose name',
     mexico: 'Name a Mexican state whose name',
     elements: 'Name a chemical element whose name',
-    nba: 'Name an NBA team whose nickname',
-    nfl: 'Name an NFL team whose nickname',
-    mlb: 'Name an MLB team whose nickname',
-    nhl: 'Name an NHL team whose nickname',
+    nba: 'Name a National Basketball Association (NBA) team whose nickname',
+    nfl: 'Name a National Football League (NFL) team whose nickname',
+    mlb: 'Name a Major League Baseball (MLB) team whose nickname',
+    nhl: 'Name a National Hockey League (NHL) team whose nickname',
+    nflcities: 'Name a city or state with a National Football League (NFL) team, where the place name',
+    nbacities: 'Name a city or state with a National Basketball Association (NBA) team, where the place name',
+    mlbcities: 'Name a city or state with a Major League Baseball (MLB) team, where the place name',
+    nhlcities: 'Name a city, state or province with a National Hockey League (NHL) team, where the place name',
+    ucl: 'Name a soccer club that has won the Champions League or the European Cup before it, whose name',
+    premier: "Name a club in England's Premier League this season whose name",
+    olympics: 'Name a city that has hosted the Summer Olympics whose name',
+    bestpicture: 'Name a movie that won the Oscar for Best Picture whose title',
+    pixar: 'Name a Pixar movie whose title',
+    bond: 'Name an official James Bond movie whose title',
+    princesses: 'Name an official Disney princess whose name',
+    beatles: 'Name a Beatles song that hit No. 1 in the U.S. whose title',
+    shakespeare: 'Name a play by William Shakespeare whose title',
+    monopoly: 'Name a property on the U.S. Monopoly board whose name',
+    olympians: 'Name an Olympian god of Greek myth whose name',
     presidents: 'Name a U.S. president whose last name',
     constellations: 'Name a constellation whose name',
     greek: 'Name a Greek letter whose name',
-    nato: 'Name a NATO phonetic alphabet word that',
+    nato: 'Name a word from the phonetic alphabet pilots use, where A is Alfa, that',
     bible: 'Name a book of the Bible whose name',
   };
   const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the U.S. spelling.', bible: ' Numbered books like 1 Kings count once.' };
@@ -149,19 +171,60 @@ const Prompts = (() => {
     ['statecaps.all', 'statecaps', 'Name a U.S. state capital.', () => true],
     ['mexico.all', 'mexico', 'Name a Mexican state. Mexico City counts.', () => true],
     ['mexico.pacific', 'mexico', 'Name a Mexican state on the Pacific coast. The Gulf of California counts.', byNames(D.MX_PACIFIC)],
-    ['nba.all', 'nba', 'Name an NBA team, by nickname.', () => true],
-    ['nfl.all', 'nfl', 'Name an NFL team, by nickname.', () => true],
-    ['mlb.all', 'mlb', 'Name an MLB team, by nickname.', () => true],
-    ['nhl.all', 'nhl', 'Name an NHL team, by nickname.', () => true],
-    ['teams.shared', 'teams', 'Name a nickname shared by teams in two of these leagues: the NBA, NFL, MLB and NHL.', (n, it) => it.leagues.length > 1],
-    ['teams.birds', 'teams', 'Name an NBA, NFL, MLB or NHL team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'])],
-    ['teams.weather', 'teams', 'Name an NBA, NFL, MLB or NHL team named after weather or something you see in the sky.', byNames(['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'])],
-    ['teams.california', 'teams', 'Name an NBA, NFL, MLB or NHL team based in California, by nickname.', byNames(D.TEAM_PLACES.california)],
-    ['teams.texas', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Texas, by nickname.', byNames(D.TEAM_PLACES.texas)],
-    ['teams.florida', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Florida, by nickname.', byNames(D.TEAM_PLACES.florida)],
-    ['teams.new-york', 'teams', 'Name an NBA, NFL, MLB or NHL team based in New York State, by nickname.', byNames(D.TEAM_PLACES.newYork)],
-    ['teams.canada', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Canada, by nickname.', byNames(D.TEAM_PLACES.canada)],
-    ['teams.pennsylvania', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Pennsylvania, by nickname.', byNames(D.TEAM_PLACES.pennsylvania)],
+    ['nba.all', 'nba', 'Name a National Basketball Association (NBA) team, by nickname.', () => true],
+    ['nfl.all', 'nfl', 'Name a National Football League (NFL) team, by nickname.', () => true],
+    ['mlb.all', 'mlb', 'Name a Major League Baseball (MLB) team, by nickname.', () => true],
+    ['nhl.all', 'nhl', 'Name a National Hockey League (NHL) team, by nickname.', () => true],
+    ['nflcities.all', 'nflcities', 'Name a city or state with a National Football League (NFL) team.', () => true],
+    ['nbacities.all', 'nbacities', 'Name a city or state with a National Basketball Association (NBA) team.', () => true],
+    ['mlbcities.all', 'mlbcities', 'Name a city or state with a Major League Baseball (MLB) team.', () => true],
+    ['nhlcities.all', 'nhlcities', 'Name a city, state or province with a National Hockey League (NHL) team.', () => true],
+    ['worldcup.all', 'worldcup', "Name a country that has won the men's soccer World Cup.", () => true],
+    ['ucl.all', 'ucl', 'Name a soccer club that has won the Champions League or the European Cup before it.', () => true],
+    ['premier.all', 'premier', "Name a club in England's Premier League this season.", () => true],
+    ['olympics.all', 'olympics', 'Name a city that has hosted the Summer Olympics.', () => true],
+    ['bestpicture.since-1990', 'bestpicture', 'Name a movie that won the Oscar for Best Picture at a ceremony in 1990 or later.', byNames(D.BEST_PICTURE_RECENT)],
+    ['pixar.all', 'pixar', 'Name a Pixar movie.', () => true],
+    ['pixar.toy-story', 'pixar', 'Name a Pixar movie that is not part of the Toy Story series.', (n, it) => !it.name.startsWith('Toy Story')],
+    ['bond.all', 'bond', 'Name an official James Bond movie.', () => true],
+    ['princesses.all', 'princesses', 'Name one of the 13 official Disney princesses.', () => true],
+    ['starwars.all', 'starwars', 'Name a Star Wars movie from the main saga, Episodes I to IX, by its subtitle, like A New Hope.', () => true],
+    ['friends.all', 'friends', 'Name one of the six main characters on the TV show Friends.', () => true],
+    ['avengers.all', 'avengers', 'Name one of the six heroes in the first Avengers movie, from 2012.', () => true],
+    ['dwarfs.all', 'dwarfs', "Name one of the seven dwarfs in Disney's Snow White.", () => true],
+    ['swift.all', 'swift', 'Name a Taylor Swift studio album.', () => true],
+    ['beatles.all', 'beatles', 'Name a Beatles song that hit No. 1 on the Billboard Hot 100 chart in the U.S.', () => true],
+    ['thriller.all', 'thriller', "Name a song on Michael Jackson's album Thriller.", () => true],
+    ['bts.all', 'bts', 'Name a member of the K-pop group BTS.', () => true],
+    ['potter.all', 'potter', 'Name a Harry Potter book.', () => true],
+    ['narnia.all', 'narnia', 'Name a book in The Chronicles of Narnia.', () => true],
+    ['austen.all', 'austen', 'Name a novel by Jane Austen.', () => true],
+    ['shakespeare.all', 'shakespeare', 'Name a play by William Shakespeare.', () => true],
+    ['planets.all', 'planets', 'Name a planet in our solar system.', () => true],
+    ['continents.all', 'continents', 'Name a continent.', () => true],
+    ['rainbow.all', 'rainbow', 'Name a color of the rainbow.', () => true],
+    ['reindeer.all', 'reindeer', "Name one of Santa's reindeer. Rudolph counts.", () => true],
+    ['chess.all', 'chess', 'Name a chess piece.', () => true],
+    ['monopoly.all', 'monopoly', 'Name a property on the U.S. Monopoly board. Railroads and utilities count.', () => true],
+    ['monopoly.avenue', 'monopoly', 'Name a Monopoly property whose name ends in "Avenue."', (n, it) => it.name.endsWith('Avenue')],
+    ['cluesuspects.all', 'cluesuspects', 'Name a suspect in the classic board game Clue.', () => true],
+    ['clueweapons.all', 'clueweapons', 'Name a weapon in the classic board game Clue.', () => true],
+    ['cluerooms.all', 'cluerooms', 'Name a room in the classic board game Clue.', () => true],
+    ['rubik.all', 'rubik', "Name a color on a classic Rubik's Cube.", () => true],
+    ['poker.all', 'poker', 'Name a hand in poker, like a full house.', () => true],
+    ['wonders.all', 'wonders', 'Name one of the Seven Wonders of the Ancient World.', () => true],
+    ['henry.all', 'henry', 'Name one of the six wives of King Henry VIII of England.', () => true],
+    ['olympians.all', 'olympians', 'Name one of the Olympian gods of Greek myth. Dionysus and Hestia both count.', () => true],
+    ['bills.all', 'bills', 'Name a person whose portrait is on a U.S. paper bill in use today.', () => true],
+    ['teams.shared', 'teams', 'Name a team nickname used in two of the big U.S. and Canadian pro leagues for football, basketball, baseball and hockey.', (n, it) => it.leagues.length > 1],
+    ['teams.birds', 'teams', 'Name a U.S. or Canadian pro football, basketball, baseball or hockey team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'])],
+    ['teams.weather', 'teams', 'Name a U.S. or Canadian pro football, basketball, baseball or hockey team named after weather or something you see in the sky.', byNames(['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'])],
+    ['teams.california', 'teams', 'Name a pro football, basketball, baseball or hockey team based in California, by nickname.', byNames(D.TEAM_PLACES.california)],
+    ['teams.texas', 'teams', 'Name a pro football, basketball, baseball or hockey team based in Texas, by nickname.', byNames(D.TEAM_PLACES.texas)],
+    ['teams.florida', 'teams', 'Name a pro football, basketball, baseball or hockey team based in Florida, by nickname.', byNames(D.TEAM_PLACES.florida)],
+    ['teams.new-york', 'teams', 'Name a pro football, basketball, baseball or hockey team based in New York State, by nickname.', byNames(D.TEAM_PLACES.newYork)],
+    ['teams.canada', 'teams', 'Name a pro football, basketball, baseball or hockey team based in Canada, by nickname.', byNames(D.TEAM_PLACES.canada)],
+    ['teams.pennsylvania', 'teams', 'Name a pro football, basketball, baseball or hockey team based in Pennsylvania, by nickname.', byNames(D.TEAM_PLACES.pennsylvania)],
     ['presidents.all', 'presidents', 'Name a U.S. president, by last name.', () => true],
     ['presidents.democrat', 'presidents', 'Name a Democratic U.S. president, by last name.', byNames(D.PARTY.democrat)],
     ['presidents.republican', 'presidents', 'Name a Republican U.S. president, by last name.', byNames(D.PARTY.republican)],
@@ -177,7 +240,7 @@ const Prompts = (() => {
     ['elements.over-100', 'elements', 'Name an element with an atomic number above 100.', (n, it) => it.z > 100],
     ['constellations.zodiac', 'constellations', 'Name a constellation of the zodiac. Scorpio and Capricorn count.', byNames(D.ZODIAC)],
     ['greek.all', 'greek', 'Name a letter of the Greek alphabet.', () => true],
-    ['nato.all', 'nato', 'Name a word from the NATO phonetic alphabet, the one pilots use.', () => true],
+    ['nato.all', 'nato', 'Name a word from the phonetic alphabet pilots and police radios use, where A is Alfa and B is Bravo.', () => true],
     ['bible.all', 'bible', 'Name a book of the Bible. Numbered books like 1 Kings count once.', () => true],
   ];
   for (const [id, universe, text, test] of lists) add({ id, universe, kind: 'list', text, answers: cut(UNI[universe], test) });
@@ -200,9 +263,15 @@ const Prompts = (() => {
     'countries.europe', 'countries.southAmerica', 'countries.africa', 'countries.asia', 'countries.northAmerica',
     'capitals.europe', 'states.atlantic', 'states.colonies', 'states.west', 'states.south', 'states.midwest', 'states.northeast',
     'constellations.zodiac', 'teams.california', 'teams.texas', 'teams.florida', 'teams.new-york', 'teams.canada', 'teams.pennsylvania',
-    'greek.all', 'nato.all', 'bible.all', 'statecaps.all']);
-  const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'presidents', 'capitals']);
-  for (const q of pool) q.opener = OPENERS.has(q.id) || (q.kind === 'letter' && EVERYDAY.has(q.universe) && q.ease >= 4);
+    'greek.all', 'nato.all', 'bible.all', 'statecaps.all',
+    'nflcities.all', 'nbacities.all', 'mlbcities.all', 'nhlcities.all', 'worldcup.all', 'olympics.all', 'bestpicture.since-1990',
+    'pixar.all', 'pixar.toy-story', 'bond.all', 'princesses.all', 'starwars.all', 'friends.all', 'avengers.all', 'dwarfs.all',
+    'swift.all', 'beatles.all', 'thriller.all', 'potter.all', 'shakespeare.all', 'planets.all', 'continents.all', 'rainbow.all',
+    'reindeer.all', 'chess.all', 'monopoly.all', 'cluesuspects.all', 'clueweapons.all', 'rubik.all', 'poker.all', 'olympians.all', 'bills.all']);
+  const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'presidents', 'capitals', 'nflcities', 'nbacities']);
+  // Only simple letter rules open a set: starts with a letter, or has one.
+  const simple = (q) => /\.(starts|has)-[a-z]$/.test(q.id);
+  for (const q of pool) q.opener = OPENERS.has(q.id) || (q.kind === 'letter' && EVERYDAY.has(q.universe) && simple(q) && q.ease >= 4);
 
   // ---- sets of seven ----
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -211,15 +280,20 @@ const Prompts = (() => {
   // Two openers, three medium, two hard. Each question comes from a different
   // list, no subject takes more than its share, and at most three of the
   // seven are letter questions.
+  // Carlos's mode, the easier level, runs two openers and five easy ones.
   const SHAPE = ['opener', 'opener', 'medium', 'medium', 'medium', 'hard', 'hard'];
+  const CARLOS_SHAPE = ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'];
   const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
   for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
+  // Carlos skips letter counting and "has no letter" rules.
+  byLevel.gentle = [...byLevel.easy.filter((q) => q.kind === 'list' || simple(q)), ...byLevel.opener];
   byLevel.medium.push(...byLevel.easy);
-  function makeSet(seed, avoid = new Set()) {
+  function makeSet(seed, avoid = new Set(), level = 'paco') {
+    const shape = level === 'carlos' ? CARLOS_SHAPE : SHAPE;
     const r = rng(seed);
     const lists = new Set(), subjects = {}; let letterCount = 0;
     const set = [];
-    for (const level of SHAPE) {
+    for (const level of shape) {
       const fits = (q, strict) => !lists.has(q.universe) && (subjects[SUBJECT[q.universe]] || 0) < (SUBJECT_MAX[SUBJECT[q.universe]] || 1) + (strict || SUBJECT[q.universe] === 'sports' ? 0 : 1)
         && !(q.kind === 'letter' && letterCount >= 3 && strict) && !set.includes(q);
       let pick = null;
@@ -251,19 +325,20 @@ const Prompts = (() => {
 
   // Daily sets: a fixed run built ahead, each day avoiding the questions of
   // the 30 days before it.
-  const DAYS = [];
-  {
-    const recent = [];
+  const buildDays = (level, seed) => {
+    const days = [], recent = [];
     for (let d = 0; d < 365; d++) {
-      const set = makeSet(20261117 + d * 7919, new Set(recent.flat()));
-      DAYS.push(set); recent.push(set.map((q) => q.id)); if (recent.length > 30) recent.shift();
+      const set = makeSet(seed + d * 7919, new Set(recent.flat()), level);
+      days.push(set); recent.push(set.map((q) => q.id)); if (recent.length > 30) recent.shift();
     }
-  }
+    return days;
+  };
+  const DAYS = buildDays('paco', 20261117), CARLOS_DAYS = buildDays('carlos', 20261118);
 
   const byId = new Map(pool.map((q) => [q.id, q]));
-  const forDay = (n) => DAYS[(n - 1) % DAYS.length];
+  const forDay = (n, level = 'paco') => (level === 'carlos' ? CARLOS_DAYS : DAYS)[(n - 1) % DAYS.length];
   const get = (id) => byId.get(id);
   const universe = (id) => UNI[id];
-  return { pool, DAYS, forDay, makeSet, get, universe, norm, letters };
+  return { pool, DAYS, CARLOS_DAYS, forDay, makeSet, get, universe, norm, letters };
 })();
 if (typeof module !== 'undefined') module.exports = Prompts;

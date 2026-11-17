@@ -28,7 +28,11 @@ const Art = (() => {
     water: ['#F4FDFF', '#CFF4FA', '#8FD9E9', '#46BFD4'], sun: ['#FFF8D2', '#FFE58F', '#FFC43A'],
     deep: ['#43CBD2', '#22AEC4', '#1390AC', '#0C7396', '#095A7A', '#06425E', '#042C44', '#021A2C'],
     coral: ['#F2725C', '#F0478F', '#FFC43A', '#FF9CC4', '#B77BE0'],
+    // Carlos, Paco's twin: the same build in teal
+    carlos: ['#B8F0E6', '#6FD3C8', '#3FB3AE', '#1E7F89', '#0E4E5E'],
   };
+  let rider = 'paco';
+  const setRider = (who) => { rider = who === 'carlos' ? 'carlos' : 'paco'; };
   const TAU = Math.PI * 2;
   const noise = (seed) => { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; };
   const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; };
@@ -53,7 +57,7 @@ const Art = (() => {
   // He faces right and fits a 76 x 44 box. pose: stand or swim. frame 0
   // or 1 moves his legs.
   function drawPaco(g, ox, oy, pose = 'stand', f = 0, hat = true) {
-    const swim = pose === 'swim', G = C.green, r = noise(3);
+    const swim = pose === 'swim', G = rider === 'carlos' ? C.carlos : C.green, r = noise(3);
     g.save(); g.translate(ox, oy);
     const wag = swim && f ? 2 : 0;
     g.beginPath(); g.moveTo(1, 35 + wag); g.quadraticCurveTo(14, 27 + wag * 0.4, 27, 23.5); g.lineTo(30, 33); g.quadraticCurveTo(15, 35.5 + wag * 0.4, 1, 35 + wag); g.closePath();
@@ -80,7 +84,13 @@ const Art = (() => {
     const leg = lin(g, 0, 29, 0, 41, [G[1], G[3]]);
     if (swim) { ell(g, 21 - f * 2, 33.5, 6.5, 2.4, leg, 0.25); ell(g, 44 + f * 2, 34, 5.8, 2.2, leg, -0.2); }
     else { box(g, 22 - f * 1.5, 29, 5.4, 11, 2.4, leg); box(g, 20.5 - f * 1.5, 38.4, 9.6, 3.2, 1.5, leg); box(g, 42 + f * 1.5, 29, 5.2, 11, 2.4, leg); box(g, 41 + f * 1.5, 38.4, 9.6, 3.2, 1.5, leg); }
-    if (hat) {
+    if (hat && rider === 'carlos') {
+      // Carlos wears a red cap, brim forward
+      ell(g, 57, 14.2, 9, 1.2, rgba(C.ink, 0.18));
+      g.beginPath(); g.ellipse(57, 12.6, 7.4, 6.6, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, 6, 0, 13, ['#FF6B5B', C.stripe2, '#A3241D']); g.fill();
+      ell(g, 65.5, 12.6, 6.2, 1.6, lin(g, 0, 11, 0, 14, [C.stripe2, '#7A1A14']));
+      ell(g, 57, 6.4, 1.2, 0.9, '#7A1A14'); ell(g, 54.6, 8.6, 1.8, 1, rgba('#FFFFFF', 0.35));
+    } else if (hat) {
       const straw = lin(g, 44, 0, 70, 0, [C.straw[0], C.straw[1], C.straw[2]]);
       ell(g, 57, 14.4, 9, 1.2, rgba(C.ink, 0.18));
       ell(g, 57, 12.6, 13, 2.5, straw);
@@ -566,5 +576,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, paco, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();

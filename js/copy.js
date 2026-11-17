@@ -74,6 +74,19 @@ const Copy = {
   markAhead: '🏝️',
   share: (day, line, rows, rarity, speed, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\nTotal ${total}\nTime ${time}`,
 
+  // Levels. Carlos is Paco's iguana twin brother and his rival on the island.
+  level: {
+    legend: 'Choose a level',
+    paco: "Paco's mode",
+    pacoNote: 'The full game',
+    carlos: "Carlos's mode",
+    carlosNote: 'Easier questions, 35 seconds each and half points',
+  },
+  carlosIntro: "Carlos is Paco's iguana twin brother and his rival on the island. He asks easier questions and gives you 35 seconds for each, and his trips pay half the points Paco's do.",
+  suggestCarlos: "That was a hard set. Carlos, Paco's twin brother, asks easier questions.",
+  playCarlos: "Play Carlos's mode",
+  carlosTag: "Carlos's mode",
+
   // Endless mode: a new set of seven questions each round, with every trip open.
   // Screens: docs/endless-mode-screens.md.
   endless: {

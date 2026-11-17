@@ -91,5 +91,7 @@ const Scene = (() => {
   }
 
   function score(s, instant) { target = s; if (instant || reduced) current = s; }
-  return { init, setTrip, score, get ready() { return ready; } };
+  // Redraw the rider, after Art.setRider switches between Paco and Carlos.
+  function refresh() { if (ready) setTrip(trip, true); }
+  return { init, setTrip, score, refresh, get ready() { return ready; } };
 })();

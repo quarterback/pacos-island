@@ -42,6 +42,11 @@
   <section id="title" class="screen" aria-labelledby="titleHead">
     <h1 id="titleHead" class="wordmark"></h1>
     <p class="lede" id="intro"></p>
+    <fieldset class="trips modes" id="levels">
+      <legend id="levelLegend"></legend>
+      <div class="mode"><input type="radio" name="level" id="level-paco" value="paco"><label for="level-paco" id="levelPaco"></label><span class="mode-note" id="levelPacoNote"></span></div>
+      <div class="mode"><input type="radio" name="level" id="level-carlos" value="carlos"><label for="level-carlos" id="levelCarlos"></label><span class="mode-note" id="levelCarlosNote"></span></div>
+    </fieldset>
     <fieldset class="trips modes" id="modes" hidden>
       <legend id="modeLegend"></legend>
       <div class="mode"><input type="radio" name="mode" id="mode-daily" value="daily"><label for="mode-daily" id="modeDaily"></label><span class="mode-note" id="modeDailyNote"></span></div>
@@ -115,6 +120,11 @@
     <div class="earlier" id="earlier" hidden>
       <h2 class="sub" id="earlierHead"></h2>
       <ul class="earlier-list" id="earlierList"></ul>
+    </div>
+
+    <div class="suggest" id="suggest" hidden>
+      <p class="end-note" id="suggestText"></p>
+      <button class="btn quiet wide" id="suggestBtn" type="button"></button>
     </div>
 
     <div class="round-actions" id="roundActions" hidden>

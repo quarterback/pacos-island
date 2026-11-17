@@ -25,7 +25,13 @@ TIER = {1: 5.0, 2: 4.2, 3: 3.4, 4: 2.6, 5: 1.8}
 TEXT_SHARE = 0.6
 # Lists scored by hand tier alone, because their names are common words or
 # names in ordinary text (Heat, Jackson, Leo, Eta, Golf, Mark).
-TIER_ONLY = {"nba", "nfl", "mlb", "nhl", "statecaps", "constellations", "greek", "nato", "bible"}
+TIER_ONLY = {"nba", "nfl", "mlb", "nhl", "statecaps", "constellations", "greek", "nato", "bible",
+             # titles, characters and everyday words, where text frequency
+             # measures the word more than the answer
+             "bestpicture", "pixar", "bond", "princesses", "starwars", "friends", "avengers", "swift", "beatles",
+             "thriller", "potter", "narnia", "austen", "shakespeare", "planets", "continents", "rainbow", "dwarfs",
+             "reindeer", "chess", "wonders", "monopoly", "cluesuspects", "clueweapons", "cluerooms", "rubik", "poker",
+             "bts", "henry", "olympians", "premier", "ucl"}
 # Surnames alone are common words or shared by several people, so presidents
 # are looked up by full name. Shared surnames take the best known holder.
 FULL = {

@@ -77,10 +77,12 @@ const Engine = (() => {
   // almost no bonus. There is no whole-day multiplier.
   const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65, SPEED_MAX = 1.5, TAU = 10;
   const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
-  function score(c, seconds) {
-    const R = rarityPoints(c), q = R / RARITY_MAX;
+  // Levels. Carlos's mode, the easier one, gives more time and pays half.
+  const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, carlos: { seconds: 35, pay: 0.5 } };
+  function score(c, seconds, level = 'paco') {
+    const R = rarityPoints(c), q = R / RARITY_MAX, pay = LEVELS[level].pay;
     const b = SPEED_MAX * q ** 3 * Math.exp(-Math.max(0, seconds) / TAU);
-    const total = Math.round(R * (1 + b)), rarity = Math.round(R);
+    const total = Math.round(R * (1 + b) * pay), rarity = Math.round(R * pay);
     return { total, rarity, speed: total - rarity };
   }
   function commonness(sh, name) {
@@ -115,6 +117,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, LEVELS, RARITY_MAX, score, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

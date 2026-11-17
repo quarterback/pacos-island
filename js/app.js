@@ -13,7 +13,6 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const KEY = 'pacos-island.v2';
-  const SECONDS = Engine.SECONDS;
   const day = Engine.dayNumber();
   const TEST_MODE = true;
   let mode = 'daily', picking = false, questions = [];
@@ -27,7 +26,12 @@
   // ---- the day's set and endless rounds ----
   // Every record keeps its question ids. Records from before the question
   // pool changed have none; their points stay in lifetime and the records go.
-  const newRecord = (qids, trip) => ({ trip, qids, answers: [], started: {}, done: false, counted: false });
+  // Levels: Paco's mode, or Carlos's easier mode. Each daily level has its
+  // own set and record; endless rounds keep the level they were played at.
+  const newRecord = (qids, trip, level) => ({ trip, level, qids, answers: [], started: {}, done: false, counted: false });
+  const levelOf = (rec) => (rec && rec.level === 'carlos' ? 'carlos' : 'paco');
+  const secondsFor = (rec) => Engine.LEVELS[levelOf(rec)].seconds;
+  const dayKey = () => (state.level === 'carlos' ? `${day}c` : String(day));
   function tidy() {
     const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
     for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
@@ -36,6 +40,8 @@
     if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
   }
   tidy();
+  state.level ||= 'paco';
+  Art.setRider(state.level);
   if (TEST_MODE && state.mode === 'endless') mode = 'endless';
   const E = () => state.endless;
   const roundRec = () => E().rounds[E().round] || null;
@@ -43,7 +49,7 @@
   function today() {
     let rec;
     if (mode === 'endless') { if (!roundRec()) newRound(state.trip); rec = roundRec(); }
-    else rec = (state.days[day] ||= newRecord(Prompts.forDay(day).map((q) => q.id), state.trip));
+    else rec = (state.days[dayKey()] ||= newRecord(Prompts.forDay(day, state.level).map((q) => q.id), state.trip, state.level));
     questions = rec.qids.map((id) => Prompts.get(id));
     return rec;
   }
@@ -53,9 +59,9 @@
   function newRound(trip) {
     const e = E();
     if (e.seen.length + 7 > Prompts.pool.length) { e.seen = []; e.repeated = true; }
-    const avoid = new Set([...e.seen, ...Prompts.forDay(day).map((q) => q.id)]);
-    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, avoid).map((q) => q.id);
-    e.round++; e.rounds[e.round] = newRecord(set, trip); e.seen.push(...set);
+    const avoid = new Set([...e.seen, ...Prompts.forDay(day, state.level).map((q) => q.id)]);
+    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, avoid, state.level).map((q) => q.id);
+    e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
     save();
   }
@@ -83,12 +89,18 @@
   // ---- title ----
   function showTitle() {
     $('titleHead').textContent = Copy.title;
-    $('intro').textContent = Copy.intro;
+    $('intro').textContent = state.level === 'carlos' ? Copy.carlosIntro : Copy.intro;
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
     const endless = mode === 'endless';
-    const rec = endless ? (roundDone() ? null : roundRec()) : state.days[day];
+    const rec = endless ? (roundDone() ? null : roundRec()) : state.days[dayKey()];
+    // level: Paco's mode or Carlos's mode, locked once a set is under way
+    $('levels').hidden = picking;
+    $('levelLegend').textContent = Copy.level.legend;
+    $('levelPaco').textContent = Copy.level.paco; $('levelPacoNote').textContent = Copy.level.pacoNote;
+    $('levelCarlos').textContent = Copy.level.carlos; $('levelCarlosNote').textContent = Copy.level.carlosNote;
+    for (const lv of ['paco', 'carlos']) { const r = $('level-' + lv); r.checked = state.level === lv; r.disabled = !!(rec && rec.answers.length && !rec.done); }
     const nextN = E().round + (roundDone() ? 1 : 0);
     $('tripLegend').textContent = picking ? Copy.endless.tripLegend(nextN) : Copy.tripLegend;
     for (const id of ['titleHead', 'intro', 'how', 'credit']) $(id).hidden = picking;
@@ -120,6 +132,11 @@
     Scene.setTrip(rec ? rec.trip : state.trip); Scene.score(rec ? dayScore(rec) : 0, true);
     swap('title');
   }
+  function setLevel(lv) {
+    state.level = lv; save(); Art.setRider(lv); Scene.refresh(); showTitle();
+  }
+  for (const lv of ['paco', 'carlos']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
+  $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('carlos'); });
   $('startBtn').addEventListener('click', () => {
     if (mode === 'endless' && roundDone()) newRound(state.trip);
     picking = false;
@@ -160,10 +177,10 @@
     $('note').textContent = ''; $('note').className = 'note';
     $('result').hidden = true; $('clock').hidden = false;
     if (!rec.started[i]) { rec.started[i] = Date.now(); save(); }
-    runClock(rec.started[i]);
+    runClock(rec.started[i], secondsFor(rec));
     $('answerInput').focus();
   }
-  function runClock(startedAt) {
+  function runClock(startedAt, SECONDS) {
     clearInterval(timer);
     const draw = () => {
       const left = Math.max(0, SECONDS - (Date.now() - startedAt) / 1000);
@@ -180,7 +197,7 @@
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
     lock();
-    rec.answers.push({ pid: current.q.id, name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS }); save();
+    rec.answers.push({ pid: current.q.id, name: null, points: 0, rarity: 0, speed: 0, secs: secondsFor(rec) }); save();
     $('note').className = 'note bad'; $('note').textContent = Copy.timeUp;
     after(rec);
   }
@@ -193,10 +210,10 @@
     if (m.status === 'no') { note.className = 'note bad'; note.textContent = Copy.wrong; $('answerInput').select(); return; }
     if (m.status === 'off') { note.className = 'note bad'; note.textContent = Copy.off(m.item.name); $('answerInput').select(); return; }
     const rec = today(); if (rec.answers.length !== current.i) return;
-    const secs = Math.min(SECONDS, (Date.now() - rec.started[current.i]) / 1000);
+    const secs = Math.min(secondsFor(rec), (Date.now() - rec.started[current.i]) / 1000);
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
-    const how = Engine.commonness(Engine.shares(current.q), m.item.name), sc = Engine.score(how.c, secs);
+    const how = Engine.commonness(Engine.shares(current.q), m.item.name), sc = Engine.score(how.c, secs, levelOf(rec));
     rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
@@ -224,7 +241,9 @@
   function showEnd() {
     const rec = today(), score = dayScore(rec), r = Engine.reached(rec.trip, score);
     swap('end'); tripBar(rec);
-    const headline = rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label);
+    // Carlos takes the trip in his mode
+    const who = (line) => (levelOf(rec) === 'carlos' ? line.replace(/^Paco/, 'Carlos') : line);
+    const headline = who(rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label));
     $('endHead').textContent = headline;
     const endless = mode === 'endless';
     // On an endless dive, name the deepest mark passed ("the canyon wall").
@@ -236,7 +255,7 @@
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, secs = 0;
     questions.forEach((q, i) => {
-      const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS };
+      const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: secondsFor(rec) };
       rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0;
       // one row per question: the answer and its points, opening to the question and every right answer
       const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
@@ -273,6 +292,10 @@
     $('changeTripBtn').hidden = !endless; $('leaveEndBtn').hidden = !endless;
     $('againBtn').classList.toggle('primary', endless); $('againBtn').classList.toggle('quiet', !endless);
     $('share').hidden = endless;
+    // A rough set in Paco's mode suggests Carlos's easier one: under 12,000
+    // points, or three or more questions with no answer.
+    const rough = levelOf(rec) === 'paco' && (score < 12000 || rec.answers.filter((x) => !x.name).length >= 3);
+    $('suggest').hidden = !rough; $('suggestText').textContent = Copy.suggestCarlos; $('suggestBtn').textContent = Copy.playCarlos;
     // Earlier rounds: one line per finished round before this one, newest
     // first, never added up. Left out after round 1.
     const earlier = endless ? Object.keys(E().rounds).map(Number).filter((n) => n < E().round && E().rounds[n].done).sort((x, y) => y - x) : [];
@@ -285,8 +308,8 @@
       li.append(a, b); $('earlierList').append(li);
     }
     const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
-    const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco walked you/, 'Paco walked me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
-    $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
+    const line = headline.replace(/^(Paco|Carlos) (got|walked|drove|took) you/, '$1 $2 me');
+    $('shareText').textContent = Copy.share(levelOf(rec) === 'carlos' ? `${day}, ${Copy.carlosTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();

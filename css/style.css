@@ -69,6 +69,8 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .earlier-list { margin: 0; padding: 0; list-style: none; }
 .earlier-list li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; color: var(--mist); }
 .earlier-list .pts { font-weight: 600; color: var(--foam); }
+.suggest { margin: 20px 0 0; }
+.suggest .btn { margin-top: 10px; }
 .round-actions { display: grid; gap: 12px; margin: 24px 0 8px; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 22px; border-radius: 8px; border: 1px solid transparent; font: 600 17px/1 var(--read); cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease; }
