@@ -30,3 +30,4 @@ The owner asked for a trip where Paco walks you through town on a path to a wate
 - The scene was rendered at every stop and reviewed, and the full strip was reviewed in three sections. A first pass filled the ground below the path with flat dirt, which was replaced with a planted bank.
 - An endless round on the walk played in headless Chrome with no page errors. It ended on "Paco walked you all the way to Cascada Ixtalita."
 - `node tools/check.mjs`: 0 problems. prosekeep found only the two known "Testament" false positives in the question text.
+- The endless mode screen notes (`docs/endless-mode-screens.md`) said "three trips" in three places. They now say four.
