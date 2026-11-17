@@ -29,17 +29,17 @@ const Prompts = (() => {
 
   const FIELD = { countries: 'name', states: 'name', mexico: 'name', elements: 'name', nba: 'nickname', nfl: 'nickname', mlb: 'nickname', nhl: 'nickname', presidents: 'last name' };
   const LEAD = {
-    countries: 'Name a UN member state whose name',
-    states: 'Name a US state whose name',
+    countries: 'Name a U.N. member state whose name',
+    states: 'Name a U.S. state whose name',
     mexico: 'Name a Mexican state whose name',
     elements: 'Name a chemical element whose name',
     nba: 'Name an NBA team whose nickname',
     nfl: 'Name an NFL team whose nickname',
     mlb: 'Name an MLB team whose nickname',
     nhl: 'Name an NHL team whose nickname',
-    presidents: 'Name a US president whose last name',
+    presidents: 'Name a U.S. president whose last name',
   };
-  const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the US spelling.' };
+  const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the U.S. spelling.' };
   const SPORTS = new Set(['nba', 'nfl', 'mlb', 'nhl', 'teams']);
 
   const RULES = [];
@@ -50,7 +50,7 @@ const Prompts = (() => {
     RULES.push({ key: 'ends-' + L, says: `ends with ${U}`, test: (n) => letters(n).endsWith(L) });
   }
   for (const L of 'aeiou') RULES.push({ key: 'lacks-' + L, says: `has no letter ${L.toUpperCase()} in it`, test: (n) => !letters(n).includes(L) });
-  for (const n of [4, 5, 6]) RULES.push({ key: 'max-' + n, says: `has ${n} letters or fewer`, test: (s) => letters(s).length <= n });
+  for (const n of [4, 5, 6]) RULES.push({ key: 'max-' + n, says: `has ${['four', 'five', 'six'][n - 4]} letters or fewer`, test: (s) => letters(s).length <= n });
   for (const n of [11, 12]) RULES.push({ key: 'min-' + n, says: `has ${n} letters or more`, test: (s) => letters(s).length >= n });
   RULES.push({ key: 'words', says: 'is more than one word', test: (s) => words(s).length > 1 });
   RULES.push({ key: 'same-ends', says: 'starts and ends with the same letter', test: (s) => { const l = letters(s); return l.length > 1 && l[0] === l[l.length - 1]; } });
@@ -81,12 +81,12 @@ const Prompts = (() => {
   // Questions written by hand, each a real list rather than a letter rule.
   const byName = (u, names) => (n, it) => names.includes(it.name);
   const handmade = [
-    { id: 'countries.landlocked', universe: 'countries', text: 'Name a UN member state with no coastline. Countries on the Caspian Sea count as having no coastline.', test: byName(D.UNIVERSES.countries, D.LANDLOCKED) },
-    { id: 'countries.stan', universe: 'countries', text: 'Name a UN member state whose name ends in "stan."', test: (n) => letters(n).endsWith('stan') },
+    { id: 'countries.landlocked', universe: 'countries', text: 'Name a U.N. member state with no coastline. Countries on the Caspian Sea count as having no coastline.', test: byName(D.UNIVERSES.countries, D.LANDLOCKED) },
+    { id: 'countries.stan', universe: 'countries', text: 'Name a U.N. member state whose name ends in "stan."', test: (n) => letters(n).endsWith('stan') },
     { id: 'mexico.pacific', universe: 'mexico', text: 'Name a Mexican state on the Pacific coast. The Gulf of California counts.', test: byName(D.UNIVERSES.mexico, D.MX_PACIFIC) },
-    { id: 'teams.shared', universe: 'teams', text: 'Name a team nickname used by two different leagues among the NBA, NFL, MLB and NHL.', test: (n, it) => it.leagues.length > 1 },
+    { id: 'teams.shared', universe: 'teams', text: 'Name a nickname shared by teams in two of these leagues: the NBA, NFL, MLB and NHL.', test: (n, it) => it.leagues.length > 1 },
     { id: 'teams.birds', universe: 'teams', text: 'Name an NBA, NFL, MLB or NHL team named after a bird.', test: (n, it) => ['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'].includes(it.name) },
-    { id: 'teams.weather', universe: 'teams', text: 'Name an NBA, NFL, MLB or NHL team named after weather or something you see in the night or day sky.', test: (n, it) => ['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'].includes(it.name) },
+    { id: 'teams.weather', universe: 'teams', text: 'Name an NBA, NFL, MLB or NHL team named after weather or something you see in the sky.', test: (n, it) => ['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'].includes(it.name) },
   ];
   const UNI = { ...D.UNIVERSES, teams: TEAMS };
   for (const h of handmade) pool.push({ id: h.id, universe: h.universe, text: h.text, answers: cut(UNI[h.universe], h.test) });

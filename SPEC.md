@@ -76,7 +76,7 @@ A rare answer makes speed worth a lot, and a fast, common answer earns almost no
 
 ### The day
 
-A day's score is the sum of the seven question scores. As in World Six, the end screen shows every question's rarity and speed points, then the rarity total, the speed total, the grand total and the total time, and the lines add up. There is no whole-day multiplier.
+A day's score is the sum of the seven question scores. As in World Six, the end screen shows every question's rarity and speed points, then the rarity total, the speed total, the grand total and the total time, and the lines add up. Each question has one row there. Selecting a row opens its question and every right answer with the rarity points each one earns, so nothing on the screen is listed twice. There is no whole-day multiplier.
 
 In a simulation of players across the question pool, the middle day scored about 32,000, three days in four stayed under 42,000, and about one in ten passed 52,000. A question can score up to 50,000 in theory, but only with the least familiar answer on a long list, typed instantly.
 

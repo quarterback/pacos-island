@@ -162,19 +162,32 @@
     $('endHead').textContent = headline;
     $('endNext').textContent = rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
     // the score sheet, World Six style: every line adds up to the total
-    $('sheetHead').textContent = Copy.sheetHead;
+    $('sheetHead').textContent = Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, secs = 0;
     questions.forEach((q, i) => {
       const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS };
       rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0;
-      const li = document.createElement('li');
+      // one row per question: the answer and its points, opening to the question and every right answer
+      const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
       const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = bucket(a.points); sq.textContent = Copy.marks[bucket(a.points)];
       const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || Copy.noAnswer;
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
-      li.append(sq, nm, pt);
-      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; li.append(sp); }
-      sheet.append(li);
+      const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
+      sum.append(sq, nm, pt, ca);
+      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
+      const more = document.createElement('div'); more.className = 'more';
+      const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
+      const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead(q.answers.length);
+      const all = document.createElement('ul'); all.className = 'all';
+      const sh = Engine.shares(q);
+      [...q.answers].sort((x, y) => sh[y.item.name] - sh[x.item.name] || x.item.name.localeCompare(y.item.name)).forEach((x) => {
+        const row = document.createElement('li'); if (x.item.name === a.name) row.className = 'mine';
+        const n = document.createElement('span'); n.textContent = x.names[0] !== x.item.name ? `${x.item.name} (${x.names[0]})` : x.item.name;
+        const c = document.createElement('span'); c.className = 'pct'; c.textContent = fmt(Math.round(Engine.rarityPoints(Engine.commonness(sh, x.item.name).c)));
+        row.append(n, c); all.append(row);
+      });
+      more.append(pq, ph, all); det.append(sum, more); li.append(det); sheet.append(li);
     });
     $('rarityLabel').textContent = Copy.rarityTotal; $('rarityTotal').textContent = fmt(rarity);
     $('speedLabel').textContent = Copy.speedTotal; $('speedTotal').textContent = '+' + fmt(speed);
@@ -187,33 +200,8 @@
     const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
     $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
-    $('answersHead').textContent = Copy.yourAnswers;
-    $('comeBack').textContent = Copy.comeBack(Engine.nextReset().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
-    renderAnswers(rec);
+    $('comeBack').textContent = Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();
-  }
-  function renderAnswers(rec) {
-    const ol = $('answers'); ol.innerHTML = '';
-    questions.forEach((q, i) => {
-      const mine = rec.answers[i] || { name: null, points: 0 };
-      const sh = Engine.shares(q);
-      const li = document.createElement('li');
-      const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
-      const pm = document.createElement('p'); pm.className = 'a-mine' + (mine.name ? '' : ' none');
-      const nm = document.createElement('span'); nm.textContent = mine.name || Copy.noAnswer;
-      const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(mine.points || 0);
-      pm.append(nm, pt);
-      const det = document.createElement('details'); const sum = document.createElement('summary'); sum.textContent = `${Copy.everyAnswer} (${q.answers.length})`;
-      const all = document.createElement('ul'); all.className = 'all';
-      [...q.answers].sort((a, b) => sh[b.item.name] - sh[a.item.name] || a.item.name.localeCompare(b.item.name)).forEach((a) => {
-        const row = document.createElement('li'); if (a.item.name === mine.name) row.className = 'mine';
-        const n = document.createElement('span'); n.textContent = a.names[0] !== a.item.name ? `${a.item.name} (${a.names[0]})` : a.item.name;
-        const c = document.createElement('span'); c.className = 'pct';
-        c.textContent = fmt(Math.round(Engine.rarityPoints(Engine.commonness(sh, a.item.name).c)));
-        row.append(n, c); all.append(row);
-      });
-      det.append(sum, all); li.append(pq, pm, det); ol.append(li);
-    });
   }
   $('copyBtn').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText($('shareText').textContent); $('copyNote').textContent = Copy.copied; }
