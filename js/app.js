@@ -153,6 +153,11 @@
   }
   for (const lv of ['paco', 'mario']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
   $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('mario'); });
+  // Music is off until the player turns it on; Music remembers the choice.
+  const musicBtn = $('musicBtn');
+  musicBtn.textContent = Copy.music;
+  musicBtn.setAttribute('aria-pressed', String(Music.isOn()));
+  musicBtn.addEventListener('click', () => { Music.toggle(); musicBtn.setAttribute('aria-pressed', String(Music.isOn())); });
   $('startBtn').addEventListener('click', () => {
     if (mode === 'endless' && roundDone()) newRound(state.trip);
     picking = false;
@@ -286,7 +291,7 @@
     $('endNext').textContent = mark ? Copy.endless.passedMark('the ' + mark[1].replace(/^The /, '').replace(/^./, (c) => c.toLowerCase()), `${fmt(mark[0])} meters`)
       : rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
     // the score sheet, World Six style: every line adds up to the total
-    $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
+    $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead;
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, island = 0, secs = 0;
     questions.forEach((q, i) => {
@@ -302,7 +307,7 @@
       if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = a.island ? Copy.islandTime : `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
       const more = document.createElement('div'); more.className = 'more';
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
-      const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead(q.answers.length);
+      const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead;
       const all = document.createElement('ul'); all.className = 'all';
       const sh = Engine.shares(q);
       [...q.answers].sort((x, y) => sh[y.item.name] - sh[x.item.name] || x.item.name.localeCompare(y.item.name)).forEach((x) => {

@@ -5,9 +5,9 @@
    next load, and fall back to the saved copy when offline. Fonts, PixiJS
    and icons never change under the same name, so they come from the saved
    copy first. Change VERSION to drop every saved copy. */
-const VERSION = 'paco-1';
+const VERSION = 'paco-2';
 const CORE = ['./', 'index.html', 'css/style.css', 'manifest.webmanifest',
-  'vendor/pixi.min.js', 'js/rarity.js', 'js/data.js', 'js/prompts.js', 'js/engine.js', 'js/copy.js', 'js/art.js', 'js/scene.js', 'js/app.js',
+  'vendor/pixi.min.js', 'js/rarity.js', 'js/data.js', 'js/prompts.js', 'js/engine.js', 'js/copy.js', 'js/music.js', 'js/art.js', 'js/scene.js', 'js/app.js',
   'fonts/PPFuji-Bold.woff2', 'fonts/PPNeueMontreal-Book.woff2', 'fonts/PPNeueMontreal-Medium.woff2', 'fonts/PPNeueMontreal-Semibold.woff2',
   'icons/favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'];
 
