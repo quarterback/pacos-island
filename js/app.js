@@ -38,6 +38,16 @@
     state.endless ||= { round: 0, rounds: {}, seen: [] };
     for (const k of Object.keys(state.endless.rounds)) if (!ok(state.endless.rounds[k])) delete state.endless.rounds[k];
     if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
+    // Saves from before the pinball scale hold points at 1/5.4 of today's.
+    // Convert once, so every trip opens and every stop is reached as before.
+    if (state.points !== Engine.POINTS) {
+      const f = Engine.POINTS / (state.points || 1);
+      state.lifetime = Math.round((state.lifetime || 0) * f);
+      for (const r of [...Object.values(state.days), ...Object.values(state.endless.rounds)]) for (const a of r.answers || []) {
+        a.points = Math.round((a.points || 0) * f); a.rarity = Math.round((a.rarity || 0) * f); a.speed = (a.points || 0) - (a.rarity || 0);
+      }
+      state.points = Engine.POINTS; save();
+    }
   }
   tidy();
   // Saves from when the easier level was briefly called Carlos's mode
@@ -70,18 +80,25 @@
     const ageOf = (id) => (today.has(id) ? 0 : lastSeen.has(id) ? rounds - lastSeen.get(id) : Infinity);
     // In Paco's mode, new players, the first rounds and the round after a
     // rough one get the starter climb, which holds off the hard question.
-    const rough = prev && dayScore(prev) < 12000;
-    const shape = state.level === 'paco' && (state.lifetime < 50000 || e.round < 3 || rough) ? 'starter' : state.level;
+    const rough = prev && dayScore(prev) < Engine.pt(12000);
+    const shape = state.level === 'paco' && (state.lifetime < Engine.pt(50000) || e.round < 3 || rough) ? 'starter' : state.level;
     const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, shape, ageOf, lastLists).map((q) => q.id);
     e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set); if (e.seen.length > 1400) e.seen = e.seen.slice(-1400);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
     save();
   }
   const dayScore = (rec) => rec.answers.reduce((s, a) => s + (a.points || 0), 0);
-  const bucket = (pts) => (!pts ? 0 : pts < 5000 ? 1 : pts < 12000 ? 2 : pts < 20000 ? 3 : 4);
+  // Mark thresholds in points; Mario's mode pays half, so his are half, and a
+  // mark means the same thing at either level.
+  const MARK_AT = [5000, 12000, 20000].map(Engine.pt);
+  const markAt = (level) => MARK_AT.map((n) => (level === 'mario' ? Math.round(n / 2) : n));
+  const bucket = (pts, level) => { const t = markAt(level); return !pts ? 0 : pts < t[0] ? 1 : pts < t[1] ? 2 : pts < t[2] ? 3 : 4; };
   // An answer's mark: island time answers get their own, skips get the wave.
-  const markKey = (a) => (a.island ? 'island' : String(bucket(a.points)));
-  const markOf = (a) => (a.island ? Copy.islandMark : Copy.marks[bucket(a.points)]);
+  const markKey = (a, level) => (a.island ? 'island' : String(bucket(a.points, level)));
+  const markOf = (a, level) => (a.island ? Copy.islandMark : Copy.marks[bucket(a.points, level)]);
+  // How a run compares with simulated players on the same questions
+  const fieldKey = (rec) => rec.qids.join(',');
+  const beatOf = (rec) => Engine.beats(Engine.field(rec.qids.map((id) => Prompts.get(id)), levelOf(rec), fieldKey(rec)), dayScore(rec));
   const fmt = (n) => n.toLocaleString('en-US');
   const clockText = (secs) => { const s = Math.round(secs); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -184,7 +201,7 @@
   let timer = null, current = null;
   function squares(rec, at) {
     const ol = $('squares'); ol.innerHTML = '';
-    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) { li.dataset.b = markKey(rec.answers[i]); li.textContent = markOf(rec.answers[i]); } else li.textContent = Copy.markAhead; if (i === at) li.className = 'now'; ol.append(li); }
+    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) { li.dataset.b = markKey(rec.answers[i], levelOf(rec)); li.textContent = markOf(rec.answers[i], levelOf(rec)); } else li.textContent = Copy.markAhead; if (i === at) li.className = 'now'; ol.append(li); }
   }
   function showQuestion() {
     const rec = today(), i = rec.answers.length;
@@ -307,7 +324,7 @@
       rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0; if (a.island) island += a.points || 0;
       // one row per question: the answer and its points, opening to the question and every right answer
       const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
-      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = markKey(a); sq.textContent = markOf(a);
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = markKey(a, levelOf(rec)); sq.textContent = markOf(a, levelOf(rec));
       const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || (a.skip ? Copy.skipped : Copy.noAnswer);
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
       const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
@@ -332,6 +349,7 @@
     $('islandRow').hidden = !island; $('islandLabel').textContent = Copy.islandTime; $('islandTotal').textContent = '+' + fmt(island);
     $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
     $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
+    $('endBeat').textContent = Copy.beat(beatOf(rec));
     $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
     $('endKeep').hidden = endless || !keepTipNeeded(); $('endKeep').textContent = Copy.keepTip;
@@ -348,7 +366,7 @@
     // A rough set in Paco's mode suggests Mario's easier one: under 12,000
     // points, or three or more questions with no answer in time (skipped
     // or answered in island time).
-    const rough = levelOf(rec) === 'paco' && (score < 12000 || rec.answers.filter((x) => !x.name || x.island).length >= 3);
+    const rough = levelOf(rec) === 'paco' && (score < Engine.pt(12000) || rec.answers.filter((x) => !x.name || x.island).length >= 3);
     $('suggest').hidden = !rough; $('suggestText').textContent = Copy.suggestMario; $('suggestBtn').textContent = Copy.playMario;
     // Earlier rounds: one line per finished round before this one, newest
     // first, never added up. Left out after round 1.
@@ -361,7 +379,9 @@
       const b = document.createElement('span'); b.className = 'pts'; b.textContent = fmt(dayScore(er));
       li.append(a, b); $('earlierList').append(li);
     }
-    const marks = rec.answers.map(markOf).join('');
+    const marks = rec.answers.map((a) => markOf(a, levelOf(rec))).join('');
+    // each entry stays on one line when the key wraps
+    $('markKey').innerHTML = ''; Copy.markKey(markAt(levelOf(rec)).map(fmt)).forEach((item, i) => { if (i) $('markKey').append(' · '); const sp = document.createElement('span'); sp.textContent = item; $('markKey').append(sp); });
     $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), levelOf(rec) === 'mario', marks, fmt(score));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
@@ -426,18 +446,18 @@
     const list = $('scoresList'); list.innerHTML = '';
     for (const d of days) {
       const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
-      const sq = document.createElement('span'); sq.className = 'sq'; sq.textContent = Copy.marks[bucket(Math.max(0, ...d.rec.answers.map((a) => a.points || 0)))];
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.textContent = Copy.marks[bucket(Math.max(0, ...d.rec.answers.map((a) => a.points || 0)), levelOf(d.rec))];
       const when = document.createElement('span'); when.className = 'when'; when.textContent = dateOf(d.day);
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(d.score);
       const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
       const what = document.createElement('span'); what.className = 'what';
-      const trip = Engine.TRIPS[d.rec.trip]; what.textContent = [trip ? trip.name : '', d.mario ? Copy.scores.mario : ''].filter(Boolean).join(', ');
+      const trip = Engine.TRIPS[d.rec.trip]; what.textContent = [trip ? trip.name : '', d.mario ? Copy.scores.mario : '', Copy.beatShort(beatOf(d.rec))].filter(Boolean).join(', ');
       sum.append(sq, when, pt, ca, what);
       const more = document.createElement('div'); more.className = 'more';
       d.rec.qids.forEach((id, i) => {
         const q = Prompts.get(id), a = d.rec.answers[i] || {};
         const row = document.createElement('div'); row.className = 'day-row';
-        const m = document.createElement('span'); m.textContent = Copy.marks[bucket(a.points || 0)];
+        const m = document.createElement('span'); m.textContent = markOf(a, levelOf(d.rec));
         const n = document.createElement('span'); n.textContent = a.name || (a.skip ? Copy.skipped : Copy.noAnswer);
         const p2 = document.createElement('span'); p2.className = 'pts'; p2.textContent = fmt(a.points || 0);
         const qq = document.createElement('span'); qq.className = 'q'; qq.textContent = q ? q.text : '';

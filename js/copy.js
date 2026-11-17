@@ -12,7 +12,8 @@ const Copy = {
   how: [
     'Type a right answer before time runs out. Wrong guesses cost only time.',
     "When the clock runs out, it's island time. Keep guessing for a few points, or press Stumped.",
-    'Rarer answers earn more points, up to 20,000.',
+    'Rarer answers earn more points, up to 108,000.',
+    'Your marks: 🐚 common, 🦀 uncommon, 🐢 rare, 🦎 a deep cut, 🥥 island time, 🌊 no answer.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
   ],
   tripLegend: 'Choose a trip',
@@ -119,6 +120,11 @@ const Copy = {
   unlocked: (trip) => `You opened the ${trip}. Pick it on tomorrow's trip.`,
   tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', market: 'night market', fly: 'flight', dive: 'dive' },
   copyResult: 'Copy my result',
+  // the benchmark: a field of simulated players on the same questions
+  beat: (n) => `Better than ${n}% of simulated players`,
+  beatShort: (n) => `better than ${n}%`,
+  // the key to the marks, with that level's thresholds
+  markKey: (t) => ['🌊 No answer', `🐚 Under ${t[0]}`, `🦀 Under ${t[1]}`, `🐢 Under ${t[2]}`, `🦎 ${t[2]} and up`, '🥥 Island time'],
   copied: 'Copied',
   copyFailed: 'Your browser blocked copying. Select the text above and copy it.',
   noAnswer: 'No answer',
@@ -127,7 +133,7 @@ const Copy = {
   apTime: (d) => { const h = d.getHours(), m = d.getMinutes(); if (!m && h === 0) return 'midnight'; if (!m && h === 12) return 'noon'; return `${h % 12 || 12}${m ? ':' + String(m).padStart(2, '0') : ''} ${h < 12 ? 'a.m.' : 'p.m.'}`; },
   comeBack: (time) => `New questions at ${time} your time`,
 
-  // Share marks, from no answer to 20,000 points and up.
+  // Share marks, from no answer to a deep cut. Thresholds live in app.js (bucket).
   // Island time answers get the coconut; skips get the wave.
   marks: ['🌊', '🐚', '🦀', '🐢', '🦎'],
   islandMark: '🥥',
