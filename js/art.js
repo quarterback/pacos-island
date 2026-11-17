@@ -214,10 +214,13 @@ const Art = (() => {
     }
     else if (trip === 'fly') { g.fillStyle = lin(g, 0, 0, 0, 56, ['#3FA9E6', '#84D0EE', '#D6F3F1']); g.fillRect(0, 0, 96, 56); cloud(g, 20, 44, 0.5); cloud(g, 80, 14, 0.4); g.drawImage(flier(0), 8, 2, 80, 52); }
     else if (trip === 'market') {
-      g.fillStyle = lin(g, 0, 0, 0, 56, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 56);
-      facade(g, -4, 50, 52, 46, HOUSE[1], '#22AEC4'); facade(g, 48, 50, 52, 46, HOUSE[3], '#F0478F');
-      papelPicado(g, -4, 100, 3, 7);
-      g.fillStyle = lin(g, 0, 48, 0, 56, ['#E6D3B4', '#CDB591']); g.fillRect(0, 48, 96, 8);
+      g.fillStyle = lin(g, 0, 0, 0, 56, ['#08142F', '#1D3A6E']); g.fillRect(0, 0, 96, 56);
+      for (const [sx, sy] of [[8, 6], [30, 3], [70, 5], [88, 10], [52, 9]]) ell(g, sx, sy, 0.7, 0.7, '#FFFFFF');
+      facade(g, -4, 50, 52, 46, ['#8C6E7A', '#7A5E6C', '#664E5C'], '#1E6F86'); facade(g, 48, 50, 52, 46, ['#8C8466', '#7A7356', '#665F46'], '#8E2E5C');
+      for (const wx of [13, 65]) { ell(g, wx, 22, 12, 12, rad(g, wx, 22, 0, 12, [rgba('#FFC86B', 0.45), rgba('#FFC86B', 0)])); box(g, wx - 9, 12, 18, 20, 3, lin(g, 0, 12, 0, 32, ['#FFF1C2', '#E8963A'])); }
+      g.beginPath(); g.moveTo(-4, 4); g.quadraticCurveTo(48, 16, 100, 4); g.strokeStyle = rgba('#FFFFFF', 0.4); g.lineWidth = 0.6; g.stroke();
+      for (let t = 0.05; t < 1; t += 0.1) { const bx = -4 + 104 * t, by = 4 + 24 * t * (1 - t); ell(g, bx, by, 4, 4, rad(g, bx, by, 0, 4, [rgba('#FFE9A8', 0.6), rgba('#FFE9A8', 0)])); ell(g, bx, by, 1.1, 1.1, '#FFF6D6'); }
+      g.fillStyle = lin(g, 0, 48, 0, 56, ['#6E6452', '#57503F']); g.fillRect(0, 48, 96, 8);
       g.drawImage(walker(0), 14, 10, 66, 40);
     }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
@@ -627,12 +630,15 @@ const Art = (() => {
     return c;
   }
 
-  // ---- market day in Pueblo Tilmeca -------------------------------------
-  // A market street seen close up: shopfronts, stalls, papel picado
-  // overhead, a bandstand halfway and the church at the end. 3600 x 240.
+  // ---- the night market in Pueblo Tilmeca -------------------------------
+  // A market street at night, seen close up: shopfronts, stalls, papel
+  // picado and strings of bulbs overhead, a bandstand halfway and the
+  // church at the end. The street is drawn on its own layer, darkened to
+  // moonlight, laid over a starry sky, and then lit: windows, doorways,
+  // bulbs, stall lanterns, street lamps. 3600 x 240.
   const MARKET = { w: 3600, h: 240, stopX: (i) => 175 + i * 520, ground: () => 214 };
   const PAPEL = ['#F0478F', '#FFC43A', '#22AEC4', '#8ED04A', '#F28C28', '#B77BE0'];
-  function facade(g, x, y, w, h, wall, trim) {
+  function facade(g, x, y, w, h, wall, trim, lights) {
     g.fillStyle = lin(g, x, 0, x + w, 0, [wall[0], [0.6, wall[1]], wall[2]]); g.fillRect(x, y - h, w, h);
     g.fillStyle = trim; g.fillRect(x - 2, y - h - 5, w + 4, 6); g.fillRect(x, y - 8, w, 3);
     const doors = Math.max(1, Math.floor(w / 44));
@@ -640,6 +646,7 @@ const Art = (() => {
       const dx = x + (w / doors) * (i + 0.5);
       box(g, dx - 9, y - 36, 18, 36, 9, lin(g, 0, y - 36, 0, y, ['#8A5530', '#5E3B1A']));
       box(g, dx - 9, y - h + 12, 18, 20, 3, lin(g, 0, y - h + 12, 0, y - h + 32, ['#9ED8EA', '#2B6E8F']));
+      if (lights) { lights.push(['window', dx - 9, y - h + 12, 18, 20]); if ((x + i) % 3 !== 1) lights.push(['door', dx - 9, y - 36, 18, 36]); }
       for (const sx of [dx - 15, dx + 9]) { g.fillStyle = trim; g.fillRect(sx, y - h + 12, 6, 20); }
       for (let k = 0; k < 4; k++) ell(g, dx - 7 + k * 4.6, y - h + 33, 2.4, 2, PAPEL[(k + i) % PAPEL.length]);
     }
@@ -670,9 +677,13 @@ const Art = (() => {
   }
   function market() {
     const { w, h } = MARKET, S = MARKET.stopX, y = MARKET.ground();
-    const [c, g] = canvas(w, h); const r = noise(55);
-    skyFill(g, w, h); sun(g, 380, 34);
-    for (let x = 120; x < w; x += 300 + r() * 160) cloud(g, x, 26 + r() * 20, 0.8 + r() * 0.3);
+    const [c, sky] = canvas(w, h); const r = noise(55);
+    sky.fillStyle = lin(sky, 0, 0, 0, h, ['#08142F', '#102350', '#1D3A6E', '#2E5585']); sky.fillRect(0, 0, w, h);
+    for (let k = 0; k < 520; k++) { const sx = r() * w, sy2 = r() * 120, sr = r() < 0.08 ? 1.1 : 0.55; ell(sky, sx, sy2, sr, sr, rgba('#FFFFFF', 0.45 + r() * 0.5)); }
+    ell(sky, 420, 40, 60, 60, rad(sky, 420, 40, 8, 60, [rgba('#E9F1FF', 0.35), rgba('#E9F1FF', 0)]));
+    ell(sky, 420, 40, 13, 13, rad(sky, 416, 36, 1, 14, ['#FFFFFF', '#E3EAF5', '#BCC9DC']));
+    ell(sky, 424, 37, 2.6, 2.2, rgba('#9FB0C8', 0.5)); ell(sky, 416, 45, 1.8, 1.6, rgba('#9FB0C8', 0.45));
+    const [d, g] = canvas(w, h), lights = [];
     // hills behind the town
     g.beginPath(); g.moveTo(0, 120); for (let x = 0; x <= w; x += 4) g.lineTo(x, ridgeY(x, 96, 30, 0.006, 1.3)); g.lineTo(w, 140); g.lineTo(0, 140); g.closePath(); g.fillStyle = lin(g, 0, 60, 0, 140, C.far); g.fill();
     // a row of shopfronts the length of the street
@@ -681,7 +692,7 @@ const Art = (() => {
     let i = 0;
     for (let x = 0; x < S(6) - 120; i++) {
       const fw = 70 + Math.floor(r() * 50), fh = 96 + Math.floor(r() * 30);
-      if (Math.abs(x + fw / 2 - S(3)) > 110) facade(g, x, y - 18, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length]);
+      if (Math.abs(x + fw / 2 - S(3)) > 110) facade(g, x, y - 18, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length], lights);
       x += fw;
     }
     // papel picado strung across the street, all the way along
@@ -712,7 +723,7 @@ const Art = (() => {
     for (let k = 0; k < 3; k++) { g.beginPath(); g.moveTo(tx - 10 + k * 10, y - 36); g.bezierCurveTo(tx - 16 + k * 10, y - 44, tx - 4 + k * 10, y - 50, tx - 10 + k * 10, y - 58); g.strokeStyle = rgba('#FFFFFF', 0.7); g.lineWidth = 1.2; g.stroke(); }
     // the bandstand
     bandstand(g, S(3), y);
-    for (const px of [S(3) - 90, S(3) + 90]) { line(g, [[px, y], [px, y - 22]], C.wood[3], 3, 'butt'); ell(g, px, y - 32, 18, 14, C.leaf); ell(g, px - 3, y - 36, 10, 8, C.leafHi); }
+    for (const px of [S(3) - 66, S(3) + 66]) { line(g, [[px, y], [px, y - 22]], C.wood[3], 3, 'butt'); ell(g, px, y - 32, 18, 14, C.leaf); ell(g, px - 3, y - 36, 10, 8, C.leafHi); }
     // flower buckets
     for (let k = 0; k < 7; k++) { const fx = S(4) - 70 + k * 22; box(g, fx, y - 10, 12, 10, 2, C.motor[0]); for (let m = 0; m < 7; m++) ell(g, fx + 2 + (m % 4) * 3, y - 13 - Math.floor(m / 4) * 4 - (m % 2), 2.2, 2.2, [C.pink[1], C.sun[2], '#B77BE0', '#FFFFFF', '#F28C28'][(k + m) % 5]); }
     // pottery: clay pots and blue and white jugs
@@ -734,6 +745,45 @@ const Art = (() => {
     }
     papelPicado(g, cx - 82, cx + 82, cy - 116, 999);
     palm(g, cx - 120, y - 2, 52); palm(g, cx + 120, y - 2, 48, -1);
+    // street lamps along the sidewalk
+    const lamps = [];
+    for (let lx = S(0) + 200; lx < S(6) - 160; lx += 420) { if (Math.abs(lx - S(3)) < 120) continue; line(g, [[lx, y - 18], [lx, y - 86]], '#2A3440', 2.4); box(g, lx - 5, y - 96, 10, 11, 2, '#2A3440'); lamps.push(lx); }
+
+    // moonlight: darken everything on the street layer, then lay it on the sky
+    g.globalCompositeOperation = 'source-atop';
+    g.fillStyle = rgba('#0B1A3A', 0.58); g.fillRect(0, 0, w, h);
+    g.globalCompositeOperation = 'source-over';
+    sky.drawImage(d, 0, 0);
+
+    // the lights
+    const L = sky, warm = (x0, y0, rr, a = 0.5) => ell(L, x0, y0, rr, rr, rad(L, x0, y0, 0, rr, [rgba('#FFC86B', a), rgba('#FFC86B', 0)]));
+    for (const [kind, lx, ly, lw, lh] of lights) {
+      if (lx + lw > cx - 84) continue; // behind the church's tower
+      warm(lx + lw / 2, ly + lh / 2, kind === 'door' ? 26 : 20, kind === 'door' ? 0.3 : 0.35);
+      box(L, lx, ly, lw, lh, kind === 'door' ? 9 : 3, lin(L, 0, ly, 0, ly + lh, ['#FFF1C2', '#FFC86B', '#E8963A']));
+      if (kind === 'window') { L.fillStyle = rgba('#7A4A1E', 0.55); L.fillRect(lx + lw / 2 - 0.6, ly, 1.2, lh); L.fillRect(lx, ly + lh / 2 - 0.6, lw, 1.2); }
+    }
+    // strings of bulbs along the papel picado
+    const bulbs = (x0, x1, y0) => { for (let t = 0.04; t < 1; t += 0.072) { const bx = x0 + (x1 - x0) * t, by = y0 + 24 * t * (1 - t) - 1; ell(L, bx, by, 6, 6, rad(L, bx, by, 0, 6, [rgba('#FFE9A8', 0.55), rgba('#FFE9A8', 0)])); ell(L, bx, by, 1.4, 1.4, '#FFF6D6'); } };
+    for (let x = 0; x < S(6) - 100; x += 140) bulbs(x, x + 140, 30 + (x / 140 % 2) * 6);
+    bulbs(cx - 82, cx + 82, cy - 116);
+    // a lantern over each stall, and the light it throws on the street
+    for (const [sx] of stalls) { warm(sx + 21, y - 30, 30, 0.4); ell(L, sx + 21, y - 26, 2.4, 3, '#FFF1C2'); ell(L, sx + 21, y + 4, 34, 6, rgba('#FFC86B', 0.18)); }
+    // the taco cart's bulb under the umbrella
+    warm(tx, y - 62, 40, 0.45); ell(L, tx, y - 66, 2.2, 2.6, '#FFF1C2'); ell(L, tx, y + 4, 40, 6, rgba('#FFC86B', 0.2));
+    // bulbs around the bandstand roof, and its glow
+    warm(S(3), y - 40, 80, 0.3);
+    for (let k = 0; k <= 12; k++) { const bx = S(3) - 56 + k * (112 / 12); ell(L, bx, y - 66, 5, 5, rad(L, bx, y - 66, 0, 5, [rgba('#FFE9A8', 0.6), rgba('#FFE9A8', 0)])); ell(L, bx, y - 66, 1.3, 1.3, '#FFF6D6'); }
+    // street lamps
+    for (const lx of lamps) { warm(lx, y - 90, 46, 0.45); ell(L, lx, y - 90, 3, 3.6, '#FFF6D6'); ell(L, lx, y + 4, 44, 7, rgba('#FFC86B', 0.2)); }
+    // the bus's headlights and lit windows
+    for (let k = 0; k < 5; k++) box(L, S(0) - 152 + k * 17, y - 42, 13, 12, 2, lin(L, 0, y - 42, 0, y - 30, ['#FFF1C2', '#FFC86B']));
+    warm(S(0) - 64, y - 16, 20, 0.6); ell(L, S(0) - 66, y - 16, 2.4, 2.4, '#FFF6D6');
+    // the church: lit doors, a glowing rose window and lights in the towers
+    warm(cx, cy - 40, 60, 0.3);
+    box(L, cx - 16, cy - 46, 32, 46, 16, lin(L, 0, cy - 46, 0, cy, ['#FFF1C2', '#FFC86B', '#E8963A']));
+    warm(cx, cy - 76, 22, 0.5); ell(L, cx, cy - 76, 11, 11, lin(L, 0, cy - 87, 0, cy - 65, ['#FFE08A', '#FF7AB0', '#5FD3E8']));
+    for (const bx of [cx - 82, cx + 58]) { warm(bx + 12, cy - 131, 18, 0.45); box(L, bx + 6, cy - 140, 12, 18, 6, lin(L, 0, cy - 140, 0, cy - 122, ['#FFF1C2', '#FFC86B'])); }
     return c;
   }
 

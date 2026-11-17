@@ -98,7 +98,7 @@ const Copy = {
   hudAt: (s) => `At ${s}`,
   unlock: (n, trip) => `${n.toLocaleString('en-US')} more ${n === 1 ? 'point' : 'points'} to open the ${trip}`,
   unlocked: (trip) => `You opened the ${trip}. Pick it on tomorrow's trip.`,
-  tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', market: 'market', fly: 'flight', dive: 'dive' },
+  tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', market: 'night market', fly: 'flight', dive: 'dive' },
   copyResult: 'Copy my result',
   copied: 'Copied',
   copyFailed: 'Your browser blocked copying. Select the text above and copy it.',
