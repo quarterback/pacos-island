@@ -17,7 +17,8 @@ The owner asked for background music that players can turn off, and said the int
   - "the mural stairs was 4,286 points farther." repeated the next stop already shown in the scene and started with a lowercase letter. It is now "4,286 points short of the mural stairs".
 - **Shorter labels:** "All 24 right answers and their rarity points" is "Right answers". Row splits read "4,941 rarity + 209 speed". "Paco's mode: The full game" now says what it means: "25 seconds a question, full points", parallel to Mario's "35 seconds a question, half points". "Time's up. You'll see every answer at the end." is "Time's up".
 - **House style:** the end headings ("Paco walked you to the river bridge") lost their periods, since headings take none.
-- **Other notes shortened:** the endless note, the sets-repeat note, the move-device body, the WebGL note and the "Opens at" label.
+- **Other notes shortened:** the endless note, the move-device body, the WebGL note and the "Opens at" label.
+- **Notice removed:** endless mode showed "You've played every set. Sets now repeat." once a player had seen every question. "Sets" was unclear and players gain nothing from the notice, so the note, its flag and its line in `docs/endless-mode-screens.md` are gone. Questions still start over the same way.
 
 ## 3. Checks
 

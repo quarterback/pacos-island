@@ -35,7 +35,7 @@
   function tidy() {
     const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
     for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
-    state.endless ||= { round: 0, rounds: {}, seen: [], repeated: false };
+    state.endless ||= { round: 0, rounds: {}, seen: [] };
     for (const k of Object.keys(state.endless.rounds)) if (!ok(state.endless.rounds[k])) delete state.endless.rounds[k];
     if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
   }
@@ -73,7 +73,6 @@
     const rough = prev && dayScore(prev) < 12000;
     const shape = state.level === 'paco' && (state.lifetime < 50000 || e.round < 3 || rough) ? 'starter' : state.level;
     const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, shape, ageOf, lastLists).map((q) => q.id);
-    if (!e.warned && set.some((id) => lastSeen.has(id))) { e.repeated = true; e.warned = true; }
     e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set); if (e.seen.length > 1400) e.seen = e.seen.slice(-1400);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
     save();
@@ -125,8 +124,6 @@
     $('modeDaily').textContent = Copy.endless.daily; $('modeDailyNote').textContent = Copy.endless.dailyNote;
     $('modeEndless').textContent = Copy.endless.name; $('modeEndlessNote').textContent = Copy.endless.note;
     $('mode-daily').checked = !endless; $('mode-endless').checked = endless;
-    $('repeatNote').textContent = endless && E().repeated ? Copy.endless.repeats : ''; $('repeatNote').hidden = !$('repeatNote').textContent;
-    if (endless && E().repeated) { E().repeated = false; save(); }
     $('leaveBtn').hidden = !picking; $('leaveBtn').textContent = Copy.endless.leave;
     const open = endless ? Object.keys(Engine.TRIPS) : Engine.opened(state.lifetime);
     const box = $('trips'); box.querySelectorAll('.trip').forEach((n) => n.remove());

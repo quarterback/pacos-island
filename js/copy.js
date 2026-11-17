@@ -113,7 +113,6 @@ const Copy = {
     changeTrip: 'Change trip',
     tripLegend: (round) => `Choose a trip for round ${round}`,
     leave: "Back to today's trip",
-    repeats: "You've played every set. Sets now repeat.",
   },
 
   moveHeading: 'Play on another device',
