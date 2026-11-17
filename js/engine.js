@@ -144,6 +144,11 @@ const Engine = (() => {
       [0, 'the beach'], [9000, 'the church plaza'], [18000, 'the river bridge'], [27000, 'the mural stairs'], [36000, 'the cobblestone lane'], [45000, 'the craft stalls'], [54000, 'Cascada Ixtalita']] },
     atv: { id: 'atv', name: "ATV across Paco's Island", opens: 110000, stops: [
       [0, 'the beach'], [11000, 'the village'], [22500, 'the river'], [33500, 'the waterfall'], [44000, 'the jungle trail'], [54000, 'the upper waterfall']] },
+    // The market and the flight use the walk's spacing between stops.
+    market: { id: 'market', name: 'Night market in Pueblo Tilmeca', opens: 200000, stops: [
+      [0, 'the bus stop'], [9000, 'the fruit stalls'], [18000, 'the taco stand'], [27000, 'the bandstand'], [36000, 'the flower stalls'], [45000, 'the pottery stalls'], [54000, 'the church steps']] },
+    fly: { id: 'fly', name: "Fly with Esmeralda", opens: 300000, stops: [
+      [0, 'the Ixtaluz lighthouse'], [9000, 'Peñas Cantoras'], [18000, 'Boca Tamarilla'], [27000, 'Playa Ondarena'], [36000, 'Pueblo Tilmeca'], [45000, "Paco's Island"], [54000, "Esmeralda's nest"]] },
     dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 450000, marks: [
       [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
   };
