@@ -8,7 +8,7 @@ let bad = 0;
 const fail = (m) => { bad++; console.log('FAIL', m); };
 const sizes = { countries: 193, states: 50, mexico: 32, elements: 118, nba: 30, nfl: 32, mlb: 30, nhl: 32, presidents: 40, capitals: 198, statecaps: 50, constellations: 88, greek: 24, nato: 26, bible: 56,
   nflcities: 30, nbacities: 29, mlbcities: 26, nhlcities: 31, worldcup: 8, ucl: 24, premier: 20, olympics: 23,
-  bestpicture: 98, pixar: 31, bond: 25, princesses: 13, starwars: 9, friends: 6, avengers: 6, swift: 12, beatles: 22, thriller: 9,
+  bestpicture: 98, pixar: 31, bond: 25, princesses: 15, starwars: 13, friends: 6, avengers: 6, swift: 12, beatles: 22, thriller: 9,
   potter: 7, narnia: 7, austen: 6, shakespeare: 35, planets: 8, continents: 7, rainbow: 7, dwarfs: 7, reindeer: 9, chess: 6,
   wonders: 7, monopoly: 28, cluesuspects: 6, clueweapons: 6, cluerooms: 9, rubik: 6, poker: 10, bts: 7, bills: 7, henry: 6, olympians: 13 };
 for (const [id, n] of Object.entries(sizes)) if (Data.UNIVERSES[id].items.length !== n) fail(`${id} has ${Data.UNIVERSES[id].items.length} items, expected ${n}`);

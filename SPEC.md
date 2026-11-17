@@ -12,7 +12,7 @@ There are three kinds of question:
 
 - **Letter questions:** one list cut by one rule. "Name a US state whose name starts with N."
 - **Group questions:** a group inside a list, asked whole or cut by a rule. "Name a country in South America." "Name a capital city in Asia whose name has the letter S in it."
-- **Hand made lists:** "Name a noble gas." "Name a US state that touches the Mississippi River." "Name an NBA, NFL, MLB or NHL team based in Texas, by nickname."
+- **Hand made lists:** "Name a noble gas." "Name a landlocked country." "Name a pro team from Texas."
 
 **Lists** (`js/data.js`):
 - The 193 UN member states, tagged by continent. Countries in both Europe and Asia count for both.

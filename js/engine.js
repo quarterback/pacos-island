@@ -47,10 +47,14 @@ const Engine = (() => {
   function match(q, input) {
     const typed = P.norm(input || '');
     if (!typed) return { status: 'empty' };
-    const hit = findIn(q.answers.map((a) => a.item), typed);
-    if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
     const u = P.universe(q.universe);
-    const near = findIn(u.items, typed);
+    // Lists asked by last name also take a full name: "Abraham Lincoln."
+    const tries = [typed];
+    if (u.surname) { const w = typed.split(' '); for (let i = 1; i < w.length; i++) tries.push(w.slice(i).join(' ')); }
+    const find = (items) => { for (const t of tries) { const h = findIn(items, t); if (h) return h; } return null; };
+    const hit = find(q.answers.map((a) => a.item));
+    if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
+    const near = find(u.items);
     if (near) return { status: 'off', item: near.item };
     return { status: 'no' };
   }

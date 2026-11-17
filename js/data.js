@@ -1319,7 +1319,9 @@ Tiana
 Rapunzel
 Merida
 Moana
-Raya`, { 1: ['Cinderella', 'Snow White', 'Ariel', 'Belle', 'Jasmine', 'Mulan', 'Moana'], 2: ['Aurora', 'Rapunzel', 'Pocahontas', 'Tiana'], 4: ['Merida', 'Raya'] }, 3);
+Raya
+Elsa
+Anna`, { 1: ['Cinderella', 'Snow White', 'Ariel', 'Belle', 'Jasmine', 'Mulan', 'Moana', 'Elsa'], 2: ['Aurora', 'Rapunzel', 'Pocahontas', 'Tiana', 'Anna'], 4: ['Merida', 'Raya'] }, 3);
   const STAR_WARS = parse(`
 The Phantom Menace|Episode I|Episode 1|1|I|Star Wars Episode I|Star Wars Episode 1|Star Wars The Phantom Menace|Star Wars Episode I The Phantom Menace
 Attack of the Clones|Episode II|Episode 2|2|II|Star Wars Episode II|Star Wars Episode 2|Star Wars Attack of the Clones|Star Wars Episode II Attack of the Clones
@@ -1329,7 +1331,11 @@ The Empire Strikes Back|Empire Strikes Back|Episode V|Episode 5|5|V|Star Wars Ep
 Return of the Jedi|Episode VI|Episode 6|6|VI|Star Wars Episode VI|Star Wars Episode 6|Star Wars Return of the Jedi|Star Wars Episode VI Return of the Jedi
 The Force Awakens|Episode VII|Episode 7|7|VII|Star Wars Episode VII|Star Wars Episode 7|Star Wars The Force Awakens|Star Wars Episode VII The Force Awakens
 The Last Jedi|Episode VIII|Episode 8|8|VIII|Star Wars Episode VIII|Star Wars Episode 8|Star Wars The Last Jedi|Star Wars Episode VIII The Last Jedi
-The Rise of Skywalker|Episode IX|Episode 9|9|IX|Star Wars Episode IX|Star Wars Episode 9|Star Wars The Rise of Skywalker|Star Wars Episode IX The Rise of Skywalker`, { 1: ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'], 2: ['The Phantom Menace', 'The Force Awakens'] }, 3);
+The Rise of Skywalker|Episode IX|Episode 9|9|IX|Star Wars Episode IX|Star Wars Episode 9|Star Wars The Rise of Skywalker|Star Wars Episode IX The Rise of Skywalker
+Rogue One|Rogue One: A Star Wars Story
+Solo|Solo: A Star Wars Story
+The Clone Wars|Clone Wars|Star Wars: The Clone Wars
+The Mandalorian and Grogu|Mandalorian and Grogu|Star Wars: The Mandalorian and Grogu`, { 1: ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'], 2: ['The Phantom Menace', 'The Force Awakens', 'Rogue One'], 4: ['The Clone Wars'] }, 3);
   const FRIENDS = parse(`
 Rachel|Rachel Green
 Monica|Monica Geller
@@ -1644,7 +1650,7 @@ Hestia`, { 1: ['Zeus', 'Poseidon', 'Athena', 'Apollo', 'Aphrodite', 'Hermes', 'H
     nfl: { id: 'nfl', items: NFL, noun: 'an NFL team, by nickname', short: 'NFL team' },
     mlb: { id: 'mlb', items: MLB, noun: 'an MLB team, by nickname', short: 'MLB team' },
     nhl: { id: 'nhl', items: NHL, noun: 'an NHL team, by nickname', short: 'NHL team' },
-    presidents: { id: 'presidents', items: PRESIDENTS, noun: 'the last name of a U.S. president', short: 'president' },
+    presidents: { id: 'presidents', items: PRESIDENTS, surname: true, noun: 'the last name of a U.S. president', short: 'president' },
     capitals: { id: 'capitals', items: CAPITALS, noun: 'a national capital', short: 'capital' },
     statecaps: { id: 'statecaps', items: STATE_CAPITALS, noun: 'a U.S. state capital', short: 'state capital' },
     constellations: { id: 'constellations', items: CONSTELLATIONS, noun: 'one of the 88 constellations', short: 'constellation' },
