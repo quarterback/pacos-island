@@ -24,10 +24,16 @@ node tools/check.mjs
 
 ## Deploy
 
-The game needs no server or database, so any static host works.
+The game needs no build, server or database.
 
-- **Cloudflare Pages:** in Workers & Pages, create a Pages project and connect this repo. Leave the build command empty and set the output directory to `/`.
-- **Vercel:** import the repo with the Other framework preset, an empty build command and `.` as the output directory.
+**Cloudflare.** In Workers & Pages, create an application and import this repo. Cloudflare builds it as a Worker that serves the game's files:
+
+- Build command: leave empty.
+- Deploy command: `npx wrangler deploy` (the default).
+
+`wrangler.jsonc` tells Wrangler to serve this folder, and `.assetsignore` keeps docs, tools and repo files from being published. Every push to `main` redeploys. To deploy from your own machine, run `npx wrangler deploy` in the repo.
+
+**Vercel.** Import the repo with the Other framework preset, an empty build command and `.` as the output directory.
 
 ## Rarity scores
 

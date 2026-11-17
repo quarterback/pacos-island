@@ -1,0 +1,9 @@
+// Cloudflare Workers config. The game is static files only, so the Worker
+// just serves this folder. .assetsignore keeps tools, docs and repo files out.
+{
+  "name": "pacos-island",
+  "compatibility_date": "2026-11-16",
+  "assets": {
+    "directory": "."
+  }
+}

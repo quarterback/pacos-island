@@ -1,0 +1,12 @@
+.git
+.github
+.agents
+.wrangler
+node_modules
+docs
+tools
+*.md
+LICENSE
+wrangler.jsonc
+.assetsignore
+.gitignore
