@@ -58,7 +58,7 @@ python3 tools/rarity.py
 - `js/prompts.js`: the rules, the question pool and the schedule
 - `js/engine.js`: days, matching, scoring and trips
 - `js/copy.js`: every line players read
-- `js/art.js`, `js/scene.js`: pixel art and the Pixi scene
+- `js/art.js`, `js/scene.js`: the 32 bit style art, drawn in code, and the Pixi scene
 - `js/app.js`: screens, saved progress and moving progress between devices
 - `fonts/`: owner-licensed PP Fuji and PP Neue Montreal files
 - `vendor/pixi.min.js`: PixiJS 8, MIT license

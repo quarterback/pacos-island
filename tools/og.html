@@ -4,21 +4,21 @@
 <style>
 @font-face { font-family: Fuji; src: url(../fonts/PPFuji-Bold.woff2) format('woff2'); }
 html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #095565; }
-canvas { position: absolute; left: 0; top: 0; width: 1200px; height: 630px; image-rendering: pixelated; }
+canvas { position: absolute; left: 0; top: 0; width: 1200px; height: 630px; }
 .word { position: absolute; left: 56px; bottom: 40px; margin: 0; padding: 18px 28px 14px; background: #0D2340; border-radius: 12px; color: #FFC43A; font: 96px/1 Fuji, sans-serif; text-shadow: 0 5px 0 #000; }
 </style></head><body>
-<canvas id="c" width="400" height="210"></canvas>
+<canvas id="c" width="1200" height="630"></canvas>
 <p class="word">Paco’s Island</p>
 <script src="../js/rarity.js"></script><script src="../js/data.js"></script><script src="../js/prompts.js"></script><script src="../js/engine.js"></script>
 <script src="../js/art.js"></script>
 <script>
   const X = Number(new URLSearchParams(location.search).get('x') || 0);
-  const g = document.getElementById('c').getContext('2d'); g.imageSmoothingEnabled = false;
+  const g = document.getElementById('c').getContext('2d'); g.scale(2, 2);
   const strip = Art.coast();
-  // The strip is 192 tall and the card 210, so the top sky row is repeated above it.
-  g.drawImage(strip, X, 0, 400, 1, 0, 0, 400, 18);
-  g.drawImage(strip, X, 0, 400, 192, 0, 18, 400, 192);
+  // The strip is 240 tall and the card 315 at this scale, so the top sky row is repeated above it.
+  g.drawImage(strip, X, 0, 600, 1, 0, 0, 600, 76);
+  g.drawImage(strip, X, 0, 600, 240, 0, 75, 600, 240);
   const b = Art.boat(0);
-  g.drawImage(b, 268, 18 + Art.COAST.horizon + 44 - b.height + 8);
+  g.drawImage(b, 400, 75 + Art.COAST.horizon + 55 - b.height + 9);
   document.title = 'ready';
 </script></body></html>

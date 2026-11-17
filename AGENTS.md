@@ -13,7 +13,7 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 - When Coalition's look and no-slop-ui disagree, no-slop-ui wins. Read `.agents/skills/no-slop-ui/SKILL.md` before UI work and run its review checklist after. Buttons keep an 8px radius. No pill buttons, gradients, glows, eyebrow labels or arrow glyphs on links and buttons.
 - Fonts come from the owner's archive: PP Fuji Bold for the wordmark and numbers, PP Neue Montreal for reading text. Do not add Google Fonts.
 - Colors live as CSS variables at the top of `css/style.css`. Check contrast before adding a pair.
-- Pixel art is drawn in code in `js/art.js`. Keep one pixel scale; do not mix 1x and 2x pixels.
+- The scene art is drawn in code in `js/art.js` in a 32 bit style at 480 × 240: smooth gradients, soft edges and glow. Keep one pixel scale; do not mix 1x and 2x pixels.
 
 **Copy**
 - All player-facing text lives in `js/copy.js`. Question wording lives in `js/prompts.js`.

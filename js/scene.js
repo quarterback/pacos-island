@@ -1,25 +1,26 @@
 /* Paco's Island: the trip scene.
 
-   A 384 x 192 Pixi stage, scaled up in CSS with no smoothing. The trip's
+   A 480 x 240 Pixi stage, drawn at three times that size so each art
+   pixel stays sharp when CSS fits the canvas to the page. The trip's
    strip from art.js scrolls behind Paco. Score drives his position: on the
    boat and the ATV it moves him along the stops, on the dive it takes him
    down. If WebGL is unavailable the scene stays hidden and the game still
    works. */
 'use strict';
 const Scene = (() => {
-  const W = 384, H = 192;
+  const W = 480, H = 240, RES = 3;
   let app = null, ready = false, world, bg, rider, frames = [], dots = [];
   let trip = 'boat', target = 0, current = 0, lastFrameAt = 0, frame = 0;
   const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const strips = {};
 
   const tex = (cv) => new PIXI.Texture({ source: new PIXI.CanvasSource({ resource: cv, scaleMode: 'nearest' }) });
-  const dot = (() => { let t = null; return () => { if (!t) { const c = document.createElement('canvas'); c.width = c.height = 2; const g = c.getContext('2d'); g.fillStyle = '#F4FBFD'; g.fillRect(0, 0, 2, 2); t = tex(c); } return t; }; })();
+  const dot = (() => { let t = null; return () => { if (!t) { const c = document.createElement('canvas'); c.width = c.height = 6; const g = c.getContext('2d'); const gr = g.createRadialGradient(3, 3, 0.5, 3, 3, 3); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 6, 6); t = tex(c); } return t; }; })();
 
   async function init(el) {
     try {
       app = new PIXI.Application();
-      await app.init({ width: W, height: H, background: '#8ED8EE', antialias: false, resolution: 1, preference: 'webgl' });
+      await app.init({ width: W, height: H, background: '#84D0EE', antialias: false, resolution: RES, autoDensity: false, preference: 'webgl' });
       PIXI.TextureSource.defaultOptions.scaleMode = 'nearest';
       app.canvas.setAttribute('aria-hidden', 'true');
       el.appendChild(app.canvas);
@@ -45,37 +46,37 @@ const Scene = (() => {
 
   // where Paco is for a given score, in strip pixels
   function spot(score) {
-    if (trip === 'dive') return { x: 128, y: Art.DEEP.yForScore(score) };
+    if (trip === 'dive') return { x: 160, y: Art.DEEP.yForScore(score) };
     const stops = Engine.TRIPS[trip].stops, geo = trip === 'boat' ? Art.COAST : Art.HILL;
     let i = 0; while (i < stops.length - 1 && score >= stops[i + 1][0]) i++;
     const a = stops[i], b = stops[i + 1];
     const f = b ? (score - a[0]) / (b[0] - a[0]) : 0;
     const x = geo.stopX(i) + f * (b ? geo.stopX(i + 1) - geo.stopX(i) : 0);
-    return { x, y: trip === 'boat' ? geo.horizon + 44 : geo.ground(x) };
+    return { x, y: trip === 'boat' ? geo.horizon + 55 : geo.ground(x) };
   }
 
   function place(now) {
     const p = spot(current), moving = Math.abs(target - current) > 0.5;
     if (moving && now - lastFrameAt > 140) { frame ^= 1; lastFrameAt = now; rider.texture = frames[frame]; }
     const bob = reduced ? 0 : Math.round(Math.sin(now / 420));
-    if (trip === 'boat') { rider.x = Math.round(p.x - 52); rider.y = Math.round(p.y - 38 + bob); }
-    else if (trip === 'atv') { rider.x = Math.round(p.x - 46); rider.y = Math.round(p.y - 57); }
-    else { rider.x = Math.round(p.x - 33 + (reduced ? 0 : Math.sin(now / 900) * 8)); rider.y = Math.round(p.y - 18 + bob); }
+    if (trip === 'boat') { rider.x = Math.round(p.x - 66); rider.y = Math.round(p.y - 49 + bob); }
+    else if (trip === 'atv') { rider.x = Math.round(p.x - 59); rider.y = Math.round(p.y - 73); }
+    else { rider.x = Math.round(p.x - 43 + (reduced ? 0 : Math.sin(now / 900) * 10)); rider.y = Math.round(p.y - 24 + bob); }
     // camera
     const sw = bg.texture.width, sh = bg.texture.height;
-    if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 80))); }
+    if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 100))); }
     else {
-      world.x = -Math.max(0, Math.min(sw - W, Math.round(p.x - 130)));
-      world.y = trip === 'boat' ? 0 : -Math.max(0, Math.min(sh - H, Math.round(p.y - 140)));
+      world.x = -Math.max(0, Math.min(sw - W, Math.round(p.x - 162)));
+      world.y = trip === 'boat' ? 0 : -Math.max(0, Math.min(sh - H, Math.round(p.y - 175)));
     }
     // wake behind the boat, bubbles above the diver
     for (const d of dots) {
       if (d.life <= 0 && !reduced && (trip === 'dive' || moving) && Math.random() < 0.06) {
         d.life = 1;
-        d.s.x = trip === 'boat' ? rider.x - 4 - Math.random() * 16 : rider.x + 52;
-        d.s.y = trip === 'boat' ? rider.y + 38 + Math.random() * 4 : rider.y + 8;
+        d.s.x = trip === 'boat' ? rider.x - 6 - Math.random() * 22 : rider.x + 70;
+        d.s.y = trip === 'boat' ? rider.y + 48 + Math.random() * 5 : rider.y + 12;
       }
-      if (d.life > 0) { d.life -= 0.02; d.s.alpha = d.life; if (trip === 'dive') d.s.y -= 0.4; else d.s.x -= 0.3; }
+      if (d.life > 0) { d.life -= 0.02; d.s.alpha = d.life; if (trip === 'dive') d.s.y -= 0.5; else d.s.x -= 0.4; }
       else d.s.alpha = 0;
     }
   }
