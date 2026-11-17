@@ -79,7 +79,10 @@ const Copy = {
   marks: ['🌊', '🐚', '🦀', '🐢', '🦎'],
   islandMark: '🥥',
   markAhead: '🏝️',
-  share: (day, line, rows, rarity, speed, island, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\n${island ? `Island time ${island}\n` : ''}Total ${total}\nTime ${time}`,
+  // Shared result, MapTap style: link and date, the row of marks, the score.
+  share: (date, mario, marks, total) => `pacoisland.fun ${date}${mario ? `, Mario's mode` : ''}\n${marks}\nFinal score: ${total}`,
+  // AP style date: "Nov. 17," "March 3."
+  apDate: (d) => `${['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'][d.getUTCMonth()]} ${d.getUTCDate()}`,
 
   // Levels. Mario is Paco's iguana twin brother and his rival on the island.
   level: {

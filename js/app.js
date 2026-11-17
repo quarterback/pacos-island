@@ -343,9 +343,8 @@
       const b = document.createElement('span'); b.className = 'pts'; b.textContent = fmt(dayScore(er));
       li.append(a, b); $('earlierList').append(li);
     }
-    const rows = rec.answers.map((a) => `${markOf(a)} ${fmt(a.points || 0)}`).join('\n');
-    const line = headline.replace(/^(Paco|Mario) (got|walked|drove|took) you/, '$1 $2 me');
-    $('shareText').textContent = Copy.share(levelOf(rec) === 'mario' ? `${day}, ${Copy.marioTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), island ? '+' + fmt(island) : '', fmt(score), clockText(secs));
+    const marks = rec.answers.map(markOf).join('');
+    $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), levelOf(rec) === 'mario', marks, fmt(score));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();
