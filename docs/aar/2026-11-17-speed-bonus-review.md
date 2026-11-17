@@ -31,5 +31,5 @@ No code changed. The speed bonus was reviewed and measured against the fixed rar
 
 ## 4. Decision and gaps
 
-- Recommendation given: keep World Six's speed bonus as it is.
-- Open for the owner: whether to add a small flat bonus for any fast answer, capped at a few hundred points so it can't outweigh rarity. Nothing was built while that's undecided.
+- The owner kept World Six's speed bonus as it is and will tweak it later himself.
+- A small flat bonus for any fast answer, capped at a few hundred points, was raised as an option and not built.
