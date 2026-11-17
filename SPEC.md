@@ -4,23 +4,59 @@
 
 Paco is an iguana with a boat on Bahía Ixtaluz, a fictional bay. Every day he asks seven questions. Each question has a fixed list of right answers. Every right answer has a set rarity. The rarer your answer, the more points it earns, and the farther Paco takes you on your trip.
 
-Everyone gets the same seven questions. A new set starts at 06:00 UTC, which is midnight at UTC−6, and the end screen shows that time in the player's own time zone. Day 1 is November 16, 2026.
+Everyone gets the same seven questions each day. A new set starts at 06:00 UTC, which is midnight at UTC−6, and the end screen shows that time in the player's own time zone. Day 1 is November 16, 2026.
 
 ## A question
 
-A question is one closed list cut by one rule:
+There are three kinds of question:
 
-- **Lists** (`js/data.js`): the 193 UN member states, the 50 US states, Mexico's 32 federal entities, the 118 chemical elements, the NBA, NFL, MLB and NHL teams by nickname, and the 40 last names of US presidents.
-- **Rules** (`js/prompts.js`): has a letter, starts with a letter, ends with a letter, has no letter, has N letters or fewer or more, is more than one word, starts and ends with the same letter, and a double letter (US states only).
-- **Questions written by hand:** UN member states with no coastline, names ending in "stan," Mexican states on the Pacific, team nicknames shared by two leagues, teams named after birds, and teams named after weather or the sky.
+- **Letter questions:** one list cut by one rule. "Name a US state whose name starts with N."
+- **Group questions:** a group inside a list, asked whole or cut by a rule. "Name a country in South America." "Name a capital city in Asia whose name has the letter S in it."
+- **Hand made lists:** "Name a noble gas." "Name a US state that touches the Mississippi River." "Name an NBA, NFL, MLB or NHL team based in Texas, by nickname."
 
-A cut becomes a question only if it has between 6 and 55 answers and leaves out at least 40% of its list. That gives 218 questions.
+**Lists** (`js/data.js`):
+- The 193 UN member states, tagged by continent. Countries in both Europe and Asia count for both.
+- World capitals, one or more for each UN member. Countries with more than one capital, like Bolivia and South Africa, list each.
+- The 50 US states, tagged by Census Bureau region, and the 50 state capitals.
+- Mexico's 32 federal entities.
+- The 118 chemical elements, with atomic numbers and symbols.
+- The NBA, NFL, MLB and NHL teams by nickname, and where each team plays.
+- The 40 last names of US presidents, with party and era.
+- The 88 constellations, the 24 Greek letters, the 26 NATO phonetic alphabet words, and the books of the Bible. Numbered books count once: Kings covers 1 and 2 Kings.
 
-The rule is checked against every real name an item has. "Ivory Coast" counts for a question about the letter Y, and "Czech Republic" counts for the letter R.
+**Rules** (`js/prompts.js`): has a letter, starts with a letter, ends with a letter, has no letter, has N letters or fewer or more, is more than one word, starts and ends with the same letter, and has a double letter.
 
-### The schedule
+A letter question needs 6 to 55 answers and must leave out at least 40% of its list or group. Whole groups and hand made lists can have up to 60 answers. The rule is checked against every real name an item has, so "Ivory Coast" counts for a question about the letter Y.
 
-A fixed shuffle turns the pool into days of seven. A day never uses the same list twice and has at most two sports questions. The 218 questions make 21 days before any question repeats.
+### How easy a question is
+
+Every question gets an ease score: the number of its answers most people know. An answer counts fully when its familiarity score is 4.8 or more (Canada, Lakers), a quarter at 4.0, and not at all under 3.2. Questions scoring under 0.1 are dropped as too hard. The rest are sorted into easy (3 or more), medium (1.5 to 3) and hard (under 1.5).
+
+Some questions are marked as **openers**: whole lists anyone can answer (a US state, an NFL team, a country in Europe, a sign of the zodiac) and easy letter questions on the most familiar lists (countries, US states, world capitals, NBA and NFL teams, presidents).
+
+The pool has 640 questions, 120 of them openers.
+
+### A set of seven
+
+Every set follows the same shape: two openers, then three medium questions, then two hard ones. Easy questions that aren't openers can fill the medium slots.
+
+- No list is used twice in a set.
+- No more than two sports questions and three geography questions. Other subjects get one question each unless nothing else fits.
+- No more than three letter questions.
+- The list for each slot is picked first, weighted by the square root of how many questions it has, so big lists like countries don't crowd out small ones. Mexican states and constellations come up less often, since most players know little about them.
+
+The daily sets are built ahead for a year. Each day avoids the questions used in the 30 days before it.
+
+### Endless mode (test mode only)
+
+`TEST_MODE` at the top of `js/app.js` is on for now. It adds a "Choose how to play" choice on the title screen: today's trip or endless mode. The screens follow `docs/endless-mode-screens.md`.
+
+- Endless mode opens every trip from the start, so testers can try the ATV ride and the dive.
+- Each round is a new set of seven in the same shape as the daily set. It skips today's daily questions and the questions already seen in endless mode. When every question has been seen, the sets start over and the title screen says so once.
+- The count reads "Round 3, question 4 of 7." The round end has the score sheet and totals, an "Earlier rounds" list from round 2 on, then "Play another round," "Change trip" and a link back to today's trip. There is no share text and no total across rounds.
+- On a dive, the round end names the deepest mark passed: "You passed the canyon wall at 300 meters."
+- The daily end screen keeps its share text and, in test mode, adds "Play another round" below it.
+- Rounds are saved apart from the daily game, and each one adds to lifetime points.
 
 ## Answering
 
@@ -126,6 +162,6 @@ Every place is invented: Bahía Ixtaluz, the town of Puerto Ixtaluz and its pier
 
 ## Known limits in v0.5
 
-- 21 days of questions, then the schedule repeats. A content pipeline is the next job.
+- Answer lists for world capitals, team locations and presidents' parties were written by hand and checked only by count. They need a fact check before launch.
 - Team familiarity still rests on hand tiers. A measure such as Wikipedia pageviews for each team's article would replace them.
 - The PP font files came from the tennis-team-manager repo. Confirm the licenses cover this site.

@@ -24,6 +24,10 @@ Check the answer lists and question pool after any data change:
 node tools/check.mjs
 ```
 
+## Test mode
+
+`TEST_MODE` at the top of `js/app.js` is on. It adds endless mode: new rounds of seven questions as long as a tester wants, with every trip open. Turn it off for launch.
+
 ## Deploy
 
 The game needs no build, server or database.
@@ -55,7 +59,7 @@ python3 tools/rarity.py
 - `index.html`, `css/style.css`: the page
 - `js/data.js`: the answer lists and hand tiers
 - `js/rarity.js`: fixed familiarity scores, built by `tools/rarity.py`
-- `js/prompts.js`: the rules, the question pool and the schedule
+- `js/prompts.js`: the rules, the question pool, how easy each question is, and how sets of seven are built
 - `js/engine.js`: days, matching, scoring and trips
 - `js/copy.js`: every line players read
 - `js/art.js`, `js/scene.js`: the 32 bit style art, drawn in code, and the Pixi scene

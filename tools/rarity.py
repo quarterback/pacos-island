@@ -5,13 +5,15 @@ Run: pip install wordfreq, then python3 tools/rarity.py
 A score is on the Zipf scale: about 5 for a name people see every day,
 about 2 for one they almost never see. Scores never change with play.
 
-- Place names, elements and presidents: 60% from how often the name appears
+- Countries, world capitals, US and Mexican states, elements and presidents: 60% from how often the name appears
   in English text (the wordfreq package, which combines Wikipedia, news,
   books, subtitles and the web), 40% from the hand tier in js/data.js. The
   tier steadies names that are also common words or surnames, like Lead,
   Chad, Georgia, Hidalgo or Grant.
-- Team nicknames: the hand tier alone. Nicknames are common words (Heat,
-  Wild, Stars), so their frequency in text says nothing about the team.
+- Team nicknames, state capitals, constellations, Greek letters, the NATO
+  alphabet and books of the Bible: the hand tier alone. Their names are
+  common words or names (Heat, Jackson, Leo, Eta, Golf, Mark), so their
+  frequency in text says little about the answer.
 
 Tiers map to the same scale: 1 = 5.0, 2 = 4.2, 3 = 3.4, 4 = 2.6, 5 = 1.8.
 """
@@ -21,7 +23,9 @@ from wordfreq import zipf_frequency
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TIER = {1: 5.0, 2: 4.2, 3: 3.4, 4: 2.6, 5: 1.8}
 TEXT_SHARE = 0.6
-TEAMS = {"nba", "nfl", "mlb", "nhl"}
+# Lists scored by hand tier alone, because their names are common words or
+# names in ordinary text (Heat, Jackson, Leo, Eta, Golf, Mark).
+TIER_ONLY = {"nba", "nfl", "mlb", "nhl", "statecaps", "constellations", "greek", "nato", "bible"}
 # Surnames alone are common words or shared by several people, so presidents
 # are looked up by full name. Shared surnames take the best known holder.
 FULL = {
@@ -57,7 +61,7 @@ for universe, items in json.loads(dump).items():
     out[universe] = {}
     for it in items:
         tier = TIER[it["tier"]]
-        score = tier if universe in TEAMS else TEXT_SHARE * text_score(universe, it) + (1 - TEXT_SHARE) * tier
+        score = tier if universe in TIER_ONLY else TEXT_SHARE * text_score(universe, it) + (1 - TEXT_SHARE) * tier
         out[universe][it["name"]] = round(score, 2)
 
 lines = ["/* Paco's Island: fixed familiarity scores, built by tools/rarity.py. Do not edit by hand.",

@@ -3,21 +3,62 @@
    Progress lives in this browser under one anonymous player id. "Move my
    progress" puts the whole record in a link so it can be opened on
    another device. Scores come from fixed familiarity scores, so the game
-   needs no server. */
+   needs no server.
+
+   Test mode adds endless mode: a new set of seven each round, with every
+   trip open, saved apart from the daily game. Each round adds to lifetime
+   points. Set TEST_MODE to false to hide it. Screens:
+   docs/endless-mode-screens.md. */
 'use strict';
 (() => {
   const $ = (id) => document.getElementById(id);
   const KEY = 'pacos-island.v2';
   const SECONDS = Engine.SECONDS;
   const day = Engine.dayNumber();
-  const questions = Prompts.forDay(day);
+  const TEST_MODE = true;
+  let mode = 'daily', picking = false, questions = [];
 
   // ---- saved progress ----
   const fresh = () => ({ v: 2, id: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)), lifetime: 0, trip: 'boat', days: {} });
   function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 2) return s; } catch (e) { /* storage blocked or empty */ } return fresh(); }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage blocked: progress lasts this visit */ } }
   let state = load();
-  const today = () => (state.days[day] ||= { trip: state.trip, answers: [], started: {}, done: false, counted: false });
+
+  // ---- the day's set and endless rounds ----
+  // Every record keeps its question ids. Records from before the question
+  // pool changed have none; their points stay in lifetime and the records go.
+  const newRecord = (qids, trip) => ({ trip, qids, answers: [], started: {}, done: false, counted: false });
+  function tidy() {
+    const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
+    for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
+    state.endless ||= { round: 0, rounds: {}, seen: [], repeated: false };
+    for (const k of Object.keys(state.endless.rounds)) if (!ok(state.endless.rounds[k])) delete state.endless.rounds[k];
+    if (state.endless.round && !state.endless.rounds[state.endless.round]) state.endless.round = 0;
+  }
+  tidy();
+  if (TEST_MODE && state.mode === 'endless') mode = 'endless';
+  const E = () => state.endless;
+  const roundRec = () => E().rounds[E().round] || null;
+  const roundDone = () => !roundRec() || roundRec().done;
+  function today() {
+    let rec;
+    if (mode === 'endless') { if (!roundRec()) newRound(state.trip); rec = roundRec(); }
+    else rec = (state.days[day] ||= newRecord(Prompts.forDay(day).map((q) => q.id), state.trip));
+    questions = rec.qids.map((id) => Prompts.get(id));
+    return rec;
+  }
+  // A new round skips today's daily questions and questions already seen in
+  // endless mode, until every question has been seen; then the sets start
+  // over.
+  function newRound(trip) {
+    const e = E();
+    if (e.seen.length + 7 > Prompts.pool.length) { e.seen = []; e.repeated = true; }
+    const avoid = new Set([...e.seen, ...Prompts.forDay(day).map((q) => q.id)]);
+    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, avoid).map((q) => q.id);
+    e.round++; e.rounds[e.round] = newRecord(set, trip); e.seen.push(...set);
+    for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
+    save();
+  }
   const dayScore = (rec) => rec.answers.reduce((s, a) => s + (a.points || 0), 0);
   const bucket = (pts) => (!pts ? 0 : pts < 5000 ? 1 : pts < 12000 ? 2 : pts < 20000 ? 3 : 4);
   const fmt = (n) => n.toLocaleString('en-US');
@@ -43,12 +84,23 @@
   function showTitle() {
     $('titleHead').textContent = Copy.title;
     $('intro').textContent = Copy.intro;
-    $('tripLegend').textContent = Copy.tripLegend;
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
-    const rec = state.days[day];
-    const open = Engine.opened(state.lifetime);
+    const endless = mode === 'endless';
+    const rec = endless ? (roundDone() ? null : roundRec()) : state.days[day];
+    const nextN = E().round + (roundDone() ? 1 : 0);
+    $('tripLegend').textContent = picking ? Copy.endless.tripLegend(nextN) : Copy.tripLegend;
+    for (const id of ['titleHead', 'intro', 'how', 'credit']) $(id).hidden = picking;
+    $('modes').hidden = !TEST_MODE || picking;
+    $('modeLegend').textContent = Copy.endless.modeLegend;
+    $('modeDaily').textContent = Copy.endless.daily; $('modeDailyNote').textContent = Copy.endless.dailyNote;
+    $('modeEndless').textContent = Copy.endless.name; $('modeEndlessNote').textContent = Copy.endless.note;
+    $('mode-daily').checked = !endless; $('mode-endless').checked = endless;
+    $('repeatNote').textContent = endless && E().repeated ? Copy.endless.repeats : ''; $('repeatNote').hidden = !$('repeatNote').textContent;
+    if (endless && E().repeated) { E().repeated = false; save(); }
+    $('leaveBtn').hidden = !picking; $('leaveBtn').textContent = Copy.endless.leave;
+    const open = endless ? Object.keys(Engine.TRIPS) : Engine.opened(state.lifetime);
     const box = $('trips'); box.querySelectorAll('.trip').forEach((n) => n.remove());
     for (const t of Object.values(Engine.TRIPS)) {
       const row = document.createElement('div'); row.className = 'trip' + (open.includes(t.id) ? '' : ' locked');
@@ -62,16 +114,30 @@
       if (!open.includes(t.id)) { const s = document.createElement('span'); s.className = 'lock'; s.textContent = Copy.tripOpens(t.opens); row.append(s); }
       box.append(row);
     }
-    $('startBtn').textContent = rec && rec.done ? Copy.seeResults : rec && rec.answers.length ? Copy.resume : Copy.start;
+    $('startBtn').textContent = endless ? (rec && rec.answers.length ? Copy.endless.resume(E().round) : Copy.endless.start(nextN))
+      : rec && rec.done ? Copy.seeResults : rec && rec.answers.length ? Copy.resume : Copy.start;
     $('hud').hidden = true;
     Scene.setTrip(rec ? rec.trip : state.trip); Scene.score(rec ? dayScore(rec) : 0, true);
     swap('title');
   }
   $('startBtn').addEventListener('click', () => {
+    if (mode === 'endless' && roundDone()) newRound(state.trip);
+    picking = false;
     const rec = today();
     if (!rec.answers.length) { rec.trip = state.trip; save(); }
     if (rec.done) showEnd(); else showQuestion();
   });
+
+  for (const m of ['daily', 'endless']) $('mode-' + m).addEventListener('change', () => { mode = m; state.mode = m; save(); showTitle(); });
+  function toDaily() { mode = 'daily'; state.mode = 'daily'; picking = false; save(); showTitle(); }
+  $('leaveBtn').addEventListener('click', toDaily);
+  $('leaveEndBtn').addEventListener('click', toDaily);
+  // Play another round: keep the trip just played.
+  $('againBtn').addEventListener('click', () => {
+    const trip = today().trip; mode = 'endless'; state.mode = 'endless'; picking = false;
+    state.trip = trip; newRound(trip); showQuestion();
+  });
+  $('changeTripBtn').addEventListener('click', () => { mode = 'endless'; state.mode = 'endless'; picking = true; save(); showTitle(); });
 
   function swap(id) { for (const s of ['title', 'play', 'end']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
 
@@ -86,7 +152,7 @@
     if (i >= 7) return finish();
     const q = questions[i]; current = { q, i };
     swap('play'); tripBar(rec); squares(rec, i);
-    $('qCount').textContent = Copy.progress(i + 1);
+    $('qCount').textContent = mode === 'endless' ? Copy.endless.progress(E().round, i + 1) : Copy.progress(i + 1);
     $('qText').textContent = q.text;
     $('answerLabel').textContent = Copy.answerLabel;
     $('answerBtn').textContent = Copy.answer;
@@ -160,9 +226,13 @@
     swap('end'); tripBar(rec);
     const headline = rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label);
     $('endHead').textContent = headline;
-    $('endNext').textContent = rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
+    const endless = mode === 'endless';
+    // On an endless dive, name the deepest mark passed ("the canyon wall").
+    const mark = endless && rec.trip === 'dive' ? [...Engine.TRIPS.dive.marks].reverse().find((m) => r.depth >= m[0]) : null;
+    $('endNext').textContent = mark ? Copy.endless.passedMark('the ' + mark[1].replace(/^The /, '').replace(/^./, (c) => c.toLowerCase()), `${fmt(mark[0])} meters`)
+      : rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
     // the score sheet, World Six style: every line adds up to the total
-    $('sheetHead').textContent = Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
+    $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, secs = 0;
     questions.forEach((q, i) => {
@@ -193,14 +263,32 @@
     $('speedLabel').textContent = Copy.speedTotal; $('speedTotal').textContent = '+' + fmt(speed);
     $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
     $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
-    $('endLifetime').textContent = Copy.lifetime(state.lifetime);
+    $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
-    $('endUnlock').textContent = justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
+    $('endUnlock').textContent = endless ? '' : justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
+    // Endless rounds end on the round buttons; the daily end keeps sharing,
+    // and in test mode also offers another round.
+    $('roundActions').hidden = !TEST_MODE;
+    $('againBtn').textContent = Copy.endless.again; $('changeTripBtn').textContent = Copy.endless.changeTrip; $('leaveEndBtn').textContent = Copy.endless.leave;
+    $('changeTripBtn').hidden = !endless; $('leaveEndBtn').hidden = !endless;
+    $('againBtn').classList.toggle('primary', endless); $('againBtn').classList.toggle('quiet', !endless);
+    $('share').hidden = endless;
+    // Earlier rounds: one line per finished round before this one, newest
+    // first, never added up. Left out after round 1.
+    const earlier = endless ? Object.keys(E().rounds).map(Number).filter((n) => n < E().round && E().rounds[n].done).sort((x, y) => y - x) : [];
+    $('earlier').hidden = !earlier.length; $('earlierHead').textContent = Copy.endless.earlierHead;
+    $('earlierList').innerHTML = '';
+    for (const n of earlier) {
+      const er = E().rounds[n], li = document.createElement('li');
+      const a = document.createElement('span'); a.textContent = Copy.endless.earlierRow(n, Copy.tripShort[er.trip]);
+      const b = document.createElement('span'); b.className = 'pts'; b.textContent = fmt(dayScore(er));
+      li.append(a, b); $('earlierList').append(li);
+    }
     const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
     const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
     $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
-    $('comeBack').textContent = Copy.comeBack(Copy.apTime(Engine.nextReset()));
+    $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();
   }
   $('copyBtn').addEventListener('click', async () => {
@@ -231,7 +319,7 @@
     if (!incoming || incoming.v !== 2) { $('importBody').textContent = Copy.importBad; $('importYes').hidden = true; $('importNo').textContent = Copy.close; $('importDialog').showModal(); return; }
     $('importBody').textContent = Copy.importBody(incoming.lifetime || 0);
     $('importYes').textContent = Copy.importYes; $('importNo').textContent = Copy.importNo;
-    $('importYes').onclick = () => { state = incoming; save(); $('importDialog').close(); showTitle(); };
+    $('importYes').onclick = () => { state = incoming; tidy(); mode = 'daily'; picking = false; save(); $('importDialog').close(); showTitle(); };
     $('importDialog').showModal();
   }
   $('importNo').addEventListener('click', () => $('importDialog').close());
@@ -240,5 +328,5 @@
   Scene.init($('scene')).then(() => { if (!Scene.ready) { const p = document.createElement('p'); p.className = 'note'; p.style.padding = '0 20px'; p.textContent = Copy.noScene; $('scene').after(p); } });
   showTitle();
   checkImport();
-  window.PacoDebug = { state: () => state, day, questions };
+  window.PacoDebug = { state: () => state, day, questions: () => questions };
 })();

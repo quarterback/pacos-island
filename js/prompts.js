@@ -1,12 +1,14 @@
 /* Paco's Island: questions.
 
-   A question is one closed list cut by one rule. The rule is checked
-   against every real name an item has, so "Ivory Coast" counts for a
-   question about the letter Y even though the display name has none.
+   A question is one closed list, or a group inside it, cut by one rule. The
+   rule is checked against every real name an item has, so "Ivory Coast"
+   counts for a question about the letter Y even though the display name
+   has none. Some questions ask for a whole group ("Name a country in South
+   America") with no letter rule at all.
 
-   The pool is built once from the lists in data.js. A fixed shuffle
-   turns it into a run of days with seven questions each, no list used
-   twice in a day and at most two sports questions a day. */
+   Every question gets an ease score from how many of its answers most
+   people know. A set of seven opens with two questions anyone can answer,
+   then three medium and two hard ones, and mixes kinds and subjects. */
 'use strict';
 const Prompts = (() => {
   const D = typeof Data !== 'undefined' ? Data : require('./data.js');
@@ -26,11 +28,25 @@ const Prompts = (() => {
     for (const a of it.aliases) if (!t.aliases.includes(a)) t.aliases.push(a);
   }
   const TEAMS = { id: 'teams', items: [...teamMap.values()], short: 'team nickname' };
+  const UNI = { ...D.UNIVERSES, teams: TEAMS };
 
-  const FIELD = { countries: 'name', states: 'name', mexico: 'name', elements: 'name', nba: 'nickname', nfl: 'nickname', mlb: 'nickname', nhl: 'nickname', presidents: 'last name' };
+  // Subjects, so a set doesn't lean on one kind of knowledge.
+  const SUBJECT = {
+    countries: 'geo', capitals: 'geo', states: 'geo', statecaps: 'geo', mexico: 'geo',
+    nba: 'sports', nfl: 'sports', mlb: 'sports', nhl: 'sports', teams: 'sports',
+    elements: 'science', constellations: 'science',
+    presidents: 'history', bible: 'books', greek: 'words', nato: 'words',
+  };
+  const SUBJECT_MAX = { geo: 3, sports: 2 };
+  // Lists most players know little about come up less often.
+  const LIST_WEIGHT = { mexico: 0.4, constellations: 0.6 };
+
+  // How each list's letter questions begin.
   const LEAD = {
-    countries: 'Name a U.N. member state whose name',
+    countries: 'Name a country whose name',
+    capitals: 'Name a world capital whose name',
     states: 'Name a U.S. state whose name',
+    statecaps: 'Name a U.S. state capital whose name',
     mexico: 'Name a Mexican state whose name',
     elements: 'Name a chemical element whose name',
     nba: 'Name an NBA team whose nickname',
@@ -38,9 +54,12 @@ const Prompts = (() => {
     mlb: 'Name an MLB team whose nickname',
     nhl: 'Name an NHL team whose nickname',
     presidents: 'Name a U.S. president whose last name',
+    constellations: 'Name a constellation whose name',
+    greek: 'Name a Greek letter whose name',
+    nato: 'Name a NATO phonetic alphabet word that',
+    bible: 'Name a book of the Bible whose name',
   };
-  const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the U.S. spelling.' };
-  const SPORTS = new Set(['nba', 'nfl', 'mlb', 'nhl', 'teams']);
+  const TAIL = { mexico: ' Mexico City counts.', elements: ' Use the U.S. spelling.', bible: ' Numbered books like 1 Kings count once.' };
 
   const RULES = [];
   for (const L of 'abcdefghijklmnopqrstuvwxyz') {
@@ -51,10 +70,10 @@ const Prompts = (() => {
   }
   for (const L of 'aeiou') RULES.push({ key: 'lacks-' + L, says: `has no letter ${L.toUpperCase()} in it`, test: (n) => !letters(n).includes(L) });
   for (const n of [4, 5, 6]) RULES.push({ key: 'max-' + n, says: `has ${['four', 'five', 'six'][n - 4]} letters or fewer`, test: (s) => letters(s).length <= n });
-  for (const n of [11, 12]) RULES.push({ key: 'min-' + n, says: `has ${n} letters or more`, test: (s) => letters(s).length >= n });
+  for (const n of [10, 11, 12]) RULES.push({ key: 'min-' + n, says: `has ${n} letters or more`, test: (s) => letters(s).length >= n });
   RULES.push({ key: 'words', says: 'is more than one word', test: (s) => words(s).length > 1 });
   RULES.push({ key: 'same-ends', says: 'starts and ends with the same letter', test: (s) => { const l = letters(s); return l.length > 1 && l[0] === l[l.length - 1]; } });
-  RULES.push({ key: 'double', says: 'has a double letter in it, like the LL in Illinois', test: (s) => /(.)\1/.test(letters(s)) });
+  RULES.push({ key: 'double', says: 'has a double letter in it, like the SS in Mississippi', test: (s) => /(.)\1/.test(letters(s)) });
 
   // Build the answer set: each item that qualifies, with the names that do.
   function cut(universe, test) {
@@ -66,55 +85,185 @@ const Prompts = (() => {
     return out;
   }
 
-  const MIN = 6, MAX = 55;
+  const MIN = 6, MAX = 55, WHOLE_MAX = 60;
   const pool = [];
+  const add = (q) => { if (q.answers.length >= MIN && q.answers.length <= (q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
+
+  // Letter questions on whole lists.
   for (const uid of Object.keys(LEAD)) {
-    const u = D.UNIVERSES[uid];
+    const u = UNI[uid];
     for (const r of RULES) {
+      if (uid === 'nato' && r.key.startsWith('has-')) continue; // too close to spelling the alphabet
       const answers = cut(u, r.test);
-      if (answers.length < MIN || answers.length > MAX || answers.length > u.items.length * 0.6) continue;
-      if (r.key === 'double' && uid !== 'states') continue; // the example names a state
-      pool.push({ id: `${uid}.${r.key}`, universe: uid, text: `${LEAD[uid]} ${r.says}.${TAIL[uid] || ''}`, answers });
+      if (answers.length > u.items.length * 0.6) continue;
+      add({ id: `${uid}.${r.key}`, universe: uid, kind: 'letter', text: `${LEAD[uid]} ${r.says}.${TAIL[uid] || ''}`, answers });
     }
   }
 
-  // Questions written by hand, each a real list rather than a letter rule.
-  const byName = (u, names) => (n, it) => names.includes(it.name);
-  const handmade = [
-    { id: 'countries.landlocked', universe: 'countries', text: 'Name a U.N. member state with no coastline. Countries on the Caspian Sea count as having no coastline.', test: byName(D.UNIVERSES.countries, D.LANDLOCKED) },
-    { id: 'countries.stan', universe: 'countries', text: 'Name a U.N. member state whose name ends in "stan."', test: (n) => letters(n).endsWith('stan') },
-    { id: 'mexico.pacific', universe: 'mexico', text: 'Name a Mexican state on the Pacific coast. The Gulf of California counts.', test: byName(D.UNIVERSES.mexico, D.MX_PACIFIC) },
-    { id: 'teams.shared', universe: 'teams', text: 'Name a nickname shared by teams in two of these leagues: the NBA, NFL, MLB and NHL.', test: (n, it) => it.leagues.length > 1 },
-    { id: 'teams.birds', universe: 'teams', text: 'Name an NBA, NFL, MLB or NHL team named after a bird.', test: (n, it) => ['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'].includes(it.name) },
-    { id: 'teams.weather', universe: 'teams', text: 'Name an NBA, NFL, MLB or NHL team named after weather or something you see in the sky.', test: (n, it) => ['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'].includes(it.name) },
+  // Groups inside a list: a whole group question, and letter questions on
+  // groups big enough to cut.
+  const byNames = (names) => (n, it) => names.includes(it.name);
+  const CONT = { africa: 'Africa', europe: 'Europe', asia: 'Asia', northAmerica: 'North America', southAmerica: 'South America', oceania: 'Oceania' };
+  const groups = [];
+  for (const [k, place] of Object.entries(CONT)) {
+    const names = D.CONTINENT[k];
+    groups.push({ id: `countries.${k}`, universe: 'countries', test: byNames(names), whole: `Name a country in ${place}.`, lead: `Name a country in ${place} whose name`, note: k === 'europe' || k === 'asia' ? ' Countries in both Europe and Asia count.' : '' });
+    groups.push({ id: `capitals.${k}`, universe: 'capitals', test: (n, it) => names.includes(it.country), whole: `Name the capital city of a country in ${place}.`, lead: `Name a capital city in ${place} whose name`, note: '' });
+  }
+  const REGION_NAME = { northeast: 'the Northeast', midwest: 'the Midwest', south: 'the South', west: 'the West' };
+  for (const [k, names] of Object.entries(D.REGION)) groups.push({ id: `states.${k}`, universe: 'states', test: byNames(names), whole: `Name a U.S. state in ${REGION_NAME[k]}, as the Census Bureau draws it.` });
+  groups.push({ id: 'bible.nt', universe: 'bible', test: byNames(D.NEW_TESTAMENT), whole: 'Name a book of the New Testament. Numbered books like 1 Peter count once.' });
+  groups.push({ id: 'bible.ot', universe: 'bible', test: (n, it) => !D.NEW_TESTAMENT.includes(it.name), whole: 'Name a book of the Old Testament. Numbered books like 1 Kings count once.' });
+
+  for (const g of groups) {
+    const all = cut(UNI[g.universe], g.test);
+    add({ id: g.id, universe: g.universe, kind: 'list', text: g.whole, answers: all });
+    if (!g.lead) continue;
+    for (const r of RULES) {
+      const answers = cut(UNI[g.universe], (n, it) => g.test(n, it) && r.test(n, it));
+      if (answers.length > all.length * 0.6) continue;
+      add({ id: `${g.id}.${r.key}`, universe: g.universe, kind: 'letter', text: `${g.lead} ${r.says}.${g.note || ''}`, answers });
+    }
+  }
+
+  // Whole lists and hand made lists.
+  const BORDERS = {
+    china: ['Afghanistan', 'Bhutan', 'India', 'Kazakhstan', 'North Korea', 'Kyrgyzstan', 'Laos', 'Mongolia', 'Myanmar', 'Nepal', 'Pakistan', 'Russia', 'Tajikistan', 'Vietnam'],
+    russia: ['Norway', 'Finland', 'Estonia', 'Latvia', 'Lithuania', 'Poland', 'Belarus', 'Ukraine', 'Georgia', 'Azerbaijan', 'Kazakhstan', 'China', 'Mongolia', 'North Korea'],
+    germany: ['Denmark', 'Poland', 'Czechia', 'Austria', 'Switzerland', 'France', 'Luxembourg', 'Belgium', 'Netherlands'],
+    brazil: ['Argentina', 'Bolivia', 'Colombia', 'Guyana', 'Paraguay', 'Peru', 'Suriname', 'Uruguay', 'Venezuela'],
+  };
+  const lists = [
+    ['countries.landlocked', 'countries', 'Name a country with no coastline. Countries on the Caspian Sea count as having none.', byNames(D.LANDLOCKED)],
+    ['countries.stan', 'countries', 'Name a country whose name ends in "stan."', (n) => letters(n).endsWith('stan')],
+    ['countries.borders-china', 'countries', 'Name a country that shares a land border with China.', byNames(BORDERS.china)],
+    ['countries.borders-russia', 'countries', 'Name a country that shares a land border with Russia.', byNames(BORDERS.russia)],
+    ['countries.borders-germany', 'countries', 'Name a country that shares a border with Germany.', byNames(BORDERS.germany)],
+    ['countries.borders-brazil', 'countries', 'Name a country that shares a border with Brazil.', byNames(BORDERS.brazil)],
+    ['states.all', 'states', 'Name a U.S. state.', () => true],
+    ['states.canada', 'states', 'Name a U.S. state that borders Canada, by land or across a Great Lake.', byNames(D.STATE_LISTS.canada)],
+    ['states.mississippi', 'states', 'Name a U.S. state that touches the Mississippi River.', byNames(D.STATE_LISTS.mississippi)],
+    ['states.colonies', 'states', 'Name a state that was one of the original 13 colonies.', byNames(D.STATE_LISTS.colonies)],
+    ['states.atlantic', 'states', 'Name a U.S. state on the Atlantic coast.', byNames(D.STATE_LISTS.atlantic)],
+    ['states.great-lakes', 'states', 'Name a U.S. state that touches one of the Great Lakes.', byNames(D.STATE_LISTS.greatLakes)],
+    ['statecaps.all', 'statecaps', 'Name a U.S. state capital.', () => true],
+    ['mexico.all', 'mexico', 'Name a Mexican state. Mexico City counts.', () => true],
+    ['mexico.pacific', 'mexico', 'Name a Mexican state on the Pacific coast. The Gulf of California counts.', byNames(D.MX_PACIFIC)],
+    ['nba.all', 'nba', 'Name an NBA team, by nickname.', () => true],
+    ['nfl.all', 'nfl', 'Name an NFL team, by nickname.', () => true],
+    ['mlb.all', 'mlb', 'Name an MLB team, by nickname.', () => true],
+    ['nhl.all', 'nhl', 'Name an NHL team, by nickname.', () => true],
+    ['teams.shared', 'teams', 'Name a nickname shared by teams in two of these leagues: the NBA, NFL, MLB and NHL.', (n, it) => it.leagues.length > 1],
+    ['teams.birds', 'teams', 'Name an NBA, NFL, MLB or NHL team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'])],
+    ['teams.weather', 'teams', 'Name an NBA, NFL, MLB or NHL team named after weather or something you see in the sky.', byNames(['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'])],
+    ['teams.california', 'teams', 'Name an NBA, NFL, MLB or NHL team based in California, by nickname.', byNames(D.TEAM_PLACES.california)],
+    ['teams.texas', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Texas, by nickname.', byNames(D.TEAM_PLACES.texas)],
+    ['teams.florida', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Florida, by nickname.', byNames(D.TEAM_PLACES.florida)],
+    ['teams.new-york', 'teams', 'Name an NBA, NFL, MLB or NHL team based in New York State, by nickname.', byNames(D.TEAM_PLACES.newYork)],
+    ['teams.canada', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Canada, by nickname.', byNames(D.TEAM_PLACES.canada)],
+    ['teams.pennsylvania', 'teams', 'Name an NBA, NFL, MLB or NHL team based in Pennsylvania, by nickname.', byNames(D.TEAM_PLACES.pennsylvania)],
+    ['presidents.all', 'presidents', 'Name a U.S. president, by last name.', () => true],
+    ['presidents.democrat', 'presidents', 'Name a Democratic U.S. president, by last name.', byNames(D.PARTY.democrat)],
+    ['presidents.republican', 'presidents', 'Name a Republican U.S. president, by last name.', byNames(D.PARTY.republican)],
+    ['presidents.since-1950', 'presidents', 'Name a U.S. president who served after 1950, by last name.', byNames(D.PRES_LISTS.since1950)],
+    ['presidents.1800s', 'presidents', 'Name a U.S. president who served in the 1800s, by last name.', byNames(D.PRES_LISTS.the1800s)],
+    ['elements.first-20', 'elements', 'Name one of the first 20 elements on the periodic table.', (n, it) => it.z <= 20],
+    ['elements.first-10', 'elements', 'Name one of the first 10 elements on the periodic table.', (n, it) => it.z <= 10],
+    ['elements.one-letter', 'elements', 'Name an element whose chemical symbol is one letter, like O for oxygen.', (n, it) => it.symbol.length === 1],
+    ['elements.odd-symbol', 'elements', "Name an element whose symbol doesn't start with the first letter of its English name, like Fe for iron.", (n, it) => it.symbol[0].toLowerCase() !== letters(it.name)[0]],
+    ['elements.noble', 'elements', 'Name a noble gas.', byNames(D.ELEMENT_LISTS.noble)],
+    ['elements.halogens', 'elements', 'Name a halogen.', byNames(D.ELEMENT_LISTS.halogens)],
+    ['elements.alkali', 'elements', 'Name an alkali metal.', byNames(D.ELEMENT_LISTS.alkali)],
+    ['elements.over-100', 'elements', 'Name an element with an atomic number above 100.', (n, it) => it.z > 100],
+    ['constellations.zodiac', 'constellations', 'Name a constellation of the zodiac. Scorpio and Capricorn count.', byNames(D.ZODIAC)],
+    ['greek.all', 'greek', 'Name a letter of the Greek alphabet.', () => true],
+    ['nato.all', 'nato', 'Name a word from the NATO phonetic alphabet, the one pilots use.', () => true],
+    ['bible.all', 'bible', 'Name a book of the Bible. Numbered books like 1 Kings count once.', () => true],
   ];
-  const UNI = { ...D.UNIVERSES, teams: TEAMS };
-  for (const h of handmade) pool.push({ id: h.id, universe: h.universe, text: h.text, answers: cut(UNI[h.universe], h.test) });
+  for (const [id, universe, text, test] of lists) add({ id, universe, kind: 'list', text, answers: cut(UNI[universe], test) });
 
-  // ---- the schedule ----
+  // ---- how easy a question is ----
+  // Each answer counts toward ease by how familiar it is: fully at a score of
+  // 4.8 or more (Canada, Lakers), a quarter at 4.0, nothing under 3.2.
+  // Questions almost nobody could answer are dropped.
+  const known = (fam) => Math.pow(Math.min(1, Math.max(0, (fam - 3.2) / 1.6)), 2);
+  for (const q of pool) {
+    q.ease = q.answers.reduce((s, a) => s + known(a.item.fam), 0);
+    q.level = q.ease >= 3 ? 'easy' : q.ease >= 1.5 ? 'medium' : 'hard';
+  }
+  for (let i = pool.length - 1; i >= 0; i--) if (pool[i].ease < 0.1) pool.splice(i, 1);
+
+  // Openers: questions anyone can answer without special knowledge. Whole
+  // lists everyone knows, and easy letter questions on the most familiar
+  // lists.
+  const OPENERS = new Set(['states.all', 'nba.all', 'nfl.all', 'mlb.all', 'nhl.all', 'presidents.all', 'presidents.since-1950',
+    'countries.europe', 'countries.southAmerica', 'countries.africa', 'countries.asia', 'countries.northAmerica',
+    'capitals.europe', 'states.atlantic', 'states.colonies', 'states.west', 'states.south', 'states.midwest', 'states.northeast',
+    'constellations.zodiac', 'teams.california', 'teams.texas', 'teams.florida', 'teams.new-york', 'teams.canada', 'teams.pennsylvania',
+    'greek.all', 'nato.all', 'bible.all', 'statecaps.all']);
+  const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'presidents', 'capitals']);
+  for (const q of pool) q.opener = OPENERS.has(q.id) || (q.kind === 'letter' && EVERYDAY.has(q.universe) && q.ease >= 4);
+
+  // ---- sets of seven ----
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-  function shuffle(list, seed) { const a = list.slice(), r = rng(seed); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function shuffle(list, r) { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
+  // Two openers, three medium, two hard. Each question comes from a different
+  // list, no subject takes more than its share, and at most three of the
+  // seven are letter questions.
+  const SHAPE = ['opener', 'opener', 'medium', 'medium', 'medium', 'hard', 'hard'];
+  const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
+  for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
+  byLevel.medium.push(...byLevel.easy);
+  function makeSet(seed, avoid = new Set()) {
+    const r = rng(seed);
+    const lists = new Set(), subjects = {}; let letterCount = 0;
+    const set = [];
+    for (const level of SHAPE) {
+      const fits = (q, strict) => !lists.has(q.universe) && (subjects[SUBJECT[q.universe]] || 0) < (SUBJECT_MAX[SUBJECT[q.universe]] || 1) + (strict || SUBJECT[q.universe] === 'sports' ? 0 : 1)
+        && !(q.kind === 'letter' && letterCount >= 3 && strict) && !set.includes(q);
+      let pick = null;
+      for (const fresh of [true, false]) {
+        for (const strict of [true, false]) {
+          const cands = byLevel[level].filter((q) => fits(q, strict) && (!fresh || !avoid.has(q.id)));
+          // Pick a list first, weighted by the square root of how many
+          // questions it has, then a question from it, so big lists like
+          // countries don't crowd out small ones.
+          const lists = [...new Set(cands.map((q) => q.universe))];
+          if (lists.length) {
+            const inList = (u) => cands.filter((q) => q.universe === u);
+            const w = lists.map((u) => Math.sqrt(inList(u).length) * (LIST_WEIGHT[u] || 1));
+            let x = r() * w.reduce((a, b) => a + b, 0), i = 0;
+            while (x > w[i] && i < w.length - 1) { x -= w[i]; i++; }
+            const qs = inList(lists[i]); pick = qs[Math.floor(r() * qs.length)];
+          }
+          if (pick) break;
+        }
+        if (pick) break;
+      }
+      if (!pick) pick = shuffle(pool, r).find((q) => !set.includes(q) && !lists.has(q.universe)) || shuffle(pool, r).find((q) => !set.includes(q));
+      set.push(pick); lists.add(pick.universe);
+      subjects[SUBJECT[pick.universe]] = (subjects[SUBJECT[pick.universe]] || 0) + 1;
+      if (pick.kind === 'letter') letterCount++;
+    }
+    return set;
+  }
+
+  // Daily sets: a fixed run built ahead, each day avoiding the questions of
+  // the 30 days before it.
   const DAYS = [];
   {
-    let left = shuffle(pool, 20261117);
-    while (left.length >= 7) {
-      const day = [], used = new Set(); let sports = 0;
-      for (const q of left) {
-        if (day.length === 7) break;
-        if (used.has(q.universe)) continue;
-        if (SPORTS.has(q.universe) && sports === 2) continue;
-        day.push(q); used.add(q.universe); if (SPORTS.has(q.universe)) sports++;
-      }
-      if (day.length < 7) break;
-      DAYS.push(day);
-      const ids = new Set(day.map((q) => q.id));
-      left = left.filter((q) => !ids.has(q.id));
+    const recent = [];
+    for (let d = 0; d < 365; d++) {
+      const set = makeSet(20261117 + d * 7919, new Set(recent.flat()));
+      DAYS.push(set); recent.push(set.map((q) => q.id)); if (recent.length > 30) recent.shift();
     }
   }
 
+  const byId = new Map(pool.map((q) => [q.id, q]));
   const forDay = (n) => DAYS[(n - 1) % DAYS.length];
+  const get = (id) => byId.get(id);
   const universe = (id) => UNI[id];
-  return { pool, DAYS, forDay, universe, norm, letters };
+  return { pool, DAYS, forDay, makeSet, get, universe, norm, letters };
 })();
 if (typeof module !== 'undefined') module.exports = Prompts;
