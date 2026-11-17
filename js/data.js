@@ -1641,6 +1641,648 @@ Hermes
 Dionysus|Dionysos
 Hestia`, { 1: ['Zeus', 'Poseidon', 'Athena', 'Apollo', 'Aphrodite', 'Hermes', 'Hera'], 2: ['Ares', 'Artemis', 'Dionysus', 'Demeter'], 4: ['Hestia', 'Hephaestus'] }, 3);
 
+  // ---- reality TV ----
+  const HOUSEWIVES = parse(`
+Orange County|OC
+New York City|New York|NYC
+Atlanta
+New Jersey
+D.C.|Washington|Washington D.C.
+Beverly Hills
+Miami
+Potomac
+Dallas
+Salt Lake City
+Dubai
+Rhode Island`, { 1: ['New York City', 'Orange County', 'Atlanta', 'Beverly Hills', 'New Jersey'], 2: ['Miami', 'Potomac', 'Salt Lake City'], 4: ['D.C.', 'Rhode Island'] }, 3);
+  const KARDASHIANS = parse(`
+Kim Kardashian|Kim
+Kourtney Kardashian|Kourtney|Kourtney Kardashian Barker
+Khloé Kardashian|Khloé|Khloe|Khloe Kardashian
+Rob Kardashian|Rob
+Kris Jenner|Kris
+Kendall Jenner|Kendall
+Kylie Jenner|Kylie
+Caitlyn Jenner|Caitlyn|Bruce Jenner|Bruce`, { 1: ['Kim Kardashian', 'Kylie Jenner', 'Kris Jenner', 'Kendall Jenner', 'Khloé Kardashian'], 2: ['Kourtney Kardashian', 'Caitlyn Jenner'], 3: ['Rob Kardashian'] }, 3);
+  const SHARKS = parse(`
+Mark Cuban|Cuban
+Barbara Corcoran|Barbara|Corcoran
+Lori Greiner|Lori|Greiner
+Robert Herjavec|Robert|Herjavec
+Daymond John|Daymond
+Kevin O'Leary|O'Leary|Mr. Wonderful|Mr Wonderful
+Kevin Harrington|Harrington
+Daniel Lubetzky|Lubetzky
+Emma Grede
+Kendra Scott
+Rohan Oza
+Alex Rodriguez|A-Rod
+Gwyneth Paltrow
+Jamie Siminoff
+Michael Strahan
+Chip Gaines
+Joanna Gaines
+Alexis Ohanian
+Fawn Weaver
+Allison Ellsworth
+Candace Nelson
+Todd Graves
+Tony Xu
+Sara Blakely
+Richard Branson
+Ashton Kutcher
+Chris Sacca
+Troy Carter
+Bethenny Frankel
+Charles Barkley
+Matt Higgins
+Jeff Foxworthy
+John Paul DeJoria
+Peter Jones`, { 1: ['Mark Cuban', "Kevin O'Leary", 'Barbara Corcoran', 'Lori Greiner'], 2: ['Daymond John', 'Robert Herjavec'], 4: ['Kevin Harrington', 'Daniel Lubetzky', 'Alex Rodriguez', 'Michael Strahan', 'Ashton Kutcher', 'Richard Branson', 'Gwyneth Paltrow', 'Charles Barkley', 'Sara Blakely', 'Chip Gaines', 'Joanna Gaines'] }, 5);
+  const IDOL_JUDGES = parse(`
+Simon Cowell|Simon|Cowell
+Paula Abdul|Paula|Abdul
+Randy Jackson|Randy
+Kara DioGuardi|Kara
+Ellen DeGeneres|Ellen
+Steven Tyler
+Jennifer Lopez|J.Lo|JLo
+Mariah Carey|Mariah
+Nicki Minaj|Nicki
+Keith Urban
+Harry Connick Jr.|Harry Connick|Harry Connick Jr
+Katy Perry|Katy
+Lionel Richie|Lionel
+Luke Bryan
+Carrie Underwood|Carrie`, { 1: ['Simon Cowell', 'Paula Abdul', 'Katy Perry', 'Lionel Richie', 'Luke Bryan', 'Jennifer Lopez', 'Randy Jackson'], 2: ['Carrie Underwood', 'Steven Tyler', 'Mariah Carey', 'Nicki Minaj', 'Harry Connick Jr.', 'Keith Urban'], 4: ['Kara DioGuardi'] }, 3);
+
+  // ---- around the house ----
+  const TOOLS = parse(`
+Hammer|Claw hammer|Sledgehammer|Sledge hammer
+Screwdriver|Phillips screwdriver|Flathead screwdriver|Phillips|Flathead
+Wrench|Spanner|Box wrench|Open-end wrench
+Pliers
+Saw|Handsaw|Hand saw
+Tape measure|Measuring tape|Tape
+Level|Spirit level
+Utility knife|Box cutter|Box knife
+Drill|Power drill|Cordless drill
+Chisel
+File
+Mallet|Rubber mallet
+Allen wrench|Allen key|Hex key|Hex wrench
+Socket wrench|Ratchet|Socket set
+Adjustable wrench|Crescent wrench
+Pipe wrench
+Torque wrench
+Hacksaw
+Coping saw
+Crowbar|Pry bar
+Clamp|C-clamp
+Vise grips|Vise-Grip|Locking pliers
+Needle-nose pliers|Needle nose pliers
+Wire cutters
+Wire strippers|Wire stripper
+Stud finder
+Flashlight
+Square|Speed square|Carpenter's square|Try square
+Putty knife
+Sandpaper
+Nail set
+Awl
+Staple gun
+Caulk gun|Caulking gun
+Tin snips
+Voltage tester
+Wire brush`, { 1: ['Hammer', 'Screwdriver', 'Wrench', 'Pliers', 'Tape measure', 'Saw', 'Drill', 'Level'], 2: ['Utility knife', 'Allen wrench', 'Socket wrench', 'Adjustable wrench', 'Crowbar', 'Clamp', 'Needle-nose pliers', 'Flashlight', 'Hacksaw', 'Mallet', 'Chisel', 'Sandpaper', 'Wire cutters', 'Stud finder'], 4: ['Coping saw', 'Nail set', 'Awl', 'Tin snips', 'Voltage tester', 'Wire brush', 'Torque wrench'] }, 3);
+
+  // ---- food and drink ----
+  const PASTA = parse(`
+Spaghetti
+Penne
+Fettuccine|Fettucine|Fettuccini
+Linguine|Linguini
+Lasagna|Lasagne
+Macaroni|Elbow macaroni|Elbows
+Ravioli
+Rigatoni
+Tortellini
+Farfalle|Bow tie|Bow ties|Bowtie
+Fusilli
+Rotini
+Angel hair|Capellini
+Orzo
+Ziti
+Manicotti
+Gnocchi
+Cannelloni
+Tagliatelle
+Pappardelle
+Orecchiette
+Shells|Conchiglie|Pasta shells
+Bucatini
+Vermicelli
+Ditalini
+Cavatappi
+Gemelli
+Campanelle
+Radiatori
+Paccheri
+Cavatelli
+Agnolotti
+Strozzapreti
+Trofie
+Casarecce
+Mafaldine|Mafalde
+Anelli
+Stelline
+Acini di pepe
+Mostaccioli
+Spaghettini
+Tortelloni`, { 1: ['Spaghetti', 'Penne', 'Fettuccine', 'Lasagna', 'Macaroni', 'Ravioli', 'Linguine'], 2: ['Rigatoni', 'Tortellini', 'Farfalle', 'Fusilli', 'Rotini', 'Angel hair', 'Orzo', 'Ziti', 'Gnocchi', 'Manicotti', 'Shells'], 4: ['Campanelle', 'Radiatori', 'Paccheri', 'Cavatelli', 'Agnolotti', 'Strozzapreti', 'Trofie', 'Casarecce', 'Mafaldine', 'Anelli', 'Stelline', 'Acini di pepe', 'Mostaccioli', 'Spaghettini', 'Tortelloni'] }, 3);
+  const CITRUS = parse(`
+Orange|Navel orange|Valencia orange
+Lemon
+Lime
+Grapefruit
+Tangerine
+Clementine
+Mandarin|Mandarin orange
+Kumquat
+Pomelo|Pummelo
+Yuzu
+Blood orange
+Key lime
+Bergamot
+Citron
+Satsuma
+Tangelo
+Ugli fruit|Ugli
+Meyer lemon
+Calamansi|Calamondin
+Finger lime
+Makrut lime|Kaffir lime
+Sudachi`, { 1: ['Orange', 'Lemon', 'Lime', 'Grapefruit'], 2: ['Tangerine', 'Clementine', 'Mandarin', 'Blood orange', 'Key lime'], 4: ['Bergamot', 'Citron', 'Tangelo', 'Ugli fruit', 'Calamansi', 'Finger lime', 'Makrut lime'], 5: ['Sudachi'] }, 3);
+  const CHEESES = parse(`
+Cheddar
+Mozzarella
+Parmesan|Parmigiano-Reggiano|Parmigiano Reggiano|Parmigiano
+Swiss
+Brie
+Feta
+Gouda
+Provolone
+Ricotta
+American
+Cream cheese
+Cottage cheese
+Blue cheese|Bleu cheese|Blue
+Goat cheese|Chèvre|Chevre
+Camembert
+Gruyère
+Monterey Jack|Jack
+Pepper Jack
+Colby
+Colby Jack
+Gorgonzola
+Roquefort
+Stilton
+Havarti
+Muenster|Munster
+Manchego
+Pecorino|Pecorino Romano|Romano
+Asiago
+Burrata
+Mascarpone
+Halloumi
+Emmental|Emmentaler
+Edam
+Fontina
+Limburger
+Paneer
+Queso fresco
+Cotija
+Oaxaca
+Jarlsberg
+Wensleydale
+Comté
+Raclette
+Taleggio
+Boursin
+Red Leicester
+Double Gloucester`, { 1: ['Cheddar', 'Mozzarella', 'Parmesan', 'Swiss', 'American', 'Cream cheese'], 2: ['Brie', 'Feta', 'Gouda', 'Provolone', 'Ricotta', 'Cottage cheese', 'Blue cheese', 'Goat cheese', 'Monterey Jack', 'Pepper Jack', 'Colby'], 4: ['Limburger', 'Paneer', 'Cotija', 'Oaxaca', 'Jarlsberg', 'Wensleydale', 'Comté', 'Raclette', 'Taleggio', 'Boursin', 'Red Leicester', 'Double Gloucester', 'Edam', 'Fontina', 'Emmental'] }, 3);
+  const WINE_GRAPES = parse(`
+Cabernet Sauvignon|Cabernet|Cab
+Merlot
+Pinot Noir
+Chardonnay
+Sauvignon Blanc
+Riesling
+Pinot Grigio|Pinot Gris
+Syrah|Shiraz
+Zinfandel
+Malbec
+Moscato|Muscat
+Chenin Blanc
+Grenache|Garnacha
+Tempranillo
+Sangiovese
+Nebbiolo
+Gewürztraminer
+Viognier
+Cabernet Franc
+Petite Sirah
+Barbera
+Gamay
+Carmenère
+Albariño
+Grüner Veltliner
+Pinotage
+Mourvèdre|Monastrell
+Sémillon
+Petit Verdot
+Primitivo
+Montepulciano
+Vermentino
+Torrontés
+Marsanne
+Roussanne
+Melon de Bourgogne|Muscadet
+Trebbiano|Ugni Blanc
+Glera`, { 1: ['Cabernet Sauvignon', 'Merlot', 'Pinot Noir', 'Chardonnay'], 2: ['Sauvignon Blanc', 'Riesling', 'Pinot Grigio', 'Syrah', 'Zinfandel', 'Malbec', 'Moscato'], 4: ['Gamay', 'Carmenère', 'Albariño', 'Grüner Veltliner', 'Pinotage', 'Mourvèdre', 'Sémillon', 'Petit Verdot', 'Primitivo', 'Vermentino', 'Torrontés', 'Marsanne', 'Roussanne', 'Melon de Bourgogne', 'Trebbiano', 'Glera'] }, 3);
+
+  // Countries that grow coffee or tea, from FAO crop figures, and the
+  // members of OPEC after the United Arab Emirates left on May 1, 2026.
+  const COMMODITY = {
+    coffee: ['Brazil', 'Vietnam', 'Indonesia', 'Colombia', 'Ethiopia', 'Honduras', 'Uganda', 'Peru', 'India', 'Central African Republic', 'Guatemala', 'Guinea', 'Mexico', 'Laos', 'Nicaragua', 'China', "Côte d'Ivoire", 'Costa Rica', 'Tanzania', 'Democratic Republic of the Congo', 'Venezuela', 'Madagascar', 'Kenya', 'Papua New Guinea', 'El Salvador', 'Yemen', 'Philippines', 'Rwanda', 'Cambodia', 'Bolivia', 'Dominican Republic', 'Togo', 'Angola', 'Thailand', 'Panama', 'Malawi', 'Jamaica', 'Haiti', 'Cuba', 'Ecuador', 'Burundi', 'Cameroon', 'Sierra Leone', 'Liberia', 'Ghana', 'Nigeria', 'Zambia', 'Zimbabwe', 'Mozambique', 'Sri Lanka', 'Nepal', 'Myanmar', 'Malaysia', 'Timor-Leste', 'Australia', 'United States', 'Paraguay', 'Trinidad and Tobago', 'Guyana', 'Suriname', 'Gabon', 'Congo', 'Equatorial Guinea', 'Benin', 'Cabo Verde', 'Comoros', 'São Tomé and Príncipe', 'Saudi Arabia', 'Fiji', 'Vanuatu', 'Samoa', 'Tonga', 'Dominica', 'Grenada', 'Saint Vincent and the Grenadines', 'Saint Lucia', 'Mauritius', 'Belize'],
+    tea: ['China', 'India', 'Kenya', 'Sri Lanka', 'Turkey', 'Vietnam', 'Indonesia', 'Bangladesh', 'Argentina', 'Japan', 'Uganda', 'Malawi', 'Iran', 'Tanzania', 'Myanmar', 'Rwanda', 'Nepal', 'Thailand', 'Burundi', 'Mozambique', 'Zimbabwe', 'Malaysia', 'Laos', 'Georgia', 'South Korea', 'Ecuador', 'Cameroon', 'Ethiopia', 'Papua New Guinea', 'Brazil', 'Peru', 'Bolivia', 'Azerbaijan', 'Mauritius', 'South Africa', 'Zambia', 'Democratic Republic of the Congo', 'Madagascar', 'Russia', 'Guatemala', 'Bhutan', 'Cambodia', 'Australia', 'United States', 'Portugal', 'United Kingdom', 'New Zealand', 'Colombia', 'Paraguay'],
+    opec: ['Algeria', 'Congo', 'Equatorial Guinea', 'Gabon', 'Iran', 'Iraq', 'Kuwait', 'Libya', 'Nigeria', 'Saudi Arabia', 'Venezuela'],
+  };
+  ELEMENT_LISTS.precious = ['Gold', 'Silver', 'Platinum', 'Palladium', 'Rhodium', 'Iridium', 'Osmium', 'Ruthenium'];
+
+
+  // ---- books ----
+  const DAHL = parse(`
+Charlie and the Chocolate Factory|Charlie
+Matilda
+The BFG|BFG
+James and the Giant Peach|James
+The Witches|Witches
+Fantastic Mr Fox|Fantastic Mr. Fox|Mr Fox
+The Twits|Twits
+George's Marvellous Medicine|George's Marvelous Medicine
+Danny the Champion of the World|Danny
+Charlie and the Great Glass Elevator|Great Glass Elevator
+The Enormous Crocodile|Enormous Crocodile
+Esio Trot
+The Magic Finger|Magic Finger
+The Giraffe and the Pelly and Me
+The Minpins
+The Vicar of Nibbleswicke
+Revolting Rhymes
+Dirty Beasts
+The Gremlins
+Boy
+Going Solo`, { 1: ['Charlie and the Chocolate Factory', 'Matilda', 'The BFG', 'James and the Giant Peach'], 2: ['The Witches', 'Fantastic Mr Fox', 'The Twits'], 4: ['The Giraffe and the Pelly and Me', 'The Minpins', 'The Vicar of Nibbleswicke', 'Revolting Rhymes', 'Dirty Beasts', 'The Gremlins', 'Boy', 'Going Solo', 'The Magic Finger'] }, 3);
+  const LITTLE_HOUSE = parse(`
+Little House in the Big Woods|Big Woods
+Farmer Boy
+Little House on the Prairie
+On the Banks of Plum Creek|Plum Creek
+By the Shores of Silver Lake|Silver Lake
+The Long Winter|Long Winter
+Little Town on the Prairie
+These Happy Golden Years
+The First Four Years|First Four Years`, { 1: ['Little House on the Prairie'], 2: ['Little House in the Big Woods', 'On the Banks of Plum Creek'], 4: ['The First Four Years', 'Little Town on the Prairie'] }, 3);
+  const DICKENS = parse(`
+A Christmas Carol|Christmas Carol
+Oliver Twist
+Great Expectations
+A Tale of Two Cities|Tale of Two Cities
+David Copperfield
+Bleak House
+Hard Times
+Little Dorrit
+Nicholas Nickleby
+The Pickwick Papers|Pickwick Papers
+The Old Curiosity Shop|Old Curiosity Shop
+Our Mutual Friend
+Dombey and Son
+Martin Chuzzlewit
+Barnaby Rudge
+The Mystery of Edwin Drood|Edwin Drood`, { 1: ['A Christmas Carol', 'Oliver Twist', 'Great Expectations', 'A Tale of Two Cities'], 2: ['David Copperfield'], 4: ['Dombey and Son', 'Martin Chuzzlewit', 'Barnaby Rudge', 'The Mystery of Edwin Drood', 'Our Mutual Friend'] }, 3);
+  const BRONTE = parse(`
+Jane Eyre
+Wuthering Heights
+Agnes Grey
+The Tenant of Wildfell Hall|Tenant of Wildfell Hall
+Villette
+Shirley
+The Professor`, { 1: ['Jane Eyre', 'Wuthering Heights'], 4: ['Agnes Grey', 'The Tenant of Wildfell Hall', 'Villette', 'Shirley', 'The Professor'] }, 3);
+  const LITTLE_WOMEN = parse(`
+Jo|Jo March|Josephine
+Meg|Meg March|Margaret
+Beth|Beth March|Elizabeth
+Amy|Amy March
+Marmee|Mrs. March
+Laurie|Theodore Laurence|Teddy
+Mr. Laurence|Mr Laurence
+Aunt March
+John Brooke|Mr. Brooke
+Professor Bhaer|Friedrich Bhaer|Fritz
+Hannah`, { 1: ['Jo', 'Meg', 'Beth', 'Amy'], 2: ['Laurie', 'Marmee'], 4: ['Mr. Laurence', 'John Brooke', 'Professor Bhaer', 'Hannah'] }, 3);
+  const BENNETS = parse(`
+Elizabeth|Lizzy|Elizabeth Bennet|Eliza
+Jane|Jane Bennet
+Mary|Mary Bennet
+Kitty|Catherine|Kitty Bennet
+Lydia|Lydia Bennet`, { 1: ['Elizabeth', 'Jane'], 2: ['Lydia'], 3: ['Mary', 'Kitty'] }, 2);
+  const HUNGER_GAMES = parse(`
+The Hunger Games
+Catching Fire
+Mockingjay
+The Ballad of Songbirds and Snakes|Ballad of Songbirds and Snakes
+Sunrise on the Reaping
+Gregor the Overlander
+Gregor and the Prophecy of Bane
+Gregor and the Curse of the Warmbloods
+Gregor and the Marks of Secret
+Gregor and the Code of Claw
+Year of the Jungle
+When Charlie McButton Lost Power`, { 1: ['The Hunger Games', 'Catching Fire', 'Mockingjay'], 3: ['The Ballad of Songbirds and Snakes', 'Sunrise on the Reaping'], 4: ['Gregor the Overlander'], 5: ['Gregor and the Prophecy of Bane', 'Gregor and the Curse of the Warmbloods', 'Gregor and the Marks of Secret', 'Gregor and the Code of Claw', 'Year of the Jungle', 'When Charlie McButton Lost Power'] }, 2);
+
+  // ---- music and the stage ----
+  const SPICE_GIRLS = parse(`
+Posh Spice|Posh|Victoria Beckham|Victoria Adams|Victoria
+Scary Spice|Scary|Mel B|Melanie Brown
+Sporty Spice|Sporty|Mel C|Melanie C|Melanie Chisholm
+Baby Spice|Baby|Emma Bunton|Emma
+Ginger Spice|Ginger|Geri Halliwell|Geri`, { 1: ['Posh Spice', 'Scary Spice', 'Baby Spice'], 2: ['Sporty Spice', 'Ginger Spice'] }, 2);
+  const DESTINYS_CHILD = parse(`
+Beyoncé|Beyonce|Beyoncé Knowles|Beyonce Knowles
+Kelly Rowland|Kelly
+Michelle Williams|Michelle
+LeToya Luckett|LeToya
+LaTavia Roberson|LaTavia
+Farrah Franklin|Farrah`, { 1: ['Beyoncé'], 2: ['Kelly Rowland', 'Michelle Williams'], 4: ['LeToya Luckett', 'LaTavia Roberson', 'Farrah Franklin'] }, 3);
+  const LLOYD_WEBBER = parse(`
+The Phantom of the Opera|Phantom of the Opera|Phantom
+Cats
+Evita
+Jesus Christ Superstar
+Joseph and the Amazing Technicolor Dreamcoat|Joseph|Technicolor Dreamcoat
+Sunset Boulevard
+School of Rock
+Starlight Express
+Aspects of Love
+Love Never Dies
+Whistle Down the Wind
+The Woman in White|Woman in White
+The Beautiful Game
+Cinderella|Bad Cinderella
+Tell Me on a Sunday
+Song and Dance
+By Jeeves|Jeeves
+Stephen Ward
+The Likes of Us`, { 1: ['The Phantom of the Opera', 'Cats', 'Evita', 'Jesus Christ Superstar', 'Joseph and the Amazing Technicolor Dreamcoat'], 2: ['Sunset Boulevard', 'School of Rock'], 4: ['Aspects of Love', 'Love Never Dies', 'Whistle Down the Wind', 'The Woman in White', 'The Beautiful Game', 'Cinderella', 'Tell Me on a Sunday', 'Song and Dance', 'By Jeeves', 'Stephen Ward', 'The Likes of Us'] }, 3);
+  const SOUND_OF_MUSIC = parse(`
+Do-Re-Mi|Do Re Mi|Doe a Deer
+My Favorite Things|My Favourite Things|Favorite Things
+Edelweiss
+Climb Ev'ry Mountain|Climb Every Mountain
+Sixteen Going on Seventeen|16 Going on 17
+The Lonely Goatherd|Lonely Goatherd
+So Long, Farewell|So Long Farewell
+Maria
+I Have Confidence
+Something Good
+How Can Love Survive
+No Way to Stop It
+An Ordinary Couple`, { 1: ['Do-Re-Mi', 'My Favorite Things', 'Edelweiss'], 2: ["Climb Ev'ry Mountain", 'Sixteen Going on Seventeen', 'The Lonely Goatherd', 'So Long, Farewell'], 4: ['Something Good', 'How Can Love Survive', 'No Way to Stop It', 'An Ordinary Couple', 'I Have Confidence'] }, 3);
+  const GREASE = parse(`
+Summer Nights
+You're the One That I Want|You're the One That I Want
+Greased Lightnin'|Greased Lightning
+Hopelessly Devoted to You|Hopelessly Devoted
+Beauty School Dropout
+Look at Me, I'm Sandra Dee|Sandra Dee
+There Are Worse Things I Could Do
+We Go Together
+Sandy
+Born to Hand Jive|Hand Jive
+Those Magic Changes
+Freddy, My Love|Freddy My Love
+It's Raining on Prom Night
+Rock 'n' Roll Party Queen`, { 1: ['Summer Nights', "You're the One That I Want", "Greased Lightnin'", 'Hopelessly Devoted to You'], 2: ['Beauty School Dropout', "Look at Me, I'm Sandra Dee", 'We Go Together'], 4: ['Those Magic Changes', 'Freddy, My Love', "It's Raining on Prom Night", "Rock 'n' Roll Party Queen", 'There Are Worse Things I Could Do'] }, 3);
+
+  // ---- TV ----
+  const BRIDGERTONS = parse(`
+Anthony
+Benedict
+Colin
+Daphne
+Eloise
+Francesca
+Gregory
+Hyacinth`, { 2: ['Daphne', 'Anthony', 'Colin', 'Benedict'], 3: ['Eloise', 'Francesca'], 4: ['Gregory', 'Hyacinth'] }, 3);
+  const PEANUTS = parse(`
+Charlie Brown
+Snoopy
+Lucy|Lucy van Pelt
+Linus|Linus van Pelt
+Sally|Sally Brown
+Peppermint Patty
+Marcie
+Schroeder
+Pig-Pen|Pigpen|Pig Pen
+Woodstock
+Franklin
+Rerun|Rerun van Pelt
+Frieda
+Violet
+Patty
+Shermy
+Spike
+The Little Red-Haired Girl|Little Red-Haired Girl|Little Red Haired Girl`, { 1: ['Charlie Brown', 'Snoopy', 'Lucy', 'Linus'], 2: ['Woodstock', 'Peppermint Patty', 'Sally', 'Schroeder', 'Pig-Pen'], 4: ['Rerun', 'Frieda', 'Violet', 'Patty', 'Shermy', 'Spike'] }, 3);
+  const OZ = parse(`
+Dorothy|Dorothy Gale
+Toto
+Scarecrow|The Scarecrow
+Tin Man|The Tin Man|Tin Woodman
+Cowardly Lion|The Cowardly Lion|Lion
+Glinda|Glinda the Good Witch|Good Witch
+Wicked Witch of the West|Wicked Witch|Elphaba
+Wicked Witch of the East
+Auntie Em|Aunt Em
+Uncle Henry
+Miss Gulch|Almira Gulch
+Munchkins|Munchkin
+Flying Monkeys|Flying monkey|Winged Monkeys
+Professor Marvel`, { 1: ['Dorothy', 'Toto', 'Scarecrow', 'Tin Man', 'Cowardly Lion'], 2: ['Glinda', 'Wicked Witch of the West', 'Munchkins'], 4: ['Uncle Henry', 'Miss Gulch', 'Professor Marvel', 'Wicked Witch of the East'] }, 3);
+
+  // ---- history ----
+  const TUDORS = parse(`
+Henry VIII|Henry the Eighth|Henry 8
+Elizabeth I|Elizabeth the First|Elizabeth|Queen Elizabeth I|Elizabeth 1
+Mary I|Mary|Bloody Mary|Mary Tudor|Mary 1
+Henry VII|Henry the Seventh|Henry 7|Henry Tudor
+Edward VI|Edward the Sixth|Edward|Edward 6
+Lady Jane Grey|Jane Grey|Lady Jane`, { 1: ['Henry VIII', 'Elizabeth I'], 2: ['Mary I'], 3: ['Henry VII', 'Edward VI'], 4: ['Lady Jane Grey'] }, 3);
+
+  // ---- style ----
+  const BIRTHSTONES = parse(`
+Garnet
+Amethyst
+Aquamarine
+Bloodstone
+Diamond
+Emerald
+Pearl
+Moonstone
+Alexandrite
+Ruby
+Peridot
+Spinel
+Sardonyx
+Sapphire
+Opal
+Tourmaline
+Topaz
+Citrine
+Turquoise
+Tanzanite
+Zircon`, { 1: ['Diamond', 'Ruby', 'Emerald', 'Sapphire', 'Pearl'], 2: ['Amethyst', 'Garnet', 'Opal', 'Topaz', 'Aquamarine', 'Turquoise'], 4: ['Bloodstone', 'Alexandrite', 'Spinel', 'Sardonyx', 'Zircon'] }, 3);
+
+  // ---- more food and drink ----
+  const HERBS = parse(`
+Basil
+Oregano
+Thyme
+Rosemary
+Sage
+Parsley
+Cilantro|Coriander
+Mint|Peppermint|Spearmint
+Dill
+Chives
+Tarragon
+Marjoram
+Bay leaf|Bay|Bay leaves|Bay laurel
+Lemongrass
+Lavender
+Chervil
+Lovage
+Sorrel
+Savory|Summer savory
+Fennel
+Borage
+Lemon balm
+Lemon verbena
+Epazote
+Shiso|Perilla`, { 1: ['Basil', 'Oregano', 'Thyme', 'Rosemary', 'Parsley', 'Mint', 'Cilantro'], 2: ['Sage', 'Dill', 'Chives', 'Bay leaf'], 4: ['Chervil', 'Lovage', 'Sorrel', 'Savory', 'Borage', 'Lemon balm', 'Lemon verbena', 'Epazote', 'Shiso'] }, 3);
+  const SPICES = parse(`
+Cinnamon
+Nutmeg
+Cloves|Clove
+Ginger
+Turmeric
+Cumin
+Paprika|Smoked paprika
+Cardamom
+Black pepper|Pepper|Peppercorn|Peppercorns
+Allspice
+Saffron
+Star anise
+Coriander seed|Coriander seeds
+Fenugreek
+Mustard seed|Mustard seeds|Mustard
+Fennel seed|Fennel seeds
+Caraway|Caraway seed
+Chili powder|Chile powder
+Cayenne|Cayenne pepper
+Red pepper flakes|Crushed red pepper|Chili flakes
+Sumac
+Mace
+Vanilla
+Juniper|Juniper berries
+Anise|Aniseed
+Celery seed
+Garlic powder
+Onion powder
+Curry powder
+Garam masala
+Five spice|Chinese five spice|Five-spice
+Za'atar|Zaatar
+Pumpkin pie spice|Pumpkin spice
+Old Bay
+Sesame seed|Sesame seeds|Sesame
+Poppy seed|Poppy seeds
+White pepper`, { 1: ['Cinnamon', 'Black pepper', 'Paprika', 'Nutmeg', 'Ginger', 'Cumin', 'Turmeric'], 2: ['Cloves', 'Cardamom', 'Saffron', 'Allspice', 'Cayenne', 'Chili powder', 'Garlic powder', 'Curry powder', 'Vanilla'], 4: ['Fenugreek', 'Mace', 'Sumac', 'Juniper', 'Celery seed', 'White pepper', 'Anise'] }, 3);
+  const APPLES = parse(`
+Granny Smith
+Honeycrisp
+Gala
+Fuji
+Red Delicious
+Golden Delicious
+McIntosh|Macintosh
+Pink Lady|Cripps Pink
+Braeburn
+Jazz
+Envy
+Ambrosia
+Cosmic Crisp
+Jonagold
+Empire
+Cortland
+Macoun
+Rome|Rome Beauty
+Pacific Rose
+SweeTango|Sweet Tango
+Opal
+Crispin|Mutsu
+Winesap
+Northern Spy
+Jonathan
+Gravenstein
+Zestar
+Paula Red
+Ginger Gold
+Snapdragon
+Arkansas Black
+Pink Pearl
+Cox's Orange Pippin|Cox|Cox's Orange
+Bramley|Bramley's Seedling`, { 1: ['Granny Smith', 'Honeycrisp', 'Gala', 'Fuji', 'Red Delicious', 'Golden Delicious', 'McIntosh'], 2: ['Pink Lady', 'Braeburn', 'Jazz', 'Envy', 'Ambrosia', 'Cosmic Crisp'], 4: ['Macoun', 'Pacific Rose', 'Crispin', 'Winesap', 'Northern Spy', 'Jonathan', 'Gravenstein', 'Zestar', 'Paula Red', 'Ginger Gold', 'Snapdragon', 'Arkansas Black', 'Pink Pearl', "Cox's Orange Pippin", 'Bramley', 'Opal'] }, 3);
+  const SQUASH = parse(`
+Butternut
+Acorn
+Spaghetti
+Zucchini|Courgette
+Yellow squash|Summer squash|Yellow
+Pumpkin
+Delicata
+Kabocha
+Hubbard
+Pattypan|Patty pan
+Buttercup
+Carnival
+Sweet dumpling
+Turban
+Crookneck|Yellow crookneck
+Red kuri|Kuri
+Calabaza
+Banana squash|Banana
+Cushaw
+Tromboncino`, { 1: ['Butternut', 'Acorn', 'Spaghetti', 'Zucchini', 'Pumpkin'], 2: ['Yellow squash', 'Delicata'], 4: ['Hubbard', 'Pattypan', 'Buttercup', 'Carnival', 'Sweet dumpling', 'Turban', 'Crookneck', 'Red kuri', 'Calabaza', 'Banana squash', 'Cushaw', 'Tromboncino'] }, 3);
+  const STARBUCKS = parse(`
+Tall
+Grande
+Venti
+Short
+Trenta
+Demi`, { 1: ['Tall', 'Grande', 'Venti'], 3: ['Short', 'Trenta'], 4: ['Demi'] }, 2);
+
+
   const UNIVERSES = {
     countries: { id: 'countries', items: COUNTRIES, noun: 'a U.N. member state', short: 'U.N. member state' },
     states: { id: 'states', items: US_STATES, noun: 'a U.S. state', short: 'U.S. state' },
@@ -1696,11 +2338,42 @@ Hestia`, { 1: ['Zeus', 'Poseidon', 'Athena', 'Apollo', 'Aphrodite', 'Hermes', 'H
     bills: { id: 'bills', items: BILLS, short: 'face on U.S. money' },
     henry: { id: 'henry', items: HENRY_WIVES, short: 'wife of Henry VIII' },
     olympians: { id: 'olympians', items: OLYMPIANS, short: 'Olympian god' },
+    housewives: { id: 'housewives', items: HOUSEWIVES, short: '"Real Housewives" city' },
+    kardashians: { id: 'kardashians', items: KARDASHIANS, short: 'Kardashian or Jenner' },
+    sharks: { id: 'sharks', items: SHARKS, short: '"Shark Tank" shark' },
+    idol: { id: 'idol', items: IDOL_JUDGES, short: '"American Idol" judge' },
+    tools: { id: 'tools', items: TOOLS, short: 'tool' },
+    pasta: { id: 'pasta', items: PASTA, short: 'pasta' },
+    citrus: { id: 'citrus', items: CITRUS, short: 'citrus fruit' },
+    cheese: { id: 'cheese', items: CHEESES, short: 'cheese' },
+    wine: { id: 'wine', items: WINE_GRAPES, short: 'wine grape' },
+    dahl: { id: 'dahl', items: DAHL, short: 'Roald Dahl book' },
+    littlehouse: { id: 'littlehouse', items: LITTLE_HOUSE, short: '"Little House" book' },
+    dickens: { id: 'dickens', items: DICKENS, short: 'Dickens novel' },
+    bronte: { id: 'bronte', items: BRONTE, short: 'Brontë novel' },
+    littlewomen: { id: 'littlewomen', items: LITTLE_WOMEN, short: '"Little Women" character' },
+    bennets: { id: 'bennets', items: BENNETS, short: 'Bennet sister' },
+    hungergames: { id: 'hungergames', items: HUNGER_GAMES, short: 'Suzanne Collins book' },
+    spice: { id: 'spice', items: SPICE_GIRLS, short: 'Spice Girl' },
+    destinys: { id: 'destinys', items: DESTINYS_CHILD, short: "Destiny's Child member" },
+    lloydwebber: { id: 'lloydwebber', items: LLOYD_WEBBER, short: 'Lloyd Webber musical' },
+    soundofmusic: { id: 'soundofmusic', items: SOUND_OF_MUSIC, short: '"Sound of Music" song' },
+    grease: { id: 'grease', items: GREASE, short: '"Grease" song' },
+    bridgerton: { id: 'bridgerton', items: BRIDGERTONS, short: 'Bridgerton sibling' },
+    peanuts: { id: 'peanuts', items: PEANUTS, short: '"Peanuts" character' },
+    oz: { id: 'oz', items: OZ, short: '"Wizard of Oz" character' },
+    tudors: { id: 'tudors', items: TUDORS, short: 'Tudor monarch' },
+    birthstones: { id: 'birthstones', items: BIRTHSTONES, short: 'birthstone' },
+    herbs: { id: 'herbs', items: HERBS, short: 'herb' },
+    spices: { id: 'spices', items: SPICES, short: 'spice' },
+    apples: { id: 'apples', items: APPLES, short: 'apple' },
+    squash: { id: 'squash', items: SQUASH, short: 'squash' },
+    starbucks: { id: 'starbucks', items: STARBUCKS, short: 'Starbucks size' },
   };
 
   const R = typeof Rarity !== 'undefined' ? Rarity : require('./rarity.js');
   for (const u of Object.values(UNIVERSES)) for (const it of u.items) it.fam = (R[u.id] || {})[it.name];
 
-  return { UNIVERSES, LANDLOCKED, MX_PACIFIC, CONTINENT, REGION, STATE_LISTS, ELEMENT_LISTS, PARTY, PRES_LISTS, TEAM_PLACES, ZODIAC, NEW_TESTAMENT, BEST_PICTURE_RECENT };
+  return { UNIVERSES, COMMODITY, LANDLOCKED, MX_PACIFIC, CONTINENT, REGION, STATE_LISTS, ELEMENT_LISTS, PARTY, PRES_LISTS, TEAM_PLACES, ZODIAC, NEW_TESTAMENT, BEST_PICTURE_RECENT };
 })();
 if (typeof module !== 'undefined') module.exports = Data;

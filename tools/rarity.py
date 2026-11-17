@@ -31,7 +31,11 @@ TIER_ONLY = {"nba", "nfl", "mlb", "nhl", "statecaps", "constellations", "greek",
              "bestpicture", "pixar", "bond", "princesses", "starwars", "friends", "avengers", "swift", "beatles",
              "thriller", "potter", "narnia", "austen", "shakespeare", "planets", "continents", "rainbow", "dwarfs",
              "reindeer", "chess", "wonders", "monopoly", "cluesuspects", "clueweapons", "cluerooms", "rubik", "poker",
-             "bts", "henry", "olympians", "premier", "ucl"}
+             "bts", "henry", "olympians", "premier", "ucl",
+             "housewives", "kardashians", "sharks", "idol", "tools", "pasta", "citrus", "cheese", "wine",
+             "dahl", "littlehouse", "dickens", "bronte", "littlewomen", "bennets", "hungergames", "spice", "destinys",
+             "lloydwebber", "soundofmusic", "grease", "bridgerton", "peanuts", "oz", "tudors", "birthstones",
+             "herbs", "spices", "apples", "squash", "starbucks"}
 # Surnames alone are common words or shared by several people, so presidents
 # are looked up by full name. Shared surnames take the best known holder.
 FULL = {

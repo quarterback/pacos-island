@@ -64,11 +64,15 @@
     const e = E();
     const today = new Set(Prompts.forDay(day, state.level).map((q) => q.id));
     const prev = e.rounds[e.round];
-    const lastLists = new Set(prev ? prev.qids.map((id) => (Prompts.get(id) || {}).universe) : []);
+    const lastLists = new Set(prev ? prev.qids.map((id) => Prompts.get(id)).filter(Boolean).flatMap((q) => [q.universe, 's:' + Prompts.subjectOf(q)]) : []);
     const lastSeen = new Map(); e.seen.forEach((id, i) => lastSeen.set(id, Math.floor(i / 7)));
     const rounds = Math.ceil(e.seen.length / 7);
     const ageOf = (id) => (today.has(id) ? 0 : lastSeen.has(id) ? rounds - lastSeen.get(id) : Infinity);
-    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, state.level, ageOf, lastLists).map((q) => q.id);
+    // In Paco's mode, new players, the first rounds and the round after a
+    // rough one get the starter climb, which holds off the hard question.
+    const rough = prev && dayScore(prev) < 12000;
+    const shape = state.level === 'paco' && (state.lifetime < 50000 || e.round < 3 || rough) ? 'starter' : state.level;
+    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, shape, ageOf, lastLists).map((q) => q.id);
     if (!e.warned && set.some((id) => lastSeen.has(id))) { e.repeated = true; e.warned = true; }
     e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set); if (e.seen.length > 1400) e.seen = e.seen.slice(-1400);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];

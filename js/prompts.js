@@ -37,14 +37,25 @@ const Prompts = (() => {
     elements: 'science', constellations: 'science',
     presidents: 'history', bible: 'books', greek: 'words', nato: 'words',
     nflcities: 'sports', nbacities: 'sports', mlbcities: 'sports', nhlcities: 'sports', worldcup: 'sports', ucl: 'sports', premier: 'sports', olympics: 'sports',
-    bestpicture: 'movies', pixar: 'movies', bond: 'movies', princesses: 'movies', starwars: 'movies', friends: 'movies', avengers: 'movies', dwarfs: 'movies',
+    bestpicture: 'movies', pixar: 'movies', bond: 'movies', princesses: 'movies', starwars: 'movies', friends: 'tv', avengers: 'movies', dwarfs: 'movies',
     swift: 'music', beatles: 'music', thriller: 'music', bts: 'music',
     potter: 'books', narnia: 'books', austen: 'books', shakespeare: 'books',
     planets: 'basics', continents: 'basics', rainbow: 'basics', reindeer: 'basics',
     chess: 'games', monopoly: 'games', cluesuspects: 'games', clueweapons: 'games', cluerooms: 'games', rubik: 'games', poker: 'games',
     wonders: 'history', henry: 'history', olympians: 'history', bills: 'history',
+    housewives: 'tv', kardashians: 'tv', sharks: 'tv', idol: 'tv',
+    tools: 'home', pasta: 'food', citrus: 'food', cheese: 'food', wine: 'drink',
+    dahl: 'books', littlehouse: 'books', dickens: 'books', bronte: 'books', littlewomen: 'books', bennets: 'books', hungergames: 'books',
+    spice: 'music', destinys: 'music', lloydwebber: 'stage', soundofmusic: 'stage', grease: 'stage',
+    bridgerton: 'tv', peanuts: 'tv', oz: 'movies', tudors: 'history', birthstones: 'style',
+    herbs: 'food', spices: 'food', apples: 'food', squash: 'food', starbucks: 'drink',
   };
-  const SUBJECT_MAX = { geo: 3, sports: 2, movies: 2, music: 2 };
+  // Subjects are picked evenly, so a round reads like a mixed quiz night.
+  // Sports, geography and science each have many lists and letter questions,
+  // so they come up a little less often than the rest.
+  const SUBJECT_WEIGHT = { sports: 0.6, geo: 0.8, science: 0.6, words: 0.5 };
+  // A round never asks two questions on the same subject.
+  const subjectOf = (q) => q.subject || SUBJECT[q.universe];
   // Lists most players know little about come up less often.
   const LIST_WEIGHT = { mexico: 0.4, constellations: 0.6 };
 
@@ -80,6 +91,13 @@ const Prompts = (() => {
     greek: 'Name a Greek letter whose name',
     nato: 'Name a pilot\'s code word for a letter that',
     bible: 'Name a book of the Bible whose name',
+    pasta: 'Name a kind of pasta whose name',
+    cheese: 'Name a cheese whose name',
+    tools: 'Name a tool whose name',
+    wine: 'Name a wine grape whose name',
+    spices: 'Name a spice whose name',
+    apples: 'Name an apple whose name',
+    birthstones: 'Name a birthstone whose name',
   };
   // Notes after a question. None of them may name a right answer.
   const TAIL = {};
@@ -108,9 +126,10 @@ const Prompts = (() => {
     return out;
   }
 
-  const MIN = 6, MAX = 55, WHOLE_MAX = 60;
+  const MIN = 6, MAX = 55, WHOLE_MAX = 80;
   const pool = [];
-  const add = (q) => { if (q.answers.length >= MIN && q.answers.length <= (q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
+  // A whole list question can have as few as five answers (the Spice Girls).
+  const add = (q) => { if (q.answers.length >= (q.kind === 'list' ? 5 : MIN) && q.answers.length <= (q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
 
   // Letter questions on whole lists.
   for (const uid of Object.keys(LEAD)) {
@@ -243,8 +262,43 @@ const Prompts = (() => {
     ['greek.all', 'greek', 'Name a letter of the Greek alphabet.', () => true],
     ['nato.all', 'nato', "Name a pilot's code word for a letter.", () => true],
     ['bible.all', 'bible', 'Name a book of the Bible.', () => true],
+    ['housewives.all', 'housewives', 'Name a "Real Housewives" city.', () => true],
+    ['kardashians.all', 'kardashians', 'Name a Kardashian or Jenner.', () => true],
+    ['sharks.all', 'sharks', 'Name a "Shark Tank" shark.', () => true],
+    ['idol.all', 'idol', 'Name an "American Idol" judge.', () => true],
+    ['tools.all', 'tools', 'Name a tool in a toolbox.', () => true],
+    ['pasta.all', 'pasta', 'Name a kind of pasta.', () => true],
+    ['citrus.all', 'citrus', 'Name a citrus fruit.', () => true],
+    ['cheese.all', 'cheese', 'Name a cheese.', () => true],
+    ['wine.all', 'wine', 'Name a wine grape.', () => true],
+    ['countries.coffee', 'countries', 'Name a country that grows coffee.', byNames(D.COMMODITY.coffee), 'drink'],
+    ['countries.tea', 'countries', 'Name a country that grows tea.', byNames(D.COMMODITY.tea), 'drink'],
+    ['countries.opec', 'countries', 'Name a country in the Organization of the Petroleum Exporting Countries (OPEC).', byNames(D.COMMODITY.opec), 'money'],
+    ['elements.precious', 'elements', 'Name a precious metal.', byNames(D.ELEMENT_LISTS.precious), 'money'],
+    ['dahl.all', 'dahl', 'Name a Roald Dahl book.', () => true],
+    ['littlehouse.all', 'littlehouse', 'Name a "Little House" book.', () => true],
+    ['dickens.all', 'dickens', 'Name a Charles Dickens novel.', () => true],
+    ['bronte.all', 'bronte', 'Name a novel by one of the Brontë sisters.', () => true],
+    ['littlewomen.all', 'littlewomen', 'Name a character in "Little Women."', () => true],
+    ['bennets.all', 'bennets', 'Name a Bennet sister from "Pride and Prejudice."', () => true],
+    ['hungergames.all', 'hungergames', 'Name a Suzanne Collins book.', () => true],
+    ['spice.all', 'spice', 'Name a Spice Girl.', () => true],
+    ['destinys.all', 'destinys', "Name a member of Destiny's Child.", () => true],
+    ['lloydwebber.all', 'lloydwebber', 'Name an Andrew Lloyd Webber musical.', () => true],
+    ['soundofmusic.all', 'soundofmusic', 'Name a song from "The Sound of Music."', () => true],
+    ['grease.all', 'grease', 'Name a song from "Grease."', () => true],
+    ['bridgerton.all', 'bridgerton', 'Name a Bridgerton sibling.', () => true],
+    ['peanuts.all', 'peanuts', 'Name a "Peanuts" character.', () => true],
+    ['oz.all', 'oz', 'Name a character in "The Wizard of Oz."', () => true],
+    ['tudors.all', 'tudors', 'Name a Tudor monarch.', () => true],
+    ['birthstones.all', 'birthstones', 'Name a birthstone.', () => true],
+    ['herbs.all', 'herbs', 'Name a cooking herb.', () => true],
+    ['spices.all', 'spices', 'Name a spice.', () => true],
+    ['apples.all', 'apples', 'Name a kind of apple.', () => true],
+    ['squash.all', 'squash', 'Name a kind of squash.', () => true],
+    ['starbucks.all', 'starbucks', 'Name a Starbucks drink size.', () => true],
   ];
-  for (const [id, universe, text, test] of lists) add({ id, universe, kind: 'list', text, answers: cut(UNI[universe], test) });
+  for (const [id, universe, text, test, subject] of lists) add({ id, universe, kind: 'list', text, subject, answers: cut(UNI[universe], test) });
 
   // ---- how easy a question is ----
   // Each answer counts toward ease by how familiar it is: fully at a score of
@@ -270,7 +324,11 @@ const Prompts = (() => {
     'swift.all', 'beatles.all', 'thriller.all', 'potter.all', 'shakespeare.all', 'planets.all', 'continents.all', 'rainbow.all',
     'reindeer.all', 'chess.all', 'monopoly.all', 'cluesuspects.all', 'clueweapons.all', 'rubik.all', 'poker.all', 'olympians.all', 'bills.all',
     'bible.nt', 'states.canada', 'states.great-lakes', 'states.mississippi', 'presidents.democrat', 'presidents.republican', 'premier.all',
-    'cluerooms.all', 'teams.birds', 'countries.borders-germany', 'countries.borders-china', 'capitals.northAmerica']);
+    'cluerooms.all', 'teams.birds', 'countries.borders-germany', 'countries.borders-china', 'capitals.northAmerica',
+    'kardashians.all', 'idol.all', 'tools.all', 'pasta.all', 'citrus.all', 'cheese.all', 'wine.all', 'countries.coffee', 'countries.tea',
+    'dahl.all', 'littlehouse.all', 'littlewomen.all', 'hungergames.all', 'spice.all', 'destinys.all', 'lloydwebber.all', 'soundofmusic.all',
+    'grease.all', 'bridgerton.all', 'peanuts.all', 'oz.all', 'birthstones.all', 'herbs.all', 'spices.all', 'apples.all', 'squash.all',
+    'starbucks.all', 'bennets.all', 'housewives.all']);
   const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'mlb', 'nhl', 'presidents', 'capitals', 'nflcities', 'nbacities', 'mlbcities', 'nhlcities']);
   // Only simple letter rules open a set: starts with a letter, or has one.
   const simple = (q) => /\.(starts|has)-[a-z]$/.test(q.id);
@@ -280,12 +338,16 @@ const Prompts = (() => {
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   function shuffle(list, r) { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-  // Two openers, three medium, two hard. Each question comes from a different
-  // list, no subject takes more than its share, and at most three of the
-  // seven are letter questions.
-  // Mario's mode, the easier level, runs two openers and five easy ones.
-  const SHAPE = ['opener', 'opener', 'medium', 'medium', 'medium', 'hard', 'hard'];
-  const MARIO_SHAPE = ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'];
+  // Each question comes from a different list and a different subject.
+  // Paco's mode climbs slowly: two openers, an easy one, three medium, one
+  // hard. New players in endless mode get the starter climb, which holds off
+  // the hard question. Mario's mode, the easier level, runs two openers and
+  // five easy ones.
+  const SHAPES = {
+    paco: ['opener', 'opener', 'gentle', 'medium', 'medium', 'medium', 'hard'],
+    starter: ['opener', 'opener', 'gentle', 'gentle', 'medium', 'medium', 'medium'],
+    mario: ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'],
+  };
   const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
   for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
   // Mario skips letter counting and "has no letter" rules.
@@ -295,7 +357,7 @@ const Prompts = (() => {
   // A slot borrows from a nearby level before it repeats a question.
   // Mario's sets reach for the milder medium questions before a repeat.
   byLevel.mild = pool.filter((q) => !q.opener && q.level === 'medium' && (q.kind === 'list' || simple(q)));
-  const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard'], hard: ['hard', 'medium'] };
+  const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard', 'gentle'], hard: ['hard', 'medium', 'gentle'] };
   byLevel.medium.push(...byLevel.easy);
   // ageOf(id): how many days or rounds since the player saw a question,
   // Infinity if never. A set takes unseen questions first, then the ones seen
@@ -303,41 +365,61 @@ const Prompts = (() => {
   // lastLists sit out when they can.
   const AGES = [Infinity, 180, 120, 90, 60, 30, 1];
   function makeSet(seed, avoid = new Set(), level = 'paco', ageOf = null, lastLists = new Set()) {
-    const age = ageOf || ((id) => (avoid.has(id) ? 0 : Infinity));
-    const tiers = [];
-    for (const t of AGES) { tiers.push((q) => age(q.id) >= t && !lastLists.has(q.universe)); tiers.push((q) => age(q.id) >= t); }
-    tiers.push(() => true);
-    const shape = level === 'mario' ? MARIO_SHAPE : SHAPE;
+    const age = ageOf || ((id) => (avoid && avoid.has(id) ? 0 : Infinity));
+    // lastLists can also hold subjects as "s:food": yesterday's subjects rest
+    // first, then yesterday's lists.
+    const fresh = (q) => !lastLists.has(q.universe) && !lastLists.has('s:' + subjectOf(q));
+    const rests = [fresh, (q) => !lastLists.has(q.universe), () => true];
+    // Letter questions are harder to warm up to than whole lists, so a round
+    // keeps at least four whole lists (five for new players and in Mario's
+    // mode). The trickier letter rules (ends with,
+    // no letter, letter counts) are rarer still: one in Paco's mode, none for
+    // new players or in Mario's mode.
+    const LETTER_MAX = { paco: 3, starter: 2, mario: 2 }[level] ?? 3;
+    const TRICKY_MAX = { paco: 1, starter: 0, mario: 0 }[level] ?? 1;
+    const tricky = (q) => q.kind === 'letter' && !simple(q);
+    // The order of preference: unseen questions within the letter limit,
+    // then the slot's own level before a nearby one, then resting yesterday's
+    // subjects and lists.
+
+    const shape = SHAPES[level] || SHAPES.paco;
     const r = rng(seed);
-    const lists = new Set(), subjects = {}; let letterCount = 0;
+    const lists = new Set(), subjects = {}; let letterCount = 0, trickyCount = 0;
     const set = [];
     for (const level of shape) {
-      const fits = (q, strict) => !lists.has(q.universe) && (subjects[SUBJECT[q.universe]] || 0) < (SUBJECT_MAX[SUBJECT[q.universe]] || 1) + (strict || SUBJECT[q.universe] === 'sports' ? 0 : 1)
-        && !(q.kind === 'letter' && letterCount >= 3 && strict) && !set.includes(q);
+      const fits = (q, strict) => !lists.has(q.universe) && !subjects[subjectOf(q)]
+        && !(strict && q.kind === 'letter' && letterCount >= LETTER_MAX) && !(strict && tricky(q) && trickyCount >= TRICKY_MAX) && !set.includes(q);
       let pick = null;
-      for (const fresh of tiers) {
-        for (const strict of [true, false]) {
-          let cands = [];
-          for (const lv of BORROW[level]) { cands = byLevel[lv].filter((q) => fits(q, strict) && fresh(q)); if (cands.length) break; }
-          // Pick a list first, weighted by the square root of how many
-          // questions it has, then a question from it, so big lists like
-          // countries don't crowd out small ones.
-          const lists = [...new Set(cands.map((q) => q.universe))];
-          if (lists.length) {
-            const inList = (u) => cands.filter((q) => q.universe === u);
-            const w = lists.map((u) => Math.sqrt(inList(u).length) * (LIST_WEIGHT[u] || 1));
-            let x = r() * w.reduce((a, b) => a + b, 0), i = 0;
-            while (x > w[i] && i < w.length - 1) { x -= w[i]; i++; }
-            const qs = inList(lists[i]); pick = qs[Math.floor(r() * qs.length)];
+      const tries = [];
+      // A question seen three months ago may come back before the letter limit
+      // gives way; anything more recent waits until the limit has given way.
+      const phases = [[true, AGES.filter((t) => t >= 90)], [false, AGES.filter((t) => t >= 90)], [true, [60, 30, 1, 0]], [false, [60, 30, 1, 0]]];
+      for (const [strict, ages] of phases) for (const t of ages) for (const lv of BORROW[level]) for (const rest of rests) tries.push({ strict, t, lv, rest });
+      for (const { strict, t, lv, rest } of tries) {
+        {
+          const cands = byLevel[lv].filter((q) => fits(q, strict) && age(q.id) >= t && rest(q));
+          // Pick a subject first, then a list in it weighted by the square
+          // root of how many questions it has, then a question from it, so
+          // big lists like countries don't crowd out small ones.
+          const subs = [...new Set(cands.map(subjectOf))];
+          if (subs.length) {
+            const choose = (items, weight) => { const w = items.map(weight); let x = r() * w.reduce((a, b) => a + b, 0), i = 0; while (x > w[i] && i < w.length - 1) { x -= w[i]; i++; } return items[i]; };
+            const sub = choose(subs, (k) => SUBJECT_WEIGHT[k] || 1);
+            const inSub = cands.filter((q) => subjectOf(q) === sub);
+            const lists = [...new Set(inSub.map((q) => q.universe))];
+            const inList = (u) => inSub.filter((q) => q.universe === u);
+            const qs = inList(choose(lists, (u) => Math.sqrt(inList(u).length) * (LIST_WEIGHT[u] || 1)));
+            pick = qs[Math.floor(r() * qs.length)];
           }
           if (pick) break;
         }
         if (pick) break;
       }
-      if (!pick) pick = shuffle(pool, r).find((q) => !set.includes(q) && !lists.has(q.universe)) || shuffle(pool, r).find((q) => !set.includes(q));
+      if (!pick) pick = shuffle(pool, r).find((q) => !set.includes(q) && !lists.has(q.universe) && !subjects[subjectOf(q)]) || shuffle(pool, r).find((q) => !set.includes(q));
       set.push(pick); lists.add(pick.universe);
-      subjects[SUBJECT[pick.universe]] = (subjects[SUBJECT[pick.universe]] || 0) + 1;
+      subjects[subjectOf(pick)] = (subjects[subjectOf(pick)] || 0) + 1;
       if (pick.kind === 'letter') letterCount++;
+      if (tricky(pick)) trickyCount++;
     }
     return set;
   }
@@ -348,7 +430,7 @@ const Prompts = (() => {
   const buildDays = (level, seed) => {
     const days = [], lastDay = new Map();
     for (let d = 0; d < 365; d++) {
-      const last = days.length ? new Set(days[days.length - 1].map((q) => q.universe)) : new Set();
+      const last = new Set(days.length ? days[days.length - 1].flatMap((q) => [q.universe, 's:' + subjectOf(q)]) : []);
       const set = makeSet(seed + d * 7919, null, level, (id) => (lastDay.has(id) ? d - lastDay.get(id) : Infinity), last);
       days.push(set); set.forEach((q) => lastDay.set(q.id, d));
     }
@@ -360,6 +442,6 @@ const Prompts = (() => {
   const forDay = (n, level = 'paco') => (level === 'mario' ? MARIO_DAYS : DAYS)[(n - 1) % DAYS.length];
   const get = (id) => byId.get(id);
   const universe = (id) => UNI[id];
-  return { pool, DAYS, MARIO_DAYS, forDay, makeSet, get, universe, norm, letters };
+  return { pool, DAYS, MARIO_DAYS, forDay, makeSet, get, universe, norm, letters, subjectOf };
 })();
 if (typeof module !== 'undefined') module.exports = Prompts;
