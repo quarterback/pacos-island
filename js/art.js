@@ -458,6 +458,31 @@ const Art = (() => {
     for (let i = 0; i < 6; i++) poly(g, [[x - 3 + i * 8, y - 30], [x + 5 + i * 8, y - 30], [x + 4 + i * 8, y - 36], [x - 2 + i * 8, y - 36]], i % 2 ? '#FFFFFF' : cols);
     for (let i = 0; i < 6; i++) { g.beginPath(); g.arc(x + 1 + i * 8, y - 30, 4, 0, Math.PI); g.fillStyle = i % 2 ? '#FFFFFF' : cols; g.fill(); }
   }
+  // The welcome sign where the walk leaves the beach: painted planks on two
+  // posts, "Bienvenidos a Isla de Paco" on top, welcome in four more
+  // languages, and an arrow plank up the path. x is its center, base the
+  // ground. About 70 x 94.
+  function welcomeSign(g, x, base) {
+    for (const px of [x - 24, x + 24]) { g.fillStyle = lin(g, px - 2, 0, px + 2, 0, C.wood); g.fillRect(px - 2, base - 92, 4, 92); }
+    // (the planks below are drawn over the posts)
+    const plank = (y0, ph, w0, col, cut = true) => {
+      g.beginPath(); g.moveTo(x - w0 / 2 + (cut ? 3 : 0), y0); g.lineTo(x + w0 / 2 - (cut ? 3 : 0), y0); g.lineTo(x + w0 / 2, y0 + 3); g.lineTo(x + w0 / 2, y0 + ph - 3); g.lineTo(x + w0 / 2 - (cut ? 3 : 0), y0 + ph); g.lineTo(x - w0 / 2 + (cut ? 3 : 0), y0 + ph); g.lineTo(x - w0 / 2, y0 + ph - 3); g.lineTo(x - w0 / 2, y0 + 3); g.closePath();
+      g.fillStyle = col; g.fill(); g.strokeStyle = rgba(C.ink, 0.25); g.lineWidth = 0.5; g.stroke();
+      g.fillStyle = rgba('#FFFFFF', 0.18); g.fillRect(x - w0 / 2 + 2, y0 + 1, w0 - 4, 1);
+    };
+    const say = (text, y0, font, fill, edge) => { g.font = font; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round'; g.strokeStyle = edge; g.lineWidth = 1.6; g.strokeText(text, x, y0); g.fillStyle = fill; g.fillText(text, x, y0); };
+    const top = base - 94;
+    plank(top, 24, 70, '#E9F4FA');
+    say('Bienvenidos', top + 8, 'italic bold 10px Georgia, serif', '#3F8FD2', '#F7B7C4');
+    say('a Isla de Paco', top + 18, 'bold 7.5px Georgia, serif', '#C21A68', '#FFFFFF');
+    const rows = [['Bienvenue', '#3F9A3E', '#FFC2D8'], ['Willkommen', '#FFE58F', '#C21A1A'], ['Welcome', '#B5124F', '#D6F27A'], ['Benvenuto', '#F4FBE9', '#137FA0']];
+    rows.forEach(([word, col, ink], k) => { const y0 = top + 26 + k * 12; plank(y0, 11, 64, col); say(word, y0 + 6, 'bold 8.5px Georgia, serif', ink, rgba(C.ink, col === '#FFE58F' || col === '#F4FBE9' ? 0.15 : 0.55)); });
+    // the arrow plank, pointing left, up the path
+    const ay = top + 76;
+    g.beginPath(); g.moveTo(x - 38, ay + 6); g.lineTo(x - 28, ay - 1); g.lineTo(x - 28, ay + 1); g.lineTo(x + 33, ay + 1); g.lineTo(x + 33, ay + 11); g.lineTo(x - 28, ay + 11); g.lineTo(x - 28, ay + 13); g.closePath();
+    g.fillStyle = '#F07AA6'; g.fill(); g.strokeStyle = rgba(C.ink, 0.25); g.lineWidth = 0.5; g.stroke();
+    g.font = 'italic bold 6.5px Georgia, serif'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillStyle = '#FFE58F'; g.fillText('Cascada · Pueblo', x - 23, ay + 6.4);
+  }
   function town() {
     const { w, h, ground } = TOWN, S = TOWN.stopX;
     const [c, g] = canvas(w, h); const r = noise(77);
@@ -515,6 +540,7 @@ const Art = (() => {
     for (let x = 0; x < w; x += 4) { g.fillStyle = rgba('#FFFFFF', 0.28); g.fillRect(x, ground(x), 4, 1.2); }
     for (let i = 0; i < 3; i++) palapa(g, S(0) - 70 + i * 44, ground(S(0) - 70 + i * 44) + 1);
     palm(g, S(0) + 96, ground(S(0) + 96) + 1, 46);
+    welcomeSign(g, S(0) + 78, ground(S(0) + 78) + 1);
     // the river, down from the hills and under a footbridge
     const rx = S(2), rt = Math.round(mid(rx)) + 10, rg = ground(rx);
     g.beginPath(); for (let y = rt; y <= h; y += 4) g.lineTo(rx - 4 - (y - rt) * 0.12 + Math.sin(y / 13) * 4, y); for (let y = h; y >= rt; y -= 4) g.lineTo(rx + 4 + (y - rt) * 0.12 + Math.sin(y / 13) * 4, y); g.closePath();
