@@ -7,7 +7,12 @@
 
    Off until the player turns it on. The choice is saved on this device.
    Browsers only start sound after a tap, so a saved "on" waits for the
-   first tap on the page. The music pauses while the page is hidden. */
+   first tap on the page. The music pauses while the page is hidden.
+
+   iPhones mute web audio with the ring/silent switch. unlock() marks the
+   page's audio as playback, which plays through the switch: with
+   navigator.audioSession where Safari has it, and otherwise by looping a
+   silent audio clip, which switches the page to playback too. */
 'use strict';
 const Music = (() => {
   const KEY = 'paco-music';
@@ -36,9 +41,13 @@ const Music = (() => {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
     ctx = new AC();
+    // a limiter after the mix keeps louder playback clean on phone speakers
+    const limit = ctx.createDynamicsCompressor();
+    limit.threshold.value = -12; limit.ratio.value = 6;
+    limit.connect(ctx.destination);
     master = ctx.createGain();
-    master.gain.value = 0.16;
-    master.connect(ctx.destination);
+    master.gain.value = 0.3;
+    master.connect(limit);
     // One second of white noise, reused for every shaker hit.
     noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     const data = noise.getChannelData(0);
@@ -92,10 +101,35 @@ const Music = (() => {
     }
   }
 
+  // A tiny silent WAV, looped, for iPhones without navigator.audioSession.
+  let silent = null;
+  function silentClip() {
+    const n = 4410, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    const str = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, 44100, true); v.setUint32(28, 88200, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, n * 2, true);
+    const a = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' })));
+    a.loop = true; a.setAttribute('playsinline', ''); a.preload = 'auto';
+    return a;
+  }
+
+  // Called from a tap: wake the audio and let it play through the silent switch.
+  function unlock() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
+    if (!navigator.audioSession && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      silent = silent || silentClip();
+      silent.play().catch(() => {});
+    }
+    if (ctx.state !== 'running') ctx.resume().catch(() => {});
+    // a one sample buffer started inside the tap, which some browsers need
+    const b = ctx.createBufferSource(); b.buffer = ctx.createBuffer(1, 1, ctx.sampleRate); b.connect(ctx.destination); b.start(0);
+  }
+
   function start() {
     setup();
-    if (!ctx || timer) return;
-    ctx.resume();
+    if (!ctx) return;
+    unlock(); // every start comes from a tap, so always wake the audio
+    if (timer) return;
     step = 0; nextTime = ctx.currentTime + 0.05;
     timer = setInterval(tick, 25);
   }
@@ -103,6 +137,7 @@ const Music = (() => {
   function stop() {
     clearInterval(timer); timer = null;
     if (ctx) ctx.suspend();
+    if (silent) silent.pause();
   }
 
   function set(value) {
@@ -114,18 +149,23 @@ const Music = (() => {
   // A saved "on" starts with the first tap, as browsers require.
   function armFirstTap() {
     if (!on) return;
-    const go = () => { window.removeEventListener('pointerdown', go); window.removeEventListener('keydown', go); if (on && !document.hidden) start(); };
-    window.addEventListener('pointerdown', go);
-    window.addEventListener('keydown', go);
+    // iPhones allow sound from the end of a touch or a click, not from touch-down
+    const kinds = ['touchend', 'click', 'keydown'];
+    const go = () => { kinds.forEach((k) => window.removeEventListener(k, go, true)); if (on && !document.hidden) start(); };
+    kinds.forEach((k) => window.addEventListener(k, go, true));
   }
 
   document.addEventListener('visibilitychange', () => {
     if (!on || !ctx) return;
-    if (document.hidden) { clearInterval(timer); timer = null; ctx.suspend(); }
-    else start();
+    if (document.hidden) { clearInterval(timer); timer = null; ctx.suspend(); if (silent) silent.pause(); }
+    else {
+      // desktops let the music resume at once; iPhones need a new tap, so wait for one if it stays off
+      start();
+      setTimeout(() => { if (on && ctx.state !== 'running') { clearInterval(timer); timer = null; armFirstTap(); } }, 400);
+    }
   });
 
   armFirstTap();
-  return { isOn: () => on, set, toggle: () => set(!on) };
+  return { isOn: () => on, set, toggle: () => set(!on), state: () => (ctx ? ctx.state : 'none') };
 })();
 if (typeof module !== 'undefined') module.exports = Music;
