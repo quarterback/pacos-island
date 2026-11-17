@@ -81,6 +81,7 @@
     <div class="clock" id="clock">
       <div class="clock-track"><div class="clock-fill" id="clockFill"></div></div>
       <p class="clock-num" id="clockNum" aria-hidden="true"></p>
+      <button class="btn quiet" id="skipBtn" type="button" hidden></button>
     </div>
     <p class="note" id="note" role="status" aria-live="polite"></p>
     <div class="result" id="result" hidden>
@@ -102,6 +103,7 @@
     <dl class="totals">
       <div><dt id="rarityLabel"></dt><dd id="rarityTotal"></dd></div>
       <div><dt id="speedLabel"></dt><dd id="speedTotal"></dd></div>
+      <div id="islandRow" hidden><dt id="islandLabel"></dt><dd id="islandTotal"></dd></div>
       <div class="grand"><dt id="totalLabel"></dt><dd id="grandTotal"></dd></div>
       <div><dt id="timeLabel"></dt><dd id="timeTotal"></dd></div>
     </dl>

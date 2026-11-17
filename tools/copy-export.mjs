@@ -9,7 +9,7 @@ const sample = { tripOpens: [110000], progress: [3], secondsLeft: [12], off: ['O
   'endless.start': [3], 'endless.resume': [3], 'endless.progress': [3, 4], 'endless.sheetHead': [3], 'endless.passedMark': ['the canyon wall', '300 meters'], 'endless.tripLegend': [5], 'endless.earlierRow': [2, 'dive'] };
 const out = [];
 const walk = (k, v, path = k) => {
-  if (['marks', 'markAhead', 'share', 'count', 'apTime'].includes(k)) return;
+  if (['marks', 'islandMark', 'markAhead', 'share', 'count', 'apTime'].includes(k)) return;
   if (typeof v === 'string') out.push(v);
   else if (typeof v === 'function') out.push(v(...(sample[path] || sample[k] || ['the upper waterfall'])));
   else if (Array.isArray(v)) v.forEach((x) => walk(k, x));

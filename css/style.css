@@ -107,6 +107,8 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .clock.low .clock-fill { background: var(--coral); }
 .clock-num { margin: 0; min-width: 2ch; text-align: right; font: 700 24px/1 var(--show); color: var(--sun); font-variant-numeric: tabular-nums; }
 .clock.low .clock-num { color: var(--coral); }
+.clock.island .clock-track { display: none; }
+.clock.island .clock-num { flex: 1; text-align: left; color: var(--leaf); }
 
 .note { min-height: 1.45em; margin: 12px 0 0; color: var(--mist); }
 .note.bad { color: var(--coral); }

@@ -68,27 +68,35 @@ const Engine = (() => {
     const out = {}; q.answers.forEach((a, i) => { out[a.item.name] = w[i] / sum; });
     return out;
   }
-  // Scoring follows World Six (quarterback/worldy-bug, SCORING.md), with
+  // Rarity follows World Six (quarterback/worldy-bug, SCORING.md), with
   // rarity in place of distance.
   //   c  = how common your answer is: the shares of the right answers as
   //        familiar as yours or more (1 for the most familiar, near 0 for
   //        the least familiar on a long list)
   //   R  = 20,000 x e^(-(c / 0.231)^0.65)           rarity points
-  //   q  = R / 20,000
-  //   b  = 1.5 x q^3 x e^(-t / 10)                  speed factor, t in seconds
-  //   total = round(R x (1 + b)); rarity = round(R); speed = total - rarity
-  // A rare answer makes speed worth more. A fast, common answer earns
-  // almost no bonus. There is no whole-day multiplier.
-  const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65, SPEED_MAX = 1.5, TAU = 10;
+  // The speed bonus pays every right answer, common ones included, and
+  // grows with rarity:
+  //   f  = 1 through 5 seconds, then e^(-((t - 5) / 7)^3)
+  //        (0.70 at 10 seconds, 0.05 at 15, near 0 by 20)
+  //   speed = f x (1,500 + 0.25 x R)
+  //   total = round(R + speed); rarity = round(R); speed = total - rarity
+  // A rare answer given slowly still beats a common answer given fast.
+  // Island time: after the clock runs out, a right answer earns a flat 500
+  // with no rarity or speed points. Only a skip scores 0. The level's pay
+  // applies to both. There is no whole-day multiplier.
+  const SECONDS = 25, RARITY_MAX = 20000, SCALE = 0.231, SHAPE = 0.65;
+  const SPEED_FLAT = 1500, SPEED_SHARE = 0.25, HOLD = 5, FADE = 7, ISLAND = 500;
   const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
+  const speedFactor = (seconds) => { const t = Math.max(0, seconds - HOLD) / FADE; return Math.exp(-t * t * t); };
   // Levels. Mario's mode, the easier one, gives more time and pays half.
   const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, mario: { seconds: 40, pay: 0.5 } };
   function score(c, seconds, level = 'paco') {
-    const R = rarityPoints(c), q = R / RARITY_MAX, pay = LEVELS[level].pay;
-    const b = SPEED_MAX * q ** 3 * Math.exp(-Math.max(0, seconds) / TAU);
-    const total = Math.round(R * (1 + b) * pay), rarity = Math.round(R * pay);
+    const R = rarityPoints(c), pay = LEVELS[level].pay;
+    const bonus = speedFactor(seconds) * (SPEED_FLAT + SPEED_SHARE * R);
+    const total = Math.round((R + bonus) * pay), rarity = Math.round(R * pay);
     return { total, rarity, speed: total - rarity };
   }
+  const islandScore = (level = 'paco') => ({ total: Math.round(ISLAND * LEVELS[level].pay), rarity: 0, speed: 0 });
   function commonness(sh, name) {
     const mine = sh[name]; let more = 0;
     for (const k in sh) if (sh[k] > mine + 1e-9) more += sh[k];
@@ -121,6 +129,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, LEVELS, RARITY_MAX, score, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

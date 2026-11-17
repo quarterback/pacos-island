@@ -11,8 +11,9 @@ const Copy = {
   how: [
     'Each question has a fixed list of right answers.',
     'Type one before the clock runs out. Wrong guesses cost only time.',
+    "When the clock runs out, it's island time. Keep guessing for a few points, or skip.",
     'Rarer answers earn more points, up to 20,000.',
-    'A fast answer earns a speed bonus. The rarer the answer, the bigger the bonus.',
+    'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
     'Everyone gets the same seven questions each day.',
   ],
   tripLegend: 'Choose a trip',
@@ -30,7 +31,11 @@ const Copy = {
   wrong: 'Not on the list. Try another.',
   off: (name) => `${name} is real, but it doesn't fit this question.`,
   typo: (name) => `Counted as ${name}`,
-  timeUp: "Time's up. You'll see every answer at the end.",
+  // Island time: the clock has run out, the question stays open.
+  islandTime: 'Island time',
+  islandNote: "Time's up. A right answer still earns a few points.",
+  skip: 'Skip',
+  skipped: 'Skipped',
   points: (n) => `${n.toLocaleString('en-US')} points`,
   forRarity: (n) => `${n.toLocaleString('en-US')} for rarity`,
   forSpeed: (n) => `+${n.toLocaleString('en-US')} for speed`,
@@ -70,9 +75,11 @@ const Copy = {
   comeBack: (time) => `New questions at ${time} your time`,
 
   // Share marks, from no answer to 20,000 points and up.
+  // Island time answers get the coconut; skips get the wave.
   marks: ['🌊', '🐚', '🦀', '🐢', '🦎'],
+  islandMark: '🥥',
   markAhead: '🏝️',
-  share: (day, line, rows, rarity, speed, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\nTotal ${total}\nTime ${time}`,
+  share: (day, line, rows, rarity, speed, island, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\n${island ? `Island time ${island}\n` : ''}Total ${total}\nTime ${time}`,
 
   // Levels. Mario is Paco's iguana twin brother and his rival on the island.
   level: {

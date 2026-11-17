@@ -80,6 +80,9 @@
   }
   const dayScore = (rec) => rec.answers.reduce((s, a) => s + (a.points || 0), 0);
   const bucket = (pts) => (!pts ? 0 : pts < 5000 ? 1 : pts < 12000 ? 2 : pts < 20000 ? 3 : 4);
+  // An answer's mark: island time answers get their own, skips get the wave.
+  const markKey = (a) => (a.island ? 'island' : String(bucket(a.points)));
+  const markOf = (a) => (a.island ? Copy.islandMark : Copy.marks[bucket(a.points)]);
   const fmt = (n) => n.toLocaleString('en-US');
   const clockText = (secs) => { const s = Math.round(secs); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -175,7 +178,7 @@
   let timer = null, current = null;
   function squares(rec, at) {
     const ol = $('squares'); ol.innerHTML = '';
-    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) { li.dataset.b = bucket(rec.answers[i].points); li.textContent = Copy.marks[li.dataset.b]; } else li.textContent = Copy.markAhead; if (i === at) li.className = 'now'; ol.append(li); }
+    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) { li.dataset.b = markKey(rec.answers[i]); li.textContent = markOf(rec.answers[i]); } else li.textContent = Copy.markAhead; if (i === at) li.className = 'now'; ol.append(li); }
   }
   function showQuestion() {
     const rec = today(), i = rec.answers.length;
@@ -188,7 +191,7 @@
     $('answerBtn').textContent = Copy.answer;
     $('answerForm').hidden = false; $('answerInput').value = ''; $('answerInput').disabled = false; $('answerBtn').disabled = false;
     $('note').textContent = ''; $('note').className = 'note';
-    $('result').hidden = true; $('clock').hidden = false;
+    $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('skipBtn').hidden = true;
     if (!rec.started[i]) { rec.started[i] = Date.now(); save(); }
     runClock(rec.started[i], secondsFor(rec));
     $('answerInput').focus();
@@ -206,14 +209,28 @@
     delete $('clock').dataset.said;
     draw(); timer = setInterval(draw, 100);
   }
-  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; }
+  function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; $('skipBtn').hidden = true; }
+  // When the clock runs out the question stays open in island time: no
+  // clock, guessing goes on, a right answer earns a flat few points, and
+  // Skip moves on with none. A reload in island time comes back to it,
+  // since the start time is saved.
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
-    lock();
-    rec.answers.push({ pid: current.q.id, name: null, points: 0, rarity: 0, speed: 0, secs: secondsFor(rec) }); save();
-    $('note').className = 'note bad'; $('note').textContent = Copy.timeUp;
-    after(rec);
+    current.island = true;
+    $('clock').classList.add('island'); $('clock').classList.remove('low');
+    $('clockFill').style.width = '0%'; $('clockNum').textContent = Copy.islandTime;
+    $('note').className = 'note'; $('note').textContent = Copy.islandNote;
+    $('skipBtn').textContent = Copy.skip; $('skipBtn').hidden = false;
   }
+  const elapsed = (rec, i) => (Date.now() - rec.started[i]) / 1000;
+  $('skipBtn').addEventListener('click', () => {
+    if (!current) return;
+    const rec = today(); if (rec.answers.length !== current.i) return;
+    lock();
+    rec.answers.push({ pid: current.q.id, name: null, skip: true, points: 0, rarity: 0, speed: 0, secs: elapsed(rec, current.i) }); save();
+    $('note').className = 'note'; $('note').textContent = '';
+    after(rec);
+  });
   $('answerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!current || $('answerInput').disabled) return;
@@ -223,21 +240,24 @@
     if (m.status === 'no') { note.className = 'note bad'; note.textContent = Copy.wrong; $('answerInput').select(); return; }
     if (m.status === 'off') { note.className = 'note bad'; note.textContent = Copy.off(m.item.name); $('answerInput').select(); return; }
     const rec = today(); if (rec.answers.length !== current.i) return;
-    const secs = Math.min(secondsFor(rec), (Date.now() - rec.started[current.i]) / 1000);
+    // Once the clock has run out, the answer counts in island time, timed in full.
+    const island = !!current.island, secs = island ? elapsed(rec, current.i) : Math.min(secondsFor(rec), elapsed(rec, current.i));
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
-    const how = Engine.commonness(Engine.shares(current.q), m.item.name), sc = Engine.score(how.c, secs, levelOf(rec));
-    rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
+    const how = Engine.commonness(Engine.shares(current.q), m.item.name);
+    const sc = island ? Engine.islandScore(levelOf(rec)) : Engine.score(how.c, secs, levelOf(rec));
+    rec.answers.push({ pid: current.q.id, name: m.item.name, ...(island ? { island: true } : {}), points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
-    $('resultRarity').textContent = Copy.forRarity(sc.rarity);
-    $('resultSpeed').textContent = Copy.forSpeed(sc.speed);
+    $('resultRarity').textContent = island ? Copy.islandTime : Copy.forRarity(sc.rarity);
+    $('resultSpeed').textContent = island ? '' : Copy.forSpeed(sc.speed);
     $('resultSay').textContent = `${m.item.name}. ${Copy.points(sc.total)}.`;
     after(rec);
   });
   function after(rec) {
     $('result').hidden = false;
-    if (!rec.answers[rec.answers.length - 1].name) { $('resultName').textContent = Copy.noAnswer; $('resultPts').textContent = '0'; $('resultRarity').textContent = ''; $('resultSpeed').textContent = ''; $('resultSay').textContent = Copy.noAnswer; }
+    const last = rec.answers[rec.answers.length - 1];
+    if (!last.name) { const none = last.skip ? Copy.skipped : Copy.noAnswer; $('resultName').textContent = none; $('resultPts').textContent = '0'; $('resultRarity').textContent = ''; $('resultSpeed').textContent = ''; $('resultSay').textContent = none; }
     $('nextBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
     squares(rec, -1); tripBar(rec);
     $('nextBtn').focus();
@@ -266,18 +286,18 @@
     // the score sheet, World Six style: every line adds up to the total
     $('sheetHead').textContent = endless ? Copy.endless.sheetHead(E().round) : Copy.sheetHead; $('sheetHint').textContent = Copy.sheetHint;
     const sheet = $('sheet'); sheet.innerHTML = '';
-    let rarity = 0, speed = 0, secs = 0;
+    let rarity = 0, speed = 0, island = 0, secs = 0;
     questions.forEach((q, i) => {
       const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: secondsFor(rec) };
-      rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0;
+      rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0; if (a.island) island += a.points || 0;
       // one row per question: the answer and its points, opening to the question and every right answer
       const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
-      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = bucket(a.points); sq.textContent = Copy.marks[bucket(a.points)];
-      const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || Copy.noAnswer;
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = markKey(a); sq.textContent = markOf(a);
+      const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || (a.skip ? Copy.skipped : Copy.noAnswer);
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
       const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
       sum.append(sq, nm, pt, ca);
-      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
+      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = a.island ? Copy.islandTime : `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
       const more = document.createElement('div'); more.className = 'more';
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
       const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead(q.answers.length);
@@ -293,6 +313,8 @@
     });
     $('rarityLabel').textContent = Copy.rarityTotal; $('rarityTotal').textContent = fmt(rarity);
     $('speedLabel').textContent = Copy.speedTotal; $('speedTotal').textContent = '+' + fmt(speed);
+    // Island time points get their own line, so the lines still add up.
+    $('islandRow').hidden = !island; $('islandLabel').textContent = Copy.islandTime; $('islandTotal').textContent = '+' + fmt(island);
     $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
     $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
     $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
@@ -306,8 +328,9 @@
     $('againBtn').classList.toggle('primary', endless); $('againBtn').classList.toggle('quiet', !endless);
     $('share').hidden = endless;
     // A rough set in Paco's mode suggests Mario's easier one: under 12,000
-    // points, or three or more questions with no answer.
-    const rough = levelOf(rec) === 'paco' && (score < 12000 || rec.answers.filter((x) => !x.name).length >= 3);
+    // points, or three or more questions with no answer in time (skipped
+    // or answered in island time).
+    const rough = levelOf(rec) === 'paco' && (score < 12000 || rec.answers.filter((x) => !x.name || x.island).length >= 3);
     $('suggest').hidden = !rough; $('suggestText').textContent = Copy.suggestMario; $('suggestBtn').textContent = Copy.playMario;
     // Earlier rounds: one line per finished round before this one, newest
     // first, never added up. Left out after round 1.
@@ -320,9 +343,9 @@
       const b = document.createElement('span'); b.className = 'pts'; b.textContent = fmt(dayScore(er));
       li.append(a, b); $('earlierList').append(li);
     }
-    const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
+    const rows = rec.answers.map((a) => `${markOf(a)} ${fmt(a.points || 0)}`).join('\n');
     const line = headline.replace(/^(Paco|Mario) (got|walked|drove|took) you/, '$1 $2 me');
-    $('shareText').textContent = Copy.share(levelOf(rec) === 'mario' ? `${day}, ${Copy.marioTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
+    $('shareText').textContent = Copy.share(levelOf(rec) === 'mario' ? `${day}, ${Copy.marioTag}` : day, line, rows, fmt(rarity), '+' + fmt(speed), island ? '+' + fmt(island) : '', fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();

@@ -57,7 +57,7 @@ The title screen offers two levels:
 - **Paco's mode** is the full game: two openers, three medium and two hard questions, 25 seconds each, full points.
 - **Mario's mode** is the easier one. Mario is Paco's iguana twin brother and his rival on the island; he is teal with an orange bandana, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 40 seconds, and every score is halved.
 
-Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer, the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
+Each level has its own daily set. After a rough set in Paco's mode, under 12,000 points or three or more questions with no answer in time (skipped or answered in island time), the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
 
 ### A set of seven
 
@@ -83,8 +83,9 @@ The daily sets are built ahead for a year. Each day avoids the questions used in
 
 ## Answering
 
-- You get 25 seconds per question. The start time is saved, so reloading the page doesn't reset the clock.
+- You get 25 seconds per question (40 in Mario's mode). The start time is saved, so reloading the page doesn't reset the clock.
 - Wrong guesses cost only time. You can keep guessing until the clock runs out.
+- **Island time:** when the clock runs out, the question stays open. The clock bar gives way to "Island time" and a Skip button, and the note reads "Time's up. A right answer still earns a few points." There is no time limit. Wrong guesses get the same messages as on the clock. A right answer earns a flat 500 points (250 in Mario's mode), with no rarity or speed points. Skip moves on with 0. Only a skip scores 0. Reloading during island time comes back to island time.
 - Messages:
   - Not on any list: "Not on the list. Try another."
   - Real but ruled out by this question: "Peru is real, but it doesn't fit this question."
@@ -115,29 +116,32 @@ This is World Six's distance curve with c in place of miles. It is smooth, with 
 
 ### Speed bonus
 
-The speed bonus is World Six's, unchanged:
+Every right answer on the clock earns a speed bonus, common answers included. It holds full for 5 seconds, falls sharply after 10 and is close to 0 by 15:
 
-- q = R ÷ 20,000
-- b = 1.5 × q³ × e^(−t ÷ 10), where t is seconds from the question appearing to the accepted answer
-- total = round(R × (1 + b)), rarity = round(R), speed = total − rarity
+- f = 1 for t up to 5 seconds, then e^(−((t − 5) ÷ 7)³), where t is seconds from the question appearing to the accepted answer. f is 0.92 at 8 seconds, 0.70 at 10, 0.37 at 12, 0.05 at 15 and 0 by 20.
+- speed = f × (1,500 + 0.25 × R)
+- total = round(R + speed), rarity = round(R), speed = total − rarity. Mario's mode halves both.
 
-A rare answer makes speed worth a lot, and a fast, common answer earns almost nothing extra. The bonus halves about every 7 seconds. Wrong guesses before the right one cost only the time they take. A question with no accepted answer scores 0.
+A fast answer to an easy question more than doubles its points, and the bonus still grows with rarity. Rarity matters most: a rare answer given slowly beats a common answer given fast, and a middle answer given slowly beats the most familiar answer given fast. Wrong guesses before the right one cost only the time they take. Island time answers get no speed bonus.
 
 ### Examples
 
 | Answer | Time | Rarity | Speed | Total |
 | --- | ---: | ---: | ---: | ---: |
-| The most common answer | 3 s | 1,497 | 1 | 1,498 |
-| Middle of the pack (c = 0.5) | 5 s | 3,834 | 24 | 3,858 |
-| Uncommon (c = 0.1) | 5 s | 11,195 | 1,786 | 12,981 |
-| Rare (c = 0.02) | 5 s | 16,312 | 8,050 | 24,362 |
-| Rare (c = 0.02) | 1 s | 16,312 | 12,010 | 28,322 |
+| The most common answer | 3 s | 1,497 | 1,875 | 3,372 |
+| Middle of the pack (c = 0.5) | 5 s | 3,834 | 2,458 | 6,292 |
+| Middle of the pack (c = 0.5) | 12 s | 3,834 | 904 | 4,738 |
+| Uncommon (c = 0.1) | 5 s | 11,195 | 4,298 | 15,493 |
+| Rare (c = 0.02) | 5 s | 16,312 | 5,578 | 21,890 |
+| Rare (c = 0.02) | 12 s | 16,312 | 2,052 | 18,364 |
+| Rare (c = 0.02) | 20 s | 16,312 | 0 | 16,312 |
+| Any answer in island time | over 25 s | 0 | 0 | 500 |
 
 ### The day
 
-A day's score is the sum of the seven question scores. As in World Six, the end screen shows every question's rarity and speed points, then the rarity total, the speed total, the grand total and the total time, and the lines add up. Each question has one row there. Selecting a row opens its question and every right answer with the rarity points each one earns, so nothing on the screen is listed twice. There is no whole-day multiplier.
+A day's score is the sum of the seven question scores. As in World Six, the end screen shows every question's rarity and speed points, then the rarity total, the speed total, an island time total when there is one, the grand total and the total time, and the lines add up. Island time rows read "Island time" in place of the rarity and speed split, and skips read "Skipped." The total time counts island time in full. Each question has one row there. Selecting a row opens its question and every right answer with the rarity points each one earns, so nothing on the screen is listed twice. There is no whole-day multiplier.
 
-In a simulation of players across the question pool, the middle day scored about 32,000, three days in four stayed under 42,000, and about one in ten passed 52,000. A question can score up to 50,000 in theory, but only with the least familiar answer on a long list, typed instantly.
+With the World Six speed bonus, a simulation of players across the question pool put the middle day at about 32,000 and the top tenth past 52,000. The spread out speed bonus raises days by about 30% for a player who answers in 3 to 17 seconds (middle day about 37,500, top tenth about 54,000) and by about 50% for a player who answers every question within 8 seconds. A question can score up to 26,500 in theory, with the least familiar answer on a long list in the first 5 seconds.
 
 ## Trips
 
@@ -150,7 +154,7 @@ Your trip shows the day's score as a place. Trips open with lifetime points and 
 | ATV across Paco's Island | 110,000 lifetime points | Up from the island's beach: the beach (0), the village (11,000), the river (22,500), the waterfall (33,500), the jungle trail (44,000), the upper waterfall (54,000) |
 | Dive into Bahía Ixtaluz | 450,000 lifetime points | Down: depth = 1,400 m × (score ÷ 66,000)². The reef at Peñas Cantoras and the old ferry wreck (41 m) come early, and the canyon floor is a 66,000 point day. |
 
-At a typical day's score, the walk opens around day 2, the ATV around day 4 and the dive around day 14.
+At a typical day's score, the walk opens around day 2, the ATV around day 3 and the dive around day 11. (Before the speed bonus was spread out, the ATV took about four days and the dive about 14.)
 
 Your trip changes only how your score is shown. Points are the same on every trip, so players on different trips can compare scores.
 
@@ -170,7 +174,7 @@ Every place is invented: Bahía Ixtaluz, the town of Puerto Ixtaluz and its pier
 
 - Where Paco got you ("Paco got you to Pueblo Tilmeca."), with the day's score and your lifetime points.
 - How far the next stop was, and how many points until the next trip opens.
-- Share text in World Six's format: the day, where Paco got you, one line per question with an island mark and its points (🌊 no answer, 🐚 under 5,000, 🦀 5,000 to 11,999, 🐢 12,000 to 19,999, 🦎 20,000 and up), then rarity, speed, total and time. No link.
+- Share text in World Six's format: the day, where Paco got you, one line per question with an island mark and its points (🌊 skipped or no answer, 🥥 answered in island time, 🐚 under 5,000, 🦀 5,000 to 11,999, 🐢 12,000 to 19,999, 🦎 20,000 and up), then rarity, speed, island time when there is any, total and time. No link.
 - Every question with your answer, and a list of every right answer, most familiar first, with the rarity points each one is worth.
 - The same marks show in the score sheet and in the row of seven during play, where questions still ahead show 🏝️.
 
