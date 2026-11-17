@@ -21,6 +21,24 @@ const Copy = {
   resume: "Finish today's trip",
   seeResults: "See today's results",
   home: 'Home',
+  // Your scores: every finished day on this device
+  scores: {
+    link: 'Your scores',
+    head: 'Your scores',
+    back: 'Back',
+    none: "Finish a day's trip and its score shows up here.",
+    played: 'Days played',
+    streak: 'Current streak',
+    best: 'Best streak',
+    bestDay: 'Best day',
+    average: 'Average',
+    lifetime: 'Lifetime points',
+    days: (n) => `${n.toLocaleString('en-US')} ${n === 1 ? 'day' : 'days'}`,
+    everyDay: 'Every day',
+    mario: "Mario's mode",
+  },
+  // iPhone Safari deletes a site's saved data after seven days without a visit
+  keepTip: "Safari deletes saved scores after seven days without a visit. Add Paco's Island to your Home Screen to keep them.",
   credit: 'A game by Ron Bronson',
   music: 'Music',
 
@@ -153,8 +171,8 @@ const Copy = {
     leave: "Back to today's trip",
   },
 
-  moveHeading: 'Play on another device',
-  moveBody: 'Open this link on your other device to bring your points and trips.',
+  moveHeading: 'Back up your scores',
+  moveBody: 'Save this link somewhere safe, or open it on another device. It brings your scores, points and trips.',
   copyLink: 'Copy link',
   close: 'Close',
   importHeading: 'Use the points from your other device?',

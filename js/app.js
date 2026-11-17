@@ -109,6 +109,7 @@
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
+    $('scoresBtn').textContent = Copy.scores.link;
     const endless = mode === 'endless';
     const rec = endless ? (roundDone() ? null : roundRec()) : state.days[dayKey()];
     // level: Paco's mode or Mario's mode, locked once a set is under way
@@ -177,7 +178,7 @@
   $('homeBtn').addEventListener('click', () => { picking = false; showTitle(); });
   $('changeTripBtn').addEventListener('click', () => { mode = 'endless'; state.mode = 'endless'; picking = true; save(); showTitle(); });
 
-  function swap(id) { for (const s of ['title', 'play', 'end']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
+  function swap(id) { for (const s of ['title', 'play', 'end', 'scores']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
 
   // ---- a question ----
   let timer = null, current = null;
@@ -283,7 +284,7 @@
     const rec = today();
     rec.done = true;
     if (!rec.counted) { rec.counted = true; state.lifetime += dayScore(rec); }
-    save(); showEnd();
+    save(); keepData(); showEnd();
   }
   function showEnd() {
     const rec = today(), score = dayScore(rec), r = Engine.reached(rec.trip, score);
@@ -333,6 +334,8 @@
     $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
     $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
+    $('endKeep').hidden = endless || !keepTipNeeded(); $('endKeep').textContent = Copy.keepTip;
+    $('endScoresBtn').textContent = Copy.scores.link; $('endScoresBtn').hidden = endless;
     $('endUnlock').textContent = endless ? '' : justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
     // Endless rounds end on the round buttons; the daily end keeps sharing,
     // and in test mode also offers another round.
@@ -372,12 +375,84 @@
   // ---- moving progress between devices ----
   const pack = (obj) => btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const unpack = (s) => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))));
-  $('moveBtn').addEventListener('click', () => {
+  $('moveBtn').addEventListener('click', openMove);
+  function openMove() {
     $('moveHead').textContent = Copy.moveHeading; $('moveBody').textContent = Copy.moveBody;
     $('copyLinkBtn').textContent = Copy.copyLink; $('closeMove').textContent = Copy.close; $('moveNote').textContent = '';
     $('moveLink').value = `${location.origin}${location.pathname}#move=${pack(state)}`;
     $('moveDialog').showModal();
-  });
+  }
+
+  // ---- keeping scores ----
+  // Safari on an iPhone or iPad deletes a site's saved data after seven days
+  // without a visit, unless the site is on the Home Screen.
+  const keepTipNeeded = () => /iPhone|iPad|iPod/.test(navigator.userAgent) && !navigator.standalone &&
+    !(window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  // Ask the browser to keep this site's data; Chrome usually agrees.
+  const keepData = () => { try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) { /* not supported */ } };
+
+  // ---- your scores ----
+  const dateOf = (n) => Copy.apDate(new Date(Date.UTC(2026, 10, 15 + n)));
+  function finishedDays() {
+    return Object.entries(state.days).filter(([, r]) => r.done)
+      .map(([k, r]) => ({ day: parseInt(k, 10), mario: k.endsWith('m'), rec: r, score: dayScore(r) }))
+      .filter((d) => Number.isFinite(d.day))
+      .sort((a, b) => b.day - a.day || a.mario - b.mario);
+  }
+  function streaks(dayNums) {
+    const set = new Set(dayNums); let best = 0, run = 0, prev = null;
+    for (const d of [...set].sort((a, b) => a - b)) { run = prev !== null && d === prev + 1 ? run + 1 : 1; best = Math.max(best, run); prev = d; }
+    // the current streak runs back from today, or from yesterday if today is still to play
+    let cur = 0, d = set.has(day) ? day : day - 1;
+    while (set.has(d)) { cur++; d--; }
+    return { cur, best };
+  }
+  let scoresFrom = 'title';
+  function showScores(from) {
+    scoresFrom = from; swap('scores'); keepData();
+    $('hud').hidden = true; // today's trip bar has nothing to say here
+    $('scoresBack').textContent = Copy.scores.back; $('scoresHead').textContent = Copy.scores.head;
+    const days = finishedDays();
+    $('scoresNone').textContent = days.length ? '' : Copy.scores.none;
+    const stats = $('scoresStats'); stats.innerHTML = ''; stats.hidden = !days.length;
+    $('scoresDaysHead').hidden = !days.length; $('scoresDaysHead').textContent = Copy.scores.everyDay;
+    if (days.length) {
+      const st = streaks(days.map((d) => d.day)), best = days.reduce((a, b) => (b.score > a.score ? b : a));
+      const avg = Math.round(days.reduce((t, d) => t + d.score, 0) / days.length);
+      const rows = [[Copy.scores.played, fmt(new Set(days.map((d) => d.day)).size)], [Copy.scores.streak, Copy.scores.days(st.cur)], [Copy.scores.best, Copy.scores.days(st.best)],
+        [Copy.scores.bestDay, `${fmt(best.score)}`], [Copy.scores.average, fmt(avg)], [Copy.scores.lifetime, fmt(state.lifetime)]];
+      for (const [label, value] of rows) { const div = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = label; dd.textContent = value; div.append(dt, dd); stats.append(div); }
+    }
+    const list = $('scoresList'); list.innerHTML = '';
+    for (const d of days) {
+      const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.textContent = Copy.marks[bucket(Math.max(0, ...d.rec.answers.map((a) => a.points || 0)))];
+      const when = document.createElement('span'); when.className = 'when'; when.textContent = dateOf(d.day);
+      const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(d.score);
+      const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
+      const what = document.createElement('span'); what.className = 'what';
+      const trip = Engine.TRIPS[d.rec.trip]; what.textContent = [trip ? trip.name : '', d.mario ? Copy.scores.mario : ''].filter(Boolean).join(', ');
+      sum.append(sq, when, pt, ca, what);
+      const more = document.createElement('div'); more.className = 'more';
+      d.rec.qids.forEach((id, i) => {
+        const q = Prompts.get(id), a = d.rec.answers[i] || {};
+        const row = document.createElement('div'); row.className = 'day-row';
+        const m = document.createElement('span'); m.textContent = Copy.marks[bucket(a.points || 0)];
+        const n = document.createElement('span'); n.textContent = a.name || (a.skip ? Copy.skipped : Copy.noAnswer);
+        const p2 = document.createElement('span'); p2.className = 'pts'; p2.textContent = fmt(a.points || 0);
+        const qq = document.createElement('span'); qq.className = 'q'; qq.textContent = q ? q.text : '';
+        row.append(m, n, p2, qq); more.append(row);
+      });
+      det.append(sum, more); li.append(det); list.append(li);
+    }
+    $('scoresKeep').hidden = !keepTipNeeded(); $('scoresKeep').textContent = Copy.keepTip;
+    $('backupBtn').textContent = Copy.moveHeading;
+    $('scoresHead').focus({ preventScroll: true });
+  }
+  $('scoresBtn').addEventListener('click', () => showScores('title'));
+  $('endScoresBtn').addEventListener('click', () => showScores('end'));
+  $('scoresBack').addEventListener('click', () => (scoresFrom === 'end' ? showEnd() : showTitle()));
+  $('backupBtn').addEventListener('click', openMove);
   $('copyLinkBtn').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText($('moveLink').value); $('moveNote').textContent = Copy.copied; }
     catch (e) { $('moveLink').select(); $('moveNote').textContent = Copy.copyFailed; }
