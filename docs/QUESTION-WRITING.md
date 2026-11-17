@@ -86,4 +86,6 @@ Subjects in use: food, drink, tv, movies, music, books, stage, people, style, ho
 
 ## What the pool still needs
 
-More whole-list questions, especially easy ones in TV, music, books, style, holidays, nature, kids, art and tech. The pool has 363 whole questions. At about five a round, it needs around 600 to go four months without leaning on letter questions or repeats.
+More whole-list questions, especially easy ones in TV, music, books, style, holidays, nature, kids, art and tech. The pool has 449 whole questions that new rounds can deal. At about six a round, it needs around 700 to go four months without a repeat.
+
+Big open lists are good: "Name a bird" takes 300 answers, from robin to snowy egret, plus Big Bird and Tweety. A hand-written question can hold up to 400 answers. The longer the list, the fewer good guesses it turns away. Put the answers almost everyone knows first and give honest tiers: tier 1 and 2 only for answers most players would think of.

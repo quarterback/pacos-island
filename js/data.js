@@ -11810,6 +11810,5257 @@ Epsom salt`),
 2 CyberPowerPC
 2 Medion
 2 Clevo`),
+    // ---- cartoons ----
+    angle('simpsons_chars', 'tv', 'people', 'Name a character on "The Simpsons."', `
+1 Homer|Homer Simpson
+1 Marge|Marge Simpson
+1 Bart|Bart Simpson
+1 Lisa|Lisa Simpson
+1 Maggie|Maggie Simpson
+2 Mr. Burns|Montgomery Burns|Burns
+2 Ned Flanders|Flanders|Ned
+2 Krusty the Clown|Krusty
+2 Apu|Apu Nahasapeemapetilon
+2 Moe|Moe Szyslak
+2 Milhouse|Milhouse Van Houten
+2 Grampa Simpson|Abe Simpson|Grandpa Simpson|Abe|Grampa
+Smithers|Waylon Smithers
+Ralph Wiggum|Ralph
+Chief Wiggum|Clancy Wiggum
+Principal Skinner|Seymour Skinner|Skinner
+Barney Gumble|Barney
+Sideshow Bob
+Patty Bouvier|Patty
+Selma Bouvier|Selma
+Nelson Muntz|Nelson
+Comic Book Guy
+Mrs. Krabappel|Edna Krabappel
+Otto
+Groundskeeper Willie|Willie
+Dr. Hibbert|Julius Hibbert
+4 Lenny|Lenny Leonard
+4 Carl|Carl Carlson
+4 Martin Prince|Martin
+4 Itchy
+4 Scratchy
+4 Troy McClure
+4 Santa's Little Helper
+4 Snowball II|Snowball
+4 Kang
+4 Kodos
+4 Professor Frink|Frink
+4 Hans Moleman
+4 Dr. Nick|Dr. Nick Riviera
+4 Fat Tony
+4 Rod Flanders|Rod
+4 Todd Flanders|Todd
+4 Lionel Hutz
+4 Mayor Quimby|Quimby
+4 Superintendent Chalmers|Chalmers
+4 Cletus
+5 Disco Stu
+5 Bumblebee Man
+5 Duffman
+5 Kent Brockman
+5 Gil
+5 Kirk Van Houten
+5 Luann Van Houten
+5 Agnes Skinner
+5 Sherri and Terri|Sherri|Terri
+5 Jimbo Jones|Jimbo
+5 Dolph
+5 Kearney
+5 Lunchlady Doris
+5 Rainier Wolfcastle`),
+    angle('looney_tunes', 'tv', 'people', 'Name a Looney Tunes character.', `
+1 Bugs Bunny|Bugs
+1 Daffy Duck|Daffy
+1 Porky Pig|Porky
+1 Tweety|Tweety Bird
+1 Sylvester|Sylvester the Cat
+2 Elmer Fudd|Elmer
+2 Wile E. Coyote|Wile E Coyote|Coyote
+2 Road Runner|Roadrunner
+2 Yosemite Sam
+2 Tasmanian Devil|Taz
+2 Foghorn Leghorn|Foghorn
+2 Pepé Le Pew|Pepe Le Pew
+2 Speedy Gonzales|Speedy
+Marvin the Martian|Marvin
+Lola Bunny|Lola
+Granny
+Michigan J. Frog|Michigan J Frog
+4 Gossamer
+4 Marc Antony
+4 Pussyfoot
+4 Hector the Bulldog|Hector
+4 Henery Hawk
+4 Slowpoke Rodriguez
+4 Sylvester Jr.
+4 Witch Hazel
+4 Claude Cat
+4 Hubie and Bertie
+5 Beaky Buzzard
+5 Cecil Turtle
+5 Barnyard Dawg
+5 Ralph Wolf
+5 Sam Sheepdog
+5 Penelope Pussycat|Penelope
+5 Miss Prissy
+5 Charlie Dog
+5 Rocky and Mugsy`),
+    angle('hanna_barbera', 'tv', 'people', 'Name a Hanna-Barbera cartoon character.', `
+1 Scooby-Doo|Scooby Doo|Scooby
+1 Fred Flintstone|Fred
+1 Yogi Bear|Yogi
+1 George Jetson|George
+2 Shaggy|Shaggy Rogers
+2 Wilma Flintstone|Wilma
+2 Barney Rubble|Barney
+2 Betty Rubble|Betty
+2 Pebbles|Pebbles Flintstone
+2 Bamm-Bamm|Bamm Bamm|Bam Bam
+2 Dino
+2 Velma|Velma Dinkley
+2 Daphne|Daphne Blake
+2 Boo-Boo|Boo Boo
+2 Jane Jetson|Jane
+2 Judy Jetson|Judy
+2 Elroy Jetson|Elroy
+2 Astro
+2 Rosie the Robot|Rosie
+Fred Jones
+Scrappy-Doo|Scrappy Doo|Scrappy
+Huckleberry Hound
+Quick Draw McGraw
+Top Cat
+Snagglepuss
+Magilla Gorilla
+Dick Dastardly
+Muttley
+Penelope Pitstop
+Mr. Spacely|Spacely
+Ranger Smith
+4 Hong Kong Phooey
+4 Jonny Quest
+4 Space Ghost
+4 Atom Ant
+4 Secret Squirrel
+4 Peter Potamus
+4 Augie Doggie
+4 Doggie Daddy
+4 Grape Ape
+4 Jabberjaw
+4 Captain Caveman
+4 Blabber Mouse|Blabber
+4 Snooper
+4 Mr. Slate
+4 The Great Gazoo|Gazoo
+4 Cindy Bear
+5 Squiddly Diddly
+5 Wally Gator
+5 Touché Turtle|Touche Turtle
+5 Lippy the Lion
+5 Hardy Har Har
+5 Pixie and Dixie
+5 Mr. Jinks
+5 Ricochet Rabbit
+5 Shazzan`),
+    angle('bikini_bottom', 'tv', 'place', 'Name a character who lives in Bikini Bottom.', `
+1 SpongeBob|SpongeBob SquarePants|Spongebob Squarepants|Sponge Bob
+1 Patrick|Patrick Star
+1 Squidward|Squidward Tentacles
+1 Mr. Krabs|Mr Krabs|Eugene Krabs|Krabs
+2 Sandy Cheeks|Sandy
+2 Plankton|Sheldon Plankton
+2 Gary|Gary the Snail
+Pearl|Pearl Krabs
+Mrs. Puff|Mrs Puff
+Karen
+Larry the Lobster|Larry
+Mermaid Man
+Barnacle Boy
+4 Flying Dutchman
+4 Squilliam Fancyson|Squilliam
+4 Patchy the Pirate
+4 King Neptune|Neptune
+4 Bubble Bass
+4 Man Ray
+4 Dirty Bubble
+4 Mama Krabs
+5 Fred
+5 Old Man Jenkins
+5 Kevin the Sea Cucumber|Kevin`),
+    angle('smurfs', 'kids', 'people', 'Name a Smurf.', `
+1 Papa Smurf
+1 Smurfette
+2 Brainy Smurf|Brainy
+2 Clumsy Smurf|Clumsy
+2 Hefty Smurf|Hefty
+2 Jokey Smurf|Jokey
+2 Grouchy Smurf|Grouchy
+2 Handy Smurf|Handy
+2 Vanity Smurf|Vanity
+2 Lazy Smurf|Lazy
+2 Baby Smurf|Baby
+Greedy Smurf|Greedy
+Harmony Smurf|Harmony
+Grandpa Smurf|Grandpa
+Sassette
+Farmer Smurf|Farmer
+Poet Smurf|Poet
+Painter Smurf|Painter
+Tailor Smurf|Tailor
+4 Dreamy Smurf|Dreamy
+4 Nat
+4 Slouchy
+4 Snappy
+4 Wild Smurf|Wild
+4 Scaredy Smurf|Scaredy
+4 Chef Smurf|Chef
+4 Miner Smurf|Miner
+4 Nosey Smurf|Nosey
+4 Smurfwillow
+4 Smurfstorm
+4 Smurfblossom
+4 Smurflily`),
+    angle('pooh_friends', 'kids', 'people', 'Name a friend of Winnie the Pooh.', `
+1 Piglet
+1 Tigger
+1 Eeyore
+1 Christopher Robin
+2 Rabbit
+2 Owl
+2 Kanga
+2 Roo
+Gopher
+4 Lumpy|Heffalump
+4 Kessie
+4 Darby
+4 Buster
+4 Small|Very Small Beetle
+4 Alexander Beetle`),
+    angle('mickey_friends', 'kids', 'people', 'Name one of Mickey Mouse\'s friends.', `
+1 Minnie Mouse|Minnie
+1 Donald Duck|Donald
+1 Goofy
+1 Pluto
+2 Daisy Duck|Daisy
+2 Chip
+2 Dale
+Huey
+Dewey
+Louie
+Scrooge McDuck|Scrooge|Uncle Scrooge
+Clarabelle Cow|Clarabelle
+Horace Horsecollar|Horace
+Max|Max Goof
+Pete
+4 Ludwig Von Drake
+4 Oswald the Lucky Rabbit|Oswald
+4 Figaro
+4 Clara Cluck
+4 Gyro Gearloose
+4 Webby|Webby Vanderquack
+4 Launchpad McQuack|Launchpad
+4 Morty and Ferdie|Morty|Ferdie
+5 Gus Goose
+5 Chief O'Hara`),
+    angle('my_little_pony', 'kids', 'people', 'Name a My Little Pony character.', `
+1 Twilight Sparkle|Twilight
+1 Rainbow Dash
+1 Pinkie Pie
+2 Rarity
+2 Applejack
+2 Fluttershy
+2 Spike
+Princess Celestia|Celestia
+Princess Luna|Luna
+Princess Cadance|Cadance
+Starlight Glimmer
+Discord
+Apple Bloom
+Sweetie Belle
+Scootaloo
+Big McIntosh|Big Mac
+Granny Smith
+Shining Armor
+4 Trixie
+4 Derpy|Derpy Hooves|Muffins
+4 Queen Chrysalis|Chrysalis
+4 Nightmare Moon
+4 Sunset Shimmer
+4 Spitfire
+4 Zecora
+4 Cheerilee
+4 Diamond Tiara
+4 Silver Spoon
+4 Sunny Starscout
+4 Izzy Moonbow
+4 Pipp Petals
+4 Zipp Storm
+4 Hitch Trailblazer
+5 Firefly
+5 Cotton Candy
+5 Blossom
+5 Bow Tie
+5 Butterscotch
+5 Minty
+5 Megan`),
+    angle('bluey_chars', 'kids', 'people', 'Name a character on "Bluey."', `
+1 Bingo
+1 Bandit|Dad
+1 Chilli|Mum|Mom
+2 Muffin
+2 Socks
+2 Stripe|Uncle Stripe
+2 Trixie|Aunt Trixie
+2 Nana
+Uncle Rad|Rad
+Chloe
+Mackenzie
+Lucky
+Coco
+Snickers
+Rusty
+Calypso
+Honey
+Indy
+Judo
+Winton
+4 Brandy|Aunt Brandy
+4 Frisky
+4 Bob|Grandad Bob|Grandad
+4 Pom Pom
+4 Jack
+4 Lila
+4 Missy
+4 Unicorse
+4 Lucky's Dad|Pat
+4 Wendy
+4 Bentley
+4 Chucky
+4 Captain|The Captain
+5 Busker
+5 Mort|Grandad Mort
+5 Chris|Nana Chris
+5 Bella
+5 Pretzel
+5 Valerie`),
+    angle('disney_songs', 'music', 'crossover', 'Name a song from a Disney animated movie.', `
+1 Let It Go
+1 Under the Sea
+1 Hakuna Matata
+1 A Whole New World
+1 Circle of Life
+2 Be Our Guest
+2 Part of Your World
+2 Can You Feel the Love Tonight
+2 How Far I'll Go
+2 You're Welcome
+2 We Don't Talk About Bruno
+2 Colors of the Wind
+2 When You Wish Upon a Star
+2 Beauty and the Beast|Tale as Old as Time
+2 Do You Want to Build a Snowman?|Do You Want to Build a Snowman
+2 I Just Can't Wait to Be King
+2 Friend Like Me
+2 Kiss the Girl
+2 Bibbidi-Bobbidi-Boo|Bibbidi Bobbidi Boo
+2 Whistle While You Work
+2 Heigh-Ho|Heigh Ho
+2 The Bare Necessities|Bare Necessities
+Reflection
+I'll Make a Man Out of You
+Poor Unfortunate Souls
+Go the Distance
+Be Prepared
+Gaston
+Belle
+Prince Ali
+I See the Light
+When Will My Life Begin
+Mother Knows Best
+Into the Unknown
+For the First Time in Forever
+Love Is an Open Door
+Almost There
+Surface Pressure
+Someday My Prince Will Come
+A Dream Is a Wish Your Heart Makes
+I Wan'na Be Like You|I Wanna Be Like You
+Everybody Wants to Be a Cat
+Remember Me
+You've Got a Friend in Me
+Zero to Hero
+Show Yourself
+Shiny
+Try Everything
+Just Around the River Bend
+Out There
+God Help the Outcasts
+Arabian Nights
+One Jump Ahead
+Something There
+Les Poissons
+Hellfire
+4 Dos Oruguitas
+4 Waiting on a Miracle
+4 What Else Can I Do?|What Else Can I Do
+4 Where You Are
+4 I've Got a Dream
+4 Trashin' the Camp|Trashin the Camp
+4 Strangers Like Me
+4 Son of Man
+4 Two Worlds
+4 You'll Be in My Heart
+4 Once Upon a Dream
+4 Cruella De Vil
+4 Bella Notte
+4 He's a Tramp
+4 The Siamese Cat Song
+4 Kings and Queens
+4 Topsy Turvy
+4 Honor to Us All
+4 This Wish
+4 Know Who You Are
+5 Down in New Orleans
+5 Dig a Little Deeper
+5 Ma Belle Evangeline
+5 Friends on the Other Side
+5 Steady as the Beating Drum
+5 Mine, Mine, Mine|Mine Mine Mine
+5 Savages
+5 Who I Am
+5 Hawaiian Roller Coaster Ride`),
+    angle('dreamworks', 'movies', 'category', 'Name a DreamWorks animated movie.', `
+1 Shrek
+1 Madagascar
+1 Kung Fu Panda
+1 How to Train Your Dragon
+2 Shrek 2
+2 Trolls
+2 The Boss Baby|Boss Baby
+2 Megamind
+2 Shark Tale
+2 Puss in Boots
+2 The Croods|Croods
+2 The Prince of Egypt|Prince of Egypt
+2 Chicken Run
+2 Over the Hedge
+2 Bee Movie
+2 The Wild Robot|Wild Robot
+Antz
+Shrek the Third
+Shrek Forever After
+Monsters vs. Aliens|Monsters vs Aliens
+Spirit: Stallion of the Cimarron|Spirit
+Home
+The Bad Guys|Bad Guys
+Rise of the Guardians
+Turbo
+Abominable
+Mr. Peabody & Sherman|Mr. Peabody and Sherman
+Kung Fu Panda 2
+Madagascar: Escape 2 Africa|Madagascar 2
+Madagascar 3: Europe's Most Wanted|Madagascar 3
+How to Train Your Dragon 2
+4 Flushed Away
+4 Sinbad: Legend of the Seven Seas|Sinbad
+4 The Road to El Dorado|Road to El Dorado
+4 Wallace & Gromit: The Curse of the Were-Rabbit|The Curse of the Were-Rabbit
+4 Penguins of Madagascar
+4 Captain Underpants: The First Epic Movie|Captain Underpants
+4 Trolls World Tour
+4 Ruby Gillman, Teenage Kraken|Ruby Gillman
+4 Orion and the Dark
+4 Kung Fu Panda 3
+4 Kung Fu Panda 4
+4 Puss in Boots: The Last Wish|The Last Wish
+4 Trolls Band Together
+4 The Boss Baby: Family Business
+4 Spirit Untamed
+4 The Croods: A New Age
+4 How to Train Your Dragon: The Hidden World
+4 The Bad Guys 2
+5 Joseph: King of Dreams
+5 Dog Man`),
+    angle('cartoon_mice', 'kids', 'trait', 'Name a cartoon mouse.', `
+1 Mickey Mouse|Mickey
+1 Minnie Mouse|Minnie
+1 Jerry
+2 Mighty Mouse
+2 Speedy Gonzales|Speedy
+2 Stuart Little
+2 Fievel|Fievel Mousekewitz
+2 Pinky
+2 The Brain|Brain
+Danger Mouse
+Itchy
+Gus
+Jaq
+Bernard
+Miss Bianca|Bianca
+Basil|Basil of Baker Street
+Gadget|Gadget Hackwrench
+Timothy Q. Mouse|Timothy
+Angelina Ballerina|Angelina
+Despereaux
+4 Monterey Jack
+4 Mr. Jingles
+4 Tanya Mousekewitz|Tanya
+4 Brisby|Mrs. Brisby
+4 Pixie and Dixie|Pixie|Dixie
+4 Hickory
+4 Dickory
+4 Dock
+4 Maisy
+4 Geronimo Stilton
+4 Mouse (If You Give a Mouse a Cookie)
+4 Throttle
+4 Modo
+4 Vinnie
+5 Dr. Dawson|Dawson
+5 Tuffy
+5 Ernest Mouse
+5 Mr. Mouse`),
+    angle('comic_strip_animals', 'kids', 'crossover', 'Name an animal from a comic strip.', `
+1 Garfield
+1 Snoopy
+2 Odie
+2 Hobbes
+2 Woodstock
+2 Marmaduke
+Heathcliff
+Opus
+Bill the Cat
+Krazy Kat|Ignatz
+Pogo
+Dogbert
+Fred Basset
+Satchel
+Otto
+4 Earl
+4 Mooch
+4 Nermal
+4 Arlene
+4 Pooch
+4 Daisy
+4 Snert
+4 Ratbert
+4 Rat
+4 Pig
+4 Zebra
+4 Goat
+4 Spike
+4 Olaf
+4 Andy
+5 Hamlet
+5 Snuffy
+5 Riley
+5 Cuthbert`),
+    angle('adult_cartoons', 'tv', 'category', 'Name an animated TV show for grown-ups.', `
+1 The Simpsons|Simpsons
+1 South Park
+1 Family Guy
+2 Futurama
+2 Bob's Burgers|Bobs Burgers
+2 King of the Hill
+2 Rick and Morty
+2 BoJack Horseman|Bojack
+2 American Dad!|American Dad
+2 Archer
+2 Beavis and Butt-Head|Beavis and Butthead
+Daria
+Big Mouth
+The Cleveland Show|Cleveland Show
+Invincible
+Aqua Teen Hunger Force
+Harley Quinn
+Robot Chicken
+Solar Opposites
+Arcane
+Love, Death & Robots|Love Death and Robots
+Disenchantment
+F Is for Family
+Central Park
+Hazbin Hotel
+Smiling Friends
+Clone High
+The Venture Bros.|Venture Bros
+4 Ren & Stimpy|The Ren & Stimpy Show|Ren and Stimpy
+4 Tuca & Bertie|Tuca and Bertie
+4 Undone
+4 Primal
+4 Castlevania
+4 Inside Job
+4 Sealab 2021
+4 Home Movies
+4 Duckman
+4 The Critic
+4 Mission Hill
+4 Squidbillies
+4 Metalocalypse
+4 Moral Orel
+4 Superjail!|Superjail
+4 Velma
+4 Krapopolis
+4 Housebroken
+4 Bless the Harts
+4 Q-Force
+4 The Great North
+4 Hit-Monkey
+4 Blue Eye Samurai
+5 Dr. Katz, Professional Therapist|Dr. Katz
+5 Space Ghost Coast to Coast
+5 Frisky Dingo
+5 Drawn Together
+5 Brickleberry
+5 Paradise PD
+5 Close Enough
+5 Little Demon`),
+    angle('saturday_cartoons', 'kids', 'time', 'Name a Saturday morning cartoon.', `
+1 Scooby-Doo|Scooby Doo|Scooby-Doo, Where Are You!
+1 The Smurfs|Smurfs
+1 Looney Tunes|The Bugs Bunny Show|Bugs Bunny
+1 Teenage Mutant Ninja Turtles|Ninja Turtles|TMNT
+2 Transformers
+2 G.I. Joe|GI Joe
+2 He-Man|He-Man and the Masters of the Universe
+2 ThunderCats|Thundercats
+2 Muppet Babies
+2 Alvin and the Chipmunks|Alvin and the Chipmunks
+2 Garfield and Friends
+2 The Flintstones|Flintstones
+2 The Jetsons|Jetsons
+2 Pokémon|Pokemon
+2 X-Men|X-Men: The Animated Series
+2 Animaniacs
+2 Care Bears
+2 Super Friends
+DuckTales
+Chip 'n Dale: Rescue Rangers|Rescue Rangers
+Strawberry Shortcake
+She-Ra|She-Ra: Princess of Power
+Jem|Jem and the Holograms
+The Real Ghostbusters|Ghostbusters
+Spider-Man and His Amazing Friends
+Fat Albert|Fat Albert and the Cosby Kids
+Captain Planet|Captain Planet and the Planeteers
+Inspector Gadget
+Pinky and the Brain
+Tiny Toon Adventures|Tiny Toons
+Darkwing Duck
+Schoolhouse Rock!|Schoolhouse Rock
+Josie and the Pussycats
+Adventures of the Gummi Bears|Gummi Bears
+Pee-wee's Playhouse
+Recess
+Pepper Ann
+Batman: The Animated Series
+Sonic the Hedgehog
+Super Mario Bros. Super Show|Super Mario Bros Super Show
+The Snorks|Snorks
+Dungeons & Dragons
+Pac-Man
+Kissyfur
+Bobby's World
+Yu-Gi-Oh!|Yugioh
+Digimon
+Mighty Morphin Power Rangers|Power Rangers
+Biker Mice from Mars
+4 The Littles
+4 Rainbow Brite
+4 Pound Puppies
+4 The Gary Coleman Show
+4 Dennis the Menace
+4 Hulk Hogan's Rock 'n' Wrestling
+4 Mister T
+4 Spiral Zone
+4 The Herculoids
+4 Space Ghost
+4 Godzilla
+4 The Pink Panther Show|Pink Panther
+4 The Shirt Tales
+4 Monchhichis
+4 Galaxy High
+4 Beetlejuice
+4 Bill & Ted's Excellent Adventures
+4 Bucky O'Hare
+4 Captain N: The Game Master|Captain N
+4 Dino-Riders
+4 Wishkid
+4 Camp Candy
+4 Cro
+4 Fraggle Rock
+5 Richie Rich
+5 Hero High
+5 Blackstar
+5 Shazzan
+5 Space Stars
+5 Jana of the Jungle
+5 The Biskitts
+5 Snorks`),
+    // ---- sitcoms by decade ----
+    angle('sitcoms_70s', 'tv', 'time', 'Name a sitcom from the 1970s.', `
+1 Happy Days
+1 M*A*S*H|MASH
+1 All in the Family
+1 The Brady Bunch|Brady Bunch
+2 The Jeffersons|Jeffersons
+2 Three's Company|Threes Company
+2 Laverne & Shirley|Laverne and Shirley
+2 The Mary Tyler Moore Show|Mary Tyler Moore
+2 Good Times
+2 Sanford and Son
+2 Taxi
+2 Mork & Mindy|Mork and Mindy
+2 Welcome Back, Kotter|Welcome Back Kotter
+2 The Partridge Family|Partridge Family
+WKRP in Cincinnati|WKRP
+Barney Miller
+The Bob Newhart Show|Bob Newhart Show
+Maude
+Alice
+One Day at a Time
+Rhoda
+Diff'rent Strokes|Different Strokes|Diffrent Strokes
+What's Happening!!|What's Happening
+Chico and the Man
+The Odd Couple|Odd Couple
+Soap
+Benson
+The Facts of Life|Facts of Life
+Phyllis
+The Love Boat|Love Boat
+4 Fish
+4 Room 222
+4 The Courtship of Eddie's Father
+4 That Girl
+4 Here's Lucy
+4 The Dick Van Dyke Show
+4 Gilligan's Island
+4 The Brady Bunch Hour
+4 Mary Hartman, Mary Hartman|Mary Hartman
+4 The Ropers
+4 Angie
+4 Hello, Larry|Hello Larry
+4 Love, American Style|Love American Style
+4 Bridget Loves Bernie
+4 The Paul Lynde Show
+4 Carter Country
+4 Operation Petticoat
+4 We've Got Each Other
+5 Busting Loose
+5 The Montefuscos
+5 Ball Four`),
+    angle('sitcoms_80s', 'tv', 'time', 'Name a sitcom from the 1980s.', `
+1 Cheers
+1 The Cosby Show|Cosby Show|Cosby
+1 The Golden Girls|Golden Girls
+1 Full House
+1 Family Ties
+2 Who's the Boss?|Who's the Boss|Whos the Boss
+2 Growing Pains
+2 Roseanne
+2 Married... with Children|Married with Children
+2 Night Court
+2 ALF|Alf
+2 The Facts of Life|Facts of Life
+2 Diff'rent Strokes|Different Strokes|Diffrent Strokes
+2 The Wonder Years|Wonder Years
+2 Perfect Strangers
+2 Newhart
+2 Designing Women
+2 A Different World|Different World
+2 Silver Spoons
+2 Webster
+2 Punky Brewster
+2 Charles in Charge
+2 Murphy Brown
+Taxi
+M*A*S*H|MASH
+Kate & Allie|Kate and Allie
+3 227
+Mr. Belvedere|Mr Belvedere
+Head of the Class
+Empty Nest
+Benson
+Gimme a Break!|Gimme a Break
+Mork & Mindy|Mork and Mindy
+Three's Company|Threes Company
+Happy Days
+The Jeffersons|Jeffersons
+Small Wonder
+Too Close for Comfort
+Valerie|The Hogan Family|Valerie's Family
+Coach
+Amen
+It's Garry Shandling's Show|It's Garry Shandling's Show.
+Square Pegs
+Family Matters
+Saved by the Bell
+Mama's Family
+My Two Dads
+Out of This World
+Just the Ten of Us
+Doogie Howser, M.D.|Doogie Howser
+4 Bosom Buddies
+4 Mr. Merlin
+4 Alice
+4 Laverne & Shirley|Laverne and Shirley
+4 Archie Bunker's Place
+4 One Day at a Time
+4 Dear John
+4 Duet
+4 Open House
+4 It's a Living
+4 The Hogan Family
+4 Throb
+4 Married People
+4 Day by Day
+4 Frank's Place
+4 The Tortellis
+4 E/R
+4 The Days and Nights of Molly Dodd
+4 Major Dad
+4 Who's Watching the Kids
+4 She's the Sheriff
+4 What's Happening Now!!|What's Happening Now
+4 Brothers
+4 Sledge Hammer!|Sledge Hammer
+4 The Associates
+4 Private Benjamin
+4 Nine to Five|9 to 5
+4 Easy Street
+4 Living Dolls
+4 The Charmings
+5 Gung Ho
+5 You Again?
+5 Marblehead Manor
+5 The Robert Guillaume Show`),
+    angle('sitcoms_90s', 'tv', 'time', 'Name a sitcom from the 1990s.', `
+1 Friends
+1 Seinfeld
+1 Frasier
+1 The Fresh Prince of Bel-Air|Fresh Prince of Bel-Air|Fresh Prince|The Fresh Prince of Bel Air
+1 Home Improvement
+1 Everybody Loves Raymond|Raymond
+2 Will & Grace|Will and Grace
+2 Family Matters
+2 Saved by the Bell
+2 Martin
+2 Living Single
+2 Mad About You
+2 Full House
+2 Roseanne
+2 Married... with Children|Married with Children
+2 The Nanny|Nanny
+2 Boy Meets World
+2 That '70s Show|That 70s Show|That Seventies Show
+2 3rd Rock from the Sun|Third Rock from the Sun|3rd Rock
+2 Step by Step
+2 Sister, Sister|Sister Sister
+2 Moesha
+2 The King of Queens|King of Queens
+2 Spin City
+2 Ellen
+2 Sabrina the Teenage Witch|Sabrina
+2 The Drew Carey Show|Drew Carey Show
+2 Murphy Brown
+2 Cheers
+2 Golden Girls|The Golden Girls
+2 Dharma & Greg|Dharma and Greg
+Just Shoot Me!|Just Shoot Me
+NewsRadio
+Wings
+Coach
+Grace Under Fire
+The Larry Sanders Show|Larry Sanders Show
+Cybill
+Hangin' with Mr. Cooper|Hanging with Mr. Cooper|Hangin with Mr Cooper
+Blossom
+Herman's Head
+Dinosaurs
+Evening Shade
+Designing Women
+Major Dad
+Empty Nest
+The Wonder Years|Wonder Years
+Doogie Howser, M.D.|Doogie Howser
+A Different World|Different World
+The Single Guy
+Caroline in the City
+Suddenly Susan
+Veronica's Closet
+Becker
+Two Guys, a Girl and a Pizza Place|Two Guys and a Girl
+Sports Night
+Malcolm & Eddie|Malcolm and Eddie
+The Steve Harvey Show|Steve Harvey Show
+The Jamie Foxx Show|Jamie Foxx Show
+The Parent 'Hood|The Parent Hood
+Smart Guy
+Kenan & Kel|Kenan and Kel
+The Wayans Bros.|The Wayans Brothers|Wayans Bros
+In the House
+Unhappily Ever After
+Clueless
+Something So Right
+Hearts Afire
+Love & War|Love and War
+Phenom
+Townies
+4 Mr. Show
+4 Brotherly Love
+4 Working
+4 The Naked Truth
+4 Union Square
+4 Jesse
+4 Encore! Encore!
+4 Holding the Baby
+4 Grosse Pointe
+4 Action
+4 Get Real
+4 Freaks and Geeks
+4 Undeclared
+4 The PJs
+4 The Hughleys
+4 Cosby
+4 Family Album
+4 Partners
+4 Boston Common
+4 Almost Perfect
+4 Pearl
+4 Life with Roger
+4 Minor Adjustments
+4 Ned and Stacey
+4 Too Something
+5 Muddling Through
+5 Woops!
+5 Daddy Dearest
+5 Good Advice`),
+    angle('sitcoms_00s', 'tv', 'time', 'Name a sitcom from the 2000s.', `
+1 The Office|Office
+1 How I Met Your Mother|HIMYM
+1 The Big Bang Theory|Big Bang Theory
+1 Two and a Half Men
+1 Scrubs
+2 Arrested Development
+2 30 Rock
+2 Malcolm in the Middle
+2 Everybody Hates Chris
+2 Everybody Loves Raymond|Raymond
+2 Friends
+2 Frasier
+2 Will & Grace|Will and Grace
+2 The King of Queens|King of Queens
+2 That '70s Show|That 70s Show|That Seventies Show
+2 My Wife and Kids
+2 George Lopez|The George Lopez Show
+2 Reba
+2 According to Jim
+2 8 Simple Rules|Eight Simple Rules
+2 Curb Your Enthusiasm|Curb
+2 Modern Family
+2 Parks and Recreation|Parks and Rec
+2 Community
+2 It's Always Sunny in Philadelphia|Always Sunny|It's Always Sunny
+2 My Name Is Earl
+2 The Bernie Mac Show|Bernie Mac Show|Bernie Mac
+2 Still Standing
+2 Yes, Dear|Yes Dear
+2 Girlfriends
+2 The Parkers
+2 Hannah Montana
+2 iCarly
+2 Lizzie McGuire
+2 That's So Raven|Thats So Raven
+2 The Suite Life of Zack & Cody|The Suite Life of Zack and Cody|Suite Life
+2 Drake & Josh|Drake and Josh
+2 Gilmore Girls
+Joey
+Rules of Engagement
+The New Adventures of Old Christine|New Adventures of Old Christine
+Til Death
+Less Than Perfect
+Grounded for Life
+Spin City
+Becker
+The Hughleys
+One on One
+Half & Half|Half and Half
+All of Us
+Cuts
+Eve
+The Game
+Entourage
+Weeds
+Flight of the Conchords
+Ugly Betty
+The Middle
+Cougar Town
+Better Off Ted
+Aliens in America
+Samantha Who?|Samantha Who
+Back to You
+Worst Week
+Andy Barker, P.I.
+Twins
+Hope & Faith|Hope and Faith
+Married to the Movies
+Lucky Louie
+Extras
+Kath & Kim
+Big Love
+Psych
+Reno 911!|Reno 911
+Andy Richter Controls the Universe
+The War at Home
+Stacked
+Do Not Disturb
+4 Coupling
+4 Whoopi
+4 Tucker
+4 Oliver Beene
+4 Committed
+4 Freddie
+4 Jake in Progress
+4 Emily's Reasons Why Not
+4 Sons & Daughters
+4 Help Me Help You
+4 Notes from the Underbelly
+4 The Class
+4 Carpoolers
+4 Gary Unmarried
+4 Accidentally on Purpose
+4 Hank
+4 Romantically Challenged
+4 The Goodwin Games
+4 In-Laws
+4 The Michael J. Fox Show
+4 Life with Bonnie
+4 Center of the Universe
+4 Wanda at Large
+4 The Tracy Morgan Show
+4 Run of the House
+4 Living with Fran`),
+    angle('sitcoms_10s', 'tv', 'time', 'Name a sitcom from the 2010s.', `
+1 Modern Family
+1 The Big Bang Theory|Big Bang Theory
+1 Brooklyn Nine-Nine|Brooklyn 99
+1 Parks and Recreation|Parks and Rec
+1 The Office|Office
+2 New Girl
+2 Schitt's Creek|Schitts Creek
+2 The Good Place|Good Place
+2 How I Met Your Mother|HIMYM
+2 Two and a Half Men
+2 2 Broke Girls|Two Broke Girls
+2 Mike & Molly|Mike and Molly
+2 The Middle|Middle
+2 Black-ish|Blackish
+2 Fresh Off the Boat
+2 The Goldbergs|Goldbergs
+2 Superstore
+2 Community
+2 Veep
+2 Young Sheldon
+2 Mom
+2 Last Man Standing
+2 Unbreakable Kimmy Schmidt|Kimmy Schmidt
+2 It's Always Sunny in Philadelphia|Always Sunny|It's Always Sunny
+2 Curb Your Enthusiasm|Curb
+2 Fleabag
+2 Abbott Elementary
+3 30 Rock
+Cougar Town
+Happy Endings
+The Mindy Project|Mindy Project
+Insecure
+Atlanta
+Broad City
+Silicon Valley
+Jane the Virgin
+One Day at a Time
+Grace and Frankie
+The Neighborhood
+Speechless
+Man with a Plan
+Kevin Can Wait
+The Ranch
+Raising Hope
+Suburgatory
+Don't Trust the B---- in Apartment 23|Apartment 23
+Crazy Ex-Girlfriend
+Master of None
+Workaholics
+Girls
+Louie
+Bob Hearts Abishola
+The Kominsky Method|Kominsky Method
+Barry
+Ghosts
+Single Parents
+American Housewife
+Life in Pieces
+Dead to Me
+Russian Doll
+Sex Education
+PEN15|Pen15
+Grown-ish|Grownish
+The Carmichael Show|Carmichael Show
+You're the Worst
+Baby Daddy
+4 Episodes
+4 Enlightened
+4 Great News
+4 Crashing
+4 Catastrophe
+4 Detroiters
+4 Corporate
+4 Review
+4 Champions
+4 Undateable
+4 The McCarthys
+4 The Real O'Neals
+4 Dr. Ken
+4 Whitney
+4 Are You There, Chelsea?
+4 The New Normal
+4 Go On
+4 Ben and Kate
+4 The Neighbors
+4 The Millers
+4 About a Boy
+4 Bad Teacher
+4 Trial & Error|Trial and Error
+4 Splitting Up Together
+4 The Cool Kids
+4 Sunnyside
+4 Indebted`),
+    angle('sitcom_families', 'tv', 'people', 'Name a sitcom family.', `
+1 The Simpsons|Simpsons|Simpson
+1 The Bradys|Bradys|Brady|The Brady family|Brady Bunch
+1 The Huxtables|Huxtables|Huxtable
+1 The Tanners|Tanners|Tanner
+1 The Bundys|Bundys|Bundy
+2 The Keatons|Keatons|Keaton
+2 The Conners|Conners|Conner
+2 The Seavers|Seavers|Seaver
+2 The Bankses|Banks|Bankses|The Banks family
+2 The Winslows|Winslows|Winslow
+2 The Griffins|Griffins|Griffin
+2 The Jeffersons|Jeffersons|Jefferson
+2 The Cunninghams|Cunninghams|Cunningham
+2 The Partridges|Partridges|Partridge|The Partridge Family
+2 The Ricardos|Ricardos|Ricardo
+2 The Cleavers|Cleavers|Cleaver
+2 The Munsters|Munsters|Munster
+2 The Addams Family|Addams|The Addamses
+2 The Taylors|Taylors|Taylor
+2 The Barones|Barones|Barone
+2 The Goldbergs|Goldbergs|Goldberg
+2 The Pritchetts|Pritchetts|Pritchett
+2 The Dunphys|Dunphys|Dunphy
+2 The Johnsons|Johnsons|Johnson
+2 The Hecks|Hecks|Heck
+2 The Bluths|Bluths|Bluth
+2 The Roses|Roses|Rose
+2 The Flintstones|Flintstones|Flintstone
+2 The Jetsons|Jetsons|Jetson
+2 The Belchers|Belchers|Belcher
+2 The Hills|Hills|Hill
+2 The Bunkers|Bunkers|Bunker
+2 The Evanses|Evans|Evanses
+2 The Lopezes|Lopez|Lopezes
+2 The Romanos|Romanos|Romano
+The Kyles|Kyles|Kyle
+The Wilkersons|Wilkersons|Wilkerson
+The Crane brothers|Cranes|Crane
+The Lambert-Fosters|Lamberts|Fosters|Lambert|Foster
+The Matthewses|Matthews
+The Hogans|Hogans|Hogan
+The Tates|Tates|Tate
+The Campbells|Campbells|Campbell
+The Drummonds|Drummonds|Drummond
+The Hughleys|Hughleys
+The Cooper family|Coopers|Cooper
+The Forman family|Formans|Forman
+The Huangs|Huangs|Huang
+The Alvarezes|Alvarez
+The Gallaghers|Gallaghers|Gallagher
+The Douglases|Douglas|Douglases
+The Nelsons|Nelsons|Nelson
+The Andersons|Andersons|Anderson
+The Petries|Petries|Petrie
+The Clampetts|Clampetts|Clampett`),
+    // ---- TV series ----
+    angle('chicago_tv', 'tv', 'place', 'Name a TV show set in Chicago.', `
+1 ER
+1 Shameless
+1 The Bear|Bear
+1 Chicago Fire
+2 Chicago P.D.|Chicago PD
+2 Chicago Med
+2 Family Matters
+2 Married... with Children|Married with Children
+2 The Good Wife|Good Wife
+2 Mike & Molly|Mike and Molly
+2 Perfect Strangers
+2 The Bob Newhart Show|Bob Newhart Show
+2 Good Times
+2 Chicago Hope
+Punky Brewster
+Early Edition
+Boss
+Sirens
+Happy Endings
+Whitney
+The Steve Harvey Show|Steve Harvey Show
+Kenan & Kel|Kenan and Kel
+Webster
+Still Standing
+According to Jim
+Chicago Justice
+The Untouchables|Untouchables
+Sense8
+The Chi|Chi
+South Side
+Easy
+Cupid
+Turks
+4 Prison Break
+4 The Beast
+4 Chicago Story
+4 Crime Story`),
+    angle('hbo_shows', 'tv', 'category', 'Name a series that aired on HBO.', `
+1 The Sopranos|Sopranos
+1 Game of Thrones
+1 Sex and the City
+1 Succession
+2 The Wire|Wire
+2 Curb Your Enthusiasm|Curb
+2 True Detective
+2 Euphoria
+2 The Last of Us|Last of Us
+2 Big Little Lies
+2 Westworld
+2 Veep
+2 Entourage
+2 The White Lotus|White Lotus
+2 Six Feet Under
+2 Boardwalk Empire
+2 Deadwood
+2 Band of Brothers
+2 Chernobyl
+2 Girls
+2 Insecure
+2 Barry
+2 Silicon Valley
+2 House of the Dragon
+2 True Blood
+2 Oz
+2 Mare of Easttown
+2 Watchmen
+The Larry Sanders Show|Larry Sanders Show
+The Newsroom|Newsroom
+Ballers
+Eastbound & Down|Eastbound and Down
+Treme
+Carnivàle|Carnivale
+Rome
+The Leftovers|Leftovers
+Sharp Objects
+Lovecraft Country
+The Penguin|Penguin
+Industry
+The Pacific|Pacific
+John Adams
+Generation Kill
+Hacks
+The Gilded Age|Gilded Age
+Perry Mason
+Flight of the Conchords
+Bored to Death
+Enlightened
+Hung
+Big Love
+In Treatment
+Tales from the Crypt
+Real Time with Bill Maher|Real Time
+Last Week Tonight with John Oliver|Last Week Tonight
+Hard Knocks
+Def Comedy Jam
+Arliss
+Dream On
+Mr. Show|Mr. Show with Bob and David
+The Comeback|Comeback
+Getting On
+Divorce
+Room 104
+Togetherness
+Looking
+Vinyl
+The Night Of|Night Of
+The Deuce|Deuce
+Camping
+Run
+Avenue 5
+The Outsider
+I Know This Much Is True
+The Undoing
+The Plot Against America
+We Own This City
+The Idol
+The Regime
+Task
+4 A Knight of the Seven Kingdoms
+4 The Pitt
+4 Somebody Somewhere
+4 Winning Time
+4 The Rehearsal|Rehearsal
+4 How To with John Wilson
+4 The Righteous Gemstones|Righteous Gemstones
+4 His Dark Materials
+4 Station Eleven
+4 Irma Vep
+4 The Staircase
+4 Scenes from a Marriage
+4 Mrs. Fletcher
+4 Our Flag Means Death
+4 Tokyo Vice
+4 The Sympathizer
+4 Dune: Prophecy
+4 Fraggle Rock
+4 Not Necessarily the News
+4 1st & Ten
+4 The Hitchhiker
+4 Kids in the Hall
+4 The Mind of the Married Man
+4 K Street
+4 Unscripted
+4 Lucky Louie
+4 John from Cincinnati
+4 Tell Me You Love Me
+4 12 Miles of Bad Road
+4 How to Make It in America
+4 Luck
+4 Family Tree
+4 Doll & Em
+4 Vice Principals
+4 Crashing
+4 High Maintenance
+4 Here and Now
+4 Mosaic
+4 Sally4Ever
+4 Our Boys
+4 Mrs. America
+4 The Baby`),
+    angle('netflix_shows', 'tv', 'category', 'Name a Netflix original series.', `
+1 Stranger Things
+1 The Crown|Crown
+1 Squid Game
+1 Bridgerton
+1 Wednesday
+2 Orange Is the New Black|OITNB
+2 House of Cards
+2 Ozark
+2 The Witcher|Witcher
+2 Narcos
+2 Money Heist|La Casa de Papel
+2 Tiger King
+2 Emily in Paris
+2 The Queen's Gambit|Queen's Gambit
+2 13 Reasons Why|Thirteen Reasons Why
+2 Russian Doll
+2 BoJack Horseman|Bojack
+2 Grace and Frankie
+2 Never Have I Ever
+2 Outer Banks
+2 Lupin
+2 Dark
+2 Mindhunter
+2 Sex Education
+2 Love Is Blind
+2 Selling Sunset
+2 The Umbrella Academy|Umbrella Academy
+2 Big Mouth
+2 Adolescence
+2 Beef
+2 Baby Reindeer
+2 Dahmer|Dahmer – Monster: The Jeffrey Dahmer Story|Monster
+2 Virgin River
+2 Ginny & Georgia|Ginny and Georgia
+2 The Haunting of Hill House|Haunting of Hill House
+2 Unbelievable
+2 Unorthodox
+2 Fuller House
+2 Cobra Kai
+2 You
+Black Mirror
+Arrested Development
+Glow|GLOW
+Too Hot to Handle
+Nobody Wants This
+One Piece
+3 3 Body Problem|Three Body Problem
+The Night Agent|Night Agent
+Sweet Magnolias
+Daredevil
+Jessica Jones
+Luke Cage
+Iron Fist
+The Defenders
+The Punisher
+Master of None
+Unbreakable Kimmy Schmidt|Kimmy Schmidt
+The Kominsky Method|Kominsky Method
+Dead to Me
+Atypical
+Maniac
+Godless
+When They See Us
+Narcos: Mexico
+Elite
+Alice in Borderland
+The Midnight Club
+The Fall of the House of Usher
+Midnight Mass
+Maid
+The Diplomat
+Shadow and Bone
+Locke & Key
+Lost in Space
+Altered Carbon
+Hemlock Grove
+Marco Polo
+Sense8
+The OA|OA
+Bloodline
+4 Chilling Adventures of Sabrina|Sabrina
+4 On My Block
+4 Dear White People
+4 Love
+4 Easy
+4 Lady Dynamite
+4 Ratched
+4 Hollywood
+4 The Politician
+4 Firefly Lane
+4 Heartstopper
+4 XO, Kitty
+4 Blue Eye Samurai
+4 Arcane
+4 Tuca & Bertie
+4 Disenchantment
+4 F Is for Family
+4 Human Resources
+4 Inside Job
+4 Kaos
+4 The Gentlemen
+4 Ripley
+4 Griselda
+4 The Perfect Couple
+4 Monsters
+4 Toxic Town
+4 Zero Day
+4 Department Q
+4 Wayward
+4 The Residence
+4 The Four Seasons
+4 American Primeval
+4 Squid Game: The Challenge
+4 Queer Eye
+4 Tidying Up with Marie Kondo
+4 Nailed It!|Nailed It
+4 Making a Murderer
+4 Wild Wild Country
+4 The Ultimatum
+4 Bling Empire
+4 Indian Matchmaking
+4 Love on the Spectrum
+4 Is It Cake?
+4 The Great British Baking Show|Great British Bake Off
+4 Drive to Survive|Formula 1: Drive to Survive
+4 Quarterback
+4 Full Swing
+4 Chef's Table
+4 Ugly Delicious
+4 Salt Fat Acid Heat
+4 Street Food
+4 Our Planet
+4 Explained
+4 American Vandal
+4 Everything Sucks!
+4 Insatiable
+4 The Society
+4 The I-Land
+4 Tall Girl
+4 Space Force
+4 The Chair
+4 Kaleidoscope
+4 Florida Man
+4 The Recruit
+4 Kleo
+4 Fubar
+4 Obliterated
+4 Lockwood & Co.
+4 Avatar: The Last Airbender
+4 Bodies
+4 The Brothers Sun
+4 3%
+4 Money Heist: Korea
+4 Kingdom
+4 Sacred Games
+4 Delhi Crime
+4 Call My Agent!
+4 Rebelde
+4 Club de Cuervos
+4 Lilyhammer
+4 Flaked
+4 Haters Back Off
+4 Gypsy
+4 Seven Seconds
+4 Messiah
+4 Spinning Out
+4 Away
+4 Jupiter's Legacy
+4 Cowboy Bebop
+4 Archive 81
+4 Partner Track
+4 Uncoupled
+4 Wellmania
+4 Beckham
+4 Painkiller
+4 Mo
+4 Survival of the Thickest
+4 Bodkin
+4 Supacell
+4 Black Doves
+4 Missing You`),
+    angle('pbs_shows', 'tv', 'category', 'Name a PBS show.', `
+1 Sesame Street
+1 Mister Rogers' Neighborhood|Mister Rogers Neighborhood|Mr. Rogers' Neighborhood|Mr Rogers Neighborhood|Mister Rogers|Mr. Rogers
+1 Antiques Roadshow
+1 Arthur
+2 Reading Rainbow
+2 Downton Abbey
+2 The Joy of Painting|Joy of Painting|Bob Ross
+2 This Old House
+2 NOVA|Nova
+2 Frontline
+2 Masterpiece|Masterpiece Theatre|Masterpiece Theater
+2 PBS NewsHour|NewsHour
+2 Barney & Friends|Barney and Friends|Barney
+2 Curious George
+2 Clifford the Big Red Dog|Clifford
+2 Daniel Tiger's Neighborhood|Daniel Tiger
+2 Teletubbies
+2 Bill Nye the Science Guy|Bill Nye
+2 The Magic School Bus|Magic School Bus
+2 Where in the World Is Carmen Sandiego?|Carmen Sandiego
+2 The Electric Company|Electric Company
+2 Call the Midwife
+2 The Great British Baking Show|Great British Bake Off|The Great British Bake Off
+2 The Lawrence Welk Show|Lawrence Welk
+2 Thomas & Friends|Thomas the Tank Engine
+Nature
+Wishbone
+Zoom
+Finding Your Roots
+Austin City Limits
+Shining Time Station
+Cyberchase
+Wild Kratts
+Odd Squad
+Super Why!|Super Why
+Dinosaur Train
+WordGirl
+Between the Lions
+Zoboomafoo
+Ghostwriter
+Lamb Chop's Play-Along|Lamb Chop
+Square One TV|Square One
+3 3-2-1 Contact
+The Big Comfy Couch|Big Comfy Couch
+Dragon Tales
+Caillou
+Sid the Science Kid
+Peg + Cat|Peg and Cat
+Molly of Denali
+Nature Cat
+Rick Steves' Europe|Rick Steves
+America's Test Kitchen
+Cook's Country
+The French Chef|Julia Child
+Great Performances
+American Experience
+American Masters
+Independent Lens
+POV
+Sherlock
+Poldark
+Victoria
+Grantchester
+All Creatures Great and Small
+Endeavour
+Foyle's War
+Mystery!|Mystery
+The Civil War|Civil War|Ken Burns
+Keeping Up Appearances
+Are You Being Served?
+Doctor Who
+Monty Python's Flying Circus|Monty Python
+Fawlty Towers
+As Time Goes By
+Upstairs, Downstairs|Upstairs Downstairs
+Washington Week
+Firing Line
+Wall Street Week
+The McLaughlin Group|McLaughlin Group
+Charlie Rose
+4 Kratts' Creatures
+4 Postcards from Buster
+4 Maya & Miguel
+4 Fetch! with Ruff Ruffman|Fetch
+4 Design Squad
+4 The Puzzle Place
+4 Elinor Wonders Why
+4 Pinkalicious & Peterrific
+4 Xavier Riddle and the Secret Museum
+4 Let's Go Luna!
+4 Sanditon
+4 Miss Scarlet and the Duke
+4 Mercy Street
+4 World on Fire
+4 Red Dwarf
+4 Last of the Summer Wine
+4 Inspector Lewis`),
+    angle('womans_name_tv', 'tv', 'wordplay', 'Name a TV show with a woman\'s name in its title.', `
+1 I Love Lucy
+1 Hannah Montana
+1 Roseanne
+1 Ally McBeal
+2 Murphy Brown
+2 Reba
+2 Laverne & Shirley|Laverne and Shirley
+2 The Mary Tyler Moore Show|Mary Tyler Moore
+2 Ellen|The Ellen DeGeneres Show
+2 Buffy the Vampire Slayer|Buffy
+2 Xena: Warrior Princess|Xena
+2 Lizzie McGuire
+2 iCarly
+2 Jane the Virgin
+2 Grace and Frankie
+2 Ugly Betty
+2 Veronica Mars
+2 Sabrina the Teenage Witch|Sabrina
+2 Emily in Paris
+2 Dora the Explorer|Dora
+2 Peppa Pig
+2 Kim Possible
+2 Wednesday
+2 Felicity
+2 Kate & Allie|Kate and Allie
+2 Cagney & Lacey|Cagney and Lacey
+2 Ginny & Georgia|Ginny and Georgia
+Jessie
+Moesha
+Rhoda
+Maude
+Alice
+Mare of Easttown
+Gidget
+Hazel
+Julia
+Phyllis
+The Patty Duke Show|Patty Duke
+Punky Brewster
+Jessica Jones
+Agatha All Along
+Nancy Drew
+Anne with an E
+Doc McStuffins
+Grey's Anatomy
+Veronica's Closet
+Suddenly Susan
+Caroline in the City
+Mary Hartman, Mary Hartman|Mary Hartman
+The Marvelous Mrs. Maisel|Marvelous Mrs. Maisel
+Dharma & Greg|Dharma and Greg
+Will & Grace|Will and Grace
+Cybill
+Blossom
+Clarissa Explains It All|Clarissa
+Josie and the Pussycats
+Judging Amy
+Joan of Arcadia
+Mike & Molly|Mike and Molly
+Bob Hearts Abishola
+Sofia the First
+Elena of Avalor
+Daria
+Samantha Who?|Samantha Who
+Pepper Ann
+Molly of Denali
+Fancy Nancy
+Angelina Ballerina
+Harriet the Spy
+Cristela
+4 Joanie Loves Chachi
+4 Wanda at Large
+4 Carol's Second Act
+4 Emily's Reasons Why Not
+4 Mary Kay and Johnny
+4 Maggie and the Ferocious Beast
+4 Ruby Gloom`),
+    angle('tv_cops', 'tv', 'people', 'Name a famous cop from TV or the movies.', `
+1 Dirty Harry|Harry Callahan
+1 RoboCop|Robocop
+1 John McClane|McClane
+1 Axel Foley|Foley
+2 Martin Riggs|Riggs
+2 Roger Murtaugh|Murtaugh
+2 Columbo
+2 Kojak
+2 Olivia Benson|Benson
+2 Elliot Stabler|Stabler
+2 Jake Peralta|Peralta
+2 Barney Fife
+2 Sonny Crockett|Crockett
+2 Ricardo Tubbs|Tubbs
+2 Ponch|Frank Poncherello|Poncherello
+2 Joe Friday
+2 Frank Drebin|Drebin
+2 Chief Wiggum|Clancy Wiggum
+2 Commissioner Gordon|Jim Gordon
+2 Starsky|Dave Starsky
+2 Hutch|Ken Hutchinson
+Marge Gunderson
+Jim Hopper|Chief Hopper
+Popeye Doyle|Jimmy Doyle
+Serpico|Frank Serpico
+Lennie Briscoe|Briscoe
+Andy Sipowicz|Sipowicz
+Jimmy McNulty|McNulty
+Vic Mackey|Mackey
+Rick Grimes
+Andy Taylor|Sheriff Andy
+Rosco P. Coltrane|Rosco
+Christine Cagney|Cagney
+Mary Beth Lacey|Lacey
+Amy Santiago
+Rosa Diaz
+Raymond Holt|Captain Holt
+Inspector Clouseau|Clouseau
+Mike Lowrey
+Marcus Burnett
+Virgil Tibbs
+Eliot Ness
+Alonzo Harris
+Steve McGarrett|McGarrett
+Danno|Danny Williams
+Fin Tutuola|Fin
+John Munch|Munch
+Rust Cohle|Cohle
+Marty Hart
+Harry Bosch|Bosch
+Hank Schrader
+T.J. Hooker|TJ Hooker
+Frank Furillo|Furillo
+Barney Miller
+Jane Tennison|Tennison
+Bunk Moreland|Bunk
+Kima Greggs|Kima
+Lester Freamon|Freamon
+Bobby Goren|Goren
+Mike Logan
+Terry Jeffords
+Charles Boyle
+Frank Pembleton|Pembleton
+Inspector Gadget
+Officer Krupke|Krupke
+Jim Malone
+Bud White
+Ed Exley|Exley
+Billy Costigan|Costigan
+Sledge Hammer
+James Carter
+Nick Angel
+Danny Butterman
+Det. Somerset|Somerset
+Det. Mills
+Jake Hoyt
+4 Tim Bayliss|Bayliss
+4 Ed Green
+4 Jack Vincennes|Vincennes
+4 Colin Sullivan
+4 Dignam
+4 Bill Gillespie
+4 Phil Esterhaus
+4 Wojo|Wojciehowicz`),
+    // ---- music charts ----
+    angle('mariah_hits', 'music', 'people', 'Name a No. 1 hit by Mariah Carey.', `
+1 All I Want for Christmas Is You
+1 Hero
+1 Fantasy
+1 We Belong Together
+2 Always Be My Baby
+2 One Sweet Day
+2 Vision of Love
+2 Emotions
+2 Dreamlover
+2 Honey
+2 Heartbreaker
+2 Touch My Body
+Love Takes Time
+Someday
+I Don't Wanna Cry|I Dont Wanna Cry
+I'll Be There|Ill Be There
+My All
+Thank God I Found You
+Don't Forget About Us|Dont Forget About Us`),
+    angle('mj_hits', 'music', 'people', 'Name a No. 1 hit by Michael Jackson.', `
+1 Billie Jean
+1 Beat It
+1 Man in the Mirror
+1 Black or White
+2 Bad
+2 Rock with You
+2 Don't Stop 'Til You Get Enough|Don't Stop Til You Get Enough|Dont Stop Til You Get Enough
+2 The Way You Make Me Feel|Way You Make Me Feel
+2 Dirty Diana
+2 Ben
+2 You Are Not Alone
+Say Say Say
+I Just Can't Stop Loving You|I Just Cant Stop Loving You`),
+    angle('madonna_hits', 'music', 'people', 'Name a No. 1 hit by Madonna.', `
+1 Like a Virgin
+1 Like a Prayer
+1 Vogue
+1 Papa Don't Preach|Papa Dont Preach
+2 Crazy for You
+2 Live to Tell
+2 Open Your Heart
+2 Who's That Girl|Whos That Girl
+2 Justify My Love
+2 This Used to Be My Playground
+2 Take a Bow
+2 Music`),
+    angle('whitney_hits', 'music', 'people', 'Name a No. 1 hit by Whitney Houston.', `
+1 I Will Always Love You
+1 I Wanna Dance with Somebody|I Wanna Dance with Somebody (Who Loves Me)|I Wanna Dance With Somebody
+1 Greatest Love of All|The Greatest Love of All
+2 How Will I Know
+2 Saving All My Love for You
+2 So Emotional
+2 I'm Your Baby Tonight|Im Your Baby Tonight
+2 Exhale|Exhale (Shoop Shoop)|Shoop Shoop
+Didn't We Almost Have It All|Didnt We Almost Have It All
+Where Do Broken Hearts Go
+All the Man That I Need`),
+    angle('rihanna_hits', 'music', 'people', 'Name a No. 1 hit by Rihanna.', `
+1 Umbrella
+1 Diamonds
+1 We Found Love
+1 Work
+2 Only Girl (In the World)|Only Girl
+2 Love the Way You Lie
+2 Disturbia
+2 S&M|S and M
+2 Rude Boy
+2 What's My Name?|What's My Name|Whats My Name
+2 SOS
+2 Take a Bow
+Live Your Life
+The Monster|Monster`),
+    angle('beyonce_hits', 'music', 'people', 'Name a No. 1 hit by Beyoncé.', `
+1 Crazy in Love
+1 Single Ladies|Single Ladies (Put a Ring on It)|Put a Ring on It
+1 Irreplaceable
+2 Break My Soul
+2 Texas Hold 'Em|Texas Hold Em
+2 Baby Boy
+2 Check On It|Check on It
+Perfect
+Savage`),
+    angle('elvis_hits', 'music', 'people', 'Name a No. 1 hit by Elvis Presley.', `
+1 Hound Dog
+1 Heartbreak Hotel
+1 Jailhouse Rock
+1 Love Me Tender
+1 Don't Be Cruel|Dont Be Cruel
+2 All Shook Up
+2 Suspicious Minds
+2 It's Now or Never|Its Now or Never
+2 Are You Lonesome Tonight?|Are You Lonesome Tonight
+2 (Let Me Be Your) Teddy Bear|Teddy Bear|Let Me Be Your Teddy Bear
+2 Good Luck Charm
+Too Much
+Hard Headed Woman
+Stuck on You
+Surrender
+Don't|Dont
+I Want You, I Need You, I Love You|I Want You I Need You I Love You`),
+    angle('elvis_movies', 'movies', 'people', 'Name a movie starring Elvis Presley.', `
+1 Jailhouse Rock
+1 Blue Hawaii
+1 Viva Las Vegas
+2 Love Me Tender
+2 King Creole
+2 G.I. Blues|GI Blues
+2 Girls! Girls! Girls!|Girls Girls Girls
+2 Fun in Acapulco
+2 Clambake
+2 Speedway
+Loving You
+Flaming Star
+Wild in the Country
+Follow That Dream
+Kid Galahad
+It Happened at the World's Fair
+Kissin' Cousins|Kissin Cousins
+Roustabout
+Girl Happy
+Tickle Me
+Harum Scarum
+Frankie and Johnny
+Paradise, Hawaiian Style|Paradise Hawaiian Style
+Spinout
+Easy Come, Easy Go|Easy Come Easy Go
+Double Trouble
+Stay Away, Joe|Stay Away Joe
+Live a Little, Love a Little|Live a Little Love a Little
+Charro!|Charro
+The Trouble with Girls
+Change of Habit`),
+    angle('rock_60s', 'music', 'time', 'Name a rock band from the 1960s.', `
+1 The Beatles|Beatles
+1 The Rolling Stones|Rolling Stones|Stones
+1 The Doors|Doors
+1 The Who|Who
+1 The Beach Boys|Beach Boys
+2 Led Zeppelin
+2 The Kinks|Kinks
+2 Creedence Clearwater Revival|CCR|Creedence
+2 Jefferson Airplane
+2 Grateful Dead|The Grateful Dead
+2 The Monkees|Monkees
+2 The Byrds|Byrds
+2 Cream
+2 The Jimi Hendrix Experience|Jimi Hendrix Experience|Jimi Hendrix
+2 Pink Floyd
+2 The Animals|Animals
+2 Santana
+2 The Velvet Underground|Velvet Underground
+2 Steppenwolf
+2 The Mamas & the Papas|The Mamas and the Papas|Mamas and Papas
+The Yardbirds|Yardbirds
+Buffalo Springfield
+The Zombies|Zombies
+Herman's Hermits|Hermans Hermits
+The Turtles|Turtles
+The Lovin' Spoonful|Lovin' Spoonful|Lovin Spoonful
+Big Brother and the Holding Company
+The Moody Blues|Moody Blues
+Procol Harum
+The Hollies|Hollies
+Sly and the Family Stone
+The Box Tops|Box Tops
+The Association
+The Young Rascals|The Rascals
+Paul Revere & the Raiders|Paul Revere and the Raiders
+The Grass Roots|Grass Roots
+Three Dog Night
+Iron Butterfly
+Blood, Sweat & Tears|Blood Sweat and Tears
+Chicago|Chicago Transit Authority
+The Stooges|Stooges
+MC5
+Fleetwood Mac
+Jethro Tull
+The Ventures|Ventures
+Dave Clark Five|The Dave Clark Five
+The Searchers|Searchers
+Gerry and the Pacemakers
+Manfred Mann
+Traffic
+The Small Faces|Small Faces
+Love
+The Left Banke
+The Troggs|Troggs
+Canned Heat
+The Spencer Davis Group|Spencer Davis Group
+The Shadows
+? and the Mysterians|Question Mark and the Mysterians
+The Kingsmen|Kingsmen
+Tommy James and the Shondells
+The Seeds
+4 13th Floor Elevators
+4 The Electric Prunes
+4 Moby Grape
+4 Quicksilver Messenger Service
+4 Country Joe and the Fish
+4 The Sonics
+4 Vanilla Fudge
+4 The Strawberry Alarm Clock
+4 The Easybeats
+4 The Move
+4 The Pretty Things
+4 Them`),
+    angle('bands_80s', 'music', 'time', 'Name a band that was big in the 1980s.', `
+1 Duran Duran
+1 Bon Jovi
+1 Guns N' Roses|Guns N Roses|Guns and Roses
+1 U2
+1 Def Leppard
+2 Journey
+2 Van Halen
+2 The Police|Police
+2 Tears for Fears
+2 Wham!|Wham
+2 Culture Club
+2 Eurythmics
+2 The Go-Go's|Go-Go's|Go Gos
+2 The Bangles|Bangles
+2 R.E.M.|REM
+2 The Cure|Cure
+2 Depeche Mode
+2 Mötley Crüe|Motley Crue
+2 Poison
+2 Metallica
+2 Run-DMC|Run DMC
+2 Beastie Boys|The Beastie Boys
+2 Toto
+2 Foreigner
+2 Heart
+2 REO Speedwagon
+2 INXS
+2 Huey Lewis and the News|Huey Lewis
+2 Hall & Oates|Hall and Oates|Daryl Hall & John Oates
+2 Genesis
+2 Queen
+2 The Smiths|Smiths
+2 New Order
+2 Blondie
+2 Talking Heads
+2 Whitesnake
+2 Bananarama
+2 a-ha|A-ha|Aha
+2 Pet Shop Boys
+2 Dire Straits
+Men at Work
+Survivor
+Kool & the Gang|Kool and the Gang
+The B-52's|B-52s|The B-52s
+Devo
+Simple Minds
+Spandau Ballet
+Night Ranger
+Loverboy
+The Human League|Human League
+Soft Cell
+Dexys Midnight Runners
+Madness
+The Pretenders|Pretenders
+The Cars|Cars
+Styx
+Air Supply
+Chicago
+Boston
+Europe
+Ratt
+Twisted Sister
+Quiet Riot
+Cinderella
+Skid Row
+Warrant
+Scorpions
+Iron Maiden
+Judas Priest
+AC/DC|ACDC
+ZZ Top
+The Clash|Clash
+The Psychedelic Furs|Psychedelic Furs
+Echo & the Bunnymen|Echo and the Bunnymen
+Erasure
+Yaz|Yazoo
+OMD|Orchestral Manoeuvres in the Dark
+Thompson Twins
+Flock of Seagulls|A Flock of Seagulls
+Naked Eyes
+4 Missing Persons
+4 Berlin
+4 Mr. Mister
+4 Starship|Jefferson Starship
+4 Wang Chung
+4 Mr. Big
+4 Information Society
+4 The Romantics
+4 The Fixx
+4 Hooters|The Hooters
+4 The Outfield
+4 Til Tuesday|'Til Tuesday
+4 New Edition
+4 New Kids on the Block|NKOTB
+4 Menudo
+4 The Jets
+4 Public Enemy
+4 N.W.A|NWA
+4 Salt-N-Pepa|Salt N Pepa
+4 De La Soul
+4 Sonic Youth
+4 The Replacements|Replacements
+4 Hüsker Dü|Husker Du
+4 Pixies|The Pixies
+4 Jane's Addiction
+4 Red Hot Chili Peppers|RHCP
+4 Living Colour
+4 Faith No More`),
+    angle('pop_stars', 'music', 'people', 'Name a female pop star.', `
+1 Taylor Swift
+1 Beyoncé|Beyonce
+1 Madonna
+1 Britney Spears|Britney
+1 Lady Gaga
+1 Rihanna
+1 Ariana Grande
+1 Katy Perry
+2 Mariah Carey
+2 Whitney Houston
+2 Christina Aguilera
+2 Miley Cyrus
+2 Dua Lipa
+2 Billie Eilish
+2 Olivia Rodrigo
+2 Selena Gomez
+2 Janet Jackson
+2 Jennifer Lopez|J.Lo|JLo
+2 Shakira
+2 Adele
+2 Kelly Clarkson
+2 Sabrina Carpenter
+2 Cher
+2 Pink|P!nk
+2 Kylie Minogue
+2 Céline Dion|Celine Dion
+2 Gwen Stefani
+2 Cyndi Lauper
+2 Paula Abdul
+2 Demi Lovato
+2 Chappell Roan
+2 Doja Cat
+2 Lizzo
+Gloria Estefan
+Debbie Gibson
+Tiffany
+Fergie
+Kesha|Ke$ha
+Charli XCX|Charli xcx
+Lorde
+Halsey
+Camila Cabello
+Meghan Trainor
+Sia
+Tate McRae
+Hilary Duff
+Mandy Moore
+Jessica Simpson
+Toni Braxton
+Nelly Furtado
+Avril Lavigne
+Ellie Goulding
+Rita Ora
+Carly Rae Jepsen
+Jojo Siwa|JoJo Siwa
+Ava Max
+Bebe Rexha
+Zara Larsson
+Gracie Abrams
+Sheryl Crow
+Alanis Morissette
+Natalie Imbruglia
+Belinda Carlisle
+Stevie Nicks
+Olivia Newton-John
+Donna Summer
+Diana Ross
+Tina Turner
+Aaliyah
+Brandy
+Monica
+Ciara
+Ashanti
+Jennifer Paige
+Anastacia
+Sophie Ellis-Bextor
+Robyn
+Lana Del Rey
+Raye|RAYE
+Victoria Monét|Victoria Monet
+4 Tinashe
+4 Addison Rae
+4 Kim Petras
+4 Normani
+4 Becky G
+4 Cardi B
+4 Nicki Minaj
+4 Megan Thee Stallion
+4 SZA
+4 Jessie J
+4 Leona Lewis
+4 Anne-Marie`),
+    angle('composers', 'music', 'people', 'Name a classical composer.', `
+1 Beethoven|Ludwig van Beethoven
+1 Mozart|Wolfgang Amadeus Mozart
+1 Bach|Johann Sebastian Bach
+2 Tchaikovsky|Pyotr Ilyich Tchaikovsky
+2 Chopin|Frédéric Chopin|Frederic Chopin
+2 Vivaldi|Antonio Vivaldi
+2 Handel|George Frideric Handel
+2 Brahms|Johannes Brahms
+2 Haydn|Joseph Haydn
+2 Schubert|Franz Schubert
+2 Wagner|Richard Wagner
+2 Verdi|Giuseppe Verdi
+2 Puccini|Giacomo Puccini
+2 Debussy|Claude Debussy
+2 Strauss|Johann Strauss|Richard Strauss
+2 Gershwin|George Gershwin
+Stravinsky|Igor Stravinsky
+Rachmaninoff|Sergei Rachmaninoff|Rachmaninov
+Mahler|Gustav Mahler
+Liszt|Franz Liszt
+Dvořák|Dvorak|Antonín Dvořák
+Copland|Aaron Copland
+Bernstein|Leonard Bernstein
+Mendelssohn|Felix Mendelssohn
+Schumann|Robert Schumann|Clara Schumann
+Grieg|Edvard Grieg
+Ravel|Maurice Ravel
+Rossini|Gioachino Rossini
+Prokofiev|Sergei Prokofiev
+Holst|Gustav Holst
+Elgar|Edward Elgar
+Pachelbel|Johann Pachelbel
+Saint-Saëns|Saint-Saens|Camille Saint-Saëns
+Satie|Erik Satie
+Bizet|Georges Bizet
+Mussorgsky|Modest Mussorgsky
+Rimsky-Korsakov|Nikolai Rimsky-Korsakov
+Sibelius|Jean Sibelius
+Shostakovich|Dmitri Shostakovich
+Berlioz|Hector Berlioz
+Purcell|Henry Purcell
+Telemann|Georg Philipp Telemann
+Monteverdi|Claudio Monteverdi
+Philip Glass|Glass
+John Williams
+Barber|Samuel Barber
+Gluck|Christoph Willibald Gluck
+Bruckner|Anton Bruckner
+Offenbach|Jacques Offenbach
+Fauré|Faure|Gabriel Fauré
+Vaughan Williams|Ralph Vaughan Williams
+Britten|Benjamin Britten
+Scarlatti|Domenico Scarlatti
+Paganini|Niccolò Paganini
+Hildegard of Bingen|Hildegard
+Joplin|Scott Joplin
+Sousa|John Philip Sousa
+Ives|Charles Ives
+4 Arvo Pärt|Arvo Part
+4 Steve Reich
+4 John Cage
+4 Hans Zimmer
+4 Ennio Morricone
+4 Corelli|Arcangelo Corelli
+4 Albinoni|Tomaso Albinoni
+4 Smetana|Bedřich Smetana
+4 Borodin|Alexander Borodin
+4 Delius|Frederick Delius
+4 Respighi|Ottorino Respighi
+4 Schoenberg|Arnold Schoenberg
+4 Bartók|Bartok|Béla Bartók
+4 Khachaturian|Aram Khachaturian
+4 Orff|Carl Orff
+4 Donizetti|Gaetano Donizetti
+4 Bellini|Vincenzo Bellini
+4 Mascagni|Pietro Mascagni
+4 Massenet|Jules Massenet
+4 Gounod|Charles Gounod
+4 Delibes|Léo Delibes
+4 Franck|César Franck
+4 Lully|Jean-Baptiste Lully
+4 Rameau|Jean-Philippe Rameau
+4 Couperin|François Couperin
+4 Tallis|Thomas Tallis
+4 Byrd|William Byrd
+4 Palestrina|Giovanni Pierluigi da Palestrina
+4 Florence Price
+4 Fanny Mendelssohn`),
+    angle('mouth_instruments', 'music', 'everyday', 'Name an instrument you play with your mouth.', `
+1 Flute
+1 Trumpet
+1 Harmonica
+1 Saxophone|Sax
+2 Clarinet
+2 Trombone
+2 Tuba
+2 Kazoo
+2 Recorder
+2 Oboe
+2 French horn|Horn
+2 Bagpipes
+2 Piccolo
+2 Bassoon
+Didgeridoo
+Pan flute|Panpipes|Pan pipes
+Melodica
+Bugle
+Cornet
+Ocarina
+Euphonium
+Sousaphone
+Fife
+Tin whistle|Penny whistle|Irish whistle
+Flugelhorn
+English horn
+Mellophone
+Bass clarinet
+Baritone horn|Baritone
+Jaw harp|Mouth harp
+Vuvuzela
+Shofar
+Conch|Conch shell
+Slide whistle
+Alphorn|Alpenhorn
+Bansuri
+Shakuhachi
+Duduk
+Whistle
+Contrabassoon
+4 Sarrusophone
+4 Serpent
+4 Sackbut
+4 Crumhorn
+4 Zurna
+4 Shawm
+4 Hulusi
+4 Sheng
+4 Khene`),
+    angle('dance_songs', 'music', 'everyday', 'Name a song that comes with its own dance.', `
+1 Macarena
+1 Cha Cha Slide|Cha-Cha Slide
+1 Electric Slide|Electric Boogie
+1 YMCA|Y.M.C.A.
+1 The Chicken Dance|Chicken Dance
+2 The Twist|Twist
+2 Cupid Shuffle
+2 Gangnam Style
+2 Thriller
+2 Hokey Pokey|The Hokey Pokey
+2 The Loco-Motion|The Locomotion|Loco-Motion
+2 Watch Me (Whip/Nae Nae)|Watch Me|Whip Nae Nae|Nae Nae
+2 Crank That (Soulja Boy)|Crank That|Soulja Boy
+2 Cotton Eye Joe
+2 Achy Breaky Heart
+2 The Hustle|Hustle|Do the Hustle
+2 Time Warp|The Time Warp
+2 Single Ladies|Single Ladies (Put a Ring on It)
+2 Bye Bye Bye
+2 Harlem Shake
+2 Wobble
+Mashed Potato Time|The Mashed Potato
+The Bird|Surfin' Bird
+Hand Jive|Willie and the Hand Jive
+Hammer Time|U Can't Touch This|You Can't Touch This
+Ice Ice Baby
+The Bus Stop
+The Madison
+The Stroll
+Limbo Rock
+The Swim
+The Monkey|Monkey Time
+The Freddie
+The Hully Gully
+Hippy Hippy Shake
+Mony Mony
+Baby Shark
+The Floss
+Teach Me How to Dougie|Dougie
+Stanky Legg
+Juju on That Beat
+The Wobble
+Swag Surfin'|Swag Surfin
+Lean Back
+Walk It Out
+Party Rock Anthem|Shuffle
+Oops Upside Your Head|Rowboat
+Saturday Night (Whigfield)|Saturday Night
+Footloose
+Vogue
+Walk Like an Egyptian
+Ketchup Song|The Ketchup Song|Aserejé
+Mambo No. 5|Mambo Number 5
+Despacito
+Steal My Sunshine
+The Running Man
+Tootsee Roll|Tootsie Roll
+Da Dip|Dip
+Candy (Cameo)|Candy
+Superman (Soulja Boy)|Superman That
+Renegade|Lottery
+Savage
+Say So
+Old Town Road
+Drop It Like It's Hot
+Gasolina
+Do the Bartman
+Rump Shaker
+Bust a Move
+Hey Ya!|Hey Ya`),
+    // ---- desserts ----
+    angle('frozen_desserts', 'food', 'category', 'Name a frozen dessert.', `
+1 Ice cream
+1 Popsicle|Ice pop|Ice lolly
+1 Frozen yogurt|Froyo|Frozen yoghurt
+1 Sorbet
+1 Sherbet|Sherbert
+2 Gelato
+2 Ice cream sandwich
+2 Snow cone|Sno-cone
+2 Ice cream cake
+2 Sundae|Ice cream sundae
+2 Banana split
+2 Shaved ice|Hawaiian shaved ice|Shave ice
+2 Italian ice
+2 Milkshake|Shake
+2 Slushie|Slush|Slurpee|Icee
+2 Fudgsicle|Fudge pop
+2 Creamsicle
+2 Drumstick
+2 Klondike bar|Klondike
+2 Frozen custard
+2 Baked Alaska
+2 Push pop|Push-Up pop
+2 Dippin' Dots|Dippin Dots
+2 Choco Taco
+2 Bomb Pop
+2 Mochi ice cream|Mochi
+2 Ice cream cone|Cone
+Semifreddo
+Granita
+Spumoni
+Kulfi
+Affogato
+Paleta|Paletas
+Frozen banana|Chocolate-covered banana
+Ice cream float|Root beer float|Float
+Malt|Malted
+Blizzard
+McFlurry
+Frosty
+Ice cream pie|Mud pie
+Eskimo Pie|Edy's Pie
+Good Humor bar
+Chipwich
+Bingsu
+Halo-halo
+Frozen lemonade
+Dole Whip
+Soft serve
+Bombe
+Tartufo
+Snowball
+Freeze pop|Otter Pop|Fla-Vor-Ice
+Frozen hot chocolate
+Nice cream
+Rolled ice cream|Thai rolled ice cream
+Ice cream bar
+Magnum
+Fruit bar|Fruit pop
+Frozen cheesecake
+Parfait`),
+    angle('french_desserts', 'food', 'place', 'Name a French dessert or pastry.', `
+1 Croissant
+1 Crème brûlée|Creme brulee
+1 Éclair|Eclair
+1 Macaron|Macarons
+1 Crêpe|Crepe|Crepes
+2 Madeleine|Madeleines
+2 Pain au chocolat|Chocolate croissant
+2 Mille-feuille|Napoleon|Mille feuille
+2 Profiterole|Profiteroles|Cream puff
+2 Chocolate mousse|Mousse au chocolat|Mousse
+2 Soufflé|Souffle
+2 Tarte Tatin|Tart Tatin
+2 Beignet|Beignets
+2 Crêpes Suzette|Crepes Suzette
+2 Brioche
+Croquembouche
+Paris-Brest
+Palmier|Palmiers|Elephant ear
+Canelé|Cannelé|Canele
+Financier
+Religieuse
+Kouign-amann|Kouign amann
+Clafoutis
+Fruit tart|Tarte aux fruits
+Opera cake|Gâteau opéra
+Saint-Honoré|St. Honore cake
+Chouquette
+Galette des rois|King cake
+Pain aux raisins
+Tarte au citron|Lemon tart
+Crème caramel|Creme caramel|Flan
+Île flottante|Floating island
+Mont Blanc
+Dacquoise
+Far breton
+Pot de crème|Pot de creme
+Petit four|Petits fours
+Meringue
+Nougat
+Praline|Pralines
+Bûche de Noël|Buche de Noel|Yule log
+Choux|Choux pastry|Pâte à choux
+Tarte tropézienne|Tarte tropezienne
+Charlotte
+Gâteau Basque
+Calisson
+Marron glacé|Marrons glacés
+Crème anglaise
+Sablé|Sablés
+Tuile|Tuiles
+Langue de chat
+Fraisier
+Baba au rhum|Rum baba
+Savarin
+Profiteroles
+4 Pithivier
+4 Kugelhopf
+4 Gâteau Saint-Honoré
+4 Bostock
+4 Pets de nonne
+4 Merveilleux`),
+    angle('italian_desserts', 'food', 'place', 'Name an Italian dessert.', `
+1 Tiramisu
+1 Cannoli|Cannolo
+1 Gelato
+1 Panna cotta
+2 Biscotti
+2 Zeppole
+2 Spumoni
+2 Panettone
+2 Affogato
+2 Sfogliatella|Sfogliatelle|Lobster tail
+2 Semifreddo
+2 Italian ice|Granita
+2 Ricotta cheesecake|Italian cheesecake
+2 Pizzelle
+2 Amaretti
+Zabaglione|Zabaione
+Cassata
+Torrone
+Struffoli
+Bomboloni|Bombolone
+Baba|Rum baba|Babà
+Pandoro
+Tartufo
+Torta della nonna
+Crostata
+Budino
+Torta caprese
+Cantucci
+Sorbetto|Sorbet
+Pignoli|Pignoli cookies
+Rainbow cookies|Tricolor cookies
+Panforte
+Cassata siciliana
+Colomba
+Frittelle
+Chiacchiere
+Bigné
+Maritozzi|Maritozzo
+Torta di riso
+Millefoglie
+Baci di dama
+Pasticciotto
+Gianduiotto|Gianduja
+Ricciarelli
+Sbrisolona
+Zuppa inglese
+Castagnaccio
+Pastiera|Pastiera napoletana
+Lemon ricotta cake
+Olive oil cake
+Granita
+Spumone
+4 Seadas
+4 Cartellate
+4 Sfinci
+4 Cuccidati|Cucidati
+4 Mostaccioli
+4 Bonet`),
+    angle('doughnuts', 'food', 'category', 'Name a kind of doughnut.', `
+1 Glazed|Glazed doughnut|Glazed donut
+1 Jelly|Jelly doughnut|Jelly donut|Jelly-filled
+1 Boston cream|Boston cream doughnut
+1 Chocolate frosted|Chocolate|Chocolate glazed
+1 Powdered|Powdered sugar|Powdered doughnut
+2 Cinnamon sugar|Cinnamon
+2 Old-fashioned|Old fashioned
+2 Cruller|French cruller
+2 Apple fritter|Fritter
+2 Bear claw
+2 Long John|Long john
+2 Maple bar|Maple
+2 Cake doughnut|Cake donut|Cake
+2 Sprinkle|Sprinkles|Sprinkled
+2 Cream-filled|Cream filled|Custard-filled|Custard
+2 Honey dip|Honey dipped
+2 Coconut
+2 Blueberry
+2 Doughnut hole|Donut hole|Munchkin|Munchkins|Timbits
+2 Bavarian cream
+2 Sour cream
+2 Strawberry frosted|Strawberry
+2 Cronut
+Pączki|Paczki
+Beignet
+Malasada
+Sufganiyah|Sufganiyot
+Berliner
+Bomboloni
+Twist
+Chocolate cake
+Red velvet
+Lemon-filled|Lemon
+Pumpkin
+Maple bacon
+Crème brûlée|Creme brulee
+Matcha
+Mochi doughnut|Mochi donut
+Apple cider|Cider doughnut
+Glazed twist
+Chocolate old-fashioned
+Dutchie
+Boston Kreme
+Coffee roll
+Zeppole
+Churro
+Vanilla frosted|Vanilla
+Peanut
+Toasted coconut
+Raspberry-filled|Raspberry`),
+    angle('chocolate_desserts', 'food', 'trait', 'Name a dessert made with chocolate.', `
+1 Brownie|Brownies
+1 Chocolate cake
+1 Chocolate chip cookie|Chocolate chip cookies
+1 Chocolate mousse
+1 Fudge
+2 Chocolate pudding
+2 Lava cake|Molten chocolate cake|Molten lava cake
+2 Black Forest cake
+2 Devil's food cake|Devils food cake
+2 German chocolate cake
+2 S'mores|Smores
+2 Hot fudge sundae
+2 Chocolate truffle|Truffles
+2 Mississippi mud pie|Mud pie
+2 Chocolate soufflé|Chocolate souffle
+2 Chocolate fondue|Fondue
+2 Rocky road
+2 Chocolate cream pie
+2 Boston cream pie
+2 Chocolate éclair|Chocolate eclair|Eclair
+2 Chocolate-covered strawberries|Chocolate covered strawberries
+2 Whoopie pie
+2 Texas sheet cake
+2 Tiramisu
+2 Chocolate cheesecake
+2 Chocolate chip ice cream|Chocolate ice cream
+2 Oreo
+Sachertorte|Sacher torte
+Brigadeiro|Brigadeiros
+Ding Dong
+Flourless chocolate cake
+Chocolate babka|Babka
+Pain au chocolat
+Chocolate bark|Bark
+Chocolate chip cookie dough|Cookie dough
+Chocolate pots de crème|Pot de crème
+Opera cake
+Profiteroles
+Chocolate bread pudding
+Chocolate tart
+Chocolate milkshake
+Cannoli
+Chocolate croissant
+Chocolate-covered pretzels
+Turtles|Chocolate turtles
+Buckeyes
+No-bake cookies
+Chocolate crinkle cookies|Crinkle cookies
+Peanut butter cups
+Nanaimo bars
+Millionaire's shortbread
+Death by chocolate
+Chocolate trifle
+Dirt cake|Dirt pudding
+Chocolate biscotti
+Ganache
+Mocha cake
+Chocolate fountain
+Marble cake
+Black and white cookie`),
+    angle('fruit_desserts', 'food', 'trait', 'Name a dessert made with fruit.', `
+1 Apple pie
+1 Strawberry shortcake
+1 Banana split
+1 Peach cobbler
+1 Banana pudding
+2 Cherry pie
+2 Blueberry pie
+2 Key lime pie
+2 Lemon meringue pie
+2 Apple crisp
+2 Fruit tart
+2 Pineapple upside-down cake|Pineapple upside down cake
+2 Bananas Foster
+2 Fruit salad
+2 Apple strudel|Strudel
+2 Cobbler
+2 Crumble|Apple crumble
+2 Banana bread
+2 Lemon bars
+2 Pavlova
+2 Trifle
+2 Fruitcake
+2 Peach Melba
+2 Poached pears
+2 Cherries jubilee
+2 Tarte Tatin
+2 Clafoutis
+2 Sorbet
+2 Blackberry cobbler
+2 Strawberry pie
+2 Rhubarb pie|Strawberry rhubarb pie
+2 Mango sticky rice
+2 Chocolate-covered strawberries
+2 Caramel apple|Candy apple
+2 Baked apples|Baked apple
+2 Apple turnover|Turnover
+2 Fruit pizza
+2 Ambrosia
+2 Jell-O salad|Jello salad
+2 Lemon cake
+Orange creamsicle cake
+Raspberry tart
+Plum tart
+Fig tart
+Apple dumplings
+Apple cake
+Cherry cheesecake
+Strawberry cheesecake
+Eton mess
+Summer pudding
+Peach pie
+Pear tart
+Lemon tart
+Lime tart
+Banoffee pie
+Cherry clafoutis
+Apple charlotte
+Berry crisp
+Grunt|Slump
+Buckle
+Brown Betty|Apple Brown Betty
+Pandowdy
+Sonker
+Fruit cocktail
+Berries and cream|Strawberries and cream
+Raspberry sorbet
+Lemon sorbet
+Watermelon sorbet
+Frozen grapes`),
+    angle('pudding_flavors', 'food', 'category', 'Name a flavor of pudding.', `
+1 Chocolate
+1 Vanilla
+1 Banana
+1 Butterscotch
+2 Tapioca
+2 Rice|Rice pudding
+2 Pistachio
+2 Bread|Bread pudding
+2 Lemon
+2 Coconut|Coconut cream
+2 Cheesecake
+2 Caramel|Salted caramel
+2 Chocolate fudge|Fudge
+2 Cookies and cream|Cookies 'n' creme|Cookies n cream
+2 Figgy|Figgy pudding|Christmas pudding|Plum pudding
+2 Sticky toffee|Sticky toffee pudding
+2 Strawberry
+2 Corn|Corn pudding
+2 Pumpkin
+2 White chocolate
+2 Dulce de leche
+2 Mocha|Coffee
+2 Mango
+2 Matcha
+2 Chia|Chia pudding
+2 Indian pudding
+Cinnamon
+Peanut butter
+Raspberry
+Cherry
+Pineapple
+Orange
+Lime
+Key lime
+Cake batter
+Red velvet
+Egg custard|Custard
+Eggnog
+Maple
+Hazelnut
+Rum
+Toffee`),
+    angle('color_candy', 'food', 'trait', 'Name a candy that comes in lots of colors.', `
+1 Skittles
+1 M&M's|M&Ms|M and Ms|M&M
+1 Starburst
+1 Jelly beans|Jelly bean
+1 Life Savers|Lifesavers
+2 Gumballs|Gumball
+2 Nerds
+2 Sweethearts|Conversation hearts
+2 Gummy bears|Gummi bears|Gummy bear
+2 Jolly Ranchers|Jolly Rancher
+2 Sour Patch Kids
+2 Dots
+2 Mike and Ike|Mike & Ike
+2 Runts
+2 SweeTarts|Sweet Tarts
+2 Smarties
+2 Pez
+2 Laffy Taffy
+2 Airheads
+2 Dum Dums|Dum Dum
+2 Jelly Belly
+2 Gobstoppers|Everlasting Gobstopper
+2 Swedish Fish
+2 Lollipops|Lollipop
+2 Rock candy
+2 Gumdrops|Gum drops
+2 Saltwater taffy|Taffy
+2 Candy buttons|Button candy
+2 Fun Dip
+2 Ring Pop
+2 Push Pop
+2 Trolli
+2 Spree
+Nerds Rope|Nerds Gummy Clusters
+Hi-Chew
+Twizzlers Rainbow
+Candy necklace
+Fruit Stripe gum
+Chiclets
+Mentos
+Gummy worms
+Sour Punch Straws
+Wax bottles|Nik-L-Nip
+Pixy Stix
+Bottle caps|BottleCaps
+Gushers
+Fruit by the Foot
+Fruit Roll-Ups
+Peeps
+Jordan almonds
+Rainbow Nerds
+Sixlets
+Chuckles
+Dubble Bubble
+Razzles
+Sour Skittles
+Candy corn
+Zotz
+Now and Later|Now & Later`),
+    angle('chip_flavors', 'food', 'category', 'Name a flavor of potato chips.', `
+1 Barbecue|BBQ
+1 Sour cream and onion|Sour cream & onion
+1 Salt and vinegar|Salt & vinegar|Sea salt and vinegar
+1 Plain|Original|Salted|Regular
+1 Cheddar|Cheddar and sour cream|Cheese
+2 Jalapeño|Jalapeno
+2 Ranch
+2 Dill pickle|Pickle
+2 Honey barbecue|Honey BBQ
+2 Salt and pepper|Salt & pepper|Cracked pepper
+2 Ketchup
+2 Flamin' Hot|Flamin Hot|Hot
+2 Buffalo|Buffalo wing
+2 Sweet chili|Sweet chilli
+2 Chili lime|Lime
+2 Cheddar jalapeño|Cheddar jalapeno
+2 Sea salt
+2 Truffle
+2 Old Bay
+2 Cajun
+2 Garlic
+2 Chicken|Roast chicken
+2 Spicy
+2 Mesquite barbecue|Mesquite
+2 Southern biscuits and gravy
+Prawn cocktail
+Cheese and onion
+Smoky bacon
+Chile limón
+Wasabi
+Nori|Seaweed
+Sriracha
+Maple bacon
+Everything bagel
+Hot honey
+Lobster roll
+Fried pickles
+Chicken and waffles
+Cappuccino
+Poutine
+All dressed
+Pizza
+Taco
+Barbecue ribs
+Steak
+Onion
+Lemon
+Lime and black pepper
+Habanero
+Ghost pepper
+French onion
+Philly cheesesteak`),
+    angle('cream_snacks', 'food', 'everyday', 'Name a snack with cream in the middle.', `
+1 Twinkie|Twinkies
+1 Oreo|Oreos
+1 Ding Dong|Ding Dongs
+1 Ho Hos|Ho Ho
+2 Hostess CupCake|Hostess cupcake|Cupcake
+2 Zingers
+2 Swiss Roll|Swiss Rolls|Little Debbie Swiss Rolls
+2 Oatmeal Creme Pie|Oatmeal cream pie|Creme pie
+2 Cream puff
+2 Éclair|Eclair
+2 Cannoli
+2 Whoopie pie
+2 Suzy Q|Suzy Q's
+2 Devil Dogs
+2 Yodels
+2 Fudge Rounds
+2 Nutter Butter
+2 Choco Pie
+2 Boston cream doughnut|Cream-filled doughnut|Long john
+Zebra Cakes
+Hydrox
+Vienna Fingers
+Custard creams
+Bourbon biscuits
+Kinder Bueno
+Krimpets
+Strawberry Shortcake rolls
+Cream horn
+Cream wafer|Wafer cookies
+Sugar wafers
+Lemon creme cookies
+Pirouline
+Duplex cookies`),
+    // ---- flags ----
+    angle('rwb_flags', 'geo', 'trait', 'Name a country whose flag is red, white and blue.', `
+1 United States|USA|U.S.|America|United States of America
+1 United Kingdom|UK|U.K.|Britain|Great Britain|England
+1 France
+1 Russia
+1 Australia
+2 Netherlands|Holland
+2 New Zealand
+2 Norway
+2 Iceland
+2 Cuba
+2 Chile
+2 Panama
+2 Costa Rica
+2 Thailand
+Czechia|Czech Republic
+Slovakia
+Slovenia
+Serbia
+Croatia
+Luxembourg
+North Korea
+Laos
+Cambodia
+Samoa
+Liberia
+Paraguay
+Nepal
+Dominican Republic`),
+    angle('gyr_flags', 'geo', 'trait', 'Name a country whose flag has green, yellow and red.', `
+1 Ghana
+1 Senegal
+1 Mali
+1 Cameroon
+1 Bolivia
+2 Lithuania
+2 Ethiopia
+2 Guinea
+2 Benin
+2 Burkina Faso
+2 Togo
+2 Zimbabwe
+2 Portugal
+2 South Africa
+Guyana
+Grenada
+Republic of the Congo|Congo
+Guinea-Bissau
+São Tomé and Príncipe|Sao Tome and Principe
+Mozambique
+Eritrea
+Vanuatu
+Mauritius
+Dominica
+Saint Kitts and Nevis
+Myanmar|Burma
+Sri Lanka`),
+    angle('cross_flags', 'geo', 'trait', 'Name a country whose flag has a cross on it.', `
+1 Switzerland
+1 Denmark
+1 Sweden
+1 Norway
+1 Finland
+2 Iceland
+2 United Kingdom|UK|U.K.|Britain|Great Britain
+2 Greece
+2 Dominican Republic
+2 Georgia
+2 Tonga
+2 Jamaica
+Burundi
+Malta
+Australia
+New Zealand
+Fiji
+Tuvalu`),
+    angle('crescent_flags', 'geo', 'trait', 'Name a country whose flag has a crescent moon.', `
+1 Turkey|Türkiye|Turkiye
+1 Pakistan
+2 Algeria
+2 Tunisia
+2 Malaysia
+2 Singapore
+2 Azerbaijan
+2 Uzbekistan
+2 Turkmenistan
+2 Libya
+2 Mauritania
+Maldives
+Comoros
+Brunei`),
+    angle('animal_flags', 'geo', 'trait', 'Name a country with an animal on its flag.', `
+1 Mexico
+2 Albania
+2 Sri Lanka
+2 Bhutan
+2 Uganda
+2 Papua New Guinea
+2 Zambia
+2 Egypt
+2 Dominica
+2 Kiribati
+Zimbabwe
+Ecuador
+Kazakhstan
+Moldova
+Montenegro
+Serbia
+Guatemala
+Fiji
+Spain`),
+    // ---- animals ----
+    angle('birds', 'nature', 'category', 'Name a bird.', `
+1 Eagle|Bald eagle
+1 Robin
+1 Pigeon
+1 Owl
+1 Penguin
+1 Chicken
+1 Duck
+1 Parrot
+1 Crow
+1 Blue jay
+1 Cardinal
+1 Flamingo
+1 Hawk
+1 Turkey
+1 Seagull|Gull
+1 Ostrich
+1 Hummingbird
+1 Peacock|Peafowl
+1 Swan
+1 Goose
+2 Big Bird
+2 Tweety|Tweety Bird
+2 Woody Woodpecker
+2 Donald Duck
+2 Daffy Duck
+2 Road Runner
+2 Woodstock
+2 Zazu
+2 Iago
+2 Hedwig
+2 Foghorn Leghorn
+2 Toucan Sam
+2 Woodpecker
+2 Sparrow
+2 Finch
+2 Canary
+2 Parakeet|Budgie|Budgerigar
+2 Cockatoo
+2 Macaw
+2 Toucan
+Pelican
+Stork
+Heron|Great blue heron
+Egret|Snowy egret|Great egret
+Crane
+Falcon|Peregrine falcon
+Vulture
+Condor
+Raven
+Magpie
+Mockingbird
+Oriole
+Bluebird
+Goldfinch
+Starling
+Wren
+Chickadee
+Dove|Mourning dove
+Quail
+Pheasant
+Emu
+Kiwi
+Albatross
+Puffin
+Kingfisher
+Roadrunner
+Osprey
+Loon
+Mallard
+Canada goose
+Blackbird|Red-winged blackbird
+Grackle
+Cuckoo
+Lark|Meadowlark
+Nightingale
+Swallow
+Hen
+Rooster
+Kestrel
+Kite
+4 Buzzard
+4 Harrier
+4 Kookaburra
+4 Lyrebird
+4 Cassowary
+4 Rhea
+4 Dodo
+4 Ibis
+4 Spoonbill|Roseate spoonbill
+4 Cormorant
+4 Gannet
+4 Booby|Blue-footed booby
+4 Frigatebird
+4 Tern
+4 Sandpiper
+4 Plover|Killdeer
+4 Pipit
+4 Warbler
+4 Tanager|Scarlet tanager
+4 Grosbeak
+4 Bunting|Indigo bunting
+4 Junco
+4 Nuthatch
+4 Titmouse|Tufted titmouse
+4 Cedar waxwing|Waxwing
+4 Thrush
+4 Catbird
+4 Thrasher
+4 Mynah|Myna
+4 Lovebird
+4 Cockatiel
+4 Conure
+4 Lorikeet
+4 Kakapo
+4 Kea
+4 Hornbill
+4 Bird of paradise
+4 Quetzal
+4 Bee-eater
+4 Hoopoe
+4 Jay
+4 Jackdaw
+4 Rook
+4 Grouse
+4 Ptarmigan
+4 Partridge
+4 Guinea fowl
+4 Peahen
+4 Coot
+4 Moorhen
+4 Rail
+4 Bittern
+4 Grebe
+4 Wood duck
+4 Teal
+4 Merganser
+4 Eider
+4 Swift
+4 Nighthawk
+4 Whip-poor-will
+4 Barn owl
+4 Snowy owl
+4 Great horned owl
+4 Shoebill
+4 Secretary bird
+4 Marabou stork
+4 Weaver
+4 Sunbird
+4 Tit|Blue tit|Great tit
+4 Bullfinch
+4 Chaffinch
+4 Linnet
+4 Skylark
+4 Kingbird
+4 Flycatcher
+4 Phoebe
+4 Vireo
+4 Shrike
+4 Dipper
+4 Avocet
+4 Curlew
+4 Godwit
+4 Sanderling
+4 Turnstone
+4 Oystercatcher
+4 Petrel
+4 Shearwater
+4 Skua
+4 Auk
+4 Murre
+4 Hen harrier
+4 Gyrfalcon
+4 Merlin
+4 Goshawk
+4 Sparrowhawk
+4 Harpy eagle
+4 Golden eagle
+4 Turkey vulture
+4 Kakariki
+4 Tui
+4 Weka
+4 Takahe
+4 Hoatzin
+4 Potoo
+4 Frogmouth
+4 Oilbird
+4 Cock-of-the-rock
+4 Bowerbird
+4 Jacana
+4 Limpkin
+4 Anhinga
+4 Brolga
+4 Bustard
+4 Sandgrouse
+4 Turaco
+4 Trogon
+4 Motmot
+4 Manakin
+4 Cotinga
+4 Antbird
+4 Ovenbird
+4 Wagtail
+4 Accentor
+4 Bulbul
+4 Drongo
+4 Oxpecker
+4 Hamerkop
+4 Seriema
+4 Kagu
+4 Sunbittern
+4 Screamer
+4 Tinamou`),
+    angle('fish', 'nature', 'category', 'Name a fish.', `
+1 Salmon
+1 Tuna
+1 Goldfish
+1 Shark
+1 Trout
+1 Catfish
+1 Cod
+1 Bass
+1 Clownfish
+2 Nemo
+2 Dory
+2 Flounder
+2 Bruce
+2 Bubbles
+2 Gill
+2 Wanda
+2 Sardine
+2 Anchovy
+2 Tilapia
+2 Halibut
+2 Swordfish
+2 Marlin
+2 Mahi-mahi|Mahi mahi|Dorado
+2 Snapper|Red snapper
+2 Grouper
+2 Haddock
+2 Mackerel
+2 Herring
+2 Carp
+2 Koi
+2 Pike
+2 Perch
+2 Walleye
+2 Sturgeon
+2 Barracuda
+2 Piranha
+2 Eel
+2 Stingray|Ray|Manta ray
+2 Pufferfish|Blowfish|Puffer
+2 Angelfish
+Guppy
+Betta|Siamese fighting fish
+Seahorse
+Swordtail
+Molly
+Tetra|Neon tetra
+Minnow
+Bluegill|Sunfish
+Crappie
+Sole
+Plaice
+Pollock
+Hake
+Whitefish
+Smelt
+Shad
+Mullet
+Bream
+Sea bass|Chilean sea bass
+Striped bass
+Largemouth bass
+Rainbow trout
+Arctic char|Char
+Tarpon
+Bonefish
+Hammerhead|Hammerhead shark
+Great white|Great white shark
+Whale shark
+Tiger shark
+Mako
+Moray eel|Moray
+Lionfish
+Parrotfish
+Triggerfish
+Flying fish
+Sailfish
+Wahoo
+Yellowtail
+Amberjack
+Bluefish
+4 Monkfish
+4 Anglerfish
+4 Lamprey
+4 Gar
+4 Bowfin
+4 Paddlefish
+4 Arowana
+4 Oscar
+4 Cichlid
+4 Discus
+4 Pleco|Plecostomus
+4 Danio|Zebrafish
+4 Barb
+4 Rasbora
+4 Loach
+4 Gourami
+4 Platy
+4 Killifish
+4 Grunion
+4 Remora
+4 Wrasse
+4 Damselfish
+4 Tang|Blue tang
+4 Butterflyfish
+4 Goby
+4 Blenny
+4 Scorpionfish
+4 Stonefish
+4 Frogfish
+4 Sunfish|Ocean sunfish|Mola
+4 Oarfish
+4 Coelacanth
+4 Lungfish
+4 Hagfish
+4 Sculpin
+4 Rockfish
+4 Lingcod
+4 Sablefish|Black cod
+4 Opah
+4 Pompano
+4 Snook
+4 Redfish|Red drum
+4 Drum
+4 Croaker
+4 Porgy
+4 Tautog
+4 Kingfish
+4 Cobia
+4 Skate
+4 Sawfish
+4 Guitarfish
+4 Dogfish
+4 Nurse shark
+4 Bull shark
+4 Blue shark
+4 Thresher shark
+4 Goblin shark
+4 Megalodon
+4 Basking shark
+4 Greenland shark
+4 Grayling
+4 Muskellunge|Muskie
+4 Pickerel
+4 Burbot
+4 Zander
+4 Tench
+4 Roach
+4 Dace
+4 Chub
+4 Barbel
+4 Gudgeon
+4 Bitterling
+4 Mosquitofish
+4 Archerfish
+4 Mudskipper
+4 Pipefish
+4 Sea dragon
+4 Trumpetfish
+4 Needlefish
+4 Halfbeak
+4 Ladyfish
+4 Milkfish
+4 Pangasius|Swai
+4 Basa
+4 Snakehead
+4 Tigerfish
+4 Electric eel
+4 Arapaima
+4 Pacu
+4 Oilfish
+4 Escolar
+4 Toothfish
+4 Icefish
+4 Hatchetfish
+4 Lanternfish
+4 Viperfish
+4 Fangtooth
+4 Gulper eel
+4 Barreleye
+4 John Dory`),
+    angle('no_backbone', 'nature', 'trait', 'Name an animal with no backbone.', `
+1 Jellyfish
+1 Octopus
+1 Spider
+1 Worm|Earthworm
+1 Snail
+1 Starfish|Sea star
+1 Ant
+1 Bee
+1 Butterfly
+1 Crab
+1 Lobster
+1 Squid
+2 Shrimp
+2 Slug
+2 Clam
+2 Oyster
+2 Mussel
+2 Scallop
+2 Sponge|Sea sponge
+2 Coral
+2 Sea urchin|Urchin
+2 Sea cucumber
+2 Sand dollar
+2 Sea anemone|Anemone
+2 Scorpion
+2 Tick
+2 Mite
+2 Centipede
+2 Millipede
+2 Crayfish|Crawfish|Crawdad
+2 Krill
+2 Barnacle
+2 Hermit crab
+2 Horseshoe crab
+2 Nautilus
+2 Cuttlefish
+2 Leech
+2 Tapeworm
+2 Flatworm
+2 Mosquito
+Fly
+Beetle
+Ladybug
+Grasshopper
+Cricket
+Cockroach
+Moth
+Dragonfly
+Wasp
+Hornet
+Termite
+Flea
+Louse|Lice
+Caterpillar
+Praying mantis|Mantis
+Tarantula
+Black widow
+Daddy longlegs
+Pill bug|Roly-poly|Woodlouse
+Firefly
+Cicada
+Stick insect|Walking stick
+Portuguese man o' war|Man o' war
+Box jellyfish
+Conch
+Abalone
+Limpet
+Whelk
+Periwinkle
+Sea slug|Nudibranch
+Locust
+Aphid
+Gnat
+Silverfish
+Earwig
+Weevil
+Stink bug
+Water strider
+Lacewing
+Mayfly
+4 Scorpionfly
+4 Katydid
+4 Firebug
+4 Bed bug
+4 Dust mite
+4 Roundworm
+4 Hookworm
+4 Pinworm
+4 Lugworm
+4 Ribbon worm
+4 Velvet worm
+4 Tardigrade|Water bear
+4 Rotifer
+4 Amoeba
+4 Comb jelly
+4 Hydra
+4 Sea pen
+4 Sea squirt
+4 Brittle star
+4 Feather star
+4 Sea lily
+4 Chiton
+4 Geoduck
+4 Cockle
+4 Razor clam
+4 Quahog
+4 Vampire squid
+4 Giant squid
+4 Colossal squid
+4 Mantis shrimp
+4 Pistol shrimp
+4 Copepod
+4 Water flea
+4 Sea spider
+4 Fiddler crab
+4 King crab
+4 Dungeness crab
+4 Blue crab
+4 Coconut crab
+4 Spider crab
+4 Langoustine
+4 Prawn
+4 Whip scorpion
+4 Camel spider
+4 Wolf spider
+4 Jumping spider
+4 Brown recluse
+4 Orb weaver
+4 Trapdoor spider
+4 Bumblebee
+4 Honeybee
+4 Carpenter ant
+4 Fire ant
+4 Army ant
+4 Leafcutter ant
+4 Yellowjacket
+4 Horsefly
+4 Fruit fly
+4 Housefly
+4 Botfly
+4 Sandfly
+4 Tsetse fly
+4 Stag beetle
+4 Dung beetle
+4 Scarab
+4 June bug
+4 Japanese beetle
+4 Boll weevil
+4 Monarch butterfly
+4 Luna moth
+4 Silkworm
+4 Inchworm
+4 Mealworm
+4 Glowworm`),
+    // ---- from ProtoQA survey prompts ----
+    angle('old_west_outlaws', 'history', 'people', 'Name an outlaw from the Old West.', `
+1 Jesse James
+1 Billy the Kid
+2 Butch Cassidy
+2 Sundance Kid|The Sundance Kid
+2 Belle Starr
+2 Doc Holliday
+2 John Wesley Hardin|Wes Hardin
+2 Frank James
+2 Black Bart
+2 Cole Younger
+Sam Bass
+Dalton Gang|Dalton brothers|Daltons
+Bill Doolin
+Johnny Ringo
+Curly Bill Brocius
+Ike Clanton
+Kid Curry
+Pearl Hart
+Joaquin Murrieta
+Black Jack Ketchum
+Bob Ford
+Clay Allison
+Tom Horn
+Cherokee Bill
+Henry Starr
+Big Nose George
+Bill Longley
+Wild Bunch|The Wild Bunch
+Younger brothers
+4 Rattlesnake Dick
+4 Laura Bullion
+4 Ben Kilpatrick
+4 Elzy Lay
+4 Rufus Buck`),
+    angle('famous_robots', 'movies', 'people', 'Name a famous robot from TV or the movies.', `
+1 R2-D2|R2D2|Artoo
+1 C-3PO|C3PO|Threepio
+1 WALL-E|Wall-E|Walle
+1 The Terminator|Terminator|T-800
+2 Optimus Prime
+2 Bumblebee
+2 Megatron
+2 Bender
+2 Johnny 5|Johnny Five|Number 5
+2 Rosie|Rosie the Robot
+2 Baymax
+2 EVE
+2 BB-8|BB8
+2 The Iron Giant|Iron Giant
+2 Robby the Robot|Robby
+2 Data
+2 HAL 9000|HAL
+2 RoboCop|Robocop
+2 Roz
+2 M3GAN|Megan
+2 Marvin|Marvin the Paranoid Android
+2 K-2SO|K2SO
+2 Ultron
+2 Vision
+2 Sonny
+2 Gort
+2 K-9|K9
+2 B-9|Robot B-9|Lost in Space robot
+Twiki
+Kryten
+Bishop
+Ash
+Ava
+Chappie
+Dolores
+Maria
+Mechagodzilla
+Daleks|Dalek
+Cylons|Cylon
+Gigolo Joe
+David
+Andrew|Bicentennial Man
+T-1000
+Huey, Dewey and Louie
+Dot Matrix
+Mega Man
+Astro Boy
+Voltron
+Gypsy Danger
+Mazinger Z
+Gundam
+Clank
+Wheatley
+GLaDOS
+Claptrap
+L3-37
+IG-11
+Chopper
+D-O
+4 Box
+4 Muffit
+4 Vicki
+4 Rodney Copperbottom
+4 Fender
+4 Tik-Tok
+4 Tin Man`),
+    angle('movie_studios', 'movies', 'category', 'Name a movie studio.', `
+1 Disney|Walt Disney Studios|Walt Disney Pictures
+1 Warner Bros.|Warner Brothers|Warner Bros
+1 Paramount|Paramount Pictures
+1 Universal|Universal Pictures
+1 Pixar
+2 20th Century Fox|20th Century Studios|Fox|Twentieth Century Fox
+2 Columbia Pictures|Columbia
+2 MGM|Metro-Goldwyn-Mayer
+2 Sony Pictures|Sony
+2 Lionsgate
+2 DreamWorks
+2 Marvel Studios|Marvel
+2 Lucasfilm
+2 A24
+2 Miramax
+2 New Line Cinema|New Line
+2 Studio Ghibli|Ghibli
+2 Illumination
+2 Blumhouse
+2 United Artists
+Focus Features
+Searchlight Pictures|Fox Searchlight
+Amblin Entertainment|Amblin
+Legendary Entertainment|Legendary
+RKO|RKO Pictures
+Laika
+Orion Pictures|Orion
+Summit Entertainment|Summit
+TriStar Pictures|TriStar
+Touchstone Pictures|Touchstone
+Castle Rock Entertainment|Castle Rock
+Neon
+Hollywood Pictures
+Dimension Films
+Relativity Media
+STX Entertainment|STX
+Skydance
+Annapurna Pictures|Annapurna
+Village Roadshow
+Working Title
+Pathé
+Gaumont
+Hammer Films|Hammer
+Aardman
+Blue Sky Studios|Blue Sky
+Sony Pictures Animation
+Netflix
+Amazon MGM Studios|Amazon Studios
+Apple Original Films|Apple
+Bad Robot
+Plan B
+Imagine Entertainment
+Ghost House Pictures
+Platinum Dunes
+Republic Pictures
+Toho
+Toei
+Shaw Brothers
+Golden Harvest
+Yash Raj Films
+4 Carolco
+4 Cannon Films|Cannon
+4 New World Pictures
+4 Troma
+4 Embassy Pictures
+4 American International Pictures|AIP
+4 Hal Roach Studios
+4 Mutual Film`),
+    angle('nyc_streets', 'geo', 'place', 'Name a famous street in New York City.', `
+1 Broadway
+1 Fifth Avenue|5th Avenue|Fifth Ave
+1 Wall Street
+1 Park Avenue
+2 42nd Street|Forty-Second Street
+2 Madison Avenue
+2 Canal Street
+2 Bleecker Street
+2 Lexington Avenue|Lexington
+2 Sixth Avenue|Avenue of the Americas|6th Avenue
+2 Houston Street
+2 Delancey Street
+2 Christopher Street
+2 Mulberry Street
+2 The Bowery|Bowery
+2 Seventh Avenue|7th Avenue
+2 Central Park West
+2 Riverside Drive
+2 St. Marks Place|Saint Marks Place
+2 Mott Street
+2 Orchard Street
+2 Bedford Avenue
+2 Grand Concourse
+2 Eighth Avenue|8th Avenue
+2 Sesame Street
+Tenth Avenue|10th Avenue
+Amsterdam Avenue
+Columbus Avenue
+West End Avenue
+Third Avenue|3rd Avenue
+Second Avenue|2nd Avenue
+First Avenue|1st Avenue
+Park Row
+Spring Street
+Prince Street
+Greene Street
+Mercer Street
+Grand Street
+Hester Street
+Ludlow Street
+Rivington Street
+Allen Street
+Essex Street
+Doyers Street
+Pell Street
+Water Street
+Pearl Street
+Fulton Street
+Chambers Street
+Church Street
+Liberty Street
+Maiden Lane
+Stone Street
+Beaver Street
+Whitehall Street
+Bridge Street
+3 14th Street
+3 23rd Street
+3 34th Street
+3 57th Street|Billionaires' Row
+3 72nd Street
+3 125th Street
+Lenox Avenue|Malcolm X Boulevard
+Martin Luther King Jr. Boulevard
+Adam Clayton Powell Jr. Boulevard|Seventh Avenue
+St. Nicholas Avenue
+Arthur Avenue
+Atlantic Avenue
+Flatbush Avenue
+Eastern Parkway
+Ocean Parkway
+Coney Island Avenue
+Smith Street
+Court Street
+Myrtle Avenue
+Steinway Street
+Roosevelt Avenue
+Queens Boulevard
+Ditmars Boulevard
+Victory Boulevard
+4 Hylan Boulevard
+4 Jackson Avenue
+4 Wooster Street
+4 Thompson Street
+4 Sullivan Street
+4 MacDougal Street
+4 Waverly Place
+4 Gay Street
+4 Minetta Lane
+4 Perry Street
+4 Bank Street
+4 Charles Street
+4 Jane Street
+4 Gansevoort Street
+4 Washington Street
+4 West Street
+4 FDR Drive
+4 West Side Highway
+4 Henry Hudson Parkway
+4 Sutton Place
+4 Beekman Place
+4 Tudor City Place
+4 Stuyvesant Street
+4 Bond Street
+4 Great Jones Street
+4 Crosby Street
+4 Elizabeth Street`),
+    angle('famous_dans', 'people', 'people', 'Name a famous Dan, Danny or Daniel.', `
+1 Danny DeVito|DeVito
+1 Daniel Radcliffe|Radcliffe
+1 Daniel Craig|Craig
+2 Dan Rather|Rather
+2 Dan Aykroyd|Aykroyd
+2 Danny Glover|Glover
+2 Daniel Day-Lewis|Day-Lewis
+2 Danny Thomas
+2 Danny Kaye
+2 Dan Marino|Marino
+2 Danny Elfman|Elfman
+2 Dan Brown
+2 Daniel Boone|Boone
+2 Danny Trejo|Trejo
+2 Danny McBride|McBride
+2 Dan Levy
+2 Danny Zuko|Zuko
+2 Danny Ocean
+2 Danny Tanner
+2 Daniel LaRusso|LaRusso|Daniel-san
+2 Daniel Kaluuya|Kaluuya
+2 Dan Quayle|Quayle
+2 Dan Patrick
+2 Dan Castellaneta|Castellaneta
+2 Dan Reynolds
+Danny Bonaduce
+Daniel Dae Kim
+Dan Fogelberg
+Danny Pudi
+Daniel Ricciardo
+Danny Ainge
+Dan Gable
+Dan Jansen
+Dan Harmon
+Dan Savage
+Dan Bilzerian
+Dan Stevens
+Danny Boyle
+Daniel Defoe
+Daniel Webster
+Daniel Inouye
+Daniel Ellsberg
+Dan Haggerty
+Dan Blocker
+Danny Aiello
+Danny Huston
+Dan Hedaya
+Danny Pintauro
+Dan Conner
+Daniel Bryan
+Danny Gokey
+Daniel Caesar
+Daniel Powter
+Dan Auerbach
+Daniel Bedingfield
+Daniel Barenboim
+Danny Brown
+Dan Dierdorf
+Dan Fouts
+Dan Issel
+Danny Manning
+Danny Granger
+Daniel Jones
+Dan Campbell
+Dan Hurley
+Dan Mullen
+Danny Willett
+Daniel Kahneman
+Daniel Tiger`),
+    angle('famous_kates', 'people', 'people', 'Name a famous Kate or Katie.', `
+1 Kate Middleton|Princess Kate|Catherine, Princess of Wales|Kate, Princess of Wales
+1 Katie Holmes|Holmes
+1 Kate Winslet|Winslet
+1 Katie Couric|Couric
+1 Kate Hudson|Hudson
+1 Kate Moss|Moss
+2 Kate Spade|Spade
+2 Katharine Hepburn|Katherine Hepburn|Kate Hepburn|Hepburn
+2 Kate Beckinsale|Beckinsale
+2 Kate McKinnon|McKinnon
+2 Katy Perry|Perry
+2 Kate Upton|Upton
+2 Kate Bush
+2 Katie Ledecky|Ledecky
+2 Kate Mara
+2 Katherine Heigl|Heigl
+2 Kate Gosselin|Gosselin
+2 Cate Blanchett|Blanchett
+2 Kate Bosworth|Bosworth
+2 Kate Jackson
+2 Katherine Johnson
+2 Kate Smith
+2 Kate Hepburn
+Katie Price
+Kate Walsh
+Kate del Castillo
+Katie Lowes
+Kate Flannery
+Kate Austen
+Kate Pearson
+Kate Sharma
+Kate Bishop
+Katie Hobbs
+Kate Brown
+Katie Porter
+Katie Britt
+Kate Chopin
+Kate DiCamillo
+Kate Atkinson
+Kate Morton
+Kate Quinn
+Kate Nash
+Katie Melua
+Kate Rusby
+KT Tunstall
+Kate Pierson
+Kate Siegel
+Katee Sackhoff
+Katie Leung
+Katie McGrath
+Katie Cassidy
+Katie Stevens
+Katie Lee
+Katie Nolan
+Katie Taylor
+Katie Bouman
+Kate Bolick
+Katie Sowers
+Kate Douglass
+Katie Lou Samuelson
+Katie Boulter`),
+    angle('famous_matts', 'people', 'people', 'Name a famous Matt or Matthew.', `
+1 Matt Damon|Damon
+1 Matthew McConaughey|McConaughey
+1 Matthew Perry|Perry
+1 Matthew Broderick|Broderick
+1 Matt LeBlanc|LeBlanc
+2 Matt Dillon|Dillon
+2 Matt Lauer|Lauer
+2 Matt Groening|Groening
+2 Matthew Morrison
+2 Matt Smith
+2 Matt Bomer|Bomer
+2 Matthew Fox
+2 Matthew Stafford|Matt Stafford|Stafford
+2 Matt Ryan
+2 Matthew Macfadyen|Macfadyen
+2 Matthew Rhys|Rhys
+2 Matt Lucas
+2 Matthew Modine|Modine
+2 Matt Rife
+2 Matt Bellamy
+2 Matt Hardy
+2 Matt Leinart|Leinart
+2 Matt Kemp
+2 Matt Barnes
+2 Matt Murdock
+2 Matt Saracen
+Matthew Lillard
+Matthew Gray Gubler
+Matthew Goode
+Matthew Lawrence
+Matthew Shepard
+Matthew Henson
+Matt Gaetz
+Matt Drudge
+Matt Taibbi
+Matt Stone
+Matt Parker
+Matt Berninger
+Matt Healy
+Matt Nathanson
+Matt Kenseth
+Matt Kuchar
+Matt Fitzpatrick
+Matt Hasselbeck
+Matt Forte
+Matt Chapman
+Matt Olson
+Matt Holliday
+Matt Harvey
+Matt Cain
+Matt Williams
+Matt Light
+Matt Millen
+Matt Schaub
+Matt Cassel
+Matt Flynn
+Matt Prater
+Matt Bonner
+Matt Biondi
+Matt Grevers
+Matt Hughes
+Matt Serra
+Matt Iseman
+Matt James
+Matt Roloff
+Matthew Crawley
+Matthew Cuthbert
+Matthew Quick
+Matthew Weiner
+Matthew Vaughn
+Matthew Hussey`),
+    angle('careys', 'people', 'wordplay', 'Name a famous Carey, Cary, Carrie or Kerry.', `
+1 Mariah Carey|Mariah
+1 Jim Carrey
+1 Carrie Underwood|Underwood
+1 Carrie Fisher|Fisher
+1 Cary Grant|Grant
+2 Drew Carey
+2 Carrie Bradshaw|Bradshaw
+2 Cary Elwes|Elwes
+2 Carey Mulligan|Mulligan
+2 John Kerry
+2 Carrie-Anne Moss|Carrie Anne Moss
+2 Carrie Ann Inaba|Inaba
+2 Carrie Brownstein|Brownstein
+2 Carrie Mathison|Mathison
+2 Carrie White
+2 Carey Price
+2 Harry Caray|Caray
+2 Kerry Washington|Washington
+2 Kerry Collins
+2 Kerry Wood
+2 Kerri Strug|Strug
+Cary Fukunaga|Fukunaga
+Carrie Preston
+Carrie Coon
+Carrie Lam
+Carey Hart
+Kerry Katona
+Kerry Kittles
+Carrie Chapman Catt
+Carrie Nation
+Carrie Snodgress
+Carey Lowell
+Kerry King
+Kerry Ellis
+Carrie Hamilton
+Carey Bell
+Cary Middlecoff
+Carrie Heffernan
+Kerri Walsh Jennings|Kerri Walsh
+Kerry Godliman
+4 Kerry Packer
+4 Kerry Livgren
+4 Carrie Ingalls`),
+    angle('lawn_ornaments', 'home', 'everyday', 'Name something you might see on a front lawn.', `
+1 Garden gnome|Gnome
+1 Pink flamingo|Flamingo|Plastic flamingo
+1 Birdbath|Bird bath
+1 Bird feeder
+1 Sprinkler
+1 Mailbox
+2 Gazing ball
+2 Windmill
+2 Wishing well
+2 Pinwheel|Whirligig
+2 Wind chime|Wind chimes
+2 Sundial
+2 Fountain
+2 Statue
+2 Deer statue|Deer
+2 Concrete goose|Porch goose|Goose
+2 Lawn jockey
+2 Saint Francis statue|St. Francis
+2 Tiki torch|Tiki torches
+2 Solar lights|Path lights
+2 Lawn mower|Mower
+2 Flower bed|Flowers
+2 Picket fence|Fence
+2 Yard sign|Campaign sign|Sign
+2 Inflatable|Inflatables
+2 Christmas lights
+2 Lawn chair|Adirondack chair
+2 Bench
+2 Wheelbarrow
+2 Hose|Garden hose
+2 Tree|Trees
+2 Bush|Bushes|Hedge
+2 Rocks|Rock
+2 Trampoline
+2 Swing set
+2 Kiddie pool
+2 Basketball hoop
+2 Little Free Library
+2 Hammock
+2 Frog statue
+Angel statue
+Mushroom statue
+Fairy garden
+Lighthouse
+Pumpkin|Jack-o'-lantern
+Scarecrow
+Weathervane|Weather vane
+Trellis
+Arbor
+Gazebo
+Pond
+Bird house|Birdhouse
+Hummingbird feeder
+Flag|American flag
+Garden flag
+Planter|Flower pot
+Wagon wheel
+Lamp post
+Kids' toys|Toys
+Bicycle|Bike
+Snowman
+Dog
+Squirrel
+Leaves
+Dandelions
+Dog poop
+Newspaper
+Real estate sign|For Sale sign`),
+    angle('big_cats', 'nature', 'trait', 'Name a big cat.', `
+1 Lion
+1 Tiger
+1 Leopard
+1 Cheetah
+1 Jaguar
+2 Cougar|Mountain lion|Puma|Panther
+2 Snow leopard
+2 Black panther
+2 Lynx
+2 Bobcat
+2 Clouded leopard
+2 Ocelot
+2 Liger
+Serval
+Caracal
+Tigon
+Florida panther
+Bengal tiger
+Siberian tiger|Amur tiger
+White tiger
+Sumatran tiger
+Amur leopard
+Barbary lion
+Saber-toothed cat|Saber-toothed tiger|Smilodon
+4 Jaguarundi
+4 Fishing cat
+4 Margay
+4 Sunda clouded leopard`),
+    angle('horned_animals', 'nature', 'trait', 'Name an animal with horns.', `
+1 Bull
+1 Goat
+1 Rhinoceros|Rhino
+1 Ram
+2 Cow
+2 Bison|Buffalo
+2 Antelope
+2 Bighorn sheep|Sheep
+2 Ox
+2 Yak
+2 Gazelle
+2 Ibex
+2 Water buffalo
+2 Triceratops
+2 Oryx
+2 Kudu
+2 Impala
+2 Musk ox
+2 Wildebeest|Gnu
+2 Mountain goat
+2 Pronghorn
+2 Markhor
+2 Springbok
+2 Eland
+2 Longhorn|Texas longhorn
+2 Highland cow
+2 Cape buffalo
+2 Jackson's chameleon|Chameleon
+2 Horned lizard|Horned toad
+2 Giraffe
+2 Okapi
+2 Unicorn
+Chamois
+Gemsbok
+Sable antelope
+Addax
+Nilgai
+Blackbuck
+Bongo
+Nyala
+Hartebeest
+Duiker
+Dik-dik
+Saiga
+Takin
+Gaur
+Banteng
+Zebu
+Watusi|Ankole-Watusi
+Aoudad|Barbary sheep
+Mouflon
+Dall sheep
+Argali
+Tahr
+Serow
+Goral
+Rhinoceros beetle
+Hercules beetle
+Horned viper
+Horned frog`),
+    angle('whisker_animals', 'nature', 'trait', 'Name an animal with whiskers.', `
+1 Cat
+1 Dog
+1 Mouse
+1 Rabbit
+1 Seal
+1 Walrus
+2 Rat
+2 Lion
+2 Tiger
+2 Otter
+2 Catfish
+2 Sea lion
+2 Hamster
+2 Guinea pig
+2 Beaver
+2 Squirrel
+2 Raccoon
+2 Manatee
+2 Leopard
+2 Fox
+2 Mole
+2 Chinchilla
+2 Gerbil
+2 Hedgehog
+2 Ferret
+2 Possum|Opossum
+2 Porcupine
+2 Bear
+2 Cheetah
+2 Jaguar
+2 Cougar|Mountain lion
+2 Lynx
+2 Bobcat
+2 Wolf
+2 Coyote
+2 Badger
+2 Weasel
+2 Mink
+2 Skunk
+2 Chipmunk
+Groundhog|Woodchuck
+Prairie dog
+Hare
+Kangaroo
+Koala
+Dugong
+Elephant seal
+Sea otter
+Shrew
+Vole
+Muskrat
+Capybara
+Carp
+Koi
+Sturgeon
+Barbel
+Mongoose
+Meerkat
+Wolverine
+Marten
+Stoat|Ermine
+Polecat
+Red panda
+Panda
+Sloth
+Armadillo
+Anteater
+Aardvark
+Hyena
+Jackal
+Dingo
+Fennec fox
+Arctic fox
+Snow leopard
+Ocelot
+Serval
+Caracal
+Jerboa
+Dormouse
+Lemming
+4 Pika
+4 Degu
+4 Hippopotamus|Hippo
+4 Rhino
+4 Elephant
+4 Pig
+4 Horse
+4 Cow
+4 Goat
+4 Monkey
+4 Gorilla
+4 Chimpanzee
+4 Orangutan
+4 Baboon
+4 Lemur
+4 Bat
+4 Platypus
+4 Echidna
+4 Tasmanian devil
+4 Wombat
+4 Quokka
+4 Sugar glider
+4 Naked mole rat`),
+    angle('desert_animals', 'nature', 'place', 'Name an animal that lives in the desert.', `
+1 Camel
+1 Scorpion
+1 Rattlesnake|Snake
+1 Lizard
+1 Coyote
+2 Roadrunner
+2 Fennec fox
+2 Gila monster
+2 Tortoise|Desert tortoise
+2 Jackrabbit
+2 Meerkat
+2 Armadillo
+2 Tarantula
+2 Vulture
+2 Kangaroo rat
+2 Horned lizard|Horned toad
+2 Sidewinder
+2 Jerboa
+2 Dromedary
+2 Oryx
+2 Thorny devil
+2 Javelina|Peccary
+2 Bobcat
+2 Kit fox
+2 Dingo
+2 Addax
+2 Gerbil
+2 Hyena
+2 Ostrich
+2 Desert iguana|Iguana
+2 Chuckwalla
+2 Bighorn sheep
+2 Burro|Donkey
+2 Mountain lion|Cougar
+2 Owl|Elf owl|Burrowing owl
+2 Hawk|Red-tailed hawk
+2 Quail|Gambel's quail
+2 Cactus wren
+2 Gecko
+2 Spider
+Ant
+Beetle|Darkling beetle
+Bat
+Wild horse|Mustang
+Kangaroo
+Emu
+Bearded dragon
+Monitor lizard
+Deathstalker
+Camel spider
+Locust
+Sand cat
+Caracal
+Gazelle
+Dorcas gazelle
+Spiny-tailed lizard|Uromastyx
+Sand viper
+Horned viper
+Saharan silver ant
+Bilby
+Mulgara
+Pronghorn
+Mule deer
+Ground squirrel
+Pocket mouse
+Packrat|Woodrat
+Desert hedgehog
+Fat-tailed gerbil
+Dromedary camel
+Bactrian camel
+Wild ass
+Onager
+Sandgrouse
+Lanner falcon
+Lappet-faced vulture
+Gila woodpecker
+Pupfish
+Spadefoot toad
+Tiger salamander
+Coachwhip
+4 Gopher snake
+4 Coral snake
+4 Desert bighorn
+4 Kiang
+4 Dama gazelle
+4 Scimitar oryx
+4 Sand fox
+4 Rüppell's fox
+4 Pallid bat
+4 Desert locust`),
+    angle('flying_insects', 'nature', 'trait', 'Name an insect that flies.', `
+1 Fly|Housefly
+1 Bee|Honeybee|Bumblebee
+1 Butterfly
+1 Mosquito
+1 Dragonfly
+1 Moth
+2 Wasp
+2 Ladybug|Ladybird
+2 Hornet
+2 Firefly|Lightning bug
+2 Gnat
+2 Locust
+2 Grasshopper
+2 Beetle
+2 Cicada
+2 Damselfly
+2 Mayfly
+2 Fruit fly
+2 Horsefly
+2 Yellowjacket|Yellow jacket
+2 June bug|June beetle
+2 Cockroach
+2 Praying mantis|Mantis
+2 Stink bug
+2 Lacewing
+2 Termite
+2 Katydid
+2 Cricket
+2 Crane fly|Daddy longlegs
+2 Deer fly
+2 Botfly
+2 Sandfly
+2 Tsetse fly
+2 Blowfly
+2 Midge|No-see-um
+2 Whitefly
+2 Aphid
+2 Leafhopper
+2 Monarch butterfly|Monarch
+2 Luna moth
+Gypsy moth|Spongy moth
+Japanese beetle
+Stag beetle
+Dung beetle
+Scarab
+Hercules beetle
+Lovebug
+Carpenter bee
+Mud dauber
+Paper wasp
+Cicada killer
+Murder hornet|Asian giant hornet
+Hoverfly
+Robber fly
+Caddisfly
+Stonefly
+Scorpionfly
+Antlion
+Dobsonfly
+Sawfly
+Thrips
+Earwig
+Flying ant
+Box elder bug
+Kissing bug
+Spotted lanternfly|Lanternfly
+Emerald ash borer
+Hummingbird moth|Hawk moth
+Atlas moth
+Swallowtail
+Painted lady
+Cabbage white
+Morpho|Blue morpho`),
+    angle('fall_trees', 'nature', 'time', 'Name a tree known for its fall colors.', `
+1 Maple|Sugar maple|Red maple
+1 Oak
+1 Birch
+1 Aspen
+2 Ginkgo
+2 Sweetgum
+2 Dogwood
+2 Sumac
+2 Beech
+2 Hickory
+2 Japanese maple
+2 Tupelo|Black gum
+2 Larch|Tamarack
+2 Sassafras
+2 Tulip tree|Tulip poplar
+2 Redbud
+2 Cottonwood
+2 Elm
+2 Ash
+2 Black cherry|Cherry
+2 Sourwood
+2 Witch hazel
+2 Serviceberry
+2 Bald cypress
+2 Dawn redwood
+2 Persimmon
+2 Pear|Callery pear|Bradford pear
+2 Linden|Basswood
+2 Chestnut
+2 Horse chestnut
+2 Sycamore
+2 Walnut
+2 Katsura
+2 Smoke tree
+2 Burning bush
+2 Black tupelo
+2 Red oak
+2 Scarlet oak
+2 Pin oak
+2 White oak
+Paper birch
+Yellow birch
+Quaking aspen
+Silver maple
+Norway maple
+Vine maple
+Bigleaf maple
+Hawthorn
+Crabapple
+Mountain ash|Rowan`),
+    angle('flower_names', 'words', 'wordplay', 'Name a flower that is also a girl\'s name.', `
+1 Rose
+1 Daisy
+1 Lily
+1 Violet
+1 Iris
+2 Jasmine
+2 Poppy
+2 Ivy
+2 Holly
+2 Dahlia
+2 Magnolia
+2 Marigold
+2 Azalea
+2 Camellia
+2 Heather
+2 Petunia
+2 Primrose
+2 Hyacinth
+2 Lavender
+2 Lilac
+2 Pansy
+2 Zinnia
+2 Laurel
+2 Myrtle
+2 Calla|Calla lily
+2 Peony
+2 Begonia
+2 Amaryllis
+2 Erica
+2 Willow
+2 Hazel
+2 Clover
+2 Fern
+2 Rosemary
+2 Juniper
+2 Blossom
+2 Flora
+2 Marguerite
+2 Lotus
+2 Orchid
+Linnea
+Aster
+Daphne
+Gardenia
+Delphine|Delphinium
+Fleur
+Leilani
+Sakura
+Yasmin|Yasmine
+Susan|Black-eyed Susan
+Briar|Briar rose
+Bryony
+Tulip
+Sage
+Saffron
+Olive`),
+    angle('engineless_boats', 'sports', 'category', 'Name a boat with no engine.', `
+1 Sailboat
+1 Canoe
+1 Rowboat
+1 Kayak
+1 Raft
+2 Paddleboat|Pedal boat
+2 Gondola
+2 Sailing ship|Tall ship
+2 Catamaran
+2 Dinghy
+2 Paddleboard|Stand-up paddleboard|SUP
+2 Rowing shell|Scull|Racing shell
+2 Dugout|Dugout canoe
+2 Junk
+2 Galleon
+2 Schooner
+2 Clipper
+2 Punt
+2 Coracle
+2 Outrigger|Outrigger canoe
+2 Dragon boat
+2 Longship|Viking longship|Viking ship
+2 Trireme
+2 Galley
+2 Windsurfer|Sailboard
+2 Barge
+2 Yacht|Sailing yacht
+2 Sloop
+2 Ketch
+2 Yawl
+2 Brigantine
+2 Frigate
+2 Dhow
+2 Felucca
+2 Sampan
+2 Pirogue
+2 Umiak
+2 Bark|Barque
+2 Ark|Noah's Ark
+2 Swan boat
+Inner tube|Tube
+Life raft
+Whaleboat
+Lifeboat
+Skiff
+Jon boat
+Hobie Cat
+Sunfish
+Laser
+Optimist
+Trimaran
+Pedalo
+Bamboo raft
+Reed boat
+Balsa raft`),
+    angle('helmet_sports', 'sports', 'trait', 'Name a sport where players wear helmets.', `
+1 Football
+1 Hockey|Ice hockey
+1 Baseball
+1 Lacrosse
+1 Cycling|Biking
+2 Bobsled
+2 Luge
+2 Skeleton
+2 Horse racing|Jockey
+2 Polo
+2 Equestrian|Horseback riding|Show jumping
+2 Auto racing|Car racing|NASCAR|Formula One|F1|IndyCar
+2 Motocross
+2 Skiing|Downhill skiing
+2 Snowboarding
+2 Skateboarding
+2 Hurling
+2 Cricket
+2 Boxing
+2 Rock climbing|Climbing
+2 BMX
+2 Fencing
+2 Softball
+2 Roller derby
+2 Speed skating|Short track
+2 Rugby
+2 Water polo
+2 Kayaking|Whitewater kayaking
+2 Field hockey
+2 Taekwondo
+2 Mountain biking
+2 Motorcycle racing|MotoGP
+2 Rodeo|Bull riding
+2 Karting|Go-karts
+2 Inline skating
+2 Ski jumping
+2 Camogie
+2 Wrestling
+2 Kickboxing
+2 Paintball
+Hang gliding
+Skydiving
+Bandy
+Ringette
+Sledding
+Wakeboarding
+Whitewater rafting|Rafting
+Canoe slalom
+Polocrosse
+Bicycle polo
+Quidditch|Quadball`),
+    angle('water_sports', 'sports', 'place', 'Name a sport played in or on the water.', `
+1 Swimming
+1 Water polo
+1 Diving
+1 Surfing
+1 Water skiing|Waterskiing
+1 Rowing|Crew
+2 Kayaking
+2 Canoeing
+2 Sailing
+2 Artistic swimming|Synchronized swimming
+2 Wakeboarding
+2 Windsurfing
+2 Kitesurfing|Kiteboarding
+2 Scuba diving|Scuba
+2 Snorkeling
+2 Paddleboarding|Stand-up paddleboarding|SUP
+2 Triathlon
+2 Bodyboarding|Boogie boarding
+2 Rafting|Whitewater rafting
+2 Underwater hockey
+2 Jet skiing
+2 Fishing
+2 Open water swimming|Marathon swimming
+2 Dragon boat racing|Dragon boat
+2 Powerboat racing|Boat racing
+2 Cliff diving
+2 Free diving|Freediving
+2 Spearfishing
+2 Canoe polo
+2 Kneeboarding
+2 Wakesurfing
+2 Skimboarding
+2 Parasailing
+2 Flyboarding
+2 Yachting
+2 Canoe slalom
+2 Sprint kayak
+2 Bodysurfing
+2 Tubing
+2 Water volleyball
+Water basketball
+Underwater rugby
+Aquathlon
+Lifesaving
+Barefoot skiing
+Hydrofoiling|Foiling
+Outrigger canoe racing|Outrigger
+Swimrun`),
+    angle('net_sports', 'sports', 'trait', 'Name a sport that uses a net.', `
+1 Tennis
+1 Volleyball
+1 Basketball
+1 Soccer
+1 Badminton
+1 Hockey|Ice hockey
+2 Table tennis|Ping-pong|Ping pong
+2 Pickleball
+2 Lacrosse
+2 Water polo
+2 Netball
+2 Handball
+2 Beach volleyball
+2 Field hockey
+2 Sepak takraw
+2 Footvolley
+2 Spikeball|Roundnet
+2 Padel
+2 Quadball|Quidditch
+2 Hurling
+2 Gaelic football
+2 Futsal
+2 Floorball
+2 Bandy
+2 Ringette
+2 Korfball
+2 Tchoukball
+2 Sitting volleyball
+2 Platform tennis|Paddle tennis
+2 Wheelchair basketball
+2 Wheelchair tennis
+2 Goalball
+2 Box lacrosse
+2 Camogie`),
+    angle('day_holidays', 'holidays', 'wordplay', 'Name a holiday whose name ends in "Day."', `
+1 Labor Day
+1 Memorial Day
+1 New Year's Day|New Years Day
+1 Valentine's Day|Valentines Day
+1 Mother's Day|Mothers Day
+1 Father's Day|Fathers Day
+2 Veterans Day
+2 Presidents' Day|Presidents Day
+2 Columbus Day
+2 Independence Day
+2 Thanksgiving Day
+2 Christmas Day
+2 Earth Day
+2 Flag Day
+2 Boxing Day
+2 St. Patrick's Day|Saint Patrick's Day
+2 Groundhog Day
+2 Martin Luther King Jr. Day|MLK Day|Martin Luther King Day
+2 Indigenous Peoples' Day|Indigenous Peoples Day
+2 Arbor Day
+2 April Fools' Day|April Fools Day
+2 Election Day
+2 Leap Day
+2 Canada Day
+2 Australia Day
+2 May Day
+2 Patriots' Day|Patriots Day
+2 Patriot Day
+2 Grandparents Day
+2 Boss's Day|Bosses Day
+2 Administrative Professionals Day|Secretaries Day
+2 Teacher Appreciation Day
+2 National Doughnut Day
+2 Pi Day
+2 Star Wars Day
+2 Bastille Day
+2 Armistice Day
+2 Remembrance Day
+2 Anzac Day
+2 Victoria Day
+Family Day
+Emancipation Day
+All Saints' Day|All Saints Day
+All Souls' Day|All Souls Day
+Women's Day|International Women's Day
+Workers' Day
+Juneteenth|Juneteenth National Independence Day
+Siblings Day
+Best Friends Day
+Talk Like a Pirate Day
+Singles Day
+D-Day
+VE Day|V-E Day
+VJ Day|V-J Day
+St. Valentine's Day`),
+    angle('masked_characters', 'movies', 'people', 'Name a famous character who wears a mask.', `
+1 Batman
+1 Spider-Man|Spiderman
+1 Zorro
+1 Darth Vader|Vader
+1 The Lone Ranger|Lone Ranger
+2 Jason Voorhees|Jason
+2 Michael Myers
+2 The Phantom of the Opera|Phantom of the Opera|Phantom
+2 V
+2 Hannibal Lecter|Hannibal
+2 Ghostface
+2 Leatherface
+2 Bane
+2 Deadpool
+2 Robin
+2 Catwoman
+2 Kato
+2 Kylo Ren
+2 Boba Fett
+2 The Mandalorian|Mandalorian|Mando
+2 Iron Man
+2 Daredevil
+2 The Man in the Iron Mask|Man in the Iron Mask
+2 Black Panther
+2 Rorschach
+2 Stanley Ipkiss
+2 Doctor Doom|Dr. Doom
+2 Teenage Mutant Ninja Turtles|Leonardo|Raphael|Donatello|Michelangelo
+2 Captain America
+2 Green Lantern
+2 Scarecrow
+2 The Green Hornet|Green Hornet
+2 Shredder
+2 Jigsaw
+2 Wolverine
+2 Ant-Man
+2 Black Bolt
+2 Moon Knight
+2 Kick-Ass
+2 Nite Owl
+Ozymandias
+Silk Spectre
+Sub-Zero
+Scorpion
+Mysterio
+Venom
+Carnage
+Hawkeye
+Lord Humungus
+Immortan Joe
+Mr. Incredible
+Elastigirl
+Dash
+Violet
+Frozone
+Syndrome
+The Spirit
+Rocketeer`),
+    angle('horse_movies', 'movies', 'trait', 'Name a movie about a horse.', `
+1 Seabiscuit
+1 Black Beauty
+1 Secretariat
+1 War Horse
+2 The Black Stallion|Black Stallion
+2 National Velvet
+2 Spirit: Stallion of the Cimarron|Spirit
+2 The Horse Whisperer|Horse Whisperer
+2 Dreamer
+2 My Friend Flicka|Flicka
+2 Hidalgo
+2 Misty|Misty of Chincoteague
+2 The Man from Snowy River|Man from Snowy River
+2 Phar Lap
+2 Racing Stripes
+2 International Velvet
+2 The Electric Horseman
+2 Into the West
+2 The Mustang
+2 Ride Like a Girl
+2 Dream Horse
+2 Equus
+2 The Misfits
+2 Sylvester
+2 Ruffian
+2 Lean on Pete
+2 Running Free
+2 Return to Snowy River
+2 The Black Stallion Returns
+2 Champions
+2 Casey's Shadow
+2 The Rider`),
+    angle('baseball_movies', 'movies', 'trait', 'Name a movie about baseball.', `
+1 Field of Dreams
+1 A League of Their Own|League of Their Own
+1 The Sandlot|Sandlot
+1 Moneyball
+1 Major League
+2 The Natural|Natural
+2 Bull Durham
+2 42
+2 Angels in the Outfield
+2 Rookie of the Year
+2 The Rookie|Rookie
+2 The Bad News Bears|Bad News Bears
+2 Eight Men Out
+2 The Pride of the Yankees|Pride of the Yankees
+2 For Love of the Game
+2 Fever Pitch
+2 Trouble with the Curve
+2 Little Big League
+2 Cobb
+2 The Babe|Babe
+2 Mr. Baseball
+2 Bang the Drum Slowly
+2 Damn Yankees
+2 Everybody Wants Some!!
+2 Million Dollar Arm
+2 Major League II
+2 The Fan|Fan
+2 Summer Catch
+2 Hardball
+2 61*
+2 Brewster's Millions
+2 Talent for the Game
+2 Air Bud: Seventh Inning Fetch
+2 The Benchwarmers|Benchwarmers
+2 Mr. 3000
+2 Sugar
+2 Ed
+2 The Scout|Scout
+2 Major League: Back to the Minors
+2 The Sandlot 2
+Bad News Bears (2005)
+Pride of the Yankees
+The Stratton Story
+Fear Strikes Out
+It Happens Every Spring
+The Jackie Robinson Story
+Soul of the Game
+Long Gone`),
+    angle('king_movies', 'movies', 'wordplay', 'Name a movie with the word "king" in its title.', `
+1 The Lion King|Lion King
+1 King Kong
+1 The King's Speech|King's Speech
+1 The King and I|King and I
+1 The Lord of the Rings: The Return of the King|Return of the King
+2 King Arthur|King Arthur: Legend of the Sword
+2 The Fisher King|Fisher King
+2 The Last King of Scotland|Last King of Scotland
+2 King Richard
+2 The Scorpion King|Scorpion King
+2 The Man Who Would Be King|Man Who Would Be King
+2 The King of Comedy|King of Comedy
+2 The King of Staten Island|King of Staten Island
+2 King Ralph
+2 Godzilla: King of the Monsters|King of the Monsters
+2 King of New York
+2 King Creole
+2 The Lion King II: Simba's Pride|Simba's Pride
+2 The Lion King 1½|Lion King 1 1/2
+2 King Kong vs. Godzilla|King Kong vs Godzilla
+2 Kings Row
+2 The Kings of Summer|Kings of Summer
+2 King Solomon's Mines
+2 The King of Kings|King of Kings
+2 Mufasa: The Lion King|Mufasa
+2 The Kid Who Would Be King|Kid Who Would Be King
+2 The Return of the King
+2 King Kong (2005)
+2 King of California
+2 The King of Marvin Gardens
+2 King of the Gypsies
+2 King Kong Lives`),
+    angle('space_movies', 'movies', 'place', 'Name a movie set in outer space.', `
+1 Star Wars
+1 Star Trek
+1 2001: A Space Odyssey|2001
+1 Alien
+1 Gravity
+1 Interstellar
+1 Apollo 13
+1 The Martian|Martian
+2 Guardians of the Galaxy
+2 WALL-E|Wall-E
+2 Armageddon
+2 Lost in Space
+2 Event Horizon
+2 Passengers
+2 Ad Astra
+2 First Man
+2 Sunshine
+2 Avatar
+2 Solaris
+2 Spaceballs
+2 Galaxy Quest
+2 Treasure Planet
+2 Moon
+2 Elysium
+2 Dune
+2 The Right Stuff|Right Stuff
+2 Space Cowboys
+2 Life
+2 Pitch Black
+2 Serenity
+2 Barbarella
+2 Zathura
+2 Lightyear
+2 Project Hail Mary
+2 Aliens
+2 Prometheus
+2 Alien: Covenant
+2 Alien: Romulus
+2 Star Trek: The Motion Picture
+2 Star Trek II: The Wrath of Khan|Wrath of Khan
+The Empire Strikes Back|Empire Strikes Back
+Return of the Jedi
+A New Hope
+Rogue One
+Solo
+Jupiter Ascending
+Valerian and the City of a Thousand Planets|Valerian
+The Fifth Element|Fifth Element
+Starship Troopers
+Mission to Mars
+Red Planet
+Contact
+Silent Running
+Dark Star
+Space Jam
+Titan A.E.
+Planet 51
+Lilo & Stitch|Lilo and Stitch
+Battlefield Earth
+Supernova
+High Life
+Approaching the Unknown
+Stowaway
+The Midnight Sky|Midnight Sky
+Space Camp|SpaceCamp
+Flight of the Navigator
+The Black Hole|Black Hole
+Outland
+Forbidden Planet
+Destination Moon
+Mars Attacks!|Mars Attacks
+Enemy Mine
+Ender's Game
+Oblivion
+Apollo 18
+Love
+Europa Report
+Cargo
+Pandorum`),
+    angle('wedding_movies', 'movies', 'everyday', 'Name a movie about a wedding.', `
+1 My Big Fat Greek Wedding
+1 Father of the Bride
+1 Wedding Crashers
+1 Bridesmaids
+1 Runaway Bride
+2 The Wedding Singer|Wedding Singer
+2 My Best Friend's Wedding
+2 Bride Wars
+2 The Wedding Planner|Wedding Planner
+2 Four Weddings and a Funeral
+2 27 Dresses
+2 Mamma Mia!|Mamma Mia
+2 Muriel's Wedding
+2 Rachel Getting Married
+2 Crazy Rich Asians
+2 Monsoon Wedding
+2 The Wedding Date|Wedding Date
+2 Sweet Home Alabama
+2 Made of Honor
+2 Shotgun Wedding
+2 Ticket to Paradise
+2 Anyone but You
+2 Seven Brides for Seven Brothers
+2 Corpse Bride
+2 The Princess Bride
+2 Bride of Frankenstein
+2 Jumping the Broom
+2 License to Wed
+2 Just Married
+2 The Proposal
+2 Something Borrowed
+2 Bachelorette
+2 You're Invited
+2 Plus One
+2 The Big Wedding|Big Wedding
+2 Our Family Wedding
+2 The Best Man|Best Man
+2 Wedding Season
+2 Sixteen Candles
+2 The Graduate
+Steel Magnolias
+Melancholia
+Margot at the Wedding
+The Five-Year Engagement|Five-Year Engagement
+Love Wedding Repeat
+Destination Wedding
+Table 19
+The Wedding Banquet
+Fiddler on the Roof
+Royal Wedding
+The Philadelphia Story
+High Society
+I Love You, Man
+Mamma Mia! Here We Go Again
+The Wedding Ringer|Wedding Ringer
+Mike and Dave Need Wedding Dates`),
   ];
 
 

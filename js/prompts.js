@@ -124,7 +124,9 @@ const Prompts = (() => {
   const MIN = 6, MAX = 55, WHOLE_MAX = 100;
   const pool = [];
   // A whole list question can have as few as five answers (the Spice Girls).
-  const add = (q) => { if (q.answers.length >= (q.kind === 'list' ? 5 : MIN) && q.answers.length <= (q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
+  // Hand-written questions like "Name a bird" may run to 400 answers: the
+  // more real answers a list takes, the fewer good guesses it turns away.
+  const add = (q) => { if (q.answers.length >= (q.kind === 'list' ? 5 : MIN) && q.answers.length <= (q.angle ? 400 : q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
 
   // Letter questions on whole lists.
   for (const uid of Object.keys(LEAD)) {
