@@ -57,15 +57,20 @@
     questions = rec.qids.map((id) => Prompts.get(id));
     return rec;
   }
-  // A new round skips today's daily questions and questions already seen in
-  // endless mode, until every question has been seen; then the sets start
-  // over.
+  // A new round takes questions the player has not seen in endless mode
+  // first, then the ones seen longest ago, and skips today's daily set. Lists
+  // from the round before sit out when they can.
   function newRound(trip) {
     const e = E();
-    if (e.seen.length + 7 > Prompts.pool.length) { e.seen = []; e.repeated = true; }
-    const avoid = new Set([...e.seen, ...Prompts.forDay(day, state.level).map((q) => q.id)]);
-    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, avoid, state.level).map((q) => q.id);
-    e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set);
+    const today = new Set(Prompts.forDay(day, state.level).map((q) => q.id));
+    const prev = e.rounds[e.round];
+    const lastLists = new Set(prev ? prev.qids.map((id) => (Prompts.get(id) || {}).universe) : []);
+    const lastSeen = new Map(); e.seen.forEach((id, i) => lastSeen.set(id, Math.floor(i / 7)));
+    const rounds = Math.ceil(e.seen.length / 7);
+    const ageOf = (id) => (today.has(id) ? 0 : lastSeen.has(id) ? rounds - lastSeen.get(id) : Infinity);
+    const set = Prompts.makeSet((Date.now() + e.round * 7919) % 2147483647, null, state.level, ageOf, lastLists).map((q) => q.id);
+    if (!e.warned && set.some((id) => lastSeen.has(id))) { e.repeated = true; e.warned = true; }
+    e.round++; e.rounds[e.round] = newRecord(set, trip, state.level); e.seen.push(...set); if (e.seen.length > 1400) e.seen = e.seen.slice(-1400);
     for (const k of Object.keys(e.rounds)) if (Number(k) < e.round - 30) delete e.rounds[k];
     save();
   }

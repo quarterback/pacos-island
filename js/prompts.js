@@ -268,8 +268,10 @@ const Prompts = (() => {
     'nflcities.all', 'nbacities.all', 'mlbcities.all', 'nhlcities.all', 'worldcup.all', 'olympics.all', 'bestpicture.since-1990',
     'pixar.all', 'pixar.toy-story', 'bond.all', 'princesses.all', 'starwars.all', 'friends.all', 'avengers.all', 'dwarfs.all',
     'swift.all', 'beatles.all', 'thriller.all', 'potter.all', 'shakespeare.all', 'planets.all', 'continents.all', 'rainbow.all',
-    'reindeer.all', 'chess.all', 'monopoly.all', 'cluesuspects.all', 'clueweapons.all', 'rubik.all', 'poker.all', 'olympians.all', 'bills.all']);
-  const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'presidents', 'capitals', 'nflcities', 'nbacities']);
+    'reindeer.all', 'chess.all', 'monopoly.all', 'cluesuspects.all', 'clueweapons.all', 'rubik.all', 'poker.all', 'olympians.all', 'bills.all',
+    'bible.nt', 'states.canada', 'states.great-lakes', 'states.mississippi', 'presidents.democrat', 'presidents.republican', 'premier.all',
+    'cluerooms.all', 'teams.birds', 'countries.borders-germany', 'countries.borders-china', 'capitals.northAmerica']);
+  const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'mlb', 'nhl', 'presidents', 'capitals', 'nflcities', 'nbacities', 'mlbcities', 'nhlcities']);
   // Only simple letter rules open a set: starts with a letter, or has one.
   const simple = (q) => /\.(starts|has)-[a-z]$/.test(q.id);
   for (const q of pool) q.opener = OPENERS.has(q.id) || (q.kind === 'letter' && EVERYDAY.has(q.universe) && simple(q) && q.ease >= 4);
@@ -287,9 +289,24 @@ const Prompts = (() => {
   const byLevel = { opener: pool.filter((q) => q.opener), easy: [], medium: [], hard: [] };
   for (const q of pool) if (!q.opener) byLevel[q.level].push(q);
   // Mario skips letter counting and "has no letter" rules.
-  byLevel.gentle = [...byLevel.easy.filter((q) => q.kind === 'list' || simple(q)), ...byLevel.opener];
+  // Gentle slots use openers only once the other easy ones run out, so the
+  // openers last.
+  byLevel.gentle = byLevel.easy.filter((q) => q.kind === 'list' || simple(q));
+  // A slot borrows from a nearby level before it repeats a question.
+  // Mario's sets reach for the milder medium questions before a repeat.
+  byLevel.mild = pool.filter((q) => !q.opener && q.level === 'medium' && (q.kind === 'list' || simple(q)));
+  const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard'], hard: ['hard', 'medium'] };
   byLevel.medium.push(...byLevel.easy);
-  function makeSet(seed, avoid = new Set(), level = 'paco') {
+  // ageOf(id): how many days or rounds since the player saw a question,
+  // Infinity if never. A set takes unseen questions first, then the ones seen
+  // longest ago, and never one seen in the last 30 if it can help it. Lists in
+  // lastLists sit out when they can.
+  const AGES = [Infinity, 180, 120, 90, 60, 30, 1];
+  function makeSet(seed, avoid = new Set(), level = 'paco', ageOf = null, lastLists = new Set()) {
+    const age = ageOf || ((id) => (avoid.has(id) ? 0 : Infinity));
+    const tiers = [];
+    for (const t of AGES) { tiers.push((q) => age(q.id) >= t && !lastLists.has(q.universe)); tiers.push((q) => age(q.id) >= t); }
+    tiers.push(() => true);
     const shape = level === 'mario' ? MARIO_SHAPE : SHAPE;
     const r = rng(seed);
     const lists = new Set(), subjects = {}; let letterCount = 0;
@@ -298,9 +315,10 @@ const Prompts = (() => {
       const fits = (q, strict) => !lists.has(q.universe) && (subjects[SUBJECT[q.universe]] || 0) < (SUBJECT_MAX[SUBJECT[q.universe]] || 1) + (strict || SUBJECT[q.universe] === 'sports' ? 0 : 1)
         && !(q.kind === 'letter' && letterCount >= 3 && strict) && !set.includes(q);
       let pick = null;
-      for (const fresh of [true, false]) {
+      for (const fresh of tiers) {
         for (const strict of [true, false]) {
-          const cands = byLevel[level].filter((q) => fits(q, strict) && (!fresh || !avoid.has(q.id)));
+          let cands = [];
+          for (const lv of BORROW[level]) { cands = byLevel[lv].filter((q) => fits(q, strict) && fresh(q)); if (cands.length) break; }
           // Pick a list first, weighted by the square root of how many
           // questions it has, then a question from it, so big lists like
           // countries don't crowd out small ones.
@@ -324,13 +342,15 @@ const Prompts = (() => {
     return set;
   }
 
-  // Daily sets: a fixed run built ahead, each day avoiding the questions of
-  // the 30 days before it.
+  // Daily sets: a fixed run built ahead. Unseen questions come first, then
+  // the ones seen longest ago. A list in yesterday's set sits out today if it
+  // can.
   const buildDays = (level, seed) => {
-    const days = [], recent = [];
+    const days = [], lastDay = new Map();
     for (let d = 0; d < 365; d++) {
-      const set = makeSet(seed + d * 7919, new Set(recent.flat()), level);
-      days.push(set); recent.push(set.map((q) => q.id)); if (recent.length > 30) recent.shift();
+      const last = days.length ? new Set(days[days.length - 1].map((q) => q.universe)) : new Set();
+      const set = makeSet(seed + d * 7919, null, level, (id) => (lastDay.has(id) ? d - lastDay.get(id) : Infinity), last);
+      days.push(set); set.forEach((q) => lastDay.set(q.id, d));
     }
     return days;
   };
