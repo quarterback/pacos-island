@@ -3,10 +3,10 @@
    A day runs from 06:00 UTC to 06:00 UTC (midnight at UTC-6, all year).
    Day 1 is November 16, 2026.
 
-   Scoring: every accepted answer has a share, the part of today's answers
-   that were that answer. Before players arrive, shares come from the
-   tier guess in data.js. Real counts take over as they come in, blended
-   with the guess so one early player can't swing a share.
+   Scoring: every answer has a fixed familiarity score (js/rarity.js). On a
+   question, an answer's share is its weight over the weights of all the
+   right answers, so the same answer always scores the same. No player
+   counts are needed.
 
    Points: see the scoring block below. */
 'use strict';
@@ -56,27 +56,24 @@ const Engine = (() => {
   }
 
   // ---- scoring ----
-  const WEIGHT = { 1: 40, 2: 15, 3: 6, 4: 2, 5: 0.7 };
-  const BLEND = 20, SETTLED = 30;
-  function guessShares(q) {
-    const w = q.answers.map((a) => WEIGHT[a.item.tier]);
+  // weight = 10^(fam / 2): one tier more familiar is about 2.5 times the weight.
+  const weight = (item) => Math.pow(10, item.fam / 2);
+  function shares(q) {
+    const w = q.answers.map((a) => weight(a.item));
     const sum = w.reduce((x, y) => x + y, 0);
     const out = {}; q.answers.forEach((a, i) => { out[a.item.name] = w[i] / sum; });
     return out;
   }
-  function shares(q, crowd) {
-    const guess = guessShares(q);
-    const total = crowd && crowd.total ? crowd.total : 0;
-    if (!total) return { shares: guess, total: 0, estimated: true };
-    const out = {};
-    for (const a of q.answers) { const n = a.item.name; out[n] = ((crowd.counts[n] || 0) + BLEND * guess[n]) / (total + BLEND); }
-    return { shares: out, total, estimated: total < SETTLED };
+  // Where an answer ranks on its question, 1 being the most familiar.
+  function rank(q, name) {
+    const sh = shares(q), mine = sh[name];
+    return { rank: 1 + q.answers.filter((a) => sh[a.item.name] > mine).length, of: q.answers.length };
   }
   // Scoring follows World Six (quarterback/worldy-bug, SCORING.md), with
   // rarity in place of distance.
-  //   c  = how common your answer was: the share of today's answers that
-  //        were yours or more common (1 for the most common, near 0 for
-  //        an answer almost nobody gave)
+  //   c  = how common your answer is: the shares of the right answers as
+  //        familiar as yours or more (1 for the most familiar, near 0 for
+  //        the least familiar on a long list)
   //   R  = 20,000 x e^(-(c / 0.231)^0.65)           rarity points
   //   q  = R / 20,000
   //   b  = 1.5 x q^3 x e^(-t / 10)                  speed factor, t in seconds
@@ -103,13 +100,13 @@ const Engine = (() => {
   // and about one day in ten reaches the island.
   const TRIPS = {
     boat: { id: 'boat', name: "Boat to Paco's Island", opens: 0, stops: [
-      [0, 'the Ixtaluz pier'], [6000, 'Peñas Cantoras'], [12000, 'Boca Tamarilla'], [18000, 'Caleta Pochota'], [24000, 'Playa Ondarena'], [31000, 'Pueblo Tilmeca'], [39000, 'Playa Zinzuna'], [48000, "Paco's Island"]] },
-    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 100000, stops: [
-      [0, 'the beach'], [10000, 'the village'], [20000, 'the river'], [30000, 'the waterfall'], [39000, 'the jungle trail'], [48000, 'the upper waterfall']] },
-    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 400000, marks: [
+      [0, 'the Ixtaluz pier'], [7000, 'Peñas Cantoras'], [13500, 'Boca Tamarilla'], [20000, 'Caleta Pochota'], [27000, 'Playa Ondarena'], [35000, 'Pueblo Tilmeca'], [44000, 'Playa Zinzuna'], [54000, "Paco's Island"]] },
+    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 110000, stops: [
+      [0, 'the beach'], [11000, 'the village'], [22500, 'the river'], [33500, 'the waterfall'], [44000, 'the jungle trail'], [54000, 'the upper waterfall']] },
+    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 450000, marks: [
       [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
   };
-  const FULL_DAY = 60000;
+  const FULL_DAY = 66000;
   const depth = (s) => Math.round(1400 * Math.pow(Math.min(s, FULL_DAY) / FULL_DAY, 2));
   function reached(trip, score) {
     if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + ' m', depth: depth(score) };
@@ -121,6 +118,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, guessShares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, RARITY_MAX, score, commonness, rarityPoints, match, shares, rank, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

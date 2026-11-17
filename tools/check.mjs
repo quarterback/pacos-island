@@ -17,6 +17,7 @@ for (const id of Object.keys(sizes)) {
     seen.set(k, it.name);
   }
 }
+for (const id of Object.keys(sizes)) for (const it of Data.UNIVERSES[id].items) if (typeof it.fam !== 'number') fail(`${id}: ${it.name} has no rarity score; run python3 tools/rarity.py`);
 const ids = new Set();
 for (const q of P.pool) {
   if (ids.has(q.id)) fail('duplicate question ' + q.id); ids.add(q.id);

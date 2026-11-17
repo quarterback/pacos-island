@@ -2,9 +2,8 @@
 
    Progress lives in this browser under one anonymous player id. "Move my
    progress" puts the whole record in a link so it can be opened on
-   another device. If the site has the /api/answers function (Cloudflare
-   Pages with a D1 database), answers are counted across players; without
-   it, shares come from the day one guess and the game still works. */
+   another device. Scores come from fixed familiarity scores, so the game
+   needs no server. */
 'use strict';
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -29,18 +28,6 @@
     const t0 = performance.now(), dur = 900;
     const step = (now) => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(Math.round(to * e)); if (k < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
-  }
-
-  // ---- answer counts across players (optional) ----
-  async function api(method, params) {
-    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 2000);
-    try {
-      const url = method === 'GET' ? `/api/answers?${new URLSearchParams(params)}` : '/api/answers';
-      const res = await fetch(url, { method, signal: ctl.signal, headers: { 'content-type': 'application/json' }, body: method === 'POST' ? JSON.stringify(params) : undefined });
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data && typeof data.total === 'number' ? data : null;
-    } catch (e) { return null; } finally { clearTimeout(t); }
   }
 
   // ---- the score over the scene ----
@@ -92,7 +79,7 @@
   let timer = null, current = null;
   function squares(rec, at) {
     const ol = $('squares'); ol.innerHTML = '';
-    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) li.dataset.b = bucket(rec.answers[i].points); if (i === at) li.className = 'now'; ol.append(li); }
+    for (let i = 0; i < 7; i++) { const li = document.createElement('li'); if (i < rec.answers.length) { li.dataset.b = bucket(rec.answers[i].points); li.textContent = Copy.marks[li.dataset.b]; } else li.textContent = Copy.markAhead; if (i === at) li.className = 'now'; ol.append(li); }
   }
   function showQuestion() {
     const rec = today(), i = rec.answers.length;
@@ -143,15 +130,14 @@
     const secs = Math.min(SECONDS, (Date.now() - rec.started[current.i]) / 1000);
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
-    const crowd = await api('POST', { day, prompt: current.q.id, answer: m.item.name, player: state.id });
-    const sh = Engine.shares(current.q, crowd);
-    const how = Engine.commonness(sh.shares, m.item.name), sc = Engine.score(how.c, secs);
+    const how = Engine.commonness(Engine.shares(current.q), m.item.name), sc = Engine.score(how.c, secs);
+    const place = Engine.rank(current.q, m.item.name);
     rec.answers.push({ pid: current.q.id, name: m.item.name, points: sc.total, rarity: sc.rarity, speed: sc.speed, rarer: how.rarer, secs }); save();
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
     $('resultRarity').textContent = Copy.forRarity(sc.rarity);
     $('resultSpeed').textContent = Copy.forSpeed(sc.speed);
-    $('resultRarer').textContent = Copy.rarer(how.rarer);
+    $('resultRarer').textContent = Copy.rank(place.rank, place.of);
     $('resultSay').textContent = `${m.item.name}. ${Copy.points(sc.total)}.`;
     after(rec);
   });
@@ -185,7 +171,7 @@
       const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: SECONDS };
       rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0;
       const li = document.createElement('li');
-      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = bucket(a.points);
+      const sq = document.createElement('span'); sq.className = 'sq'; sq.dataset.b = bucket(a.points); sq.textContent = Copy.marks[bucket(a.points)];
       const nm = document.createElement('span'); nm.className = 'name' + (a.name ? '' : ' none'); nm.textContent = a.name || Copy.noAnswer;
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
       li.append(sq, nm, pt);
@@ -199,7 +185,7 @@
     $('endLifetime').textContent = Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
     $('endUnlock').textContent = justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
-    const rows = rec.answers.map((a) => `${['⬜', '🟦', '🟩', '🟨', '🟥'][bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
+    const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
     const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
     $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
@@ -208,12 +194,11 @@
     renderAnswers(rec);
     $('endHead').focus();
   }
-  async function renderAnswers(rec) {
-    const ol = $('answers'); ol.innerHTML = ''; let anyEstimate = false;
-    const counts = await Promise.all(questions.map((q) => api('GET', { day, prompt: q.id })));
+  function renderAnswers(rec) {
+    const ol = $('answers'); ol.innerHTML = '';
     questions.forEach((q, i) => {
       const mine = rec.answers[i] || { name: null, points: 0 };
-      const sh = Engine.shares(q, counts[i]); if (sh.estimated) anyEstimate = true;
+      const sh = Engine.shares(q);
       const li = document.createElement('li');
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
       const pm = document.createElement('p'); pm.className = 'a-mine' + (mine.name ? '' : ' none');
@@ -222,17 +207,15 @@
       pm.append(nm, pt);
       const det = document.createElement('details'); const sum = document.createElement('summary'); sum.textContent = `${Copy.everyAnswer} (${q.answers.length})`;
       const all = document.createElement('ul'); all.className = 'all';
-      [...q.answers].sort((a, b) => sh.shares[b.item.name] - sh.shares[a.item.name] || a.item.name.localeCompare(b.item.name)).forEach((a) => {
+      [...q.answers].sort((a, b) => sh[b.item.name] - sh[a.item.name] || a.item.name.localeCompare(b.item.name)).forEach((a) => {
         const row = document.createElement('li'); if (a.item.name === mine.name) row.className = 'mine';
         const n = document.createElement('span'); n.textContent = a.names[0] !== a.item.name ? `${a.item.name} (${a.names[0]})` : a.item.name;
         const c = document.createElement('span'); c.className = 'pct';
-        const count = counts[i] && counts[i].counts ? counts[i].counts[a.item.name] || 0 : null;
-        c.textContent = count === 0 ? Copy.nobody : Math.max(1, Math.round(sh.shares[a.item.name] * 100)) + '%';
+        c.textContent = fmt(Math.round(Engine.rarityPoints(Engine.commonness(sh, a.item.name).c)));
         row.append(n, c); all.append(row);
       });
       det.append(sum, all); li.append(pq, pm, det); ol.append(li);
     });
-    $('estNote').textContent = anyEstimate ? Copy.estimated : '';
   }
   $('copyBtn').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText($('shareText').textContent); $('copyNote').textContent = Copy.copied; }

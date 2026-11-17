@@ -6,12 +6,12 @@
 'use strict';
 const Copy = {
   title: "Paco’s Island",
-  intro: 'Paco is an iguana with a boat, and every day he asks seven questions. The fewer people who give your answer, the farther he takes you.',
+  intro: 'Paco is an iguana with a boat, and every day he asks seven questions. The rarer your answer, the farther he takes you.',
   howHeading: 'How to play',
   how: [
     'Each question has a fixed list of right answers.',
     'Type one before the clock runs out. Wrong guesses cost only time.',
-    'The most common answer earns about 1,500 points. An answer almost nobody gives earns close to 20,000.',
+    'Every right answer has a set rarity. The most familiar answer earns about 1,500 points, and the least familiar earns up to 20,000.',
     'Fast answers earn a speed bonus. The rarer your answer, the bigger the bonus can be.',
     'Everyone gets the same seven questions each day.',
   ],
@@ -34,10 +34,9 @@ const Copy = {
   points: (n) => `${n.toLocaleString('en-US')} points`,
   forRarity: (n) => `${n.toLocaleString('en-US')} for rarity`,
   forSpeed: (n) => `+${n.toLocaleString('en-US')} for speed`,
-  rarer: (p) => (p === 0 ? 'The most common answer today.' : `Rarer than ${p}% of today's answers.`),
+  rank: (r, n) => (r === 1 ? `The most familiar of ${n} right answers.` : r === n ? `The least familiar of ${n} right answers.` : `Number ${r} of ${n} right answers, most familiar first.`),
   next: 'Next question',
   finish: 'See where Paco got you',
-  estimated: 'Shares are estimates until more people play today.',
 
   where: {
     boat: (s) => `Paco got you to ${s}.`,
@@ -64,9 +63,11 @@ const Copy = {
   yourAnswers: 'The answer lists',
   noAnswer: 'No answer',
   everyAnswer: 'See every answer',
-  nobody: 'nobody yet',
   comeBack: (time) => `New questions arrive at ${time} your time.`,
 
+  // Share marks, from no answer to 20,000 points and up.
+  marks: ['🌊', '🐚', '🦀', '🐢', '🦎'],
+  markAhead: '🏝️',
   share: (day, line, rows, rarity, speed, total, time) => `Paco's Island, day ${day}\n${line}\n${rows}\nRarity ${rarity}\nSpeed ${speed}\nTotal ${total}\nTime ${time}`,
 
   moveHeading: 'Move my progress',

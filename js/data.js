@@ -6,9 +6,10 @@
    name for the item (Ivory Coast, Czech Republic), so it also counts when a
    question asks about letters in the name.
 
-   tier is a day one guess at how often players think of an item, from
-   1 (almost everyone) to 5 (almost no one). Real answer counts replace it
-   once enough people have played a question. */
+   tier is a hand guess at how often players think of an item, from
+   1 (almost everyone) to 5 (almost no one). tools/rarity.py blends it with
+   how often each name appears in English text to build js/rarity.js, the
+   fixed familiarity score each item carries as fam. */
 'use strict';
 const Data = (() => {
   const parse = (text, tiers, defaultTier, extra) => text.trim().split('\n').map((line) => {
@@ -655,6 +656,9 @@ Biden`, {
     nhl: { id: 'nhl', items: NHL, noun: 'an NHL team, by nickname', short: 'NHL team' },
     presidents: { id: 'presidents', items: PRESIDENTS, noun: 'the last name of a US president', short: 'president' },
   };
+
+  const R = typeof Rarity !== 'undefined' ? Rarity : require('./rarity.js');
+  for (const u of Object.values(UNIVERSES)) for (const it of u.items) it.fam = R[u.id][it.name];
 
   return { UNIVERSES, LANDLOCKED, MX_PACIFIC };
 })();

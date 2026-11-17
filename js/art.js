@@ -336,7 +336,7 @@ const Art = (() => {
 
   // ---- under the bay: surface to the canyon floor -----------------------
   const DEEP = { w: 384, h: 1500, surface: 60, bottom: 1440 };
-  const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 60000;
+  const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 66000;
   DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / FULL);
   DEEP.yForDepth = (d) => DEEP.yForScore(FULL * Math.sqrt(d / 1400));
   function fish(g, x, y, col, size, left) {

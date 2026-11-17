@@ -21,8 +21,8 @@ const Prompts = (() => {
   const teamMap = new Map();
   for (const lg of LEAGUES) for (const it of D.UNIVERSES[lg].items) {
     const k = it.name;
-    if (!teamMap.has(k)) teamMap.set(k, { name: k, aliases: [], names: [k], tier: it.tier, leagues: [] });
-    const t = teamMap.get(k); t.leagues.push(lg); t.tier = Math.min(t.tier, it.tier);
+    if (!teamMap.has(k)) teamMap.set(k, { name: k, aliases: [], names: [k], tier: it.tier, fam: it.fam, leagues: [] });
+    const t = teamMap.get(k); t.leagues.push(lg); t.tier = Math.min(t.tier, it.tier); t.fam = Math.max(t.fam, it.fam);
     for (const a of it.aliases) if (!t.aliases.includes(a)) t.aliases.push(a);
   }
   const TEAMS = { id: 'teams', items: [...teamMap.values()], short: 'team nickname' };

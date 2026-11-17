@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Paco's Island</title>
-<meta name="description" content="A daily answer game. Paco the iguana takes you across Bahía Ixtaluz to his island. The fewer people who give your answer, the farther you go.">
+<meta name="description" content="A daily answer game. Paco the iguana takes you across Bahía Ixtaluz to his island. The rarer your answer, the farther you go.">
 <meta name="theme-color" content="#095565">
 <meta property="og:title" content="Paco's Island">
-<meta property="og:description" content="Seven questions a day. The fewer people who give your answer, the farther Paco takes you.">
+<meta property="og:description" content="Seven questions a day. The rarer your answer, the farther Paco takes you.">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/PPFuji-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/PPNeueMontreal-Book.woff2" as="font" type="font/woff2" crossorigin>
@@ -90,7 +90,6 @@
 
     <h2 class="sub" id="answersHead"></h2>
     <ol class="answers" id="answers"></ol>
-    <p class="note" id="estNote"></p>
     <p class="credit" id="comeBack"></p>
   </section>
 </main>
@@ -116,6 +115,7 @@
 </dialog>
 
 <script src="vendor/pixi.min.js"></script>
+<script src="js/rarity.js"></script>
 <script src="js/data.js"></script>
 <script src="js/prompts.js"></script>
 <script src="js/engine.js"></script>
