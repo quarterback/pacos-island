@@ -6,7 +6,7 @@ const Copy = require('../js/copy.js'), P = require('../js/prompts.js');
 const sample = { tripOpens: [110000], progress: [3], secondsLeft: [12], off: ['Ohio'], typo: ['Oaxaca'], points: [12468], forRarity: [11298], forSpeed: [1094],
   nextStop: ['Playa Zinzuna', 2758], lifetime: [41242], hudDepth: ['120 meters'], hudNext: ['Playa Zinzuna'], hudAt: ['the Ixtaluz pier'], unlock: [68758, 'ATV ride'],
   unlocked: ['ATV ride'], allHead: [12], comeBack: ['6 a.m.'], importBody: [41242],
-  'endless.start': [3], 'endless.resume': [3], 'endless.progress': [3, 4], 'endless.sheetHead': [3], 'endless.passedMark': ['the canyon wall', '300 meters'], 'endless.tripLegend': [5] };
+  'endless.start': [3], 'endless.resume': [3], 'endless.progress': [3, 4], 'endless.sheetHead': [3], 'endless.passedMark': ['the canyon wall', '300 meters'], 'endless.tripLegend': [5], 'endless.earlierRow': [2, 'dive'] };
 const out = [];
 const walk = (k, v, path = k) => {
   if (['marks', 'markAhead', 'share', 'count', 'apTime'].includes(k)) return;
