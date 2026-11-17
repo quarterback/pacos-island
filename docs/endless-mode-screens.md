@@ -19,5 +19,6 @@ In endless mode a player gets a new set of seven questions each round and can ta
 - One fact once per screen. The round end has one row per question, the same as the daily end screen.
 - The trip pictures in the list are the game's own trip icons.
 - Numbers one through nine are spelled out in sentences. Round and question numbers stay as figures.
+- Labels, buttons and fragments take no period. Only full sentences do.
 - Depths read "26 meters". `Engine.reached` now returns that form for the dive.
 - When a player has seen every set, show `Copy.endless.repeats` once on the next title or change trip screen.
