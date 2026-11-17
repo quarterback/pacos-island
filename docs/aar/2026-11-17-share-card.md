@@ -19,6 +19,7 @@ The owner asked for an Open Graph card, a Twitter card, and a meta description r
 - The card was rendered and reviewed at full size.
 - The repo is public, so the image URL loads without a login.
 
-## 4. Gaps
+## 4. Follow up
 
-- When the game has its own domain, the two image tags should point at that domain's `/icons/og.png`, and an `og:url` tag can be added.
+- The owner gave the domain, pacoisland.fun. The image tags now load `https://pacoisland.fun/icons/og.png`, and the page has an `og:url` tag and a canonical link to `https://pacoisland.fun/`.
+- The card shows only once the site is live on that domain.
