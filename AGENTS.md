@@ -9,7 +9,7 @@ Before every user-facing response, follow `.agents/skills/plain-language-default
 Set by the owner, Ron Bronson. Agents follow these on every run.
 
 **Design**
-- Style follows Coalition (quarterback/escape-game): phone first, a pixel art PixiJS scene across the top, a solid color play surface below. Paco's Island uses daytime Banderas Bay colors in place of Coalition's night indigo.
+- Style follows Coalition (quarterback/escape-game): phone first, a pixel art PixiJS scene across the top, a solid color play surface below. Paco's Island uses bright daytime bay colors in place of Coalition's night indigo.
 - When Coalition's look and no-slop-ui disagree, no-slop-ui wins. Read `.agents/skills/no-slop-ui/SKILL.md` before UI work and run its review checklist after. Buttons keep an 8px radius. No pill buttons, gradients, glows, eyebrow labels or arrow glyphs on links and buttons.
 - Fonts come from the owner's archive: PP Fuji Bold for the wordmark and numbers, PP Neue Montreal for reading text. Do not add Google Fonts.
 - Colors live as CSS variables at the top of `css/style.css`. Check contrast before adding a pair.
@@ -21,7 +21,8 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 - Say what is happening in plain words. No line restates a button or another line.
 
 **Facts**
-- Place names and facts about Puerto Vallarta, Yelapa and Banderas Bay must come from a source. Do not invent stops, depths or landmarks.
+- The setting is fictional: Bahía Ixtaluz, Puerto Ixtaluz, its stops and Paco's Island. Never name a real town, beach, bay, landmark or ship in the game. Before adding a place name, search it and drop it if it matches a real place.
+- Real world facts belong only in the answer lists, which are trivia about the real world.
 - Answer lists must be complete for their rule. Run `node tools/check.mjs` after editing `js/data.js` or `js/prompts.js`.
 
 **Credits and records**

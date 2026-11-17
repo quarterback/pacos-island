@@ -1,9 +1,10 @@
 /* Paco's Island: pixel art, drawn in code.
 
    Paco, his boat, his ATV and his dive gear are painted pixel by pixel.
-   Each trip has one long background strip: the coast from Los Muertos
-   pier to Yelapa, the climb from Yelapa beach to the upper waterfall, and
-   the water from the surface to the floor of Banderas Canyon. scene.js
+   Each trip has one long background strip: the coast of Bahía Ixtaluz from
+   the Ixtaluz pier to Paco's Island, the climb from the island's beach to
+   the upper waterfall, and the water from the surface to the canyon floor.
+   Every place is fictional. scene.js
    turns these canvases into Pixi textures and scales them up with no
    smoothing. */
 'use strict';
@@ -140,7 +141,7 @@ const Art = (() => {
     bands.forEach((b, i) => px(g, 0, i * bh, b, w, bh));
   }
 
-  // ---- the coast: Los Muertos pier to Yelapa ----------------------------
+  // ---- the coast: the Ixtaluz pier to Paco's Island -----------------------
   // Stops sit at even spacing; the boat travels between them.
   const COAST = { w: 1560, h: 160, horizon: 94, stopX: (i) => 70 + i * 200 };
   function coast() {
@@ -161,13 +162,13 @@ const Art = (() => {
     px(g, 0, horizon - 3, C.sand, w, 3);
 
     const S = COAST.stopX;
-    // Los Muertos pier: town, the pier and its tall sail
+    // Puerto Ixtaluz: town, the pier and a striped lighthouse at its end
     for (let i = 0; i < 9; i++) house(g, S(0) - 64 + i * 10, horizon - 3, 8, 5 + (i % 3) * 2, i % 2 ? C.roof : C.roofDk);
     px(g, S(0) - 6, horizon - 2, C.rockHi, 34, 2); for (let x = S(0) - 4; x < S(0) + 28; x += 6) px(g, x, horizon, C.rockDk, 1, 6);
-    for (let y = 0; y < 30; y++) px(g, S(0) + 20 - Math.floor(y / 3), horizon - 4 - y, C.white, Math.max(1, 6 - Math.floor(y / 6)), 1);
-    px(g, S(0) + 20, horizon - 34, C.motor, 1, 30);
+    for (let y = 0; y < 22; y++) px(g, S(0) + 22 + Math.floor(y / 8), horizon - 4 - y, Math.floor(y / 4) % 2 ? C.pink : C.white, 6 - Math.floor(y / 8) * 2, 1);
+    px(g, S(0) + 23, horizon - 29, C.gold, 4, 3); px(g, S(0) + 22, horizon - 30, C.motor, 6, 1);
     palm(g, S(0) - 70, horizon - 3, 14);
-    // Los Arcos: rounded granite islets, the big one with an arch through it
+    // Peñas Cantoras: rounded granite islets, the big one with an arch through it
     const ax = S(1);
     const islet = (cx, wd, ht, arch) => {
       for (let y = 0; y < ht; y++) {
@@ -183,24 +184,24 @@ const Art = (() => {
     const half0 = (wd) => Math.round(wd / 2);
     islet(ax - 18, 14, 14, false); islet(ax + 2, 26, 28, true); islet(ax + 22, 12, 11, false);
     for (const [bx, by] of [[ax - 2, 30], [ax + 6, 33], [ax + 14, 29]]) { px(g, bx, horizon - by, C.white, 1, 1); px(g, bx + 1, horizon - by - 1, C.white, 1, 1); px(g, bx + 2, horizon - by, C.white, 1, 1); }
-    // Boca de Tomatlán: village at a river mouth, pangas on the beach
+    // Boca Tamarilla: village at a river mouth, pangas on the beach
     for (let i = 0; i < 5; i++) house(g, S(2) - 26 + i * 11, horizon - 3, 8, 5 + (i % 2) * 2);
     px(g, S(2) + 30, horizon - 4, C.river, 6, 4);
     for (let i = 0; i < 3; i++) { px(g, S(2) - 20 + i * 14, horizon + 2, C.hull, 8, 2); px(g, S(2) - 19 + i * 14, horizon + 3, C.stripe, 6, 1); }
-    // Colomitos: a small cove between cliffs
+    // Caleta Pochota: a small cove between cliffs
     for (const side of [-1, 1]) for (let y = 0; y < 16; y++) px(g, S(3) + side * 14 - (side < 0 ? 8 : 0), horizon - y, y % 3 ? C.rock : C.rockDk, 8, 1);
     px(g, S(3) - 6, horizon - 3, C.sand, 12, 3); palm(g, S(3), horizon - 3, 12);
-    // Las Ánimas: a long beach with palapas
+    // Playa Ondarena: a long beach with palapas
     px(g, S(4) - 40, horizon - 5, C.sand, 80, 5);
     for (let i = 0; i < 5; i++) palapa(g, S(4) - 30 + i * 15, horizon - 4);
     palm(g, S(4) + 38, horizon - 5, 18);
-    // Quimixto: a few houses and palms
+    // Pueblo Tilmeca: a few houses and palms
     for (let i = 0; i < 3; i++) house(g, S(5) - 18 + i * 13, horizon - 3, 9, 6, i === 1 ? C.pink : C.roof);
     palm(g, S(5) + 26, horizon - 3, 15); palm(g, S(5) - 26, horizon - 3, 13);
-    // Majahuitas: a quiet beach under palms
+    // Playa Zinzuna: a quiet beach under palms
     px(g, S(6) - 24, horizon - 4, C.sand, 48, 4);
     for (let i = 0; i < 4; i++) palm(g, S(6) - 18 + i * 12, horizon - 4, 12 + (i % 2) * 5);
-    // Yelapa: the cove, palapas on the beach and houses up the hill
+    // Paco's Island: the cove, palapas on the beach and houses up the hill
     px(g, S(7) - 60, horizon - 6, C.sand, 120, 6);
     for (let i = 0; i < 6; i++) palapa(g, S(7) - 50 + i * 18, horizon - 5);
     for (let i = 0; i < 8; i++) house(g, S(7) - 56 + i * 15, horizon - 14 - (i % 3) * 8, 8, 5, i % 3 === 1 ? C.pink : C.roof);
@@ -210,7 +211,7 @@ const Art = (() => {
     return c;
   }
 
-  // ---- Yelapa on land: beach to the upper waterfall --------------------
+  // ---- Paco's Island on land: beach to the upper waterfall ---------------
   const HILL = { w: 1260, h: 160, stopX: (i) => 70 + i * 220, ground: (x) => Math.round(136 - Math.min(1, x / 1180) * 70) };
   function hill() {
     const { w, h, ground } = HILL; const S = HILL.stopX;
@@ -252,8 +253,8 @@ const Art = (() => {
   // y on this strip is linear in score, so the depth labels are placed
   // with the same curve the engine uses.
   const DEEP = { w: 320, h: 1060, surface: 40, bottom: 1020 };
-  DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / 700);
-  DEEP.yForDepth = (d) => DEEP.yForScore(700 * Math.sqrt(d / 1400));
+  DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / 840);
+  DEEP.yForDepth = (d) => DEEP.yForScore(840 * Math.sqrt(d / 1400));
   function deep() {
     const { w, h, surface, bottom } = DEEP;
     const [c, g] = canvas(w, h); const r = noise(31);
@@ -262,12 +263,12 @@ const Art = (() => {
     const span = (h - surface) / cols.length;
     cols.forEach((col, i) => px(g, 0, surface + Math.round(i * span), col, w, Math.ceil(span) + 1));
     for (let x = 0; x < w; x += 3) px(g, x, surface, C.foam, 2, 1);
-    // Los Arcos rock rising out of the water on the right
+    // Peñas Cantoras rising out of the water on the right
     for (let yy = surface - 26; yy < DEEP.yForDepth(40); yy++) { const wd = 36 + Math.round(Math.sin(yy / 9) * 4) + Math.max(0, (yy - surface) / 3); px(g, w - wd, yy, yy % 5 ? C.rock : C.rockDk, wd, 1); }
     // reef: coral on the rock and the sand shelf
     const reefY = DEEP.yForDepth(12);
     for (let i = 0; i < 40; i++) { const cx = w - 60 + Math.floor(r() * 30), cy = reefY - 10 + Math.floor(r() * 20); px(g, cx, cy, [C.coral1, C.coral2, C.coral3][i % 3], 3, 2 + Math.floor(r() * 3)); }
-    // the wreck of the Princesa Vallarta
+    // the old ferry wreck
     const wy = DEEP.yForDepth(41);
     px(g, 40, wy, C.rockDk, 90, 10); px(g, 44, wy - 6, C.rock, 40, 6); px(g, 60, wy - 14, C.rock, 8, 8);
     for (let x = 46; x < 128; x += 9) px(g, x, wy + 3, C.deep3, 3, 3);

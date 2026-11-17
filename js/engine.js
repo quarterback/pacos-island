@@ -1,7 +1,7 @@
 /* Paco's Island: rules.
 
-   Days run on Puerto Vallarta time (America/Mexico_City). Day 1 is
-   November 16, 2026.
+   A day runs from 06:00 UTC to 06:00 UTC (midnight at UTC-6, all year).
+   Day 1 is November 16, 2026.
 
    Scoring: every accepted answer has a share, the part of today's answers
    that were that answer. Before players arrive, shares come from the
@@ -11,18 +11,19 @@
    Points for an answer = 10 + 90 x (share of answers more common than
    yours). The most common answer earns 10. An answer nobody else gave
    earns close to 100. This keeps a small list and a long list on the same
-   scale. */
+   scale.
+
+   Speed bonus: an accepted answer also earns up to 20 points for time left
+   on the clock, 20 x (seconds left / 25), rounded. */
 'use strict';
 const Engine = (() => {
   const P = typeof Prompts !== 'undefined' ? Prompts : require('./prompts.js');
 
   // ---- days ----
-  const DAY_ONE = Date.UTC(2026, 10, 16);
-  const pvDate = (now = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
-  function dayNumber(now = new Date()) {
-    const [y, m, d] = pvDate(now).split('-').map(Number);
-    return Math.max(1, Math.round((Date.UTC(y, m - 1, d) - DAY_ONE) / 864e5) + 1);
-  }
+  const DAY_ONE = Date.UTC(2026, 10, 16, 6);
+  const DAY_MS = 864e5;
+  const dayNumber = (now = new Date()) => Math.max(1, Math.floor((now.getTime() - DAY_ONE) / DAY_MS) + 1);
+  const nextReset = (now = new Date()) => new Date(DAY_ONE + dayNumber(now) * DAY_MS);
 
   // ---- matching ----
   function lev(a, b) {
@@ -77,6 +78,8 @@ const Engine = (() => {
     for (const a of q.answers) { const n = a.item.name; out[n] = ((crowd.counts[n] || 0) + BLEND * guess[n]) / (total + BLEND); }
     return { shares: out, total, estimated: total < SETTLED };
   }
+  const SECONDS = 25, SPEED_MAX = 20;
+  const speedBonus = (secondsLeft) => Math.round(SPEED_MAX * Math.max(0, Math.min(SECONDS, secondsLeft)) / SECONDS);
   function points(sh, name) {
     const mine = sh[name]; let more = 0;
     for (const k in sh) if (sh[k] > mine + 1e-9) more += sh[k];
@@ -85,14 +88,14 @@ const Engine = (() => {
 
   // ---- trips ----
   const TRIPS = {
-    boat: { id: 'boat', name: 'Boat to Yelapa', opens: 0, stops: [
-      [0, 'Los Muertos pier'], [60, 'Los Arcos'], [140, 'Boca de Tomatlán'], [220, 'Colomitos'], [300, 'Las Ánimas'], [390, 'Quimixto'], [480, 'Majahuitas'], [580, 'Yelapa']] },
-    atv: { id: 'atv', name: 'ATV through Yelapa', opens: 1500, stops: [
-      [0, 'Yelapa beach'], [120, 'the village'], [240, 'the river'], [360, 'the waterfall'], [470, 'the jungle trail'], [580, 'the upper waterfall']] },
-    dive: { id: 'dive', name: 'Dive into the bay', opens: 6000, marks: [
-      [12, 'Reef at Los Arcos'], [41, 'Princesa Vallarta wreck'], [60, 'Deep reef'], [300, 'Banderas Canyon wall'], [1400, 'Canyon floor']] },
+    boat: { id: 'boat', name: "Boat to Paco's Island", opens: 0, stops: [
+      [0, 'the Ixtaluz pier'], [60, 'Peñas Cantoras'], [140, 'Boca Tamarilla'], [220, 'Caleta Pochota'], [300, 'Playa Ondarena'], [390, 'Pueblo Tilmeca'], [480, 'Playa Zinzuna'], [580, "Paco's Island"]] },
+    atv: { id: 'atv', name: "ATV across Paco's Island", opens: 1500, stops: [
+      [0, 'the beach'], [120, 'the village'], [240, 'the river'], [360, 'the waterfall'], [470, 'the jungle trail'], [580, 'the upper waterfall']] },
+    dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 6000, marks: [
+      [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
   };
-  const MAX_DAY = 700;
+  const MAX_DAY = 7 * (100 + SPEED_MAX);
   const depth = (score) => Math.round(1400 * Math.pow(Math.min(score, MAX_DAY) / MAX_DAY, 2));
   function reached(trip, score) {
     if (trip === 'dive') return { label: depth(score).toLocaleString('en-US') + ' m', depth: depth(score) };
@@ -104,6 +107,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, pvDate, match, shares, guessShares, points, TRIPS, MAX_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, SECONDS, SPEED_MAX, speedBonus, match, shares, guessShares, points, TRIPS, MAX_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

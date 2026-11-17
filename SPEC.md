@@ -2,9 +2,9 @@
 
 ## The game
 
-Paco is an iguana in Puerto Vallarta with a boat. Every day he asks seven questions. Each question has a fixed list of right answers. The fewer players who give your answer, the more points it earns, and the farther Paco takes you on your trip.
+Paco is an iguana with a boat on Bahía Ixtaluz, a fictional bay. Every day he asks seven questions. Each question has a fixed list of right answers. The fewer players who give your answer, the more points it earns, and the farther Paco takes you on your trip.
 
-Everyone gets the same seven questions. A new set starts at midnight in Puerto Vallarta (America/Mexico_City). Day 1 is November 16, 2026.
+Everyone gets the same seven questions. A new set starts at 06:00 UTC, which is midnight at UTC−6, and the end screen shows that time in the player's own time zone. Day 1 is November 16, 2026.
 
 ## A question
 
@@ -48,7 +48,13 @@ share = (count + 20 × guess) ÷ (total + 20)
 
 The guess stops one early player from swinging a share. The game marks shares as estimates until a question has 30 answers.
 
-A day's score is the sum of the seven questions, so the most a day can score is 700.
+### Speed bonus
+
+An accepted answer also earns a speed bonus of up to 20 points: 20 × (seconds left ÷ 25), rounded. An answer in the first second earns 20, and one at 12 seconds left earns 10. Wrong guesses before the right one cost only the time they take. A question with no accepted answer earns nothing.
+
+The result shows the split: "84 for the answer and 16 for speed."
+
+A question can score up to 120, so a day can score up to 840.
 
 ## Trips
 
@@ -56,19 +62,17 @@ Your trip shows the day's score as a place. Trips open with lifetime points and 
 
 | Trip | Opens at | What the score moves |
 | --- | --- | --- |
-| Boat to Yelapa | Start | Along the water taxi route: Los Muertos pier (0), Los Arcos (60), Boca de Tomatlán (140), Colomitos (220), Las Ánimas (300), Quimixto (390), Majahuitas (480), Yelapa (580) |
-| ATV through Yelapa | 1,500 points | Up from the beach: Yelapa beach (0), the village (120), the river (240), the waterfall (360), the jungle trail (470), the upper waterfall (580) |
-| Dive into the bay | 6,000 points | Down: depth = 1,400 m × (score ÷ 700)². That puts the Los Arcos reef and the Princesa Vallarta wreck (41 m) early and the canyon floor at a perfect day. |
+| Boat to Paco's Island | Start | Along the water taxi route: the Ixtaluz pier (0), Peñas Cantoras (60), Boca Tamarilla (140), Caleta Pochota (220), Playa Ondarena (300), Pueblo Tilmeca (390), Playa Zinzuna (480), Paco's Island (580) |
+| ATV across Paco's Island | 1,500 points | Up from the island's beach: the beach (0), the village (120), the river (240), the waterfall (360), the jungle trail (470), the upper waterfall (580) |
+| Dive into Bahía Ixtaluz | 6,000 points | Down: depth = 1,400 m × (score ÷ 840)². The reef at Peñas Cantoras and the old ferry wreck (41 m) come early, and the canyon floor is a perfect day. |
 
 Your trip changes only how your score is shown. Points are the same on every trip, so players on different trips can compare scores.
 
 You pick the trip before the first question. It's locked for the day once you answer.
 
-### Place sources
+### The setting
 
-- Water taxis leave from Los Muertos pier and stop at Las Ánimas and Quimixto on the way to Yelapa. The beaches south of Boca de Tomatlán are Colomitos, Las Ánimas, Quimixto, Majahuitas and Yelapa.
-- Yelapa has no roads. People get around on foot, on horseback or by ATV on paths just wide enough for one. There's a waterfall above the village and a second one farther up.
-- Los Arcos is a protected dive site with dives from 30 to 120 ft. The Princesa Vallarta wreck sits at 41 m. Reef surveys sampled 50 to 70 m at Los Arcos and Majahuitas. A canyon in the bay runs deeper than 1,400 m.
+Every place is invented: Bahía Ixtaluz, the town of Puerto Ixtaluz and its pier, the stops along the coast, and Paco's Island with its village, river and two waterfalls. Each name was searched before use, and names that matched a real place were dropped.
 
 ## Progress
 
@@ -87,14 +91,14 @@ The client waits up to 2 seconds. If the function is missing or slow (on Vercel,
 
 ## End of day
 
-- Where Paco got you ("Paco got you to Quimixto."), with the day's score and your lifetime points.
+- Where Paco got you ("Paco got you to Pueblo Tilmeca."), with the day's score and your lifetime points.
 - How far the next stop was, and how many points until the next trip opens.
-- Share text with one square per question: ⬜ no answer, 🟦 under 30, 🟩 30 to 59, 🟨 60 to 84, 🟥 85 and up.
+- Share text with one square per question: ⬜ no answer, 🟦 under 35, 🟩 35 to 69, 🟨 70 to 99, 🟥 100 and up.
 - Every question with your answer, and a list of every right answer sorted by share. Answers nobody gave are marked "nobody yet" once real counts exist.
 
 ## Look
 
-- **Style:** Coalition's structure on a daytime Banderas Bay palette. A pixel art PixiJS scene across the top, a solid play surface below. no-slop-ui wins any conflict with Coalition's look.
+- **Style:** Coalition's structure on a bright daytime bay palette. A pixel art PixiJS scene across the top, a solid play surface below. no-slop-ui wins any conflict with Coalition's look.
 - **Colors:** bay `#095565` play surface, sun `#FFC43A` for the one action color and numbers, ink `#0D2340`, sky `#8ED8EE`, leaf `#BDE66E` for success, coral `#F7A8CB` for errors, bougainvillea `#C21A68` for top scores. White on bay is 8.4:1, ink on sun is 9.9:1, and sun on bay is 5.3:1.
 - **Type:** PP Fuji Bold for the wordmark and big numbers. PP Neue Montreal Book, Medium and Semibold for everything people read. Both come from the owner's licensed font archive.
 - **Scene:** 240 × 120 pixels, scaled up with no smoothing. The sprites are Paco (an iguana in a straw hat with a pink band), a panga with an outboard motor, a red ATV, and Paco in a yellow mask, tank and pink fins. Each trip has one long background strip drawn in code. Motion follows `prefers-reduced-motion`.

@@ -1,6 +1,6 @@
 # Paco's Island
 
-A daily answer game. Paco the iguana asks seven questions a day, and each one has a fixed list of right answers. The fewer players who give your answer, the farther he takes you across Banderas Bay from Puerto Vallarta to Yelapa.
+A daily answer game. Paco the iguana asks seven questions a day, and each one has a fixed list of right answers. The fewer players who give your answer, the farther he takes you across Bahía Ixtaluz to his island. Every place in the game is fictional.
 
 A game by Ron Bronson.
 

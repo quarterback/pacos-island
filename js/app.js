@@ -9,7 +9,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const KEY = 'pacos-island.v1';
-  const SECONDS = 25;
+  const SECONDS = Engine.SECONDS;
   const day = Engine.dayNumber();
   const questions = Prompts.forDay(day);
 
@@ -20,7 +20,7 @@
   let state = load();
   const today = () => (state.days[day] ||= { trip: state.trip, answers: [], started: {}, done: false, counted: false });
   const dayScore = (rec) => rec.answers.reduce((s, a) => s + (a.points || 0), 0);
-  const bucket = (pts) => (pts == null || pts === 0 ? 0 : pts < 30 ? 1 : pts < 60 ? 2 : pts < 85 ? 3 : 4);
+  const bucket = (pts) => (pts == null || pts === 0 ? 0 : pts < 35 ? 1 : pts < 70 ? 2 : pts < 100 ? 3 : 4);
 
   // ---- answer counts across players (optional) ----
   async function api(method, params) {
@@ -116,6 +116,7 @@
   function lock() { $('answerInput').disabled = true; $('answerBtn').disabled = true; clearInterval(timer); $('clock').hidden = true; $('answerForm').hidden = true; }
   function timeUp() {
     const rec = today(); if (rec.answers.length !== current.i) return;
+    const left = SECONDS - (Date.now() - rec.started[current.i]) / 1000;
     lock();
     rec.answers.push({ pid: current.q.id, name: null, points: 0 }); save();
     $('note').className = 'note bad'; $('note').textContent = Copy.timeUp;
@@ -130,15 +131,16 @@
     if (m.status === 'no') { note.className = 'note bad'; note.textContent = Copy.wrong; $('answerInput').select(); return; }
     if (m.status === 'off') { note.className = 'note bad'; note.textContent = Copy.off(m.item.name); $('answerInput').select(); return; }
     const rec = today(); if (rec.answers.length !== current.i) return;
+    const left = SECONDS - (Date.now() - rec.started[current.i]) / 1000;
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
     const crowd = await api('POST', { day, prompt: current.q.id, answer: m.item.name, player: state.id });
     const sh = Engine.shares(current.q, crowd);
-    const p = Engine.points(sh.shares, m.item.name);
-    rec.answers.push({ pid: current.q.id, name: m.item.name, points: p.points, rarer: p.rarer }); save();
+    const p = Engine.points(sh.shares, m.item.name), fast = Engine.speedBonus(left);
+    rec.answers.push({ pid: current.q.id, name: m.item.name, points: p.points + fast, rarity: p.points, speed: fast, rarer: p.rarer }); save();
     $('resultName').textContent = m.item.name;
-    $('resultPts').textContent = Copy.points(p.points);
-    $('resultRarer').textContent = Copy.rarer(p.rarer);
+    $('resultPts').textContent = Copy.points(p.points + fast);
+    $('resultRarer').textContent = `${Copy.split(p.points, fast)} ${Copy.rarer(p.rarer)}`;
     after(rec);
   });
   function after(rec) {
@@ -160,16 +162,17 @@
   function showEnd() {
     const rec = today(), score = dayScore(rec), r = Engine.reached(rec.trip, score);
     swap('end'); tripBar(rec);
-    $('endHead').textContent = Copy.where[rec.trip](r.label);
+    const headline = rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label);
+    $('endHead').textContent = headline;
     $('endTotal').textContent = Copy.todayTotal(score, state.lifetime);
-    $('endNext').textContent = rec.trip === 'dive' ? '' : r.next ? Copy.nextStop(r.next.label, r.next.need) : Copy.madeIt[rec.trip];
+    $('endNext').textContent = rec.trip !== 'dive' && r.next ? Copy.nextStop(r.next.label, r.next.need) : '';
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
     $('endUnlock').textContent = justOpened ? Copy.unlocked(Copy.tripShort[justOpened.id]) : nt ? Copy.unlock(nt.opens - state.lifetime, Copy.tripShort[nt.id]) : '';
     const sq = rec.answers.map((a) => ['⬜', '🟦', '🟩', '🟨', '🟥'][bucket(a.points)]).join('');
-    $('shareText').textContent = Copy.share(day, Copy.where[rec.trip](r.label), score, sq);
+    $('shareText').textContent = Copy.share(day, headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me'), score, sq);
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('answersHead').textContent = Copy.yourAnswers;
-    $('comeBack').textContent = Copy.comeBack;
+    $('comeBack').textContent = Copy.comeBack(Engine.nextReset().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
     renderAnswers(rec);
     $('endHead').focus();
   }
