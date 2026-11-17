@@ -107,14 +107,9 @@ const Prompts = (() => {
     const U = L.toUpperCase();
     RULES.push({ key: 'has-' + L, says: `has the letter ${U} in it`, test: (n) => letters(n).includes(L) });
     RULES.push({ key: 'starts-' + L, says: `starts with ${U}`, test: (n) => letters(n).startsWith(L) });
-    RULES.push({ key: 'ends-' + L, says: `ends with ${U}`, test: (n) => letters(n).endsWith(L) });
   }
-  for (const L of 'aeiou') RULES.push({ key: 'lacks-' + L, says: `has no letter ${L.toUpperCase()} in it`, test: (n) => !letters(n).includes(L) });
-  for (const n of [4, 5, 6]) RULES.push({ key: 'max-' + n, says: `has ${['four', 'five', 'six'][n - 4]} letters or fewer`, test: (s) => letters(s).length <= n });
-  for (const n of [10, 11, 12]) RULES.push({ key: 'min-' + n, says: `has ${n} letters or more`, test: (s) => letters(s).length >= n });
-  RULES.push({ key: 'words', says: 'is more than one word', test: (s) => words(s).length > 1 });
-  RULES.push({ key: 'same-ends', says: 'starts and ends with the same letter', test: (s) => { const l = letters(s); return l.length > 1 && l[0] === l[l.length - 1]; } });
-  RULES.push({ key: 'double', says: 'has the same letter twice in a row', test: (s) => /(.)\1/.test(letters(s)) });
+  // Only the plain letter rules. Letter questions are a twist in a round,
+  // never its backbone; see docs/QUESTION-WRITING.md.
 
   // Build the answer set: each item that qualifies, with the names that do.
   function cut(universe, test) {
@@ -126,7 +121,7 @@ const Prompts = (() => {
     return out;
   }
 
-  const MIN = 6, MAX = 55, WHOLE_MAX = 80;
+  const MIN = 6, MAX = 55, WHOLE_MAX = 100;
   const pool = [];
   // A whole list question can have as few as five answers (the Spice Girls).
   const add = (q) => { if (q.answers.length >= (q.kind === 'list' ? 5 : MIN) && q.answers.length <= (q.kind === 'list' ? WHOLE_MAX : MAX)) pool.push(q); };
@@ -299,6 +294,9 @@ const Prompts = (() => {
     ['starbucks.all', 'starbucks', 'Name a Starbucks drink size.', () => true],
   ];
   for (const [id, universe, text, test, subject] of lists) add({ id, universe, kind: 'list', text, subject, answers: cut(UNI[universe], test) });
+  // Angled questions: a trait, a word, a person, a place, a time, an everyday
+  // moment or a crossover. Each has its own answer list in data.js.
+  for (const g of D.ANGLES) add({ id: `a_${g.id}.all`, universe: 'a_' + g.id, kind: 'list', angle: true, shape: g.shape, text: g.text, subject: g.subject, answers: cut(UNI['a_' + g.id], () => true) });
 
   // ---- how easy a question is ----
   // Each answer counts toward ease by how familiar it is: fully at a score of
@@ -332,7 +330,9 @@ const Prompts = (() => {
   const EVERYDAY = new Set(['countries', 'states', 'nba', 'nfl', 'mlb', 'nhl', 'presidents', 'capitals', 'nflcities', 'nbacities', 'mlbcities', 'nhlcities']);
   // Only simple letter rules open a set: starts with a letter, or has one.
   const simple = (q) => /\.(starts|has)-[a-z]$/.test(q.id);
-  for (const q of pool) q.opener = OPENERS.has(q.id) || (q.kind === 'letter' && EVERYDAY.has(q.universe) && simple(q) && q.ease >= 4);
+  for (const q of pool) q.opener = OPENERS.has(q.id) || (q.angle && q.ease >= 10);
+  // What kind of question each one is, so a round can vary its rhythm.
+  for (const q of pool) q.shape ||= q.kind === 'letter' ? 'letter' : 'category';
 
   // ---- sets of seven ----
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -357,7 +357,7 @@ const Prompts = (() => {
   // A slot borrows from a nearby level before it repeats a question.
   // Mario's sets reach for the milder medium questions before a repeat.
   byLevel.mild = pool.filter((q) => !q.opener && q.level === 'medium' && (q.kind === 'list' || simple(q)));
-  const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard', 'gentle'], hard: ['hard', 'medium', 'gentle'] };
+  const BORROW = { opener: ['opener', 'gentle'], gentle: ['gentle', 'opener', 'mild'], medium: ['medium', 'hard', 'gentle', 'opener'], hard: ['hard', 'medium', 'gentle', 'opener'] };
   byLevel.medium.push(...byLevel.easy);
   // ageOf(id): how many days or rounds since the player saw a question,
   // Infinity if never. A set takes unseen questions first, then the ones seen
@@ -370,12 +370,12 @@ const Prompts = (() => {
     // first, then yesterday's lists.
     const fresh = (q) => !lastLists.has(q.universe) && !lastLists.has('s:' + subjectOf(q));
     const rests = [fresh, (q) => !lastLists.has(q.universe), () => true];
-    // Letter questions are harder to warm up to than whole lists, so a round
-    // keeps at least four whole lists (five for new players and in Mario's
-    // mode). The trickier letter rules (ends with,
-    // no letter, letter counts) are rarer still: one in Paco's mode, none for
-    // new players or in Mario's mode.
-    const LETTER_MAX = { paco: 3, starter: 2, mario: 2 }[level] ?? 3;
+    // Letter questions are a twist, so a round holds at most two (one for
+    // new players and in Mario's mode).
+    const LETTER_MAX = { paco: 2, starter: 1, mario: 1 }[level] ?? 2;
+    // No more than two questions of one kind in a round (three plain
+    // category questions).
+    const SHAPE_MAX = { category: 3, letter: LETTER_MAX };
     const TRICKY_MAX = { paco: 1, starter: 0, mario: 0 }[level] ?? 1;
     const tricky = (q) => q.kind === 'letter' && !simple(q);
     // The order of preference: unseen questions within the letter limit,
@@ -384,11 +384,12 @@ const Prompts = (() => {
 
     const shape = SHAPES[level] || SHAPES.paco;
     const r = rng(seed);
-    const lists = new Set(), subjects = {}; let letterCount = 0, trickyCount = 0;
+    const lists = new Set(), subjects = {}, shapes = {}; let letterCount = 0, trickyCount = 0;
     const set = [];
     for (const level of shape) {
       const fits = (q, strict) => !lists.has(q.universe) && !subjects[subjectOf(q)]
-        && !(strict && q.kind === 'letter' && letterCount >= LETTER_MAX) && !(strict && tricky(q) && trickyCount >= TRICKY_MAX) && !set.includes(q);
+        && !(strict && q.kind === 'letter' && letterCount >= LETTER_MAX) && !(strict && tricky(q) && trickyCount >= TRICKY_MAX)
+        && !(strict && (shapes[q.shape] || 0) >= (SHAPE_MAX[q.shape] ?? 2)) && !set.includes(q);
       let pick = null;
       const tries = [];
       // A question seen three months ago may come back before the letter limit
@@ -420,6 +421,7 @@ const Prompts = (() => {
       subjects[subjectOf(pick)] = (subjects[subjectOf(pick)] || 0) + 1;
       if (pick.kind === 'letter') letterCount++;
       if (tricky(pick)) trickyCount++;
+      shapes[pick.shape] = (shapes[pick.shape] || 0) + 1;
     }
     return set;
   }

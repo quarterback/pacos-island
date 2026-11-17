@@ -2283,6 +2283,7039 @@ Trenta
 Demi`, { 1: ['Tall', 'Grande', 'Venti'], 3: ['Short', 'Trenta'], 4: ['Demi'] }, 2);
 
 
+  // ---- angled questions ----
+  // Each angle comes at what people know from a different side: a trait, a
+  // word, a person, a place, a time, an everyday moment or a crossover
+  // between two worlds. A line may start with a tier from 1 (everyone knows
+  // it) to 5 (almost nobody does); lines without one are tier 3. See
+  // docs/QUESTION-WRITING.md.
+  const parseT = (text) => {
+    const tiers = { 1: [], 2: [], 4: [], 5: [] }, lines = [];
+    for (const raw of text.trim().split('\n')) {
+      const m = raw.trim().match(/^([1-5]) (.*)$/);
+      const line = m ? m[2] : raw.trim();
+      if (m && m[1] !== '3') tiers[m[1]].push(line.split('|')[0]);
+      lines.push(line);
+    }
+    return parse(lines.join('\n'), tiers, 3);
+  };
+  const angle = (id, subject, shape, text, spec) => ({ id, subject, shape, text, items: parseT(spec) });
+  const ANGLES = [
+    angle('red_fruit', 'food', 'trait', 'Name a red fruit.', `
+1 Strawberry|Strawberries
+1 Cherry|Cherries
+1 Apple|Apples|Red apple
+1 Raspberry|Raspberries
+2 Watermelon
+2 Cranberry|Cranberries
+2 Pomegranate
+Red grape|Red grapes|Grape|Grapes
+Tomato
+Red currant|Red currants|Currant
+Blood orange
+4 Lingonberry
+4 Goji berry|Goji
+4 Lychee
+4 Dragon fruit|Pitaya
+4 Red plum|Plum
+4 Rambutan`),
+    angle('yellow_food', 'food', 'trait', 'Name a yellow food.', `
+1 Banana|Bananas
+1 Lemon|Lemons
+1 Corn|Corn on the cob
+2 Pineapple
+2 Butter
+2 Egg yolk|Yolk|Eggs
+2 Mustard
+Yellow squash|Squash
+Yellow pepper|Yellow bell pepper
+Popcorn
+Custard
+Cornbread
+Mango
+4 Banana pepper
+4 Plantain
+4 Starfruit
+4 Polenta
+4 Lemon curd
+4 Twinkie|Twinkies
+4 Peeps
+4 Grapefruit`),
+    angle('green_veg', 'food', 'trait', 'Name a green vegetable.', `
+1 Broccoli
+1 Spinach
+1 Peas|Pea
+1 Lettuce
+1 Green beans|Green bean|String beans
+1 Cucumber
+1 Celery
+2 Kale
+2 Asparagus
+2 Zucchini
+2 Brussels sprouts|Brussel sprouts
+2 Cabbage
+2 Green pepper|Green bell pepper
+Artichoke
+Bok choy
+Okra
+Arugula
+Edamame
+Snow peas|Sugar snap peas|Snap peas
+Leek|Leeks
+Collard greens|Collards
+Swiss chard|Chard
+Romaine
+Avocado
+4 Watercress
+4 Endive
+4 Tomatillo`),
+    angle('orange_food', 'food', 'trait', 'Name an orange food.', `
+1 Carrot|Carrots
+1 Pumpkin
+2 Sweet potato|Yam
+2 Cantaloupe
+2 Mango
+2 Peach
+Apricot
+Tangerine
+Clementine
+Papaya
+Butternut squash
+Mac and cheese|Macaroni and cheese
+Cheetos
+Nectarine
+4 Persimmon
+4 Kumquat
+4 Cheddar
+4 Salmon`),
+    angle('purple_food', 'food', 'trait', 'Name a purple food.', `
+1 Eggplant
+1 Grape|Grapes
+2 Plum|Plums
+2 Beet|Beets
+Red cabbage|Purple cabbage
+Blackberry|Blackberries
+Fig|Figs
+Red onion|Purple onion
+Purple potato
+Blueberry|Blueberries
+4 Acai|Açaí
+4 Ube
+4 Passion fruit
+4 Prune|Prunes
+4 Purple cauliflower
+4 Purple carrot`),
+    angle('breakfast', 'food', 'everyday', 'Name a breakfast food.', `
+1 Pancakes|Pancake
+1 Waffles|Waffle
+1 Eggs|Egg|Scrambled eggs|Fried eggs
+1 Bacon
+1 Toast
+1 Cereal
+2 Oatmeal|Porridge
+2 French toast
+2 Bagel|Bagels
+2 Sausage
+2 Hash browns
+2 Omelet|Omelette
+Muffin|Muffins
+Yogurt|Yoghurt
+Grits
+Biscuits|Biscuit
+Croissant
+Granola
+Crepes|Crepe
+Breakfast burrito
+Eggs Benedict
+Donut|Doughnut|Donuts
+Cinnamon roll
+Avocado toast
+Smoothie
+4 Quiche
+4 Scone|Scones
+4 Huevos rancheros
+4 Chilaquiles
+4 Shakshuka
+4 Corned beef hash|Hash
+4 Danish`),
+    angle('sandwich', 'food', 'trait', 'Name a kind of sandwich.', `
+1 BLT
+1 Grilled cheese
+1 Peanut butter and jelly|PB&J|PB and J
+1 Club|Club sandwich
+2 Reuben
+2 Ham and cheese
+2 Turkey
+2 Tuna|Tuna salad|Tuna melt
+2 Philly cheesesteak|Cheesesteak
+Sloppy Joe
+Cuban|Cubano
+Monte Cristo
+Po' boy|Po boy|Poboy
+Banh mi
+Muffuletta
+French dip
+Patty melt
+Egg salad
+Chicken salad
+Meatball sub|Meatball
+Sub|Hoagie|Hero|Grinder
+Panini
+Gyro
+Italian sub|Italian
+Lobster roll
+Pulled pork
+Egg and cheese|Bacon egg and cheese|Bacon, egg and cheese
+4 Croque monsieur
+4 Fluffernutter
+4 Cucumber sandwich`),
+    angle('pizza_toppings', 'food', 'everyday', 'Name a pizza topping.', `
+1 Pepperoni
+1 Mushrooms|Mushroom
+1 Sausage
+1 Cheese|Extra cheese
+2 Onions|Onion
+2 Green peppers|Peppers|Bell peppers
+2 Olives|Black olives
+2 Bacon
+2 Pineapple
+2 Ham
+Jalapeños|Jalapeño|Jalapenos|Jalapeno
+Spinach
+Tomatoes|Tomato
+Chicken
+Anchovies|Anchovy
+Basil
+Garlic
+Ground beef|Beef|Hamburger
+Artichoke|Artichokes
+Banana peppers
+Feta
+Meatballs|Meatball
+Red onion
+Arugula
+Prosciutto
+Ricotta
+Sun-dried tomatoes
+Broccoli
+Shrimp
+Salami
+Canadian bacon
+4 Capers
+4 Eggplant
+4 Hot honey`),
+    angle('cake_kinds', 'food', 'trait', 'Name a kind of cake.', `
+1 Chocolate
+1 Carrot
+1 Cheesecake
+1 Red velvet
+2 Angel food
+2 Pound
+2 Coffee cake
+2 Birthday
+2 Vanilla|Yellow|White
+Sponge|Victoria sponge
+Lemon
+Funfetti
+Black Forest
+German chocolate
+Tres leches
+Pineapple upside-down|Upside-down
+Bundt
+Fruitcake
+Ice cream cake
+Strawberry shortcake|Shortcake
+Devil's food
+Lava cake|Molten chocolate|Molten lava
+Marble
+Spice
+Coconut
+Wedding cake
+Cupcake|Cupcakes
+Rum cake
+4 Boston cream pie
+4 Opera cake
+4 Battenberg
+4 Hummingbird
+4 Italian cream
+4 Chiffon`),
+    angle('before_cake', 'words', 'wordplay', 'Name a word that comes before "cake."', `
+1 Cheese|Cheesecake
+1 Cup|Cupcake
+1 Pan|Pancake
+2 Birthday
+2 Wedding
+2 Carrot
+2 Coffee
+2 Pound
+2 Fruit|Fruitcake
+Short|Shortcake
+Sponge
+Angel
+Crab
+Sheet
+Layer
+Rice
+Fish
+Funnel
+Lava
+Hot|Hotcake
+Patty|Pattycake
+Johnny|Johnnycake
+Oat|Oatcake
+Tea|Teacake
+Mud
+Snack
+Spice`),
+    angle('before_ball', 'words', 'wordplay', 'Name a word that comes before "ball."', `
+1 Base|Baseball
+1 Basket|Basketball
+1 Foot|Football
+1 Soft|Softball
+1 Volley|Volleyball
+1 Snow|Snowball
+2 Dodge|Dodgeball
+2 Meat|Meatball
+2 Eye|Eyeball
+2 Fire|Fireball
+2 Pin|Pinball
+2 Gum|Gumball
+2 Beach|Beach ball
+Hand|Handball
+Odd|Oddball
+Golf|Golf ball
+Cannon|Cannonball
+Screw|Screwball
+Hair|Hairball
+Moth|Mothball
+Cotton|Cotton ball
+Paint|Paintball
+Crystal|Crystal ball
+Kick|Kickball
+Pickle|Pickleball
+Butter|Butterball
+Racquet|Racquetball
+Wiffle|Wiffle ball
+Disco|Disco ball
+Curve|Curveball
+Fast|Fastball
+Spit|Spitball
+Wrecking|Wrecking ball
+Net|Netball
+Fur|Furball
+Hard|Hardball
+Puff|Puffball
+Matzo|Matzo ball`),
+    angle('after_birthday', 'words', 'wordplay', 'Name a word that comes after "birthday."', `
+1 Cake
+1 Party
+1 Card
+1 Present|Presents|Gift|Gifts
+1 Candles|Candle
+2 Song
+2 Girl
+2 Boy
+2 Wish
+2 Balloon|Balloons
+Hat
+Suit
+Dinner
+Bash
+Celebration
+Month
+Week
+Banner`),
+    angle('before_house', 'words', 'wordplay', 'Name a word that comes before "house."', `
+1 White|White House
+1 Green|Greenhouse
+1 Light|Lighthouse
+1 Dog|Doghouse
+1 Farm|Farmhouse
+1 Tree|Treehouse
+2 Club|Clubhouse
+2 Coffee|Coffeehouse
+2 Fire|Firehouse
+2 Bird|Birdhouse
+2 Boat|Boathouse
+2 Doll|Dollhouse
+2 Guest|Guesthouse
+2 Out|Outhouse
+2 Play|Playhouse
+2 Court|Courthouse
+2 Ware|Warehouse
+2 Haunted|Haunted house
+2 Beach|Beach house
+Hen|Henhouse
+Ice|Icehouse
+Power|Powerhouse
+Round|Roundhouse
+School|Schoolhouse
+Steak|Steakhouse
+Store|Storehouse
+Summer|Summerhouse
+Town|Townhouse
+Bath|Bathhouse
+Pent|Penthouse
+Opera|Opera house
+Fun|Funhouse
+Mad|Madhouse
+Glass|Glasshouse
+Smoke|Smokehouse
+Gate|Gatehouse
+Boarding|Boarding house
+Full|Full house
+Open|Open house
+Safe|Safe house
+Work|Workhouse
+Alms|Almshouse
+Frat|Frat house
+Pool|Pool house
+Tea|Teahouse
+Jail|Jailhouse
+Slaughter|Slaughterhouse`),
+    angle('sun_words', 'words', 'wordplay', 'Name something with "sun" at the start of its name.', `
+1 Sunflower
+1 Sunday
+1 Sunscreen
+1 Sunglasses
+1 Sunshine
+1 Sunset
+1 Sunrise
+2 Sunburn
+2 Sundae
+2 Sunroof
+2 Sunlight
+Sunbeam
+Sundial
+Sunblock
+Sunchips|Sun Chips
+Sunkist
+Sunny D|SunnyD
+Sunfish
+Sun hat
+Sunspot
+Sunstroke
+Sunroom|Sun porch
+Sundown
+Sunlamp
+Sunbather|Sunbathing
+Sunstone
+Sundress`),
+    angle('color_songs', 'music', 'wordplay', 'Name a song with a color in its title.', `
+1 Purple Rain
+1 Yellow Submarine
+1 Blue Suede Shoes
+1 Back in Black
+1 White Christmas
+2 Lady in Red|The Lady in Red
+2 Paint It Black|Paint It, Black
+2 Red Red Wine
+2 Yellow
+2 Brown Eyed Girl
+2 Blue Moon
+2 Little Red Corvette
+2 Purple Haze
+2 Goodbye Yellow Brick Road|Yellow Brick Road
+2 Mr. Blue Sky|Mr Blue Sky
+Blue (Da Ba Dee)|Blue Da Ba Dee
+Green Onions
+Black Magic Woman
+Blue Bayou
+White Rabbit
+Nights in White Satin
+Behind Blue Eyes
+Big Yellow Taxi
+Green Light
+Black Hole Sun
+Orange Crush
+Redbone
+Blue Velvet
+Red
+White Wedding
+Black Velvet
+Forever in Blue Jeans
+Purple People Eater|The Purple People Eater
+Blue Christmas
+Green, Green Grass of Home|Green Green Grass of Home
+Pink Houses
+Black or White
+Blue Jean
+Red Light
+Yellow Ledbetter`),
+    angle('day_songs', 'music', 'wordplay', 'Name a song with a day of the week in its title.', `
+1 Manic Monday
+1 Friday I'm in Love
+1 Ruby Tuesday
+1 Sunday Bloody Sunday
+2 Saturday Night's Alright for Fighting|Saturday Night's Alright (for Fighting)
+2 Monday, Monday|Monday Monday
+2 Rainy Days and Mondays
+2 I Don't Like Mondays
+2 Friday
+2 Saturday in the Park
+Tuesday's Gone
+Sunday Morning
+Blue Monday
+Saturday Night
+Last Friday Night (T.G.I.F.)|Last Friday Night
+Come Monday
+New Moon on Monday
+Friday on My Mind
+Stormy Monday|They Call It Stormy Monday
+A Sunday Kind of Love|Sunday Kind of Love
+Gloomy Sunday
+Lazy Sunday
+Wednesday Morning, 3 A.M.|Wednesday Morning 3 AM
+Thursday
+Saturday Sun
+Friday Night
+Sunday Girl`),
+    angle('famous_taylor', 'people', 'people', 'Name a famous Taylor.', `
+1 Taylor Swift
+1 Elizabeth Taylor
+1 James Taylor
+2 Taylor Lautner
+2 Zachary Taylor
+2 Lawrence Taylor
+Taylor Hicks
+Taylor Kitsch
+Taylor Momsen
+Taylor Tomlinson
+Taylor Sheridan
+Taylor Hawkins
+Roger Taylor
+Taylor Dayne
+Chuck Taylor
+Taylor Fritz
+Taylor Townsend
+Taylor Russell
+Taylor Kinney
+Taylor Schilling
+Christine Taylor
+Holland Taylor
+Lili Taylor
+Rip Taylor
+Rod Taylor
+Robert Taylor
+Johnnie Taylor
+Koko Taylor
+Mick Taylor
+Andy Taylor
+John Taylor
+Jonathan Taylor
+Taylor Hall
+Taylor Zakhar Perez
+Taylor Frankie Paul`),
+    angle('famous_jennifer', 'people', 'people', 'Name a famous Jennifer.', `
+1 Jennifer Aniston
+1 Jennifer Lopez|J.Lo|JLo
+1 Jennifer Lawrence
+1 Jennifer Garner
+1 Jennifer Hudson
+2 Jennifer Coolidge
+2 Jennifer Love Hewitt
+2 Jennifer Connelly
+2 Jennifer Grey
+Jennifer Beals
+Jennifer Tilly
+Jennifer Jason Leigh
+Jennifer Capriati
+Jennifer Holliday
+Jennifer Nettles
+Jennifer Jones
+Jennifer Saunders
+Jennifer Ehle
+Jennifer Morrison
+Jennifer Esposito
+Jennifer Lewis
+Jennifer Doudna
+Jennifer Granholm
+Jennifer Egan
+Jennifer Weiner
+Jennifer Rush
+Jennifer Paige
+Jennifer Lame
+Jennifer Westfeldt
+Jennifer Carpenter
+Jennifer Hale
+Jennifer Ortiz`),
+    angle('one_name_singer', 'music', 'people', 'Name a singer known by one name.', `
+1 Madonna
+1 Cher
+1 Adele
+1 Rihanna
+1 Beyoncé|Beyonce
+1 Prince
+1 Shakira
+2 Sting
+2 Bono
+2 Drake
+2 Eminem
+2 Usher
+2 Lizzo
+2 Seal
+2 Pink|P!nk
+2 Sia
+2 Lorde
+2 Selena
+2 Brandy
+2 Aaliyah
+2 Ciara
+2 Fergie
+2 Kesha|Ke$ha
+2 Halsey
+2 Enya
+Björk|Bjork
+Rosalía|Rosalia
+Monica
+Dido
+Sade
+Jewel
+Yanni
+Liberace
+Donovan
+Morrissey
+Nelly
+Ludacris
+Pitbull
+Akon
+Ne-Yo|NeYo
+Moby
+Charo
+Lulu
+Melanie
+Raye
+Tiësto|Tiesto
+Avicii
+Zayn
+Common
+Mýa|Mya
+Ashanti
+Tiffany
+Raven|Raven-Symoné`),
+    angle('bond_actors', 'movies', 'people', 'Name an actor who played James Bond.', `
+1 Sean Connery|Connery
+1 Roger Moore|Moore
+1 Pierce Brosnan|Brosnan
+1 Daniel Craig|Craig
+2 Timothy Dalton|Dalton
+4 George Lazenby|Lazenby
+5 David Niven|Niven
+5 Barry Nelson`),
+    angle('batman_actors', 'movies', 'people', 'Name an actor who played Batman.', `
+1 Michael Keaton|Keaton
+1 Christian Bale|Bale
+1 Ben Affleck|Affleck
+1 George Clooney|Clooney
+2 Adam West
+2 Val Kilmer|Kilmer
+2 Robert Pattinson|Pattinson
+4 Kevin Conroy
+4 Will Arnett
+5 Lewis Wilson
+5 Robert Lowery`),
+    angle('ny_movies', 'movies', 'place', 'Name a movie set in New York City.', `
+1 Ghostbusters
+1 Home Alone 2|Home Alone 2: Lost in New York
+1 Elf
+1 When Harry Met Sally|When Harry Met Sally...
+1 Breakfast at Tiffany's
+1 The Godfather
+1 King Kong
+1 Spider-Man
+1 The Devil Wears Prada
+1 Sex and the City
+2 Taxi Driver
+2 Annie Hall
+2 Manhattan
+2 Big
+2 Enchanted
+2 Tootsie
+2 Wall Street
+2 West Side Story
+2 Do the Right Thing
+2 Goodfellas
+2 Night at the Museum
+2 The Avengers
+2 Miracle on 34th Street
+2 You've Got Mail
+2 Serendipity
+2 Hitch
+2 Men in Black
+2 Annie
+2 Saturday Night Fever
+2 Working Girl
+2 Coming to America
+2 Stuart Little
+2 Ghost
+2 Moonstruck
+2 Maid in Manhattan
+2 13 Going on 30
+2 The Wolf of Wall Street
+2 Joker
+2 I Am Legend
+2 Crocodile Dundee
+2 Splash
+Kramer vs. Kramer|Kramer vs Kramer
+Midnight Cowboy
+Mean Streets
+The Warriors
+Cloverfield
+Rosemary's Baby
+Fame
+The French Connection
+Dog Day Afternoon
+Birdman
+Uncut Gems
+Big Daddy
+Godzilla
+The Day After Tomorrow
+Hannah and Her Sisters
+Black Swan
+Inside Llewyn Davis
+Frances Ha
+Precious
+Eyes Wide Shut
+How to Lose a Guy in 10 Days
+Friends with Benefits
+The Intern
+Wonder Woman 1984
+Ocean's 8
+Anora
+Gangs of New York
+Leon: The Professional|The Professional|Léon
+Sleepless in Seattle`),
+    angle('paris_movies', 'movies', 'place', 'Name a movie set in Paris.', `
+1 Ratatouille
+1 Midnight in Paris
+1 Moulin Rouge!|Moulin Rouge
+2 Amélie|Amelie
+2 An American in Paris
+2 The Da Vinci Code
+2 Les Misérables|Les Miserables
+2 Hugo
+2 Taken
+2 The Hunchback of Notre Dame
+2 The Aristocats
+2 Julie & Julia|Julie and Julia
+2 Funny Face
+2 Charade
+2 Gigi
+2 French Kiss
+Before Sunset
+Paris, je t'aime|Paris je t'aime
+Ronin
+Breathless
+The 400 Blows
+La Haine
+Last Tango in Paris
+Frantic
+Something's Gotta Give
+The Bourne Identity
+Inception
+Sabrina
+Marie Antoinette
+Phantom of the Opera|The Phantom of the Opera
+Mission: Impossible – Fallout|Mission Impossible Fallout
+Lupin
+The Intouchables
+Cléo from 5 to 7|Cleo from 5 to 7
+Coco Before Chanel
+Moulin`),
+    angle('hospital_tv', 'tv', 'place', 'Name a TV show set in a hospital.', `
+1 Grey's Anatomy
+1 ER
+1 Scrubs
+1 House|House M.D.
+1 M*A*S*H|MASH
+2 Chicago Med
+2 The Good Doctor
+2 The Resident
+2 The Pitt
+2 General Hospital
+2 St. Elsewhere|St Elsewhere
+2 New Amsterdam
+2 Doogie Howser, M.D.|Doogie Howser
+Private Practice
+Code Black
+Nurse Jackie
+Chicago Hope
+Call the Midwife
+Transplant
+Doc
+St. Denis Medical|St Denis Medical
+Pulse
+Brilliant Minds
+Watson
+Mercy
+Trauma
+Royal Pains
+The Knick
+Holby City
+Casualty
+Doc Martin
+Hawthorne
+Saving Hope`),
+    angle('school_tv', 'tv', 'place', 'Name a TV show set in a high school.', `
+1 Glee
+1 Saved by the Bell
+1 Euphoria
+2 Freaks and Geeks
+2 Degrassi|Degrassi: The Next Generation
+2 Beverly Hills, 90210|90210|Beverly Hills 90210
+2 Friday Night Lights
+2 Never Have I Ever
+2 13 Reasons Why
+2 Sex Education
+2 Welcome Back, Kotter|Welcome Back Kotter
+2 Gossip Girl
+2 Riverdale
+2 Boy Meets World
+Dawson's Creek
+One Tree Hill
+Veronica Mars
+Heartstopper
+My So-Called Life
+Pretty Little Liars
+Elite
+High School Musical: The Musical: The Series
+Ginny & Georgia|Ginny and Georgia
+Cobra Kai
+Wednesday
+Buffy the Vampire Slayer
+Malcolm in the Middle
+Everybody Hates Chris
+The O.C.|The OC
+Popular
+Boston Public
+Grange Hill
+Skins
+Moesha
+Sabrina the Teenage Witch
+Lizzie McGuire
+Zoey 101
+Gilmore Girls
+XO, Kitty|XO Kitty`),
+    angle('ny_sitcoms', 'tv', 'place', 'Name a sitcom set in New York.', `
+1 Friends
+1 Seinfeld
+1 How I Met Your Mother
+1 Brooklyn Nine-Nine|Brooklyn 99
+2 30 Rock
+2 Will & Grace|Will and Grace
+2 The King of Queens
+2 Everybody Hates Chris
+2 The Nanny
+2 Mad About You
+2 2 Broke Girls|Two Broke Girls
+2 Taxi
+2 The Honeymooners
+2 The Jeffersons
+2 Only Murders in the Building
+2 Sex and the City
+2 Unbreakable Kimmy Schmidt
+Girls
+Broad City
+The Marvelous Mrs. Maisel|Marvelous Mrs. Maisel
+Spin City
+Russian Doll
+Ugly Betty
+Night Court
+Barney Miller
+The Odd Couple
+I Love Lucy
+Welcome Back, Kotter|Welcome Back Kotter
+Living Single
+Ramy
+Pen15
+Difficult People
+Younger
+Rhoda
+Sanford and Son`),
+    angle('roman_planets', 'science', 'crossover', 'Name a planet named after a Roman god.', `
+1 Mars
+1 Venus
+1 Jupiter
+1 Mercury
+1 Saturn
+2 Neptune`),
+    angle('person_countries', 'geo', 'crossover', 'Name a country named after a person.', `
+1 United States|USA|America|United States of America
+1 Colombia
+1 Bolivia
+1 Philippines
+1 Saudi Arabia
+2 Israel
+2 El Salvador
+2 Dominican Republic
+2 Saint Lucia
+Saint Kitts and Nevis
+Saint Vincent and the Grenadines
+São Tomé and Príncipe|Sao Tome and Principe
+San Marino
+Liechtenstein
+Marshall Islands
+Solomon Islands
+Seychelles
+Mauritius
+Nicaragua
+Eswatini|Swaziland
+Mozambique
+Uzbekistan`),
+    angle('person_states', 'geo', 'crossover', 'Name a U.S. state named after a person.', `
+1 Washington
+1 Virginia
+1 Georgia
+2 West Virginia
+2 Pennsylvania
+2 Maryland
+2 Louisiana
+2 North Carolina
+2 South Carolina
+2 New York
+Delaware`),
+    angle('december_holidays', 'holidays', 'time', 'Name a holiday in December.', `
+1 Christmas
+1 Hanukkah|Chanukah
+1 Kwanzaa
+1 New Year's Eve
+1 Christmas Eve
+2 Boxing Day
+2 Winter solstice|Solstice
+2 Festivus
+St. Nicholas Day|Saint Nicholas Day
+Las Posadas
+Yule
+St. Lucia Day|Santa Lucia|Saint Lucy's Day
+Pearl Harbor Remembrance Day|Pearl Harbor Day
+Feast of Our Lady of Guadalupe|Our Lady of Guadalupe
+Bodhi Day
+Human Rights Day
+Omisoka|Ōmisoka
+Feast of the Immaculate Conception|Immaculate Conception`),
+    angle('junk_drawer', 'home', 'everyday', 'Name something you\'d find in a junk drawer.', `
+1 Batteries|Battery
+1 Rubber bands|Rubber band
+1 Takeout menus|Menus|Menu
+1 Tape|Scotch tape
+1 Scissors
+1 Pens|Pen
+1 Keys|Key
+2 Paper clips|Paper clip
+2 Twist ties|Twist tie
+2 Matches
+2 Birthday candles|Candles
+2 Screwdriver
+2 Flashlight
+2 Coupons
+2 Chopsticks
+2 Ketchup packets|Soy sauce packets|Condiment packets|Sauce packets
+2 Thumbtacks|Pushpins
+2 Glue|Super glue
+2 Sticky notes|Post-its|Post-it notes
+2 Lighter
+2 Chargers|Charger|Phone charger|Cables|Cords
+2 Pencils|Pencil
+2 Coins|Change
+Safety pins
+Tape measure|Measuring tape
+Zip ties
+String|Twine
+Receipts
+Manuals|Instruction manuals
+Allen wrench|Allen wrenches|Allen keys
+Stamps
+Notepad
+Magnets
+Light bulbs
+Gum
+Sunglasses
+Bottle opener`),
+    angle('beach_bag', 'home', 'everyday', 'Name something people pack for the beach.', `
+1 Sunscreen
+1 Towel|Beach towel
+1 Umbrella|Beach umbrella
+1 Sunglasses
+1 Swimsuit|Bathing suit|Swimming suit
+1 Hat|Sun hat
+2 Cooler
+2 Beach chair|Chair|Chairs
+2 Water|Water bottle
+2 Snacks
+2 Book
+2 Sandals|Flip-flops|Flip flops
+2 Bucket|Pail
+2 Shovel
+2 Frisbee
+2 Beach ball|Volleyball
+Speaker
+Phone
+Blanket
+Boogie board
+Sand toys
+Cover-up
+Lip balm
+Aloe
+Bug spray
+Goggles
+Snorkel
+Kite
+Drinks
+Sandwiches`),
+    angle('family_games', 'games', 'everyday', 'Name a board game families play.', `
+1 Monopoly
+1 Scrabble
+1 Clue
+1 Sorry!|Sorry
+1 Candy Land
+1 Chutes and Ladders
+1 The Game of Life|Life
+1 Checkers
+1 Chess
+2 Trouble
+2 Risk
+2 Operation
+2 Battleship
+2 Connect Four|Connect 4
+2 Yahtzee
+2 Pictionary
+2 Trivial Pursuit
+2 Catan|Settlers of Catan
+2 Ticket to Ride
+2 Mouse Trap
+2 Hungry Hungry Hippos
+2 Guess Who?|Guess Who
+2 Uno
+Stratego
+Othello
+Parcheesi
+Backgammon
+Mancala
+Boggle
+Apples to Apples
+Sequence
+Taboo
+Cranium
+Scattergories
+Codenames
+Pandemic
+Carcassonne
+Twister
+Blokus
+Rummikub
+Chinese checkers
+Aggravation
+Kerplunk
+Jenga
+Headbanz
+Mastermind
+Payday`),
+    angle('card_games', 'games', 'category', 'Name a card game.', `
+1 Poker
+1 Solitaire
+1 Go Fish
+1 Blackjack|21
+1 War
+1 Uno
+2 Hearts
+2 Spades
+2 Gin rummy|Rummy|Gin
+2 Crazy Eights|Crazy 8s
+2 Old Maid
+2 Bridge
+2 Euchre
+2 Spoons
+2 Speed
+Cribbage
+Canasta
+Slapjack
+Spit
+Baccarat
+Pinochle
+Egyptian Ratscrew|Egyptian Rat Screw
+President
+Hand and Foot
+Phase 10
+Skip-Bo
+Rook
+Concentration|Memory
+Snap
+Kings in the Corner|Kings Corner
+Oh Hell
+Pitch
+Whist
+Cheat|I Doubt It
+Texas Hold'em|Texas Holdem
+Bezique
+Durak
+Piquet`),
+    angle('christmas_songs', 'music', 'time', 'Name a Christmas song.', `
+1 Jingle Bells
+1 Silent Night
+1 White Christmas
+1 Rudolph the Red-Nosed Reindeer|Rudolph
+1 Frosty the Snowman
+1 All I Want for Christmas Is You
+1 Last Christmas
+1 Feliz Navidad
+1 Jingle Bell Rock
+1 Rockin' Around the Christmas Tree
+1 Deck the Halls
+1 Joy to the World
+1 The Twelve Days of Christmas|Twelve Days of Christmas
+1 Let It Snow!|Let It Snow|Let It Snow! Let It Snow! Let It Snow!
+1 Santa Claus Is Comin' to Town|Santa Claus Is Coming to Town
+2 O Holy Night
+2 Have Yourself a Merry Little Christmas
+2 Blue Christmas
+2 Here Comes Santa Claus
+2 Chestnuts Roasting on an Open Fire
+2 Little Drummer Boy|The Little Drummer Boy
+2 Away in a Manger
+2 O Come, All Ye Faithful|O Come All Ye Faithful
+2 Hark! The Herald Angels Sing|Hark the Herald Angels Sing
+2 It's Beginning to Look a Lot Like Christmas
+2 Sleigh Ride
+2 Winter Wonderland
+2 Silver Bells
+2 We Wish You a Merry Christmas
+2 Santa Baby
+2 A Holly Jolly Christmas|Holly Jolly Christmas
+2 It's the Most Wonderful Time of the Year
+2 Grandma Got Run Over by a Reindeer
+2 Mary, Did You Know?|Mary Did You Know
+2 Carol of the Bells
+2 Do You Hear What I Hear?|Do You Hear What I Hear
+Mele Kalikimaka
+Run Rudolph Run
+Happy Xmas (War Is Over)|Happy Xmas|War Is Over
+Wonderful Christmastime
+Do They Know It's Christmas?|Do They Know It's Christmas
+Underneath the Tree
+Christmas (Baby Please Come Home)|Baby Please Come Home
+I Saw Mommy Kissing Santa Claus
+God Rest Ye Merry Gentlemen
+O Christmas Tree
+The First Noel|The First Noël
+What Child Is This?|What Child Is This
+Little Saint Nick
+Christmas Tree Farm
+Santa Tell Me
+Merry Christmas Darling
+Please Come Home for Christmas
+Baby, It's Cold Outside|Baby It's Cold Outside
+I'll Be Home for Christmas
+Up on the Housetop
+Good King Wenceslas`),
+    angle('nursery_rhymes', 'kids', 'category', 'Name a nursery rhyme.', `
+1 Twinkle, Twinkle, Little Star|Twinkle Twinkle Little Star
+1 Mary Had a Little Lamb
+1 Humpty Dumpty
+1 Jack and Jill
+1 Hickory Dickory Dock
+1 Itsy Bitsy Spider|Incy Wincy Spider
+1 Baa, Baa, Black Sheep|Baa Baa Black Sheep
+1 Row, Row, Row Your Boat|Row Row Row Your Boat
+1 Old MacDonald Had a Farm|Old MacDonald
+1 Rock-a-bye Baby|Rock a Bye Baby
+2 London Bridge Is Falling Down|London Bridge
+2 Ring Around the Rosie|Ring a Ring o' Roses
+2 Hey Diddle Diddle
+2 Little Bo-Peep|Little Bo Peep
+2 Little Miss Muffet
+2 Three Blind Mice
+2 Pat-a-Cake|Patty Cake
+2 This Little Piggy
+2 The Wheels on the Bus|Wheels on the Bus
+2 Hush, Little Baby|Hush Little Baby
+2 Rain, Rain, Go Away|Rain Rain Go Away
+2 Pop Goes the Weasel
+2 Old Mother Hubbard
+2 Jack Be Nimble
+2 Little Jack Horner
+2 Hot Cross Buns
+2 Five Little Monkeys
+2 The Muffin Man|Do You Know the Muffin Man
+2 Are You Sleeping?|Frère Jacques|Frere Jacques
+Sing a Song of Sixpence
+Yankee Doodle
+Pease Porridge Hot
+Georgie Porgie
+Little Boy Blue
+Peter Piper
+Simple Simon
+Wee Willie Winkie
+Polly Put the Kettle On
+Jack Sprat
+Ding Dong Bell
+Mary, Mary, Quite Contrary|Mary Mary Quite Contrary
+The Grand Old Duke of York|Grand Old Duke of York
+One, Two, Buckle My Shoe|One Two Buckle My Shoe
+Rub-a-dub-dub|Rub a Dub Dub
+There Was an Old Woman Who Lived in a Shoe
+Ladybird, Ladybird`),
+    angle('striped_animals', 'nature', 'trait', 'Name an animal with stripes.', `
+1 Zebra
+1 Tiger
+1 Skunk
+1 Bee|Bumblebee|Honeybee
+2 Raccoon
+2 Chipmunk
+2 Clownfish
+2 Tabby cat|Tabby
+2 Lemur|Ring-tailed lemur
+Okapi
+Bongo
+Hyena|Striped hyena
+Numbat
+Badger
+Wasp|Yellow jacket
+Garter snake
+Coral snake
+Zebrafish
+Kudu
+Nyala
+Thomson's gazelle
+Lionfish
+Angelfish
+Tasmanian tiger|Thylacine
+Quagga
+Striped bass
+Sergeant major
+Tiger shark
+Banded mongoose`),
+    angle('boneless_sea', 'nature', 'trait', 'Name a sea creature with no bones.', `
+1 Jellyfish
+1 Octopus
+1 Squid
+1 Starfish|Sea star
+1 Crab
+1 Lobster
+1 Shrimp
+2 Sea urchin
+2 Sea cucumber
+2 Sponge
+2 Coral
+2 Sea anemone|Anemone
+2 Clam
+2 Oyster
+2 Mussel
+2 Scallop
+2 Cuttlefish
+2 Sand dollar
+Sea snail|Snail|Conch|Whelk
+Sea slug|Nudibranch
+Nautilus
+Krill
+Barnacle
+Portuguese man o' war|Man o' war
+Sea sponge
+Hermit crab
+Horseshoe crab
+Sea pen
+Comb jelly`),
+    angle('baby_animals', 'nature', 'wordplay', 'Name a word for a baby animal.', `
+1 Puppy|Pup
+1 Kitten|Kitty
+1 Calf
+1 Foal
+1 Cub
+1 Chick
+1 Duckling
+1 Lamb
+1 Piglet
+2 Kid
+2 Fawn
+2 Joey
+2 Gosling
+2 Tadpole
+2 Bunny|Kit
+2 Owlet
+2 Cygnet
+2 Hatchling
+Eaglet
+Leveret
+Fry
+Larva
+Caterpillar
+Squab
+Poult
+Cria
+Colt
+Filly
+Whelp
+Spat
+Nymph
+Elver
+Fledgling
+Nestling
+Infant`),
+    angle('terriers', 'nature', 'wordplay', 'Name a dog breed with "terrier" in its name.', `
+1 Yorkshire Terrier|Yorkie
+1 Jack Russell Terrier|Jack Russell
+1 Boston Terrier
+1 Bull Terrier
+2 Scottish Terrier|Scottie
+2 West Highland White Terrier|Westie
+2 Airedale Terrier|Airedale
+2 Fox Terrier|Wire Fox Terrier|Smooth Fox Terrier
+2 Pit Bull Terrier|Pit bull|American Pit Bull Terrier
+2 Staffordshire Bull Terrier|Staffy|Staffie
+Rat Terrier
+Cairn Terrier
+Border Terrier
+Soft Coated Wheaten Terrier|Wheaten Terrier|Wheaten
+American Staffordshire Terrier|AmStaff
+Australian Terrier
+Bedlington Terrier
+Kerry Blue Terrier
+Irish Terrier
+Welsh Terrier
+Skye Terrier
+Norwich Terrier
+Norfolk Terrier
+Silky Terrier
+Tibetan Terrier
+Manchester Terrier
+Russell Terrier
+Parson Russell Terrier
+Sealyham Terrier
+Lakeland Terrier
+Dandie Dinmont Terrier
+Glen of Imaal Terrier
+Miniature Bull Terrier
+Toy Fox Terrier
+Miniature Schnauzer
+Black Russian Terrier`),
+    angle('bouquet_flowers', 'style', 'everyday', 'Name a flower you\'d see in a bouquet.', `
+1 Rose|Roses
+1 Tulip|Tulips
+1 Lily|Lilies
+1 Daisy|Daisies
+1 Sunflower|Sunflowers
+1 Carnation|Carnations
+2 Peony|Peonies
+2 Orchid|Orchids
+2 Hydrangea|Hydrangeas
+2 Baby's breath
+2 Chrysanthemum|Mum|Mums
+2 Calla lily
+2 Iris
+2 Dahlia
+2 Lavender
+2 Daffodil|Daffodils
+2 Lilac
+2 Gerbera|Gerbera daisy
+Ranunculus
+Lisianthus
+Freesia
+Anemone
+Alstroemeria|Peruvian lily
+Gardenia
+Snapdragon
+Stock
+Sweet pea
+Magnolia
+Gladiolus
+Delphinium
+Aster
+Protea
+Hyacinth
+Camellia
+Zinnia
+Cosmos
+Statice
+Waxflower
+Larkspur
+Eucalyptus
+Forget-me-not
+Marigold
+Poppy
+Orange blossom
+Stephanotis
+Lily of the valley`),
+    angle('designers', 'style', 'people', 'Name a fashion designer.', `
+1 Coco Chanel|Chanel
+1 Christian Dior|Dior
+1 Giorgio Armani|Armani
+1 Ralph Lauren
+1 Calvin Klein
+1 Versace|Gianni Versace|Donatella Versace
+1 Michael Kors
+1 Vera Wang
+1 Gucci|Guccio Gucci
+2 Tom Ford
+2 Marc Jacobs
+2 Donna Karan|DKNY
+2 Diane von Furstenberg|DVF
+2 Tommy Hilfiger
+2 Valentino|Valentino Garavani
+2 Yves Saint Laurent|YSL|Saint Laurent
+2 Alexander McQueen|McQueen
+2 Stella McCartney
+2 Karl Lagerfeld
+2 Oscar de la Renta
+2 Carolina Herrera
+2 Kate Spade
+2 Betsey Johnson
+2 Vivienne Westwood
+2 Christian Louboutin|Louboutin
+2 Manolo Blahnik|Manolo
+2 Jimmy Choo
+2 Prada|Miuccia Prada
+2 Givenchy|Hubert de Givenchy
+2 Tory Burch
+Jean Paul Gaultier|Gaultier
+Virgil Abloh
+Isaac Mizrahi
+Zac Posen
+Christian Siriano
+Kenzo
+Dolce & Gabbana|Dolce and Gabbana|Domenico Dolce|Stefano Gabbana
+Halston
+Bill Blass
+Anna Sui
+Rei Kawakubo
+Issey Miyake
+Elsa Schiaparelli|Schiaparelli
+Pierre Cardin
+Thierry Mugler|Mugler
+Phoebe Philo
+Jason Wu
+Prabal Gurung
+Bob Mackie
+Edith Head
+Mary Quant
+Sergio Hudson
+Pharrell Williams`),
+    angle('makeup', 'style', 'everyday', 'Name something in a makeup bag.', `
+1 Lipstick
+1 Mascara
+1 Eyeliner
+1 Foundation
+1 Blush
+1 Eyeshadow|Eye shadow
+2 Concealer
+2 Bronzer
+2 Powder|Face powder|Setting powder
+2 Lip gloss
+2 Lip liner
+2 Primer
+2 Highlighter
+2 Makeup brushes|Brushes|Brush
+2 Sponge|Beauty blender|Makeup sponge
+2 Tweezers
+2 Eyelash curler|Lash curler
+2 Lip balm|Chapstick
+Setting spray
+Contour
+Brow pencil|Eyebrow pencil
+False lashes|Fake eyelashes|Lashes
+Nail polish
+Tinted moisturizer
+BB cream
+CC cream
+Lip stain
+Brow gel
+Color corrector
+Makeup remover|Makeup wipes
+Mirror|Compact
+Bobby pins
+Hair tie
+Perfume
+Moisturizer`),
+    angle('shoes', 'style', 'category', 'Name a kind of shoe.', `
+1 Sneakers|Sneaker|Tennis shoes
+1 Heels|High heels
+1 Boots|Boot
+1 Sandals|Sandal
+1 Flip-flops|Flip flops
+1 Loafers|Loafer
+1 Flats|Ballet flats
+2 Pumps
+2 Stilettos
+2 Wedges
+2 Clogs
+2 Slippers
+2 Mules
+2 Oxfords
+2 Moccasins
+2 Cowboy boots
+2 Rain boots|Wellies|Wellingtons|Galoshes
+2 Crocs
+2 Uggs
+2 Slides
+Espadrilles
+Platforms
+Combat boots
+Hiking boots
+Mary Janes
+Kitten heels
+Ankle boots|Booties
+Chelsea boots
+Boat shoes
+Brogues
+Cleats
+Dress shoes
+Slingbacks
+Peep toes
+Gladiator sandals
+Huaraches
+Birkenstocks
+Jellies
+Knee-high boots
+Thigh-high boots
+Snow boots
+Tap shoes
+Ballet slippers|Pointe shoes
+Running shoes
+High-tops
+Wingtips
+Derby shoes|Derbies
+Monk straps
+Desert boots
+Moon boots`),
+    angle('coffee_drinks', 'drink', 'category', 'Name a coffee drink.', `
+1 Latte
+1 Cappuccino
+1 Espresso
+1 Americano
+1 Mocha
+1 Iced coffee
+2 Macchiato
+2 Flat white
+2 Cold brew
+2 Frappuccino
+2 Pumpkin spice latte|PSL
+2 Black coffee|Drip coffee|Drip
+Cortado
+Affogato
+Café au lait|Cafe au lait
+Red eye
+Irish coffee
+Turkish coffee
+Ristretto
+Lungo
+Doppio
+Breve
+Nitro cold brew|Nitro
+Café con leche|Cafe con leche
+Vietnamese iced coffee|Cà phê sữa đá
+Café Cubano|Cuban coffee|Cafecito
+Dalgona coffee|Dalgona
+Pour-over|Pour over
+Café de olla|Cafe de olla
+Shakerato
+Freddo espresso
+Long black
+Piccolo
+Gibraltar
+Frappé|Frappe
+Espresso tonic`),
+    angle('cocktails', 'drink', 'category', 'Name a cocktail.', `
+1 Margarita
+1 Martini
+1 Mojito
+1 Piña colada|Pina colada
+1 Cosmopolitan|Cosmo
+1 Bloody Mary
+1 Old Fashioned
+1 Mimosa
+2 Manhattan
+2 Daiquiri
+2 Mai Tai
+2 Moscow Mule
+2 Negroni
+2 Whiskey sour
+2 Tom Collins
+2 Bellini
+2 Long Island iced tea
+2 Sex on the Beach
+2 Mint julep
+2 Aperol spritz|Spritz
+2 Tequila sunrise
+2 White Russian
+2 Screwdriver
+2 Gin and tonic
+2 Rum and Coke|Cuba libre
+2 Espresso martini
+2 Paloma
+Gimlet
+Sidecar
+Sazerac
+Hurricane
+Dark 'n' Stormy|Dark and Stormy
+Caipirinha
+French 75
+Lemon drop
+Kamikaze
+Mudslide
+Grasshopper
+Pisco sour
+Amaretto sour
+Bahama Mama
+Zombie
+Hot toddy
+Sangria
+Michelada
+Appletini
+Singapore Sling
+Rob Roy
+Boulevardier
+Ranch water
+Hugo spritz
+Black Russian
+Salty dog
+Greyhound
+Tom and Jerry
+Vesper
+Aviation
+Last Word
+Hanky Panky
+Bee's Knees
+Corpse Reviver`),
+    angle('thanksgiving', 'holidays', 'time', 'Name a food on a Thanksgiving table.', `
+1 Turkey
+1 Stuffing|Dressing
+1 Mashed potatoes
+1 Gravy
+1 Cranberry sauce
+1 Pumpkin pie
+2 Green bean casserole|Green beans
+2 Sweet potatoes|Candied yams|Yams|Sweet potato casserole
+2 Rolls|Dinner rolls
+2 Corn
+2 Cornbread
+2 Mac and cheese|Macaroni and cheese
+2 Pecan pie
+2 Apple pie
+2 Ham
+Brussels sprouts
+Deviled eggs
+Collard greens
+Salad
+Squash
+Biscuits
+Corn casserole
+Sweet potato pie
+Cranberry relish
+Butternut squash
+Roasted vegetables
+Pie
+Wine
+Ambrosia
+Jell-O salad|Jello salad
+Carrots
+Mushrooms
+Potatoes`),
+    angle('wedding_things', 'holidays', 'everyday', 'Name something you\'d see at a wedding.', `
+1 Bride
+1 Groom
+1 Wedding cake|Cake
+1 Rings|Ring|Wedding rings
+1 Flowers
+1 Bouquet
+1 Veil
+1 Wedding dress|Dress|Gown
+2 Tuxedo|Tux
+2 Bridesmaids|Bridesmaid
+2 Groomsmen|Groomsman
+2 Flower girl
+2 Ring bearer
+2 Officiant|Priest|Minister|Rabbi|Pastor
+2 DJ|Band
+2 Champagne
+2 First dance
+2 Toast|Toasts
+2 Vows
+2 Photographer
+Garter
+Rice
+Confetti
+Limo|Limousine
+Guest book
+Favors
+Centerpieces
+Aisle
+Arch
+Candles
+Dancing
+Bubbles
+Sparklers
+Best man
+Maid of honor
+Bouquet toss
+Programs
+Seating chart
+Open bar|Bar`),
+    angle('snl', 'tv', 'people', 'Name a "Saturday Night Live" cast member.', `
+1 Tina Fey
+1 Amy Poehler
+1 Will Ferrell
+1 Eddie Murphy
+1 Bill Murray
+1 Adam Sandler
+1 Chris Farley
+1 Mike Myers
+1 Kristen Wiig
+1 Pete Davidson
+1 Jimmy Fallon
+2 Chevy Chase
+2 John Belushi
+2 Gilda Radner
+2 Dan Aykroyd
+2 Dana Carvey
+2 Maya Rudolph
+2 Kate McKinnon
+2 Kenan Thompson
+2 Andy Samberg
+2 Bill Hader
+2 Seth Meyers
+2 Will Forte
+2 Fred Armisen
+2 Jason Sudeikis
+2 Chris Rock
+2 David Spade
+2 Phil Hartman
+2 Julia Louis-Dreyfus
+2 Molly Shannon
+2 Tracy Morgan
+2 Bowen Yang
+Cecily Strong
+Aidy Bryant
+Cheri Oteri
+Ana Gasteyer
+Rachel Dratch
+Jan Hooks
+Sarah Silverman
+Larry David
+Billy Crystal
+Martin Short
+Chris Kattan
+Jay Pharoah
+Leslie Jones
+Sasheer Zamata
+Ego Nwodim
+Heidi Gardner
+Chloe Fineman
+Colin Jost
+Michael Che
+Sarah Sherman
+Mikey Day
+James Austin Johnson
+Marcello Hernández|Marcello Hernandez
+Chris Redd
+Melissa Villaseñor|Melissa Villasenor
+Jane Curtin
+Laraine Newman
+Garrett Morris
+Joe Piscopo
+Robert Downey Jr.|Robert Downey Jr
+Ben Stiller
+Damon Wayans
+Norm Macdonald
+Tim Meadows
+Jim Breuer
+Horatio Sanz
+Darrell Hammond
+Taran Killam
+Bobby Moynihan
+Vanessa Bayer
+Nasim Pedrad
+Jon Lovitz
+Kevin Nealon
+Rob Schneider
+Chris Parnell`),
+    angle('talk_hosts', 'tv', 'people', 'Name a talk show host.', `
+1 Oprah Winfrey|Oprah
+1 Ellen DeGeneres|Ellen
+1 Jimmy Fallon
+1 Jimmy Kimmel
+1 Stephen Colbert
+1 Conan O'Brien|Conan
+1 Jay Leno
+1 David Letterman|Letterman
+1 Johnny Carson
+1 Kelly Clarkson
+2 Drew Barrymore
+2 Seth Meyers
+2 James Corden
+2 Trevor Noah
+2 Jon Stewart
+2 Wendy Williams
+2 Rosie O'Donnell
+2 Kelly Ripa
+2 Regis Philbin
+2 Ryan Seacrest
+2 Tamron Hall
+2 Sherri Shepherd
+2 Steve Harvey
+2 Jerry Springer
+2 Maury Povich|Maury
+2 Dr. Phil|Phil McGraw
+2 Whoopi Goldberg
+2 Andy Cohen
+2 Chelsea Handler
+2 John Oliver
+2 Bill Maher
+2 Michael Strahan
+2 Hoda Kotb
+2 Martha Stewart
+2 Rachael Ray
+Phil Donahue
+Montel Williams
+Sally Jessy Raphael
+Ricki Lake
+Tyra Banks
+Joy Behar
+Arsenio Hall
+Craig Ferguson
+Merv Griffin
+Dick Cavett
+Graham Norton
+Larry King
+Mark Consuelos
+Kathie Lee Gifford
+Samantha Bee
+Lilly Singh
+Carson Daly
+Tom Snyder
+Meredith Vieira
+Queen Latifah
+Taylor Tomlinson
+Jenny Jones
+Geraldo Rivera|Geraldo
+Mike Douglas
+Dinah Shore
+Jack Paar
+Steve Allen
+Chelsea Lately`),
+    angle('chefs', 'food', 'people', 'Name a famous chef.', `
+1 Gordon Ramsay
+1 Julia Child
+1 Bobby Flay
+1 Rachael Ray
+1 Ina Garten
+1 Emeril Lagasse|Emeril
+1 Guy Fieri
+1 Anthony Bourdain
+1 Wolfgang Puck
+1 Martha Stewart
+2 Jamie Oliver
+2 Paula Deen
+2 Giada De Laurentiis|Giada
+2 Alton Brown
+2 José Andrés|Jose Andres
+2 Ree Drummond|The Pioneer Woman|Pioneer Woman
+2 Nigella Lawson
+2 Padma Lakshmi
+2 Mario Batali
+2 Tom Colicchio
+2 Paul Hollywood
+2 Mary Berry
+2 Duff Goldman
+2 Buddy Valastro
+2 Masaharu Morimoto|Morimoto
+Thomas Keller
+Marcus Samuelsson
+Ayesha Curry
+Sandra Lee
+Daniel Boulud
+Alice Waters
+David Chang
+Jacques Pépin|Jacques Pepin
+Nobu Matsuhisa|Nobu
+Samin Nosrat
+Carla Hall
+Curtis Stone
+Sunny Anderson
+Michael Symon
+Christina Tosi
+Eric Ripert
+Dominique Ansel
+Antoni Porowski
+Paul Prudhomme
+James Beard
+Graham Kerr
+Justin Wilson
+Jeff Smith
+Ming Tsai
+Rick Bayless
+Ainsley Harriott
+Delia Smith
+Nadiya Hussain
+Edna Lewis
+Leah Chase
+`),
+    angle('stephen_king', 'books', 'category', 'Name a Stephen King book.', `
+1 It
+1 The Shining
+1 Carrie
+1 Misery
+1 Pet Sematary
+2 The Stand
+2 Cujo
+2 Christine
+2 The Green Mile
+2 'Salem's Lot|Salems Lot
+2 Firestarter
+2 The Dead Zone
+2 11/22/63
+2 Doctor Sleep
+2 Under the Dome
+2 Dolores Claiborne
+2 Gerald's Game
+2 Needful Things
+2 The Running Man
+2 The Long Walk
+2 Thinner
+2 The Outsider
+2 The Dark Tower
+Cycle of the Werewolf
+The Talisman
+The Eyes of the Dragon
+The Tommyknockers
+The Dark Half
+Insomnia
+Rose Madder
+Desperation
+Bag of Bones
+The Girl Who Loved Tom Gordon
+Dreamcatcher
+Black House
+From a Buick 8
+Cell
+Lisey's Story
+Duma Key
+Joyland
+Mr. Mercedes|Mr Mercedes
+Revival
+Finders Keepers
+End of Watch
+Gwendy's Button Box
+Sleeping Beauties
+Elevation
+The Institute
+Later
+Billy Summers
+Fairy Tale
+Holly
+Never Flinch
+The Gunslinger
+The Drawing of the Three
+The Waste Lands
+Wizard and Glass
+Wolves of the Calla
+Song of Susannah
+The Wind Through the Keyhole
+Rage
+Roadwork
+The Regulators
+Blaze
+The Colorado Kid
+Different Seasons
+Night Shift
+Skeleton Crew
+Four Past Midnight
+Danse Macabre
+On Writing`),
+    angle('austen_characters', 'books', 'people', 'Name a Jane Austen character.', `
+1 Elizabeth Bennet|Lizzy Bennet|Elizabeth|Lizzy
+1 Mr. Darcy|Darcy|Fitzwilliam Darcy|Mr Darcy
+1 Emma Woodhouse|Emma
+1 Jane Bennet
+2 Mr. Knightley|Knightley|Mr Knightley
+2 Mr. Bingley|Bingley|Charles Bingley|Mr Bingley
+2 Mr. Collins|Mr Collins
+2 Lydia Bennet|Lydia
+2 Mr. Wickham|Wickham|George Wickham
+2 Lady Catherine de Bourgh|Lady Catherine
+2 Elinor Dashwood|Elinor
+2 Marianne Dashwood|Marianne
+2 Colonel Brandon|Brandon
+2 Mrs. Bennet|Mrs Bennet
+2 Mr. Bennet|Mr Bennet
+Willoughby|John Willoughby
+Edward Ferrars
+Anne Elliot
+Captain Wentworth|Frederick Wentworth|Wentworth
+Fanny Price
+Edmund Bertram
+Catherine Morland
+Henry Tilney
+Harriet Smith
+Charlotte Lucas
+Frank Churchill
+Mr. Elton|Mr Elton
+Miss Bates
+Isabella Thorpe
+Mary Crawford
+Henry Crawford
+Georgiana Darcy
+Caroline Bingley
+Kitty Bennet
+Mary Bennet
+Jane Fairfax
+Lucy Steele
+Mrs. Jennings|Mrs Jennings
+Sir Walter Elliot`),
+    angle('potter_characters', 'books', 'people', 'Name a character in the "Harry Potter" books.', `
+1 Hermione Granger|Hermione
+1 Ron Weasley|Ron
+1 Albus Dumbledore|Dumbledore
+1 Severus Snape|Snape
+1 Lord Voldemort|Voldemort|Tom Riddle|You-Know-Who
+1 Draco Malfoy|Draco|Malfoy
+1 Rubeus Hagrid|Hagrid
+2 Sirius Black|Sirius
+2 Remus Lupin|Lupin
+2 Ginny Weasley|Ginny
+2 Fred Weasley|Fred
+2 George Weasley|George
+2 Neville Longbottom|Neville
+2 Luna Lovegood|Luna
+2 Minerva McGonagall|McGonagall|Professor McGonagall
+2 Dobby
+2 Bellatrix Lestrange|Bellatrix
+2 Lucius Malfoy|Lucius
+2 Dolores Umbridge|Umbridge
+2 Cedric Diggory|Cedric
+2 Hedwig
+2 Molly Weasley|Mrs. Weasley
+2 Arthur Weasley|Mr. Weasley
+2 Dudley Dursley|Dudley
+2 Vernon Dursley|Uncle Vernon
+2 Petunia Dursley|Aunt Petunia
+Cho Chang
+Percy Weasley|Percy
+Bill Weasley
+Charlie Weasley
+Peter Pettigrew|Wormtail
+Gilderoy Lockhart|Lockhart
+Mad-Eye Moody|Alastor Moody|Moody
+Nymphadora Tonks|Tonks
+Kingsley Shacklebolt
+Argus Filch|Filch
+Crookshanks
+Fawkes
+Kreacher
+Lily Potter
+James Potter
+Viktor Krum|Krum
+Fleur Delacour|Fleur
+Seamus Finnigan|Seamus
+Dean Thomas
+Lavender Brown
+Oliver Wood
+Moaning Myrtle|Myrtle
+Nearly Headless Nick
+Peeves
+Quirinus Quirrell|Professor Quirrell|Quirrell
+Horace Slughorn|Slughorn
+Sybill Trelawney|Trelawney
+Pomona Sprout|Professor Sprout
+Filius Flitwick|Flitwick
+Cornelius Fudge|Fudge
+Rita Skeeter
+Aberforth Dumbledore
+Gellert Grindelwald|Grindelwald
+Nagini
+Buckbeak
+Griphook
+Garrick Ollivander|Ollivander
+Vincent Crabbe|Crabbe
+Gregory Goyle|Goyle
+Fenrir Greyback
+Barty Crouch Jr.|Barty Crouch
+Scabbers
+Fluffy
+Hannah Abbott
+Ernie Macmillan
+Colin Creevey
+Bathilda Bagshot
+Xenophilius Lovegood
+Narcissa Malfoy`),
+    angle('award_shows', 'awards', 'category', 'Name an awards show.', `
+1 Oscars|Academy Awards|The Oscars
+1 Grammys|Grammy Awards
+1 Emmys|Emmy Awards
+1 Golden Globes|Golden Globe Awards
+1 Tonys|Tony Awards
+2 MTV Video Music Awards|VMAs|VMA
+2 American Music Awards|AMAs
+2 Billboard Music Awards
+2 People's Choice Awards
+2 Kids' Choice Awards|Kids Choice Awards
+2 BAFTAs|BAFTA Awards
+2 CMA Awards|Country Music Association Awards|CMAs
+2 BET Awards
+2 Screen Actors Guild Awards|SAG Awards|Actor Awards
+2 Critics' Choice Awards|Critics Choice Awards
+2 ESPYs|ESPY Awards
+2 Daytime Emmys
+2 Teen Choice Awards
+2 Razzies|Golden Raspberry Awards
+ACM Awards|Academy of Country Music Awards
+Independent Spirit Awards|Spirit Awards
+iHeartRadio Music Awards
+NAACP Image Awards|Image Awards
+Brit Awards|Brits
+Juno Awards
+Latin Grammys
+Soul Train Awards
+Webby Awards|Webbys
+Peabody Awards|Peabodys
+Gotham Awards
+Obie Awards
+Billboard Latin Music Awards
+CMT Music Awards
+Streamy Awards
+Game Awards|The Game Awards
+Primetime Emmys`),
+    angle('oscar_hosts', 'awards', 'people', 'Name someone who has hosted the Oscars.', `
+1 Billy Crystal
+1 Bob Hope
+1 Whoopi Goldberg
+1 Ellen DeGeneres
+1 Jimmy Kimmel
+1 Chris Rock
+2 Johnny Carson
+2 Jon Stewart
+2 Hugh Jackman
+2 Steve Martin
+2 Conan O'Brien
+2 David Letterman
+2 Anne Hathaway
+2 James Franco
+2 Seth MacFarlane
+2 Neil Patrick Harris
+2 Alec Baldwin
+2 Amy Schumer
+2 Wanda Sykes
+2 Regina Hall
+Jack Lemmon
+Frank Sinatra
+Jerry Lewis
+David Niven
+Richard Pryor
+Paul Hogan
+Chevy Chase
+Goldie Hawn
+Diana Ross
+Jane Fonda
+Walter Matthau
+Dean Martin
+Burt Reynolds
+Warren Beatty
+Shirley MacLaine
+Michael Caine
+Sammy Davis Jr.
+Will Rogers
+Rosalind Russell
+Fred Astaire
+Charlton Heston
+Gene Kelly
+Danny Kaye`),
+    angle('racket_sports', 'sports', 'trait', 'Name a sport played with a racket or paddle.', `
+1 Tennis
+1 Ping-pong|Table tennis|Ping pong
+1 Badminton
+1 Pickleball
+2 Squash
+2 Racquetball
+2 Padel
+Platform tennis|Paddle tennis
+Beach tennis
+Real tennis|Court tennis
+Racquets|Rackets
+Lacrosse
+Jai alai
+Frontenis
+Speedminton
+Pelota`),
+    angle('winter_olympics', 'sports', 'category', 'Name a Winter Olympics sport.', `
+1 Figure skating|Skating
+1 Ice hockey|Hockey
+1 Skiing|Alpine skiing|Downhill skiing
+1 Snowboarding
+1 Speed skating
+1 Bobsled|Bobsleigh
+2 Curling
+2 Luge
+2 Ski jumping
+2 Cross-country skiing|Cross country skiing
+2 Biathlon
+2 Skeleton
+2 Short track|Short track speed skating
+2 Freestyle skiing|Moguls|Aerials
+Nordic combined
+Ski mountaineering|Skimo
+Ice dancing|Ice dance`),
+    angle('tennis_players', 'sports', 'people', 'Name a famous tennis player.', `
+1 Serena Williams|Serena
+1 Venus Williams|Venus
+1 Roger Federer|Federer
+1 Rafael Nadal|Nadal|Rafa Nadal|Rafa
+1 Novak Djokovic|Djokovic
+1 Billie Jean King
+1 Andre Agassi|Agassi
+1 John McEnroe|McEnroe
+2 Steffi Graf
+2 Martina Navratilova|Navratilova
+2 Chris Evert
+2 Pete Sampras|Sampras
+2 Jimmy Connors|Connors
+2 Björn Borg|Bjorn Borg|Borg
+2 Arthur Ashe
+2 Monica Seles
+2 Maria Sharapova|Sharapova
+2 Naomi Osaka
+2 Coco Gauff
+2 Carlos Alcaraz|Alcaraz
+2 Jannik Sinner|Sinner
+2 Andy Murray
+2 Anna Kournikova
+2 Andy Roddick
+Iga Świątek|Iga Swiatek|Swiatek
+Aryna Sabalenka|Sabalenka
+Martina Hingis
+Justine Henin
+Kim Clijsters
+Lindsay Davenport
+Jennifer Capriati
+Rod Laver
+Boris Becker
+Ivan Lendl
+Stefan Edberg
+Althea Gibson
+Margaret Court
+Evonne Goolagong
+Ashleigh Barty
+Emma Raducanu
+Taylor Fritz
+Frances Tiafoe
+Ben Shelton
+Madison Keys
+Sloane Stephens
+Gabriela Sabatini
+Arantxa Sánchez Vicario|Arantxa Sanchez Vicario
+Elena Rybakina
+Jessica Pegula
+Daniil Medvedev
+Alexander Zverev
+Stan Wawrinka
+Michael Chang
+Jim Courier
+Mary Pierce
+Amélie Mauresmo|Amelie Mauresmo
+Li Na
+Victoria Azarenka
+Caroline Wozniacki
+Petra Kvitová|Petra Kvitova`),
+    angle('gymnasts', 'sports', 'people', 'Name a famous gymnast.', `
+1 Simone Biles
+1 Nadia Comăneci|Nadia Comaneci|Nadia
+1 Mary Lou Retton
+1 Gabby Douglas
+2 Aly Raisman
+2 Shawn Johnson
+2 Nastia Liukin
+2 Kerri Strug
+2 Dominique Dawes
+2 Suni Lee|Sunisa Lee
+2 Jordan Chiles
+2 Olga Korbut
+2 McKayla Maroney
+Kohei Uchimura
+Bart Conner
+Shannon Miller
+Carly Patterson
+Paul Hamm
+Jade Carey
+Laurie Hernandez
+Kyla Ross
+Dominique Moceanu
+Larisa Latynina
+Rebeca Andrade
+Hezly Rivera
+Frederick Richard
+Brody Malone
+Stephen Nedoroscik
+Svetlana Khorkina
+Vera Čáslavská|Vera Caslavska
+Kim Zmeskal
+Alicia Sacramone
+Kyle Shewfelt
+Max Whitlock`),
+    angle('ballets', 'stage', 'category', 'Name a ballet.', `
+1 Swan Lake
+1 The Nutcracker|Nutcracker
+2 Sleeping Beauty|The Sleeping Beauty
+2 Giselle
+2 Romeo and Juliet
+2 Cinderella
+2 Don Quixote
+Coppélia|Coppelia
+La Bayadère|La Bayadere
+The Firebird|Firebird
+The Rite of Spring|Rite of Spring
+Petrushka
+La Sylphide
+Le Corsaire
+Raymonda
+Paquita
+Les Sylphides
+Apollo
+Jewels
+Serenade
+Spartacus
+Onegin
+Manon
+Mayerling
+Appalachian Spring
+Rodeo
+Fancy Free
+Billy the Kid
+Afternoon of a Faun|L'après-midi d'un faune
+Boléro|Bolero
+The Red Shoes
+A Midsummer Night's Dream
+Agon
+Anastasia`),
+    angle('disney_broadway', 'stage', 'crossover', 'Name a Disney movie that became a Broadway musical.', `
+1 The Lion King|Lion King
+1 Beauty and the Beast
+1 Aladdin
+1 The Little Mermaid|Little Mermaid
+1 Frozen
+1 Mary Poppins
+2 Newsies
+2 Tarzan
+2 The Hunchback of Notre Dame|Hunchback of Notre Dame
+Hercules
+Freaky Friday`),
+    angle('soaps', 'tv', 'category', 'Name a soap opera.', `
+1 General Hospital
+1 Days of Our Lives
+1 The Young and the Restless|Young and the Restless
+1 The Bold and the Beautiful|Bold and the Beautiful
+1 All My Children
+1 Dallas
+1 Dynasty
+2 One Life to Live
+2 As the World Turns
+2 Guiding Light
+2 Knots Landing
+2 Falcon Crest
+2 Melrose Place
+2 Passions
+2 EastEnders
+2 Coronation Street
+2 Neighbours
+2 Another World
+2 Santa Barbara
+2 Dark Shadows
+2 Peyton Place
+Search for Tomorrow
+Ryan's Hope
+Port Charles
+Sunset Beach
+The Edge of Night
+The Doctors
+Loving
+Emmerdale
+Hollyoaks
+Home and Away
+Beyond the Gates
+Generations
+The Colbys
+Love of Life
+The Secret Storm
+Capitol`),
+    angle('cartoon_dogs', 'kids', 'category', 'Name a cartoon dog.', `
+1 Scooby-Doo|Scooby Doo|Scooby
+1 Snoopy
+1 Pluto
+1 Goofy
+1 Clifford
+1 Odie
+1 Bluey
+2 Brian Griffin|Brian
+2 Santa's Little Helper
+2 Droopy
+2 Astro
+2 Blue
+2 Bingo
+2 Courage|Courage the Cowardly Dog
+2 Lady
+2 Tramp
+2 Dug
+2 Bolt
+2 Gromit
+2 Mr. Peabody|Mr Peabody
+2 Scrappy-Doo|Scrappy Doo
+2 Pongo
+2 Underdog
+Spike
+Dogmatix
+Ren
+Jake
+Krypto
+Huckleberry Hound
+Muttley
+Perdita
+Copper
+Slinky Dog|Slinky
+Porkchop
+Deputy Dawg
+McGruff
+Chase
+Marshall
+Skye
+Rubble
+Rocky
+Zuma
+Max
+`),
+    angle('cartoon_cats', 'kids', 'category', 'Name a cartoon cat.', `
+1 Garfield
+1 Tom
+1 Sylvester
+1 Felix|Felix the Cat
+1 Hello Kitty
+1 The Cat in the Hat|Cat in the Hat
+1 Puss in Boots|Puss
+1 Cheshire Cat
+2 Top Cat
+2 Figaro
+2 Lucifer
+2 Duchess
+2 Marie
+2 Toulouse
+2 Berlioz
+2 Thomas O'Malley|O'Malley
+2 Scratchy
+2 Stimpy
+2 Snowball
+2 Salem
+2 Pink Panther|The Pink Panther
+2 Pete the Cat
+2 Heathcliff
+2 Azrael
+2 Meowth
+2 Gumball
+Mittens
+Mr. Jinks|Mr Jinks
+Doraemon
+Luna
+Jiji
+Catbus
+Chococat
+Sagwa
+Nyan Cat
+Grumpy Cat
+Pete
+Si and Am
+Oliver
+Rufus
+Dinah
+Sergeant Tibbs
+Cat R. Waul`),
+    angle('muppets', 'kids', 'category', 'Name a Muppet.', `
+1 Kermit|Kermit the Frog
+1 Miss Piggy
+1 Fozzie|Fozzie Bear
+1 Gonzo
+1 Animal
+1 Elmo
+1 Cookie Monster
+1 Big Bird
+1 Oscar the Grouch|Oscar
+1 Bert
+1 Ernie
+2 Rowlf
+2 Scooter
+2 Beaker
+2 Dr. Bunsen Honeydew|Bunsen Honeydew|Bunsen
+2 Swedish Chef|The Swedish Chef
+2 Statler
+2 Waldorf
+2 Grover
+2 Count von Count|The Count|Count
+2 Snuffleupagus|Mr. Snuffleupagus|Snuffy
+Sam Eagle
+Rizzo
+Pepe|Pepe the King Prawn
+Janice
+Dr. Teeth
+Floyd
+Sweetums
+Camilla
+Lew Zealand
+Crazy Harry
+Walter
+Robin
+Telly
+Zoe
+Abby Cadabby
+Rosita
+Herry Monster
+Prairie Dawn
+Guy Smiley
+Two-Headed Monster
+Julia
+Baby Bear`),
+    angle('fairy_tales', 'kids', 'category', 'Name a fairy tale.', `
+1 Cinderella
+1 Snow White
+1 Sleeping Beauty
+1 Little Red Riding Hood
+1 Hansel and Gretel
+1 Rapunzel
+1 Jack and the Beanstalk
+1 Goldilocks and the Three Bears|Goldilocks
+1 The Three Little Pigs|Three Little Pigs
+1 Beauty and the Beast
+1 The Little Mermaid|Little Mermaid
+2 Rumpelstiltskin
+2 The Frog Prince|Frog Prince
+2 The Princess and the Pea|Princess and the Pea
+2 The Ugly Duckling|Ugly Duckling
+2 Thumbelina
+2 The Emperor's New Clothes|Emperor's New Clothes
+2 The Snow Queen|Snow Queen
+2 Puss in Boots
+2 The Gingerbread Man|Gingerbread Man
+2 The Elves and the Shoemaker
+2 The Pied Piper of Hamelin|Pied Piper
+2 Aladdin
+2 Tom Thumb
+The Twelve Dancing Princesses
+Bluebeard
+The Bremen Town Musicians
+The Little Match Girl
+The Goose Girl
+Snow White and Rose Red
+The Brave Little Tailor
+The Steadfast Tin Soldier
+The Golden Goose
+Ali Baba and the Forty Thieves|Ali Baba
+The Billy Goats Gruff|Three Billy Goats Gruff
+Stone Soup
+The Little Red Hen
+Chicken Little|Henny Penny
+East of the Sun and West of the Moon
+The Wild Swans
+The Six Swans`),
+    angle('painters', 'art', 'people', 'Name a famous painter.', `
+1 Leonardo da Vinci|Leonardo|Da Vinci
+1 Pablo Picasso|Picasso
+1 Vincent van Gogh|Van Gogh
+1 Claude Monet|Monet
+1 Michelangelo
+1 Frida Kahlo|Frida
+1 Salvador Dalí|Salvador Dali|Dali|Dalí
+1 Andy Warhol|Warhol
+1 Rembrandt
+1 Bob Ross
+2 Georgia O'Keeffe
+2 Jackson Pollock|Pollock
+2 Henri Matisse|Matisse
+2 Edgar Degas|Degas
+2 Pierre-Auguste Renoir|Renoir
+2 Paul Cézanne|Cezanne|Cézanne
+2 Gustav Klimt|Klimt
+2 Edvard Munch|Munch
+2 Johannes Vermeer|Vermeer
+2 Raphael
+2 Sandro Botticelli|Botticelli
+2 Caravaggio
+2 Francisco Goya|Goya
+2 Diego Rivera
+2 Mary Cassatt
+2 Norman Rockwell
+2 Jean-Michel Basquiat|Basquiat
+2 Keith Haring
+2 Roy Lichtenstein
+2 Edward Hopper
+2 Grandma Moses
+Mark Rothko|Rothko
+Wassily Kandinsky|Kandinsky
+Paul Gauguin|Gauguin
+Henri de Toulouse-Lautrec|Toulouse-Lautrec
+Édouard Manet|Edouard Manet|Manet
+Joan Miró|Joan Miro|Miró
+René Magritte|Rene Magritte|Magritte
+Marc Chagall|Chagall
+Piet Mondrian|Mondrian
+Jan van Eyck|Van Eyck
+Hieronymus Bosch|Bosch
+Pieter Bruegel|Bruegel|Brueghel
+Diego Velázquez|Diego Velazquez|Velázquez
+El Greco
+Titian
+J. M. W. Turner|Turner|JMW Turner
+John Constable|Constable
+Winslow Homer
+James McNeill Whistler|Whistler
+John Singer Sargent|Sargent
+Grant Wood
+Andrew Wyeth
+Thomas Kinkade
+Yayoi Kusama
+Kehinde Wiley
+Amy Sherald
+David Hockney|Hockney
+Banksy
+Artemisia Gentileschi
+Berthe Morisot
+Camille Pissarro|Pissarro
+Georges Seurat|Seurat
+Paul Klee|Klee
+Egon Schiele
+Lee Krasner
+Helen Frankenthaler`),
+    angle('paintings', 'art', 'category', 'Name a famous painting.', `
+1 Mona Lisa|The Mona Lisa
+1 The Starry Night|Starry Night
+1 The Last Supper|Last Supper
+1 The Scream
+1 Girl with a Pearl Earring
+1 American Gothic
+2 The Persistence of Memory|Persistence of Memory
+2 The Birth of Venus|Birth of Venus
+2 The Night Watch
+2 Guernica
+2 Water Lilies
+2 The Kiss
+2 Sunflowers
+2 Whistler's Mother
+2 The Creation of Adam|Creation of Adam
+2 Nighthawks
+2 The Great Wave off Kanagawa|The Great Wave|Great Wave
+2 Campbell's Soup Cans
+2 Washington Crossing the Delaware
+2 Dogs Playing Poker
+Las Meninas
+A Sunday on La Grande Jatte|A Sunday Afternoon on the Island of La Grande Jatte|La Grande Jatte
+Christina's World
+Liberty Leading the People
+The Garden of Earthly Delights
+The School of Athens
+The Arnolfini Portrait
+Impression, Sunrise|Impression Sunrise
+The Son of Man|Son of Man
+The Two Fridas
+The Hay Wain
+Luncheon of the Boating Party
+Café Terrace at Night|Cafe Terrace at Night
+Bedroom in Arles
+Wanderer above the Sea of Fog
+Marilyn Diptych
+Olympia
+Le Déjeuner sur l'herbe|Luncheon on the Grass
+The Swing
+The Third of May 1808
+Saturn Devouring His Son
+Ophelia
+The Lady of Shalott
+Flaming June
+Self-Portrait with Thorn Necklace and Hummingbird
+Irises
+Almond Blossoms
+The Potato Eaters
+Bal du moulin de la Galette`),
+    angle('nobel_categories', 'awards', 'category', 'Name a Nobel Prize category.', `
+1 Peace
+1 Literature
+1 Physics
+1 Chemistry
+2 Medicine|Physiology or Medicine|Physiology
+2 Economics|Economic Sciences|Economic science`),
+    angle('military_branches', 'history', 'category', 'Name a branch of the U.S. military.', `
+1 Army
+1 Navy
+1 Air Force
+1 Marines|Marine Corps|Marine
+2 Coast Guard
+2 Space Force`),
+    angle('national_parks', 'geo', 'place', 'Name a U.S. national park.', `
+1 Yellowstone
+1 Yosemite
+1 Grand Canyon
+1 Zion
+1 Great Smoky Mountains|Smoky Mountains|Smokies
+1 Everglades
+2 Glacier
+2 Grand Teton|Tetons
+2 Rocky Mountain
+2 Acadia
+2 Arches
+2 Bryce Canyon|Bryce
+2 Joshua Tree
+2 Death Valley
+2 Denali
+2 Olympic
+2 Mount Rainier
+2 Sequoia
+2 Badlands
+2 Shenandoah
+2 Mammoth Cave
+2 Crater Lake
+2 Redwood|Redwoods
+2 Hot Springs
+2 Carlsbad Caverns
+2 Big Bend
+2 Hawaiʻi Volcanoes|Hawaii Volcanoes
+2 Haleakalā|Haleakala
+2 Saguaro
+2 Petrified Forest
+2 Gateway Arch
+Biscayne
+Black Canyon of the Gunnison
+Canyonlands
+Capitol Reef
+Channel Islands
+Congaree
+Cuyahoga Valley
+Dry Tortugas
+Gates of the Arctic
+Glacier Bay
+Great Basin
+Great Sand Dunes
+Guadalupe Mountains
+Indiana Dunes
+Isle Royale
+Katmai
+Kenai Fjords
+Kings Canyon
+Kobuk Valley
+Lake Clark
+Lassen Volcanic
+Mesa Verde
+New River Gorge
+North Cascades
+Pinnacles
+Theodore Roosevelt
+Virgin Islands
+Voyageurs
+White Sands
+Wind Cave
+Wrangell–St. Elias|Wrangell-St. Elias|Wrangell St Elias
+American Samoa`),
+    angle('paris_sights', 'geo', 'place', 'Name a famous sight in Paris.', `
+1 Eiffel Tower
+1 Louvre|The Louvre
+1 Notre-Dame|Notre Dame|Notre-Dame Cathedral
+1 Arc de Triomphe
+1 Champs-Élysées|Champs-Elysees|Champs Elysees
+2 Sacré-Cœur|Sacre-Coeur|Sacre Coeur
+2 Montmartre
+2 Seine|The Seine|River Seine
+2 Musée d'Orsay|Musee d'Orsay|Orsay
+2 Moulin Rouge
+2 Versailles|Palace of Versailles
+Pont Neuf
+Panthéon|Pantheon
+Luxembourg Gardens|Jardin du Luxembourg
+Tuileries|Tuileries Garden
+Place de la Concorde
+Centre Pompidou|Pompidou Center|Pompidou
+Les Invalides|Invalides
+Opéra Garnier|Palais Garnier|Paris Opera
+Catacombs|Catacombs of Paris
+Père Lachaise|Pere Lachaise
+Sainte-Chapelle|Sainte Chapelle
+Pont Alexandre III
+Place des Vosges
+Latin Quarter
+Disneyland Paris
+Galeries Lafayette
+Shakespeare and Company
+Musée Rodin|Rodin Museum
+La Défense|La Defense
+Bastille|Place de la Bastille
+Trocadéro|Trocadero
+Jardin des Plantes
+Conciergerie
+Love Lock Bridge|Pont des Arts`),
+    angle('nyc_sights', 'geo', 'place', 'Name a famous sight in New York City.', `
+1 Statue of Liberty
+1 Empire State Building
+1 Times Square
+1 Central Park
+1 Brooklyn Bridge
+1 Rockefeller Center
+2 Chrysler Building
+2 One World Trade Center|Freedom Tower|World Trade Center
+2 9/11 Memorial|National September 11 Memorial
+2 Grand Central Terminal|Grand Central|Grand Central Station
+2 Metropolitan Museum of Art|The Met|Met Museum
+2 Museum of Modern Art|MoMA
+2 Guggenheim|Guggenheim Museum
+2 American Museum of Natural History|Natural History Museum
+2 Broadway
+2 Wall Street
+2 Flatiron Building
+2 High Line|The High Line
+2 Madison Square Garden
+2 Yankee Stadium
+2 Coney Island
+2 Ellis Island
+2 Radio City Music Hall|Radio City
+2 Fifth Avenue|5th Avenue
+St. Patrick's Cathedral|St Patrick's Cathedral
+Carnegie Hall
+Lincoln Center
+Washington Square Park
+Bryant Park
+Top of the Rock
+Chelsea Market
+Apollo Theater
+Stonewall Inn
+Hudson Yards|The Vessel|Vessel
+United Nations Headquarters|UN Headquarters|United Nations
+New York Public Library|Public Library
+Charging Bull|Wall Street Bull
+Oculus
+Little Italy
+Chinatown
+Citi Field
+Prospect Park
+Barclays Center
+Summit One Vanderbilt
+Edge
+Intrepid Museum
+Staten Island Ferry
+Tiffany & Co.|Tiffany's
+Rockefeller Christmas tree`),
+    angle('italian_cities', 'geo', 'place', 'Name a city in Italy.', `
+1 Rome
+1 Venice
+1 Florence
+1 Milan
+1 Naples
+2 Pisa
+2 Turin
+2 Bologna
+2 Verona
+2 Genoa
+2 Palermo
+2 Siena
+2 Amalfi
+2 Sorrento
+2 Positano
+2 Pompeii
+2 Capri
+2 Como
+Bari
+Catania
+Trieste
+Padua
+Parma
+Modena
+Lucca
+Assisi
+Perugia
+Cagliari
+Brescia
+Bergamo
+Ravenna
+Rimini
+Messina
+Taormina
+San Gimignano
+Lecce
+Matera
+Salerno
+Ferrara
+Mantua
+Livorno
+Ancona
+Portofino
+Orvieto
+Cortona
+Syracuse|Siracusa
+Reggio Calabria
+Trento
+Bolzano
+Udine
+Urbino`),
+    angle('caribbean', 'geo', 'place', 'Name a country in the Caribbean.', `
+1 Jamaica
+1 Cuba
+1 Bahamas|The Bahamas
+1 Dominican Republic
+1 Haiti
+2 Barbados
+2 Trinidad and Tobago|Trinidad|Tobago
+2 Saint Lucia|St. Lucia|St Lucia
+2 Grenada
+2 Antigua and Barbuda|Antigua
+Dominica
+Saint Kitts and Nevis|St. Kitts and Nevis|St Kitts
+Saint Vincent and the Grenadines|St. Vincent|St Vincent`),
+    angle('spanish_speaking', 'geo', 'crossover', 'Name a country where most people speak Spanish.', `
+1 Spain
+1 Mexico
+1 Argentina
+1 Colombia
+1 Peru
+1 Chile
+1 Cuba
+2 Venezuela
+2 Ecuador
+2 Guatemala
+2 Bolivia
+2 Dominican Republic
+2 Honduras
+2 Costa Rica
+2 Panama
+2 Uruguay
+2 Paraguay
+2 El Salvador
+2 Nicaragua
+Equatorial Guinea`),
+    angle('french_speaking', 'geo', 'crossover', 'Name a country where French is an official language.', `
+1 France
+1 Canada
+1 Belgium
+1 Switzerland
+2 Haiti
+2 Monaco
+2 Luxembourg
+2 Senegal
+2 Madagascar
+Côte d'Ivoire|Ivory Coast|Cote d'Ivoire
+Cameroon
+Democratic Republic of the Congo|DR Congo|Congo-Kinshasa
+Congo|Republic of the Congo|Congo-Brazzaville
+Mali
+Niger
+Burkina Faso
+Chad
+Guinea
+Benin
+Togo
+Gabon
+Rwanda
+Burundi
+Djibouti
+Comoros
+Seychelles
+Vanuatu
+Central African Republic
+Equatorial Guinea`),
+    angle('drive_left', 'geo', 'trait', 'Name a country where people drive on the left.', `
+1 United Kingdom|UK|England|Britain|Great Britain|Scotland|Wales
+1 Australia
+1 Japan
+1 India
+1 Ireland
+1 New Zealand
+2 South Africa
+2 Jamaica
+2 Bahamas|The Bahamas
+2 Thailand
+2 Singapore
+2 Malaysia
+2 Indonesia
+2 Kenya
+2 Pakistan
+2 Hong Kong
+Bangladesh
+Sri Lanka
+Uganda
+Tanzania
+Zimbabwe
+Zambia
+Mozambique
+Botswana
+Namibia
+Lesotho
+Eswatini|Swaziland
+Malawi
+Barbados
+Trinidad and Tobago
+Guyana
+Suriname
+Cyprus
+Malta
+Mauritius
+Nepal
+Bhutan
+Brunei
+Timor-Leste|East Timor
+Papua New Guinea
+Fiji
+Samoa
+Tonga
+Solomon Islands
+Kiribati
+Tuvalu
+Nauru
+Maldives
+Seychelles
+Antigua and Barbuda
+Dominica
+Grenada
+Saint Kitts and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines`),
+    angle('red_white_flags', 'geo', 'trait', 'Name a country whose flag is only red and white.', `
+1 Canada
+1 Japan
+1 Switzerland
+1 Poland
+2 Denmark
+2 Austria
+2 Indonesia
+2 Peru
+2 Turkey
+2 Monaco
+2 Singapore
+Latvia
+Bahrain
+Qatar
+Tonga
+Georgia
+Tunisia`),
+    angle('bridges', 'geo', 'place', 'Name a famous bridge.', `
+1 Golden Gate Bridge|Golden Gate
+1 Brooklyn Bridge
+1 Tower Bridge
+1 London Bridge
+2 Sydney Harbour Bridge|Sydney Harbor Bridge
+2 Ponte Vecchio
+2 Rialto Bridge|Rialto
+2 Bridge of Sighs
+2 Charles Bridge
+2 Pont Neuf
+2 George Washington Bridge
+2 Mackinac Bridge
+2 Bay Bridge|San Francisco–Oakland Bay Bridge
+2 Verrazzano-Narrows Bridge|Verrazzano Bridge|Verrazano Bridge
+2 Seven Mile Bridge
+2 Chesapeake Bay Bridge
+Chain Bridge|Széchenyi Chain Bridge
+Akashi Kaikyō Bridge|Akashi Kaikyo Bridge
+Millau Viaduct
+Øresund Bridge|Oresund Bridge
+Forth Bridge
+Stari Most
+Pont du Gard
+Rainbow Bridge
+Sunshine Skyway|Sunshine Skyway Bridge
+Royal Gorge Bridge
+Tsing Ma Bridge
+Ha'penny Bridge
+Clifton Suspension Bridge
+Manhattan Bridge
+Williamsburg Bridge
+Queensboro Bridge|59th Street Bridge
+Lake Pontchartrain Causeway
+Confederation Bridge
+Capilano Suspension Bridge
+Lions Gate Bridge
+Pont Alexandre III
+Tacoma Narrows Bridge
+Ambassador Bridge
+Natchez Trace Parkway Bridge
+Hong Kong–Zhuhai–Macau Bridge`),
+    angle('famous_ships', 'history', 'category', 'Name a famous ship.', `
+1 Titanic|RMS Titanic
+1 Mayflower
+1 Santa María|Santa Maria
+1 Niña|Nina
+1 Pinta
+2 Queen Mary|RMS Queen Mary
+2 USS Constitution|Old Ironsides
+2 USS Arizona|Arizona
+2 Bismarck
+2 Lusitania
+2 Edmund Fitzgerald
+2 Black Pearl
+2 Endurance
+2 HMS Bounty|Bounty
+2 HMS Beagle|Beagle
+2 Queen Elizabeth 2|QE2
+2 Carpathia
+2 Andrea Doria
+2 USS Enterprise|Enterprise
+2 Cutty Sark
+HMS Victory|Victory
+Mary Rose
+Endeavour|HMS Endeavour
+Golden Hind
+USS Monitor|Monitor
+Merrimack|CSS Virginia
+Exxon Valdez
+Britannic
+Olympic
+Queen Anne's Revenge
+Pequod
+Nautilus
+USS Missouri
+Yamato
+Amistad
+Kon-Tiki
+Calypso
+Ever Given
+Costa Concordia
+Vasa
+Argo
+Flying Dutchman
+Queen Mary 2|QM2
+Batavia
+Hunley|H. L. Hunley
+Essex
+Bluenose`),
+    angle('queens', 'history', 'people', 'Name a famous queen.', `
+1 Elizabeth II|Queen Elizabeth II|Elizabeth the Second
+1 Elizabeth I|Queen Elizabeth I|Elizabeth the First
+1 Victoria|Queen Victoria
+1 Cleopatra
+1 Marie Antoinette
+1 Mary, Queen of Scots|Mary Queen of Scots
+2 Catherine the Great
+2 Isabella I|Queen Isabella|Isabella of Castile
+2 Nefertiti
+2 Anne Boleyn
+2 Catherine of Aragon
+2 Mary I|Bloody Mary|Mary Tudor
+2 Queen Anne|Anne
+2 Boudica|Boadicea
+2 Hatshepsut
+2 Queen of Sheba|Sheba
+2 Esther|Queen Esther
+2 Camilla|Queen Camilla
+2 Liliuokalani|Liliʻuokalani
+2 Queen Latifah
+2 Queen Charlotte|Charlotte
+2 Elizabeth, the Queen Mother|Queen Mother
+Rania|Queen Rania
+Noor|Queen Noor
+Margrethe II|Margrethe
+Beatrix
+Wilhelmina
+Christina of Sweden
+Eleanor of Aquitaine
+Maria Theresa
+Cixi|Empress Dowager Cixi
+Nzinga|Queen Nzinga
+Zenobia
+Tamar
+Mumtaz Mahal
+Jezebel
+Matilda|Empress Matilda
+Máxima|Queen Maxima
+Letizia|Queen Letizia
+Silvia|Queen Silvia
+Sirikit
+Salote Tupou III
+Ranavalona I`),
+    angle('first_ladies', 'history', 'people', 'Name a U.S. first lady.', `
+1 Michelle Obama
+1 Jacqueline Kennedy|Jackie Kennedy|Jackie O|Jacqueline Kennedy Onassis|Jackie
+1 Eleanor Roosevelt
+1 Martha Washington
+1 Hillary Clinton|Hillary Rodham Clinton
+1 Nancy Reagan
+1 Melania Trump
+1 Laura Bush
+1 Barbara Bush
+1 Jill Biden
+2 Abigail Adams
+2 Dolley Madison
+2 Mary Todd Lincoln
+2 Betty Ford
+2 Rosalynn Carter
+2 Lady Bird Johnson
+2 Pat Nixon
+2 Mamie Eisenhower
+2 Bess Truman
+Edith Roosevelt
+Edith Wilson
+Ellen Wilson
+Grace Coolidge
+Lou Hoover
+Florence Harding
+Helen Taft
+Ida McKinley
+Frances Cleveland
+Caroline Harrison
+Lucretia Garfield
+Lucy Hayes
+Julia Grant
+Eliza Johnson
+Jane Pierce
+Abigail Fillmore
+Margaret Taylor
+Sarah Polk
+Letitia Tyler
+Julia Tyler
+Anna Harrison
+Louisa Adams
+Elizabeth Monroe
+Mary Harrison McKee`),
+    angle('suffragists', 'history', 'people', 'Name someone who fought for women\'s right to vote.', `
+1 Susan B. Anthony|Susan B Anthony
+1 Elizabeth Cady Stanton
+2 Lucretia Mott
+2 Alice Paul
+2 Sojourner Truth
+2 Ida B. Wells|Ida B Wells
+2 Emmeline Pankhurst
+2 Frederick Douglass
+2 Carrie Chapman Catt
+Lucy Stone
+Julia Ward Howe
+Mary Church Terrell
+Inez Milholland
+Lucy Burns
+Matilda Joslyn Gage
+Harriet Tubman
+Victoria Woodhull
+Millicent Fawcett
+Emily Davison|Emily Wilding Davison
+Christabel Pankhurst
+Sylvia Pankhurst
+Anna Howard Shaw
+Frances Willard
+Amelia Bloomer
+Jeannette Rankin
+Mabel Ping-Hua Lee
+Zitkála-Šá|Zitkala-Sa
+Frances Ellen Watkins Harper
+Adelina Otero-Warren`),
+    angle('scientists', 'science', 'people', 'Name a famous scientist.', `
+1 Albert Einstein|Einstein
+1 Isaac Newton|Newton
+1 Marie Curie|Madame Curie
+1 Charles Darwin|Darwin
+1 Galileo|Galileo Galilei
+1 Nikola Tesla|Tesla
+1 Thomas Edison|Edison
+1 Stephen Hawking|Hawking
+2 Rosalind Franklin
+2 Jane Goodall
+2 Louis Pasteur|Pasteur
+2 Neil deGrasse Tyson
+2 Carl Sagan
+2 Bill Nye
+2 Ada Lovelace
+2 Alan Turing
+2 Gregor Mendel|Mendel
+2 Johannes Kepler|Kepler
+2 Nicolaus Copernicus|Copernicus
+2 Michael Faraday|Faraday
+2 Niels Bohr|Bohr
+2 Richard Feynman|Feynman
+2 Rachel Carson
+2 Katherine Johnson
+2 Jonas Salk
+2 Alexander Fleming
+2 Edwin Hubble|Hubble
+2 Robert Oppenheimer|J. Robert Oppenheimer|Oppenheimer
+2 Archimedes
+2 Benjamin Franklin
+2 George Washington Carver
+2 Alexander Graham Bell
+2 Sally Ride
+James Clerk Maxwell
+Max Planck
+Dmitri Mendeleev|Mendeleev
+Mae Jemison
+Enrico Fermi
+Pythagoras
+Aristotle
+Hippocrates
+Barbara McClintock
+Lise Meitner
+Dorothy Hodgkin
+Grace Hopper
+Tim Berners-Lee
+Jennifer Doudna
+Francis Crick
+James Watson
+Erwin Schrödinger|Erwin Schrodinger|Schrödinger
+Werner Heisenberg|Heisenberg
+Antoine Lavoisier|Lavoisier
+Edward Jenner
+Emmy Noether
+Chien-Shiung Wu
+Jocelyn Bell Burnell
+Hedy Lamarr
+Florence Nightingale
+Leonardo da Vinci
+Robert Boyle
+Henrietta Leavitt
+Vera Rubin`),
+    angle('astronauts', 'science', 'people', 'Name an astronaut.', `
+1 Neil Armstrong
+1 Buzz Aldrin
+1 Sally Ride
+1 John Glenn
+2 Michael Collins
+2 Alan Shepard
+2 Yuri Gagarin
+2 Valentina Tereshkova
+2 Mae Jemison
+2 Chris Hadfield
+2 Scott Kelly
+2 Mark Kelly
+2 Jim Lovell
+2 Christa McAuliffe
+2 Suni Williams|Sunita Williams
+2 Butch Wilmore
+2 Christina Koch
+Gus Grissom
+Ed White
+Roger Chaffee
+Eileen Collins
+Peggy Whitson
+Jessica Meir
+John Young
+Gene Cernan
+Pete Conrad
+Alan Bean
+Gordon Cooper
+Scott Carpenter
+Wally Schirra
+Deke Slayton
+Ellison Onizuka
+Judith Resnik
+Ronald McNair
+Kalpana Chawla
+Guion Bluford
+Tim Peake
+Samantha Cristoforetti
+Reid Wiseman
+Victor Glover
+Jeremy Hansen
+Jared Isaacman
+Story Musgrave
+Ellen Ochoa
+Franklin Chang-Díaz|Franklin Chang-Diaz
+Rusty Schweickart
+Charlie Duke
+Edgar Mitchell
+Jack Swigert
+Fred Haise
+Harrison Schmitt
+Dave Scott
+Jim Irwin
+Al Worden`),
+    angle('dinosaurs', 'science', 'category', 'Name a dinosaur.', `
+1 Tyrannosaurus rex|T. rex|T-Rex|T rex|Tyrannosaurus
+1 Triceratops
+1 Stegosaurus
+1 Velociraptor|Raptor
+1 Brachiosaurus
+1 Brontosaurus
+2 Apatosaurus
+2 Diplodocus
+2 Spinosaurus
+2 Ankylosaurus
+2 Parasaurolophus
+2 Iguanodon
+2 Allosaurus
+2 Pachycephalosaurus
+2 Dilophosaurus
+Gallimimus
+Compsognathus
+Carnotaurus
+Giganotosaurus
+Argentinosaurus
+Therizinosaurus
+Oviraptor
+Deinonychus
+Archaeopteryx
+Maiasaura
+Protoceratops
+Styracosaurus
+Megalosaurus
+Baryonyx
+Troodon
+Microraptor
+Plateosaurus
+Coelophysis
+Edmontosaurus
+Utahraptor
+Corythosaurus
+Albertosaurus
+Ceratosaurus
+Camarasaurus
+Hadrosaurus
+Psittacosaurus
+Sauropelta`),
+    angle('air_gases', 'science', 'trait', 'Name a gas in the air we breathe.', `
+1 Oxygen
+1 Nitrogen
+1 Carbon dioxide|CO2
+2 Argon
+2 Water vapor|Water vapour|Steam
+2 Helium
+2 Hydrogen
+2 Methane
+2 Neon
+2 Ozone
+Krypton
+Xenon
+Nitrous oxide
+Carbon monoxide
+Radon
+Sulfur dioxide`),
+    angle('bones', 'science', 'category', 'Name a bone in the human body.', `
+1 Femur|Thigh bone
+1 Skull|Cranium
+1 Rib|Ribs
+1 Spine|Vertebrae|Vertebra|Backbone
+1 Pelvis|Hip bone|Hip
+1 Collarbone|Clavicle
+1 Kneecap|Patella
+2 Tibia|Shinbone|Shin bone
+2 Fibula
+2 Humerus|Funny bone
+2 Radius
+2 Ulna
+2 Sternum|Breastbone
+2 Shoulder blade|Scapula
+2 Jawbone|Mandible|Jaw
+2 Tailbone|Coccyx
+2 Phalanges|Phalanx|Finger bones|Toe bones
+Maxilla
+Sacrum
+Metacarpals|Metacarpal
+Metatarsals|Metatarsal
+Carpals|Carpal
+Tarsals|Tarsal
+Heel bone|Calcaneus
+Talus|Ankle bone
+Hyoid
+Stapes|Stirrup
+Incus|Anvil
+Malleus|Hammer
+Nasal bone
+Cheekbone|Zygomatic bone|Zygomatic
+Temporal bone
+Parietal bone
+Frontal bone
+Occipital bone
+Sphenoid
+Ethmoid
+Scaphoid
+Atlas
+Axis`),
+    angle('organs', 'science', 'category', 'Name an organ in the human body.', `
+1 Heart
+1 Brain
+1 Lungs|Lung
+1 Liver
+1 Kidneys|Kidney
+1 Stomach
+1 Skin
+2 Pancreas
+2 Spleen
+2 Gallbladder
+2 Intestines|Small intestine|Large intestine|Colon|Bowel
+2 Bladder
+2 Appendix
+2 Esophagus
+2 Thyroid
+2 Eyes|Eye
+2 Tongue
+Uterus
+Ovaries|Ovary
+Prostate
+Adrenal glands|Adrenal gland
+Thymus
+Larynx|Voice box
+Trachea|Windpipe
+Diaphragm
+Tonsils|Tonsil
+Pituitary gland|Pituitary
+Ears|Ear
+Nose
+Testes|Testicles
+Rectum
+Duodenum
+Pineal gland
+Spinal cord`),
+    angle('crayons', 'kids', 'everyday', 'Name a color in a box of crayons.', `
+1 Red
+1 Blue
+1 Yellow
+1 Green
+1 Orange
+1 Purple|Violet
+1 Black
+1 Brown
+1 Pink
+2 White
+2 Gray|Grey
+2 Magenta
+2 Turquoise
+2 Indigo
+2 Periwinkle
+2 Burnt Sienna
+2 Raw Umber
+2 Cerulean
+2 Goldenrod
+2 Maroon
+2 Peach
+2 Tan
+2 Lavender
+2 Aquamarine
+2 Salmon
+2 Scarlet
+2 Sky Blue
+2 Forest Green
+2 Teal
+2 Mahogany
+2 Burnt Orange
+2 Apricot
+2 Silver
+2 Gold
+Copper
+Mauve
+Melon
+Plum
+Sepia
+Navy Blue
+Brick Red
+Olive Green
+Dandelion
+Carnation Pink
+Cornflower
+Jungle Green
+Macaroni and Cheese
+Mango Tango
+Razzmatazz
+Tickle Me Pink
+Timberwolf
+Wild Watermelon
+Purple Mountains' Majesty
+Robin's Egg Blue
+Granny Smith Apple
+Bluetiful
+Atomic Tangerine
+Laser Lemon
+Outer Space
+Shocking Pink
+Neon Carrot
+Screamin' Green
+Inchworm
+Wisteria
+Denim
+Cadet Blue
+Chestnut
+Bittersweet
+Thistle
+Orchid`),
+    angle('blue_shades', 'style', 'trait', 'Name a shade of blue.', `
+1 Navy|Navy blue
+1 Royal blue
+1 Sky blue
+1 Baby blue
+1 Turquoise
+1 Teal
+2 Cobalt|Cobalt blue
+2 Cerulean
+2 Azure
+2 Indigo
+2 Sapphire
+2 Periwinkle
+2 Powder blue
+2 Aqua
+2 Cyan
+2 Midnight blue
+2 Electric blue
+2 Denim
+2 Tiffany blue
+2 Robin's egg blue
+Ultramarine
+Steel blue
+Cornflower|Cornflower blue
+Slate blue
+Prussian blue
+Carolina blue
+Ice blue
+Peacock blue
+Air Force blue
+Columbia blue
+Egyptian blue
+Persian blue
+Dodger blue
+Duck egg blue
+Klein blue|International Klein Blue
+Oxford blue
+Cambridge blue
+Lapis|Lapis lazuli
+Glaucous
+Alice blue`),
+    angle('nuts', 'food', 'category', 'Name a nut.', `
+1 Peanut|Peanuts
+1 Almond|Almonds
+1 Cashew|Cashews
+1 Walnut|Walnuts
+1 Pecan|Pecans
+1 Pistachio|Pistachios
+2 Hazelnut|Hazelnuts|Filbert
+2 Macadamia|Macadamia nut
+2 Brazil nut|Brazil nuts
+2 Pine nut|Pine nuts|Pignoli
+2 Chestnut|Chestnuts
+2 Coconut
+Acorn
+Hickory nut
+Beechnut
+Butternut
+Kola nut
+Candlenut
+Tiger nut
+Pili nut
+Ginkgo nut
+Betel nut`),
+    angle('breads', 'food', 'category', 'Name a kind of bread.', `
+1 White
+1 Wheat|Whole wheat
+1 Sourdough
+1 Rye
+1 Baguette
+1 Bagel
+1 Croissant
+2 Pumpernickel
+2 Brioche
+2 Ciabatta
+2 Focaccia
+2 Challah
+2 Naan
+2 Pita
+2 Tortilla
+2 Cornbread
+2 Banana bread
+2 Biscuit|Biscuits
+2 English muffin
+2 Garlic bread
+2 Rolls|Roll|Dinner roll
+2 Multigrain
+Soda bread|Irish soda bread
+Zucchini bread
+Monkey bread
+Texas toast
+Flatbread
+Matzo|Matzah
+Injera
+Lavash
+Chapati|Roti
+Arepa
+Pretzel
+Hamburger bun|Bun
+Hot dog bun
+Kaiser roll
+Hawaiian rolls|Hawaiian bread|King's Hawaiian
+Potato bread
+Raisin bread|Cinnamon raisin bread
+Babka
+Panettone
+Stollen
+Fry bread
+Pan dulce|Concha
+Bolillo
+Pão de queijo|Pao de queijo
+Hot cross bun
+Crumpet
+Scone
+Paratha
+Bao|Steamed bun
+Pumpkin bread
+Pull-apart bread`),
+    angle('fast_food', 'food', 'category', 'Name a fast-food chain.', `
+1 McDonald's|McDonalds
+1 Burger King
+1 Wendy's|Wendys
+1 Taco Bell
+1 KFC|Kentucky Fried Chicken
+1 Subway
+1 Chick-fil-A|Chick fil A|Chickfila
+1 Popeyes
+1 Arby's|Arbys
+1 Domino's|Dominos
+1 Pizza Hut
+1 Dunkin'|Dunkin|Dunkin' Donuts|Dunkin Donuts
+1 Starbucks
+2 Sonic
+2 Jack in the Box
+2 Dairy Queen|DQ
+2 In-N-Out|In-N-Out Burger|In N Out
+2 Five Guys
+2 Chipotle
+2 Panda Express
+2 Papa John's|Papa Johns
+2 Little Caesars
+2 Carl's Jr.|Carl's Jr|Carls Jr
+2 Hardee's|Hardees
+2 White Castle
+2 Whataburger
+2 Culver's|Culvers
+2 Shake Shack
+2 Raising Cane's|Raising Canes|Cane's
+2 Wingstop
+2 Jersey Mike's|Jersey Mikes
+2 Jimmy John's|Jimmy Johns
+2 Panera Bread|Panera
+2 Krispy Kreme
+2 Tim Hortons|Tim Horton's
+Del Taco
+Church's Chicken|Church's
+Long John Silver's|Long John Silvers
+Checkers|Rally's
+Krystal
+Bojangles
+Zaxby's|Zaxbys
+Firehouse Subs
+Qdoba
+El Pollo Loco
+Steak 'n Shake|Steak n Shake
+A&W
+Captain D's
+Moe's|Moe's Southwest Grill
+Sbarro
+Auntie Anne's
+Cinnabon
+Baskin-Robbins|Baskin Robbins
+Dutch Bros
+Jamba|Jamba Juice
+Smoothie King
+Crumbl
+Freddy's
+Portillo's
+Cook Out
+Waffle House
+Torchy's Tacos
+Taco John's
+Wienerschnitzel
+Quiznos
+Potbelly
+Noodles & Company|Noodles and Company
+Blimpie
+Hot Dog on a Stick
+Pollo Tropical
+Fatburger`),
+    angle('cereals', 'food', 'category', 'Name a breakfast cereal.', `
+1 Cheerios
+1 Frosted Flakes
+1 Corn Flakes
+1 Lucky Charms
+1 Froot Loops|Fruit Loops
+1 Cinnamon Toast Crunch
+1 Cap'n Crunch|Captain Crunch
+1 Rice Krispies
+1 Raisin Bran
+1 Honey Nut Cheerios
+2 Special K
+2 Cocoa Puffs
+2 Trix
+2 Fruity Pebbles
+2 Cocoa Pebbles
+2 Honey Bunches of Oats
+2 Frosted Mini-Wheats|Mini-Wheats|Mini Wheats
+2 Apple Jacks
+2 Corn Pops
+2 Golden Grahams
+2 Kix
+2 Wheaties
+2 Life
+2 Chex|Rice Chex|Corn Chex|Wheat Chex
+2 Grape-Nuts|Grape Nuts
+2 Count Chocula
+2 Cookie Crisp
+2 Reese's Puffs
+2 Honey Smacks|Smacks
+2 Shredded Wheat
+2 Fiber One
+Franken Berry
+Boo Berry
+Cracklin' Oat Bran
+Total
+Kashi
+Cocoa Krispies
+Crispix
+Honeycomb
+Golden Crisp
+Post Toasties
+Krave
+Oatmeal Squares
+Basic 4
+Peanut Butter Crunch
+Crunch Berries
+Alpha-Bits|Alpha Bits
+Waffle Crisp
+Puffins
+Quisp
+Product 19
+Mueslix
+Smart Start
+Clusters
+Great Grains`),
+    angle('candy_bars', 'food', 'category', 'Name a candy bar.', `
+1 Snickers
+1 Kit Kat|KitKat
+1 Twix
+1 Milky Way
+1 3 Musketeers|Three Musketeers
+1 Butterfinger
+1 Hershey's|Hershey bar|Hershey's bar|Hershey's Milk Chocolate
+1 Reese's|Reese's Peanut Butter Cups|Reese's Cups
+1 Almond Joy
+2 Baby Ruth
+2 Mounds
+2 PayDay|Pay Day
+2 Mr. Goodbar|Mr Goodbar
+2 Crunch|Nestlé Crunch|Nestle Crunch
+2 100 Grand|Hundred Grand
+2 Heath|Heath bar
+2 Skor
+2 Whatchamacallit
+2 Toblerone
+2 Mars bar|Mars
+2 Cadbury Dairy Milk|Dairy Milk|Cadbury
+2 Kinder Bueno
+2 Take 5
+2 Caramello
+2 Charleston Chew
+Clark Bar|Clark
+Zero|Zero bar
+Oh Henry!|Oh Henry
+Krackel
+Symphony
+Cookies 'n' Creme|Hershey's Cookies 'n' Creme
+Aero
+Wonka Bar
+Big Hunk
+Abba-Zaba|Abba Zaba
+Chunky
+Look!
+Bounty
+Twirl
+Flake
+Crunchie
+Wispa
+Lion bar
+Milky Way Midnight
+Snickers Almond
+Fifth Avenue|5th Avenue
+Salted Nut Roll
+Idaho Spud
+Cherry Mash
+Goo Goo Cluster
+Rolo`),
+    angle('ice_cream', 'food', 'category', 'Name an ice cream flavor.', `
+1 Vanilla
+1 Chocolate
+1 Strawberry
+1 Mint chocolate chip|Mint chip|Mint
+1 Cookies and cream|Cookies 'n' cream|Cookies n cream
+1 Rocky road
+1 Cookie dough|Chocolate chip cookie dough
+1 Butter pecan
+1 Neapolitan
+2 Coffee
+2 Pistachio
+2 Chocolate chip
+2 Rum raisin
+2 Moose tracks
+2 Birthday cake|Cake batter
+2 Salted caramel|Caramel
+2 Cherry|Black cherry|Cherry Garcia
+2 Peach
+2 Coconut
+2 Mango
+2 Green tea|Matcha
+2 French vanilla
+2 Peanut butter|Peanut butter cup
+2 Cotton candy
+2 Bubble gum
+2 Spumoni
+2 Banana
+2 Raspberry
+2 Rainbow sherbet|Sherbet
+2 Pralines and cream|Praline
+2 Butterscotch
+2 Chunky Monkey
+2 Phish Food
+2 S'mores
+2 Fudge ripple|Chocolate fudge|Fudge
+Tutti frutti
+Lemon
+Dulce de leche
+Maple walnut
+Cinnamon
+Ube
+Brownie batter
+Cookie Monster
+Superman
+Black walnut
+Pumpkin
+Eggnog
+Tiramisu
+Red velvet
+Honey lavender
+Blueberry
+Toasted almond
+Lemon custard
+Coffee Heath bar crunch
+Half Baked`),
+    angle('sodas', 'drink', 'category', 'Name a soda.', `
+1 Coca-Cola|Coke|Coca Cola
+1 Pepsi
+1 Sprite
+1 Dr Pepper|Dr. Pepper
+1 Mountain Dew|Mtn Dew
+1 7 Up|7UP|Seven Up
+1 Fanta
+1 Root beer|A&W|Barq's|Mug
+1 Ginger ale|Canada Dry
+1 Diet Coke
+2 Coke Zero|Coca-Cola Zero
+2 Diet Pepsi
+2 Sunkist
+2 Crush|Orange Crush
+2 Cream soda
+2 Big Red
+2 Squirt
+2 Fresca
+2 Sierra Mist|Starry
+2 RC Cola|Royal Crown
+2 Cheerwine
+2 Mello Yello
+2 Vernors
+2 Tab
+2 Jarritos
+2 Pibb Xtra|Mr. Pibb|Mr Pibb
+2 Faygo
+2 Shasta
+2 Olipop
+2 Poppi
+Surge
+Inca Kola
+Dr. Brown's|Dr Brown's
+Tonic water|Tonic
+Club soda|Seltzer|Sparkling water
+Sun Drop
+Moxie
+Irn-Bru|Irn Bru
+Schweppes
+Sprecher
+Jones Soda
+Grape soda|Grape Crush|Nehi
+Orange soda
+Birch beer
+Cel-Ray
+Kickstart
+Pepsi Zero Sugar
+Diet Dr Pepper
+Coca-Cola Cherry|Cherry Coke
+Vanilla Coke
+Pepsi Wild Cherry`),
+    angle('teas', 'drink', 'category', 'Name a kind of tea.', `
+1 Green
+1 Black
+1 Chamomile
+1 Earl Grey
+1 Iced tea
+1 Sweet tea
+1 Peppermint|Mint
+2 English Breakfast
+2 Oolong
+2 White
+2 Chai|Masala chai
+2 Matcha
+2 Jasmine
+2 Hibiscus
+2 Bubble tea|Boba|Boba tea
+2 Rooibos|Red bush
+2 Lemon|Lemon ginger
+2 Ginger
+2 Darjeeling
+2 Herbal
+Assam
+Pu-erh|Puerh
+Lapsang souchong
+Sencha
+Genmaicha
+Hojicha
+Yerba mate|Mate
+Irish Breakfast
+Ceylon
+Lady Grey
+Thai tea|Thai iced tea
+Milk tea
+Echinacea
+Barley tea
+Arnold Palmer
+Hong Kong milk tea
+Kombucha
+Gunpowder
+Lemongrass
+Rose
+Lavender
+Tulsi`),
+    angle('social_apps', 'tech', 'category', 'Name a social media app.', `
+1 Facebook
+1 Instagram
+1 TikTok
+1 X|Twitter
+1 Snapchat
+1 YouTube
+2 LinkedIn
+2 Pinterest
+2 Reddit
+2 WhatsApp
+2 Threads
+2 Bluesky
+2 Tumblr
+2 Discord
+2 BeReal
+2 Twitch
+2 Telegram
+2 MySpace
+2 Vine
+2 Nextdoor
+WeChat
+Mastodon
+Clubhouse
+Weibo
+Truth Social
+Lemon8
+Flickr
+Quora
+Strava
+Letterboxd
+Goodreads
+Substack
+Signal
+Friendster
+Xanga
+LiveJournal
+Google+|Google Plus
+Periscope
+Musical.ly
+Yik Yak
+Line
+Kakao
+VK
+Douyin
+Xiaohongshu|RedNote`),
+    angle('dating_apps', 'tech', 'category', 'Name a dating app.', `
+1 Tinder
+1 Bumble
+1 Hinge
+2 Match|Match.com
+2 OkCupid
+2 eHarmony
+2 Grindr
+2 Coffee Meets Bagel
+2 Plenty of Fish|POF
+2 Raya
+2 The League
+2 Facebook Dating
+Her
+Feeld
+Christian Mingle
+JDate
+Zoosk
+Happn
+Badoo
+EliteSingles|Elite Singles
+Farmers Only
+OurTime
+Lex
+Thursday
+Boo
+Muzz
+Taimi
+Archer`),
+    angle('wall_plugs', 'home', 'everyday', 'Name something you plug into a wall.', `
+1 Lamp
+1 Toaster
+1 TV|Television
+1 Phone charger|Charger
+1 Microwave
+1 Refrigerator|Fridge
+1 Vacuum|Vacuum cleaner
+1 Hair dryer|Blow dryer
+2 Iron
+2 Blender
+2 Coffee maker|Coffee pot|Keurig
+2 Computer|Laptop
+2 Fan
+2 Space heater|Heater
+2 Washing machine|Washer
+2 Dryer
+2 Air conditioner|AC
+2 Curling iron
+2 Straightener|Flat iron
+2 Night light|Nightlight
+2 Kettle|Electric kettle
+2 Slow cooker|Crock-Pot|Crockpot
+2 Air fryer
+2 Printer
+2 Alarm clock|Clock
+2 Christmas lights
+2 Router|Wi-Fi router|Modem
+Dishwasher
+Stand mixer|Mixer|KitchenAid
+Electric toothbrush
+Humidifier
+Radio
+Game console|Xbox|PlayStation|Nintendo
+Stove|Oven
+Instant Pot
+Dehumidifier
+Lava lamp
+Fish tank|Aquarium
+Electric blanket|Heating pad
+Shaver|Electric razor
+Speaker
+Sewing machine
+Food processor
+Rice cooker
+Waffle maker
+Toaster oven
+Garbage disposal
+Freezer
+Treadmill`),
+    angle('house_rooms', 'home', 'everyday', 'Name a room in a house.', `
+1 Kitchen
+1 Bedroom
+1 Bathroom
+1 Living room
+1 Dining room
+1 Basement
+1 Attic
+1 Garage
+2 Laundry room
+2 Family room|Den
+2 Office|Home office|Study
+2 Closet
+2 Pantry
+2 Hallway|Hall
+2 Foyer|Entryway
+2 Mudroom
+2 Guest room
+2 Nursery
+2 Playroom
+2 Sunroom
+2 Master bedroom|Primary bedroom
+Library
+Game room
+Media room|Home theater
+Gym|Home gym
+Loft
+Powder room
+Utility room
+Cellar|Wine cellar
+Parlor
+Walk-in closet
+Craft room
+Workshop
+Bonus room
+Great room
+Breakfast nook
+Conservatory
+Rec room
+Panic room
+Sitting room
+Butler's pantry
+Linen closet`),
+    angle('first_aid', 'home', 'everyday', 'Name something in a first aid kit.', `
+1 Bandages|Band-Aids|Band-Aid|Bandage
+1 Gauze
+1 Tape|Medical tape
+1 Antiseptic wipes|Alcohol wipes|Alcohol
+1 Antibiotic ointment|Neosporin
+1 Tweezers
+1 Scissors
+2 Gloves
+2 Thermometer
+2 Ice pack|Cold pack
+2 Pain reliever|Aspirin|Ibuprofen|Tylenol|Advil
+2 Cotton balls
+2 Hydrogen peroxide|Peroxide
+2 Ace bandage|Elastic bandage
+2 Hand sanitizer
+2 Burn cream
+2 Hydrocortisone
+2 Calamine lotion|Calamine
+2 Safety pins
+CPR mask
+Splint
+Eye wash
+Sling|Triangular bandage
+Benadryl|Antihistamine
+Moleskin
+Butterfly bandages
+Cotton swabs|Q-tips
+Instant cold pack
+Emergency blanket
+Whistle
+Flashlight
+Tourniquet
+EpiPen
+Saline`),
+    angle('car_parts', 'home', 'category', 'Name a part of a car.', `
+1 Engine
+1 Tires|Tire|Wheels|Wheel
+1 Steering wheel
+1 Brakes
+1 Battery
+1 Windshield
+1 Seat belt|Seatbelt
+1 Trunk
+1 Hood
+2 Bumper
+2 Headlights|Headlight
+2 Taillights|Taillight
+2 Mirror|Rearview mirror|Side mirror
+2 Muffler
+2 Exhaust|Exhaust pipe|Tailpipe
+2 Transmission
+2 Radiator
+2 Gas tank|Fuel tank
+2 Doors|Door
+2 Windows|Window
+2 Windshield wipers|Wipers
+2 Horn
+2 Dashboard
+2 Glove box|Glove compartment
+2 Seats|Seat
+2 Spark plugs
+2 Alternator
+2 Airbag|Airbags
+2 Gas pedal|Accelerator
+2 Spare tire
+2 Speedometer
+2 License plate
+Axle
+Gearshift|Shifter|Gear stick|Stick shift
+Clutch
+Brake pedal
+Hubcap|Hubcaps
+Grille
+Fender
+Odometer
+Sunroof
+Carburetor
+Suspension
+Shocks|Shock absorbers
+Struts
+Catalytic converter
+Fan belt|Serpentine belt
+Oil filter
+Air filter
+Antenna
+Cup holder
+Ignition
+Turn signal|Blinker
+Steering column
+Cruise control
+Rims
+Radio`),
+    angle('famous_horses', 'nature', 'people', 'Name a famous horse.', `
+1 Secretariat
+1 Seabiscuit
+1 Mister Ed|Mr. Ed|Mr Ed
+1 Black Beauty
+1 Trigger
+1 Silver
+2 Man o' War
+2 Seattle Slew
+2 Affirmed
+2 American Pharoah
+2 Justify
+2 War Admiral
+2 Citation
+2 Barbaro
+2 Spirit
+2 Pegasus
+2 Shadowfax
+2 Maximus
+2 Bullseye
+2 The Black Stallion|Black Stallion
+2 Flicka|My Friend Flicka
+2 Joey
+Whirlaway
+Funny Cide
+Smarty Jones
+Rich Strike
+Zenyatta
+Ruffian
+Spectacular Bid
+Bucephalus
+Marengo
+Traveller
+Comanche
+Hidalgo
+Champion
+Scout
+Topper
+Boxer
+Artax
+Epona
+Sleipnir
+Incitatus
+Copenhagen
+Red Rum
+Arkle
+Phar Lap
+Frankel
+Mystik Dan
+Sovereignty
+Applejack
+Hercules
+`),
+    angle('chinese_zodiac', 'holidays', 'category', 'Name an animal of the Chinese zodiac.', `
+1 Dragon
+1 Tiger
+1 Rabbit
+1 Horse
+1 Snake
+1 Monkey
+1 Dog
+1 Pig
+2 Rat
+2 Ox
+2 Rooster
+2 Goat|Sheep|Ram`),
+    angle('anniversary_gifts', 'holidays', 'time', 'Name a traditional wedding anniversary gift.', `
+1 Paper
+1 Silver
+1 Gold
+1 Diamond
+2 Cotton
+2 Leather
+2 Wood
+2 Tin
+2 Crystal
+2 Pearl
+2 Ruby
+2 Linen|Fruit|Flowers
+2 Iron
+2 Wool|Copper
+2 Bronze
+2 Pottery|Willow
+2 Aluminum
+2 Steel
+2 Silk
+2 Lace
+2 Ivory
+2 China
+2 Sapphire
+2 Emerald
+2 Coral|Jade
+Sugar
+Platinum`),
+    angle('keys_things', 'words', 'wordplay', 'Name something that has keys.', `
+1 Piano
+1 Keyboard|Computer keyboard
+1 Car
+1 House|Home
+2 Typewriter
+2 Laptop|Computer
+2 Calculator
+2 Organ
+2 Accordion
+2 Lock|Padlock
+Map
+Florida|Florida Keys
+Answer key
+Xylophone
+Janitor
+Locksmith
+Safe
+Diary
+Synthesizer
+Harpsichord
+Cash register
+Phone
+Remote|Remote control
+Keychain|Key ring`),
+    angle('pasta_sauce', 'food', 'category', 'Name a pasta sauce.', `
+1 Marinara
+1 Alfredo
+1 Pesto
+1 Meat sauce|Bolognese|Ragù|Ragu
+1 Tomato|Tomato sauce
+2 Carbonara
+2 Vodka|Vodka sauce|Penne alla vodka
+2 Puttanesca
+2 Arrabbiata|Arrabiata
+2 Cacio e pepe
+2 Aglio e olio|Garlic and oil
+2 Clam sauce|White clam sauce|Vongole
+2 Butter|Brown butter
+2 Cheese sauce
+2 Primavera
+Amatriciana
+Pomodoro
+Rosé|Rose sauce|Pink sauce
+Gorgonzola
+Four cheese|Quattro formaggi
+Genovese
+Norma
+Romesco
+Bechamel|Béchamel
+Mushroom
+Sunday gravy|Gravy`),
+    angle('salads', 'food', 'category', 'Name a kind of salad.', `
+1 Caesar
+1 Garden|House|Green
+1 Greek
+1 Potato
+1 Cobb
+1 Fruit
+1 Pasta
+2 Chef
+2 Waldorf
+2 Caprese
+2 Coleslaw|Slaw
+2 Taco
+2 Wedge
+2 Chicken
+2 Egg
+2 Tuna
+2 Spinach
+2 Kale
+Niçoise|Nicoise
+Asian|Chinese chicken
+Quinoa
+Cucumber
+Macaroni
+Three-bean|Bean
+Tabbouleh
+Fattoush
+Panzanella
+Ambrosia
+Seven-layer
+Broccoli
+Watermelon
+Beet
+Arugula
+Southwest
+Antipasto
+Shrimp
+Crab
+Jell-O|Jello
+Mixed greens`),
+    angle('soups', 'food', 'category', 'Name a soup.', `
+1 Chicken noodle
+1 Tomato
+1 Minestrone
+1 French onion|Onion
+1 Clam chowder|Chowder|New England clam chowder
+1 Split pea
+1 Vegetable
+2 Lentil
+2 Gazpacho
+2 Pho
+2 Ramen
+2 Miso
+2 Gumbo
+2 Chili
+2 Lobster bisque|Bisque
+2 Broccoli cheddar
+2 Potato leek|Potato
+2 Matzo ball
+2 Wonton
+2 Egg drop
+2 Hot and sour
+2 Tortilla
+2 Italian wedding
+2 Borscht
+2 Butternut squash
+2 Corn chowder
+2 Chicken and rice
+2 Beef stew|Stew
+Mulligatawny
+Bean
+Black bean
+Manhattan clam chowder
+Pozole
+Menudo
+Tom yum
+Tom kha
+Avgolemono
+Vichyssoise
+Bouillabaisse
+Cioppino
+Mushroom
+Pumpkin
+Cream of mushroom
+Chicken tortilla
+Udon
+Laksa`),
+    angle('mexican_food', 'food', 'place', 'Name a Mexican dish.', `
+1 Taco|Tacos
+1 Burrito|Burritos
+1 Enchilada|Enchiladas
+1 Quesadilla|Quesadillas
+1 Nachos
+1 Guacamole
+1 Tamale|Tamales
+1 Fajitas
+1 Salsa
+2 Chimichanga
+2 Tostada
+2 Churros|Churro
+2 Pozole
+2 Mole
+2 Elote|Mexican street corn
+2 Carnitas
+2 Tortilla soup
+2 Flautas|Taquitos
+2 Chile relleno|Chiles rellenos
+2 Chilaquiles
+2 Birria
+2 Queso
+2 Tres leches
+2 Huevos rancheros
+2 Ceviche
+2 Barbacoa
+2 Al pastor|Tacos al pastor
+Sopes
+Gorditas
+Menudo
+Torta|Tortas
+Huaraches
+Empanadas
+Cochinita pibil
+Tlayuda
+Esquites
+Horchata
+Flan
+Pico de gallo
+Refried beans
+Mexican rice|Spanish rice
+Carne asada
+Chorizo`),
+    angle('chinese_takeout', 'food', 'place', 'Name a dish on a Chinese takeout menu.', `
+1 Fried rice
+1 Lo mein
+1 Egg roll|Egg rolls
+1 General Tso's chicken|General Tso's|General Tso chicken
+1 Orange chicken
+1 Sweet and sour chicken|Sweet and sour pork|Sweet and sour
+1 Kung pao chicken|Kung pao
+1 Chow mein
+1 Wonton soup
+1 Dumplings|Potstickers
+2 Crab rangoon
+2 Beef and broccoli|Broccoli beef
+2 Sesame chicken
+2 Egg foo young|Egg foo yung
+2 Moo shu|Moo shu pork
+2 Hot and sour soup
+2 Spring rolls|Spring roll
+2 Egg drop soup
+2 Mongolian beef
+2 Fortune cookie|Fortune cookies
+2 Chop suey
+2 Lemon chicken
+2 Cashew chicken
+2 Walnut shrimp|Honey walnut shrimp
+2 Mapo tofu
+2 Peking duck
+2 Szechuan beef|Szechuan chicken
+2 Spare ribs|Boneless spare ribs
+Char siu|BBQ pork
+Dim sum
+Bao|Steamed buns
+Scallion pancakes
+Pepper steak
+Shrimp with lobster sauce
+Moo goo gai pan
+Chicken with broccoli
+Hunan chicken
+Garlic chicken`),
+    angle('italian_dishes', 'food', 'place', 'Name an Italian dish.', `
+1 Lasagna|Lasagne
+1 Spaghetti and meatballs|Spaghetti
+1 Pizza
+1 Fettuccine Alfredo|Alfredo
+1 Chicken Parmesan|Chicken Parm|Chicken parmigiana
+1 Risotto
+1 Ravioli
+1 Tiramisu
+2 Carbonara|Spaghetti carbonara
+2 Eggplant Parmesan|Eggplant parm
+2 Gnocchi
+2 Osso buco
+2 Bruschetta
+2 Caprese salad|Caprese
+2 Minestrone
+2 Calzone
+2 Panna cotta
+2 Cannoli
+2 Gelato
+2 Focaccia
+2 Arancini
+2 Polenta
+2 Chicken piccata|Piccata
+2 Chicken Marsala|Marsala
+2 Baked ziti|Ziti
+2 Manicotti
+2 Stromboli
+Carpaccio
+Saltimbocca
+Chicken cacciatore|Cacciatore
+Pesto pasta
+Vitello tonnato
+Cacio e pepe
+Linguine with clams
+Frittata
+Panzanella
+Biscotti
+Affogato
+Zabaglione
+Spumoni
+Prosciutto e melone
+Cotoletta
+Porchetta
+Pasta e fagioli|Pasta fazool`),
+    angle('cookies', 'food', 'category', 'Name a kind of cookie.', `
+1 Chocolate chip
+1 Oatmeal raisin|Oatmeal
+1 Sugar
+1 Peanut butter
+1 Snickerdoodle|Snickerdoodles
+1 Gingerbread
+1 Oreo|Oreos
+1 Shortbread
+2 Macaron|Macarons|French macaron
+2 Biscotti
+2 Fortune cookie
+2 Fig Newton|Fig Newtons
+2 Thin Mints|Thin Mint
+2 Molasses
+2 Black and white
+2 Ginger snap|Gingersnap|Gingersnaps
+2 Chips Ahoy!|Chips Ahoy
+2 Nutter Butter
+2 Animal crackers
+2 Macaroon
+2 Butter cookie|Butter cookies
+2 Double chocolate
+2 White chocolate macadamia|Macadamia nut
+2 Thumbprint
+Linzer
+Madeleine|Madeleines
+Pizzelle
+Rugelach
+Nilla wafer|Vanilla wafer
+Milano
+Pecan sandies|Sandies
+Russian tea cakes|Snowballs|Mexican wedding cookies
+Spritz
+Amaretti
+Florentine
+Crinkle|Chocolate crinkle
+Samoas|Caramel deLites
+Tagalongs
+Do-si-dos
+Lemon
+Sandwich cookie
+Whoopie pie
+Anzac biscuit
+Stroopwafel
+Alfajores
+Speculoos|Biscoff`),
+    angle('pies', 'food', 'category', 'Name a kind of pie.', `
+1 Apple
+1 Pumpkin
+1 Pecan
+1 Cherry
+1 Key lime
+1 Blueberry
+1 Lemon meringue
+2 Banana cream
+2 Coconut cream
+2 Chocolate cream|Chocolate
+2 Sweet potato
+2 Peach
+2 Strawberry rhubarb|Rhubarb
+2 Strawberry
+2 Chicken pot pie|Pot pie
+2 Shepherd's pie
+2 Mud pie
+2 French silk
+2 Boston cream
+2 Chess
+2 Shoofly
+2 Blackberry
+2 Mince|Mincemeat
+2 Mixed berry|Berry|Triple berry
+Banoffee
+Grasshopper
+Buttermilk
+Sugar cream
+Custard
+Raspberry
+Plum
+Pear
+Cottage pie
+Pork pie
+Steak and kidney
+Tamale pie
+Frito pie
+Whoopie pie
+Moon pie|MoonPie
+Pizza pie`),
+    angle('beers', 'drink', 'category', 'Name a beer brand.', `
+1 Budweiser|Bud
+1 Bud Light
+1 Coors|Coors Banquet
+1 Coors Light
+1 Miller Lite|Miller
+1 Corona
+1 Heineken
+1 Guinness
+2 Stella Artois|Stella
+2 Modelo|Modelo Especial|Negra Modelo
+2 Michelob Ultra|Michelob
+2 Blue Moon
+2 Samuel Adams|Sam Adams
+2 Pabst Blue Ribbon|PBR|Pabst
+2 Busch|Busch Light
+2 Natural Light|Natty Light|Natty
+2 Dos Equis
+2 Pacifico
+2 Yuengling
+2 Sierra Nevada
+2 Labatt
+2 Molson
+2 Keystone|Keystone Light
+2 Rolling Rock
+2 Beck's|Becks
+2 Amstel|Amstel Light
+2 Peroni
+2 Sapporo
+2 Kirin
+2 Asahi
+2 Tsingtao
+2 Foster's|Fosters
+2 Newcastle
+2 Red Stripe
+2 Tecate
+Bass
+Hamm's|Hamms
+Schlitz
+Old Milwaukee
+Lagunitas
+Goose Island
+Fat Tire|New Belgium
+Leinenkugel's|Leinenkugel|Leinie's
+Shiner|Shiner Bock
+Kona|Kona Big Wave
+Sol
+Carlsberg
+Pilsner Urquell
+Hoegaarden
+Bell's|Bell's Two Hearted
+Dogfish Head
+Stone
+Anchor Steam
+Grolsch
+Kingfisher
+Singha
+Tusker
+Presidente
+Medalla
+Rainier
+Olympia
+Genesee
+Narragansett
+Lone Star
+Iron City
+Old Style`),
+    angle('competition_tv', 'tv', 'category', 'Name a reality competition show.', `
+1 Survivor
+1 The Bachelor|Bachelor
+1 American Idol
+1 The Voice
+1 Big Brother
+1 Dancing with the Stars|DWTS
+1 America's Got Talent|AGT
+1 The Amazing Race|Amazing Race
+2 The Bachelorette|Bachelorette
+2 Top Chef
+2 Project Runway
+2 RuPaul's Drag Race|Drag Race
+2 The Great British Bake Off|Great British Baking Show|Bake Off
+2 Love Island
+2 The Masked Singer|Masked Singer
+2 Hell's Kitchen
+2 MasterChef
+2 The Traitors|Traitors
+2 The Biggest Loser|Biggest Loser
+2 America's Next Top Model|Top Model
+2 So You Think You Can Dance
+2 American Ninja Warrior|Ninja Warrior
+2 Chopped
+2 Nailed It!|Nailed It
+2 The Apprentice|Apprentice
+2 Love Is Blind
+2 Fear Factor
+2 Wipeout
+2 Squid Game: The Challenge
+2 Beast Games
+2 The Challenge
+2 Lego Masters
+2 Bachelor in Paradise
+Too Hot to Handle
+The Circle
+Are You the One?|Are You the One
+Physical: 100
+Making the Cut
+Forged in Fire
+Ink Master
+Blown Away
+Next Level Chef
+The Golden Bachelor
+X Factor|The X Factor
+Star Search
+Rock of Love
+Flavor of Love
+Holey Moley
+Alone
+Floor Is Lava
+Glow Up`),
+    angle('game_shows', 'tv', 'category', 'Name a TV game show.', `
+1 Jeopardy!|Jeopardy
+1 Wheel of Fortune
+1 The Price Is Right|Price Is Right
+1 Family Feud
+1 Who Wants to Be a Millionaire?|Who Wants to Be a Millionaire|Millionaire
+1 Deal or No Deal
+2 Let's Make a Deal
+2 Hollywood Squares
+2 Match Game
+2 The Newlywed Game|Newlywed Game
+2 The Dating Game|Dating Game
+2 Password
+2 Pyramid|The $100,000 Pyramid|$100,000 Pyramid|The $25,000 Pyramid
+2 Press Your Luck
+2 Card Sharks
+2 Supermarket Sweep
+2 Double Dare
+2 Weakest Link|The Weakest Link
+2 Minute to Win It
+2 The Chase
+2 Are You Smarter Than a 5th Grader?|Are You Smarter Than a Fifth Grader
+2 Cash Cab
+2 Name That Tune
+2 Legends of the Hidden Temple
+Tic-Tac-Dough
+Concentration
+To Tell the Truth
+What's My Line?|What's My Line
+Sale of the Century
+Chain Reaction
+Lingo
+Blockbusters
+Win Ben Stein's Money
+1 vs. 100|1 vs 100
+Beat Shazam
+The Wall
+Pointless
+Countdown
+Catchphrase
+Celebrity Name Game
+Scrabble
+Jackpot!
+The Joker's Wild`),
+    angle('lawyer_tv', 'tv', 'place', 'Name a TV show about lawyers.', `
+1 Law & Order|Law and Order
+1 Suits
+1 The Good Wife|Good Wife
+1 Better Call Saul
+1 How to Get Away with Murder
+1 Matlock
+1 Perry Mason
+2 Boston Legal
+2 L.A. Law|LA Law
+2 Ally McBeal
+2 The Practice
+2 Damages
+2 The Good Fight
+2 The Lincoln Lawyer|Lincoln Lawyer
+2 Law & Order: Special Victims Unit|SVU|Law and Order SVU
+2 Drop Dead Diva
+2 Bull
+2 JAG
+2 All Rise
+2 Goliath
+2 Night Court
+Franklin & Bash
+Harry's Law
+Shark
+For the People
+Reasonable Doubt
+Rumpole of the Bailey|Rumpole
+Silk
+The Defenders
+Doubt
+Rake
+She-Hulk: Attorney at Law|She-Hulk
+Extraordinary Attorney Woo
+Judge Judy`),
+    angle('boy_bands', 'music', 'category', 'Name a boy band.', `
+1 Backstreet Boys
+1 *NSYNC|NSYNC|N Sync|N'Sync
+1 New Kids on the Block|NKOTB
+1 One Direction
+1 BTS
+1 Jonas Brothers
+1 Boyz II Men
+2 New Edition
+2 98 Degrees|98°
+2 Hanson
+2 Westlife
+2 Take That
+2 The Jackson 5|Jackson 5
+2 Menudo
+2 O-Town|O Town
+2 Big Time Rush
+2 The Wanted
+2 5 Seconds of Summer|5SOS
+2 The Osmonds
+2 The Monkees
+2 Boyzone
+2 B2K
+2 Stray Kids
+2 EXO
+2 Seventeen
+2 CNCO
+Color Me Badd
+Dream Street
+LFO
+Blue
+Bell Biv DeVoe
+112
+Jodeci
+Why Don't We
+PrettyMuch
+NCT
+Big Bang
+Super Junior
+Plus One
+Bay City Rollers
+The Bee Gees|Bee Gees
+Brother Beyond
+East 17
+JLS
+Busted
+McFly
+Another Level
+Immature|IMx
+Hi-Five`),
+    angle('girl_groups', 'music', 'category', 'Name a girl group.', `
+1 Spice Girls
+1 Destiny's Child
+1 TLC
+1 The Supremes|Supremes
+1 Fifth Harmony
+1 The Pussycat Dolls|Pussycat Dolls
+1 En Vogue
+2 Little Mix
+2 The Go-Go's|Go-Go's|Go Gos
+2 Bananarama
+2 The Ronettes|Ronettes
+2 The Shirelles|Shirelles
+2 The Pointer Sisters|Pointer Sisters
+2 Salt-N-Pepa|Salt n Pepa
+2 SWV
+2 Xscape
+2 All Saints
+2 Sugababes
+2 Girls Aloud
+2 Wilson Phillips
+2 Blackpink
+2 Twice
+2 Girls' Generation
+2 The Andrews Sisters|Andrews Sisters
+2 The Bangles|Bangles
+2 The Chicks|Dixie Chicks
+2 Haim
+2 3LW
+2 Danity Kane
+2 Martha and the Vandellas
+2 The Marvelettes|Marvelettes
+2 The Shangri-Las|Shangri-Las
+2 The Chordettes|Chordettes
+2 Labelle
+2 Sister Sledge
+2 The Runaways|Runaways
+2 NewJeans
+2 Katseye
+Atomic Kitten
+Exposé|Expose
+The Emotions
+The McGuire Sisters
+The Crystals
+The Chiffons
+Mel and Kim
+Red Velvet
+Aespa
+Itzy
+Mamamoo
+The Saturdays
+Eternal
+702
+Total
+Blaque
+Cleopatra`),
+    angle('country_singers', 'music', 'people', 'Name a country music singer.', `
+1 Dolly Parton|Dolly
+1 Johnny Cash
+1 Willie Nelson
+1 Garth Brooks
+1 Shania Twain
+1 Carrie Underwood
+1 Reba McEntire|Reba
+1 Taylor Swift
+1 Luke Bryan
+1 Blake Shelton
+1 Kenny Chesney
+1 Tim McGraw
+1 Faith Hill
+1 Morgan Wallen
+2 Luke Combs
+2 Chris Stapleton
+2 Miranda Lambert
+2 Keith Urban
+2 Kacey Musgraves
+2 Patsy Cline
+2 Loretta Lynn
+2 George Strait
+2 Alan Jackson
+2 Brad Paisley
+2 Toby Keith
+2 Kenny Rogers
+2 Hank Williams
+2 Waylon Jennings
+2 Merle Haggard
+2 Tammy Wynette
+2 Randy Travis
+2 Martina McBride
+2 LeAnn Rimes
+2 Trisha Yearwood
+2 Jason Aldean
+2 Zac Brown
+2 Lainey Wilson
+2 Zach Bryan
+2 Kelsea Ballerini
+2 Thomas Rhett
+2 Florida Georgia Line
+2 Lady A|Lady Antebellum
+2 Rascal Flatts
+2 Sugarland
+2 The Judds|Wynonna Judd|Naomi Judd
+2 Brooks & Dunn|Brooks and Dunn
+2 Dierks Bentley
+2 Eric Church
+2 Jelly Roll
+2 Darius Rucker
+2 Glen Campbell
+2 John Denver
+2 Charley Pride
+2 Conway Twitty
+2 Vince Gill
+2 Clint Black
+2 Travis Tritt
+2 Gretchen Wilson
+2 Sara Evans
+2 Jo Dee Messina
+2 Lee Ann Womack
+2 Kane Brown
+2 Maren Morris
+2 Gabby Barrett
+2 Cody Johnson
+2 Hardy
+2 Bailey Zimmerman
+2 Megan Moroney
+2 Chris Young
+2 Cole Swindell
+2 Mickey Guyton
+2 Little Big Town
+2 Old Dominion
+2 Billy Ray Cyrus
+2 Wynonna
+2 Beyoncé|Beyonce`),
+    angle('disney_villains', 'movies', 'people', 'Name a Disney villain.', `
+1 Ursula
+1 Maleficent
+1 Scar
+1 Jafar
+1 Cruella de Vil|Cruella
+1 Gaston
+1 Captain Hook|Hook
+1 The Evil Queen|Evil Queen|Queen Grimhilde
+1 Hades
+1 Mother Gothel
+2 Lady Tremaine|Wicked Stepmother|Stepmother
+2 Shere Khan
+2 Hans|Prince Hans
+2 Dr. Facilier|Facilier|Shadow Man
+2 Yzma
+2 Ratigan
+2 Frollo|Judge Claude Frollo
+2 Governor Ratcliffe|Ratcliffe
+2 Shan Yu
+2 Kaa
+2 Queen of Hearts
+2 Prince John
+2 Sid
+2 Syndrome
+2 Lotso
+2 Randall
+2 Hopper
+2 Madam Mim
+2 Medusa|Madame Medusa
+2 Clayton
+2 Stromboli
+2 Chernabog
+2 Te Kā|Te Ka
+2 Tamatoa
+2 King Magnifico|Magnifico
+Horned King
+Edgar
+Honest John
+Pete
+Bowler Hat Guy
+Sykes
+Percival C. McLeach|McLeach
+Professor Callaghan|Yokai
+Charles Muntz
+Chick Hicks
+Captain Gantu|Gantu
+Dr. Hämsterviel
+King Candy|Turbo
+Bellwether
+Ernesto de la Cruz
+Mr. Waternoose|Waternoose
+Big Bad Wolf`),
+    angle('disney_animated', 'movies', 'category', 'Name a Disney animated movie.', `
+1 The Lion King|Lion King
+1 Frozen
+1 Aladdin
+1 The Little Mermaid|Little Mermaid
+1 Beauty and the Beast
+1 Cinderella
+1 Snow White and the Seven Dwarfs|Snow White
+1 Moana
+1 Tangled
+1 Bambi
+1 Dumbo
+1 Pinocchio
+1 Peter Pan
+1 Sleeping Beauty
+1 Mulan
+1 Encanto
+2 Zootopia
+2 Lilo & Stitch|Lilo and Stitch
+2 Pocahontas
+2 Hercules
+2 Tarzan
+2 The Jungle Book|Jungle Book
+2 101 Dalmatians|One Hundred and One Dalmatians
+2 Lady and the Tramp
+2 Alice in Wonderland
+2 The Princess and the Frog|Princess and the Frog
+2 Wreck-It Ralph
+2 Big Hero 6
+2 Frozen II|Frozen 2
+2 Moana 2
+2 Zootopia 2
+2 The Aristocats|Aristocats
+2 Robin Hood
+2 The Fox and the Hound|Fox and the Hound
+2 The Hunchback of Notre Dame|Hunchback of Notre Dame
+2 The Emperor's New Groove|Emperor's New Groove
+2 Fantasia
+2 Bolt
+2 Wish
+2 Raya and the Last Dragon|Raya
+2 Strange World
+2 Meet the Robinsons
+2 Chicken Little
+2 Treasure Planet
+2 Atlantis: The Lost Empire|Atlantis
+2 Brother Bear
+2 Home on the Range
+2 Dinosaur
+2 The Rescuers|Rescuers
+2 The Rescuers Down Under
+2 Oliver & Company|Oliver and Company
+2 The Great Mouse Detective|Great Mouse Detective
+2 The Black Cauldron|Black Cauldron
+2 The Sword in the Stone|Sword in the Stone
+2 The Many Adventures of Winnie the Pooh|Winnie the Pooh
+2 Ralph Breaks the Internet
+Fantasia 2000
+The Three Caballeros
+Saludos Amigos
+Make Mine Music
+Fun and Fancy Free
+Melody Time
+The Adventures of Ichabod and Mr. Toad`),
+    angle('toy_story_chars', 'movies', 'people', 'Name a "Toy Story" character.', `
+1 Woody
+1 Buzz Lightyear|Buzz
+1 Jessie
+1 Rex
+1 Hamm
+1 Slinky Dog|Slinky
+1 Mr. Potato Head|Mr Potato Head|Potato Head
+1 Bo Peep|Bo
+2 Andy
+2 Sid
+2 Bullseye
+2 Mrs. Potato Head|Mrs Potato Head
+2 Stinky Pete|The Prospector|Prospector
+2 Lotso|Lots-o'-Huggin' Bear
+2 Ken
+2 Barbie
+2 Forky
+2 Duke Caboom
+2 Gabby Gabby
+2 Zurg|Emperor Zurg
+2 Aliens|Little Green Men|Alien
+2 Wheezy
+2 Bonnie
+2 Al|Al McWhiggin
+2 Trixie
+2 Mr. Pricklepants
+2 Big Baby
+2 Ducky
+2 Bunny
+2 Molly
+2 Sarge
+2 Lenny
+2 Etch|Etch A Sketch
+2 RC
+2 Combat Carl
+2 Twitch
+2 Chuckles
+2 Dolly
+2 Buttercup
+Hannah
+Scud
+Mr. Spell
+Rocky Gibraltar
+Bookworm
+Stretch
+Chunk
+Sparks`),
+    angle('seinfeld_chars', 'tv', 'people', 'Name a "Seinfeld" character.', `
+1 Jerry|Jerry Seinfeld
+1 George|George Costanza
+1 Elaine|Elaine Benes
+1 Kramer|Cosmo Kramer
+1 Newman
+2 Frank Costanza
+2 Estelle Costanza
+2 Uncle Leo
+2 Puddy|David Puddy
+2 J. Peterman|Peterman
+2 Mr. Pitt
+2 Kenny Bania|Bania
+2 Jackie Chiles
+2 The Soup Nazi|Soup Nazi
+2 Morty Seinfeld
+2 Helen Seinfeld
+2 Susan Ross|Susan
+2 Mickey
+2 Babu
+2 George Steinbrenner|Steinbrenner
+Lloyd Braun
+Mr. Lippman|Lippman
+Tim Whatley
+Bob Sacamano
+Crazy Joe Davola|Joe Davola
+Sue Ellen Mischke
+Jack Klompus`),
+    angle('office_chars', 'tv', 'people', 'Name a character from "The Office."', `
+1 Michael Scott|Michael
+1 Dwight Schrute|Dwight
+1 Jim Halpert|Jim
+1 Pam Beesly|Pam|Pam Halpert
+1 Andy Bernard|Andy
+1 Angela Martin|Angela
+1 Kevin Malone|Kevin
+1 Creed Bratton|Creed
+2 Ryan Howard|Ryan
+2 Oscar Martinez|Oscar
+2 Stanley Hudson|Stanley
+2 Phyllis Vance|Phyllis
+2 Meredith Palmer|Meredith
+2 Kelly Kapoor|Kelly
+2 Toby Flenderson|Toby
+2 Darryl Philbin|Darryl
+2 Erin Hannon|Erin
+2 Jan Levinson|Jan
+2 Holly Flax|Holly
+2 Gabe Lewis|Gabe
+2 Robert California
+2 Karen Filippelli|Karen
+2 David Wallace
+2 Roy Anderson|Roy
+2 Nellie Bertram|Nellie
+2 Todd Packer|Packer
+Clark Green
+Pete Miller
+Jo Bennett
+Deangelo Vickers
+Mose Schrute|Mose
+Charles Miner
+Hank
+Nate
+Bob Vance`),
+    angle('famous_smith', 'people', 'people', 'Name a famous Smith.', `
+1 Will Smith
+1 Jada Pinkett Smith
+1 Sam Smith
+1 Maggie Smith
+1 Anna Nicole Smith
+2 Patti Smith
+2 Kevin Smith
+2 Emmitt Smith
+2 Joseph Smith
+2 Adam Smith
+2 John Smith
+2 Jaden Smith
+2 Willow Smith
+2 Matt Smith
+2 Robert Smith
+2 Bessie Smith
+2 Jaclyn Smith
+2 Kate Smith
+2 Ozzie Smith
+2 Tommie Smith
+2 Zadie Smith
+2 Elliott Smith
+2 Michael W. Smith
+2 Shepard Smith
+2 Liz Smith
+2 Margaret Chase Smith
+2 Anna Deavere Smith
+2 Granger Smith
+2 Lovie Smith`),
+    angle('famous_twins', 'people', 'people', 'Name a famous twin.', `
+1 Mary-Kate Olsen|Mary-Kate|Mary Kate Olsen
+1 Ashley Olsen
+1 Tia Mowry|Tia
+1 Tamera Mowry|Tamera
+1 Dylan Sprouse
+1 Cole Sprouse
+2 Scarlett Johansson
+2 Ashton Kutcher
+2 Kiefer Sutherland
+2 Alanis Morissette
+2 Vin Diesel
+2 Gisele Bündchen|Gisele Bundchen
+2 Jenna Bush
+2 Barbara Bush
+2 Mark Kelly
+2 Scott Kelly
+2 Drew Scott
+2 Jonathan Scott
+2 Brie Bella
+2 Nikki Bella
+2 Romulus
+2 Remus
+2 Jacob
+2 Esau
+2 Castor
+2 Pollux
+2 Fred Weasley
+2 George Weasley
+2 Tweedledum
+2 Tweedledee
+2 Cameron Winklevoss
+2 Tyler Winklevoss
+2 Tiki Barber
+2 Ronde Barber
+2 Bob Bryan
+2 Mike Bryan
+2 Henrik Sedin
+2 Daniel Sedin
+2 Benji Madden
+2 Joel Madden
+2 Esther Lederer|Ann Landers
+2 Pauline Phillips|Dear Abby
+2 Elvis Presley`),
+    angle('two_word_states', 'geo', 'wordplay', 'Name a U.S. state with a two-word name.', `
+1 New York
+1 New Jersey
+1 North Carolina
+1 South Carolina
+1 West Virginia
+2 New Mexico
+2 New Hampshire
+2 North Dakota
+2 South Dakota
+2 Rhode Island`),
+    angle('florida_cities', 'geo', 'place', 'Name a city in Florida.', `
+1 Miami
+1 Orlando
+1 Tampa
+1 Jacksonville
+1 Tallahassee
+1 Fort Lauderdale
+1 Key West
+2 St. Petersburg|St Petersburg|Saint Petersburg
+2 West Palm Beach
+2 Naples
+2 Sarasota
+2 Gainesville
+2 Pensacola
+2 Daytona Beach|Daytona
+2 Fort Myers
+2 Clearwater
+2 Boca Raton
+2 Miami Beach
+2 Palm Beach
+2 St. Augustine|St Augustine|Saint Augustine
+2 Panama City|Panama City Beach
+2 Destin
+2 Kissimmee
+2 Cocoa Beach
+Hialeah
+Cape Coral
+Port St. Lucie
+Coral Springs
+Hollywood
+Ocala
+Lakeland
+Melbourne
+Delray Beach
+Boynton Beach
+Pompano Beach
+Coral Gables
+Homestead
+Vero Beach
+Bradenton
+Winter Park
+Key Largo
+Marco Island
+Apalachicola
+Titusville
+Sebring
+Sanford
+Palm Coast
+Fernandina Beach
+Venice
+Punta Gorda`),
+    angle('california_cities', 'geo', 'place', 'Name a city in California.', `
+1 Los Angeles|LA|L.A.
+1 San Francisco|SF
+1 San Diego
+1 Sacramento
+1 San Jose
+1 Oakland
+1 Hollywood
+1 Malibu
+1 Beverly Hills
+1 Palm Springs
+2 Fresno
+2 Long Beach
+2 Santa Barbara
+2 Anaheim
+2 Pasadena
+2 Berkeley
+2 Santa Monica
+2 Napa
+2 Santa Cruz
+2 Monterey
+2 Carmel|Carmel-by-the-Sea
+2 Irvine
+2 Bakersfield
+2 Palo Alto
+2 Cupertino
+2 Huntington Beach
+2 Newport Beach
+2 Laguna Beach
+2 Sonoma
+2 Sausalito
+2 Burbank
+Riverside
+Stockton
+Modesto
+Santa Clara
+Sunnyvale
+Mountain View
+Glendale
+Torrance
+San Bernardino
+Chula Vista
+Oceanside
+Escondido
+Redding
+Eureka
+Chico
+Davis
+Temecula
+Ventura
+Oxnard
+Thousand Oaks
+Compton
+Inglewood
+West Hollywood
+San Luis Obispo
+Santa Rosa
+Fremont
+Hayward
+Vallejo
+Visalia
+Barstow
+Big Bear Lake
+South Lake Tahoe
+Coronado
+Del Mar
+La Jolla
+Carlsbad
+Ojai
+Solvang
+Yountville
+Half Moon Bay`),
+    angle('mexico_cities', 'geo', 'place', 'Name a city in Mexico.', `
+1 Mexico City|Ciudad de México|CDMX
+1 Cancún|Cancun
+1 Guadalajara
+1 Monterrey
+1 Tijuana
+1 Puerto Vallarta
+1 Acapulco
+1 Cabo San Lucas|Cabo
+2 Oaxaca
+2 Puebla
+2 Mérida|Merida
+2 Playa del Carmen
+2 Tulum
+2 Mazatlán|Mazatlan
+2 San Miguel de Allende
+2 Ensenada
+2 Ciudad Juárez|Juárez|Juarez
+2 Chihuahua
+2 Veracruz
+2 Querétaro|Queretaro
+2 Guanajuato
+2 Cozumel
+2 Zihuatanejo
+2 La Paz
+2 Rosarito
+2 Sayulita
+2 Isla Mujeres
+León|Leon
+Morelia
+Toluca
+Cuernavaca
+Taxco
+Hermosillo
+Ixtapa
+Huatulco
+Campeche
+Durango
+Saltillo
+Torreón|Torreon
+Culiacán|Culiacan
+Aguascalientes
+San Luis Potosí|San Luis Potosi
+Zacatecas
+Tampico
+Villahermosa
+Tuxtla Gutiérrez|Tuxtla Gutierrez
+San Cristóbal de las Casas|San Cristobal de las Casas
+Nuevo Laredo
+Matamoros
+Reynosa
+Mexicali
+Nogales
+Todos Santos
+Bacalar
+Valladolid
+San José del Cabo|San Jose del Cabo`),
+    angle('rivers', 'geo', 'category', 'Name a famous river.', `
+1 Nile
+1 Amazon
+1 Mississippi
+1 Thames
+1 Seine
+1 Rio Grande
+1 Colorado
+2 Danube
+2 Rhine
+2 Yangtze
+2 Ganges
+2 Missouri
+2 Hudson
+2 Ohio
+2 Volga
+2 Mekong
+2 Tigris
+2 Euphrates
+2 Jordan
+2 Congo
+2 Columbia
+2 Potomac
+2 Tiber
+2 Snake
+2 St. Lawrence|St Lawrence|Saint Lawrence
+2 Delaware
+2 Niger
+2 Zambezi
+2 Yellow River|Huang He
+2 Indus
+2 Loire
+2 Arno
+2 Shannon
+2 Liffey
+2 Charles
+2 Chicago River
+2 Tennessee
+Po
+Elbe
+Douro
+Tagus
+Ebro
+Rhône|Rhone
+Arkansas
+Red River
+Platte
+Susquehanna
+Yukon
+Mackenzie
+Orinoco
+Paraná|Parana
+Murray
+Darling
+Brahmaputra
+Irrawaddy
+Ob
+Yenisei
+Lena
+Amur
+Dnieper
+Vistula
+Oder
+Sacramento
+Willamette
+Cumberland
+James
+Savannah
+Allegheny
+Monongahela`),
+    angle('mountain_ranges', 'geo', 'category', 'Name a mountain range.', `
+1 Rocky Mountains|Rockies|Rocky
+1 Himalayas|Himalaya
+1 Andes
+1 Alps
+1 Appalachian Mountains|Appalachians|Appalachian
+2 Sierra Nevada|Sierras
+2 Cascades|Cascade Range
+2 Pyrenees
+2 Ural Mountains|Urals
+2 Atlas Mountains|Atlas
+2 Carpathians|Carpathian Mountains
+2 Great Smoky Mountains|Smoky Mountains|Smokies
+2 Blue Ridge Mountains|Blue Ridge
+2 Adirondacks|Adirondack Mountains
+2 Catskills|Catskill Mountains
+2 Ozarks|Ozark Mountains
+2 Tetons|Teton Range
+2 Black Hills
+2 Sierra Madre
+2 Dolomites
+2 Apennines
+2 Alaska Range
+2 Brooks Range
+2 Wasatch|Wasatch Range
+Caucasus
+Hindu Kush
+Karakoram
+Tian Shan
+Altai
+Zagros
+Great Dividing Range
+Drakensberg
+Scottish Highlands|Highlands
+Pennines
+Green Mountains
+White Mountains
+Berkshires
+Poconos
+Coast Mountains
+Olympic Mountains
+San Juan Mountains
+Bitterroot Range|Bitterroots
+Ruwenzori|Rwenzori
+Snowy Mountains
+Southern Alps
+Sangre de Cristo Mountains
+San Gabriel Mountains
+Santa Monica Mountains
+Bighorn Mountains
+Wind River Range
+Sawtooth Range|Sawtooths`),
+    angle('deserts', 'geo', 'category', 'Name a desert.', `
+1 Sahara
+1 Mojave
+1 Gobi
+1 Death Valley
+1 Sonoran
+1 Kalahari
+1 Atacama
+2 Arabian
+2 Antarctic|Antarctica
+2 Arctic
+2 Great Basin
+2 Chihuahuan
+2 Namib
+2 Thar
+2 Great Victoria
+2 Taklamakan
+2 Patagonian
+2 Painted Desert
+2 Negev
+2 Sinai
+2 Rub' al Khali|Empty Quarter
+Syrian
+Karakum
+Kyzylkum
+Simpson
+Great Sandy
+Libyan
+Nubian
+Dasht-e Kavir
+Colorado Desert
+Black Rock Desert|Black Rock
+Great Salt Lake Desert
+Gibson
+Tanami
+Danakil
+Ogaden
+Judaean
+Owyhee
+Red Desert
+Alvord`),
+    angle('seas', 'geo', 'category', 'Name an ocean or sea.', `
+1 Pacific|Pacific Ocean
+1 Atlantic|Atlantic Ocean
+1 Indian|Indian Ocean
+1 Arctic|Arctic Ocean
+1 Mediterranean|Mediterranean Sea
+1 Caribbean|Caribbean Sea
+1 Dead Sea
+1 Red Sea
+1 Black Sea
+2 Southern|Southern Ocean|Antarctic Ocean
+2 Caspian|Caspian Sea
+2 Baltic|Baltic Sea
+2 North Sea
+2 Aegean|Aegean Sea
+2 Adriatic|Adriatic Sea
+2 Arabian Sea
+2 South China Sea
+2 Coral Sea
+2 Bering Sea
+2 Sea of Japan|East Sea
+2 Yellow Sea
+2 Tasman Sea
+2 Ionian Sea
+2 Irish Sea
+2 Sea of Galilee
+2 Salton Sea
+Tyrrhenian Sea
+Labrador Sea
+Sargasso Sea
+Weddell Sea
+Ross Sea
+Barents Sea
+Kara Sea
+Sea of Okhotsk
+Philippine Sea
+Java Sea
+Andaman Sea
+Celtic Sea
+Ligurian Sea
+Sea of Marmara
+Sea of Azov
+East China Sea
+Norwegian Sea
+Greenland Sea
+Beaufort Sea
+Bismarck Sea
+Timor Sea
+Arafura Sea
+Sulu Sea
+Celebes Sea
+Aral Sea`),
+    angle('great_lakes', 'geo', 'category', 'Name one of the Great Lakes.', `
+1 Michigan|Lake Michigan
+1 Superior|Lake Superior
+1 Erie|Lake Erie
+2 Huron|Lake Huron
+2 Ontario|Lake Ontario`),
+    angle('hawaii_islands', 'geo', 'place', 'Name a Hawaiian island.', `
+1 Maui
+1 Oahu|Oʻahu
+1 Kauai|Kauaʻi
+1 Hawaii|Big Island|Hawaiʻi
+2 Molokai|Molokaʻi
+2 Lanai|Lānaʻi
+4 Niihau|Niʻihau
+4 Kahoolawe|Kahoʻolawe`),
+    angle('canada_provinces', 'geo', 'place', 'Name a Canadian province or territory.', `
+1 Ontario
+1 Quebec|Québec
+1 British Columbia|BC
+1 Alberta
+2 Manitoba
+2 Saskatchewan
+2 Nova Scotia
+2 New Brunswick
+2 Newfoundland and Labrador|Newfoundland|Labrador
+2 Prince Edward Island|PEI
+2 Yukon
+2 Northwest Territories
+4 Nunavut`),
+    angle('australia_states', 'geo', 'place', 'Name an Australian state or territory.', `
+1 New South Wales
+1 Victoria
+1 Queensland
+2 Western Australia
+2 South Australia
+2 Tasmania
+2 Northern Territory
+4 Australian Capital Territory|ACT`),
+    angle('nyc_boroughs', 'geo', 'place', 'Name a borough of New York City.', `
+1 Manhattan
+1 Brooklyn
+1 Queens
+1 The Bronx|Bronx
+2 Staten Island`),
+    angle('disney_parks', 'geo', 'place', 'Name a Disney theme park.', `
+1 Magic Kingdom
+1 Disneyland
+1 Epcot|EPCOT
+1 Animal Kingdom|Disney's Animal Kingdom
+1 Hollywood Studios|Disney's Hollywood Studios|MGM Studios
+2 Disney California Adventure|California Adventure
+2 Disneyland Paris|Euro Disney
+2 Tokyo Disneyland
+2 Tokyo DisneySea|DisneySea
+2 Hong Kong Disneyland
+2 Shanghai Disneyland
+2 Typhoon Lagoon
+2 Blizzard Beach
+4 Walt Disney Studios Park|Disney Adventure World`),
+    angle('vegas_casinos', 'geo', 'place', 'Name a Las Vegas casino.', `
+1 Bellagio
+1 Caesars Palace|Caesars
+1 MGM Grand
+1 The Venetian|Venetian
+1 Wynn
+1 Mandalay Bay
+1 Luxor
+1 Excalibur
+1 New York-New York|New York New York
+1 Paris|Paris Las Vegas
+1 Flamingo
+2 The Mirage|Mirage
+2 Treasure Island
+2 Circus Circus
+2 The STRAT|Stratosphere|Strat
+2 Aria
+2 The Cosmopolitan|Cosmopolitan
+2 Planet Hollywood
+2 Harrah's|Harrahs
+2 Tropicana
+2 Rio
+2 Palms
+2 Golden Nugget
+2 Horseshoe|Bally's|Ballys
+2 The Linq|Linq
+2 Resorts World
+2 Fontainebleau
+2 Sahara
+2 Encore
+2 Hard Rock
+2 Riviera
+2 Stardust
+2 Sands
+2 The Palazzo|Palazzo
+Golden Gate
+El Cortez
+Fremont
+Binion's
+Park MGM|Monte Carlo
+Westgate
+Red Rock
+Green Valley Ranch
+South Point
+The Orleans|Orleans
+Gold Coast
+Sam's Town
+Four Queens
+The D
+Circa
+Plaza
+Downtown Grand
+Durango
+Virgin`),
+    angle('explorers', 'history', 'people', 'Name a famous explorer.', `
+1 Christopher Columbus|Columbus
+1 Ferdinand Magellan|Magellan
+1 Marco Polo
+1 Lewis and Clark|Meriwether Lewis|William Clark|Lewis|Clark
+1 Sacagawea|Sacajawea
+1 Vasco da Gama
+2 Amerigo Vespucci|Vespucci
+2 Hernán Cortés|Hernan Cortes|Cortés|Cortez
+2 Francisco Pizarro|Pizarro
+2 Ponce de León|Ponce de Leon|Juan Ponce de León
+2 Leif Erikson|Leif Ericson|Leif Eriksson
+2 James Cook|Captain Cook|Captain James Cook
+2 Roald Amundsen|Amundsen
+2 Ernest Shackleton|Shackleton
+2 Robert Falcon Scott
+2 Edmund Hillary|Sir Edmund Hillary
+2 Tenzing Norgay
+2 Henry Hudson
+2 Jacques Cartier
+2 Samuel de Champlain|Champlain
+2 Hernando de Soto|De Soto
+2 Francisco Vázquez de Coronado|Coronado
+2 John Cabot
+2 Walter Raleigh|Sir Walter Raleigh
+2 Francis Drake|Sir Francis Drake
+2 Zheng He
+2 Ibn Battuta
+2 David Livingstone|Livingstone
+2 Henry Morton Stanley
+2 Daniel Boone
+2 Zebulon Pike
+2 Matthew Henson
+2 Robert Peary|Peary
+2 Amelia Earhart
+2 Jacques Cousteau
+Bartolomeu Dias
+Juan Rodríguez Cabrillo|Cabrillo
+Vitus Bering
+Abel Tasman
+Charles Lindbergh
+Neil Armstrong
+John Wesley Powell
+Erik the Red
+Ida Pfeiffer
+Gertrude Bell
+Isabella Bird
+Mary Kingsley
+Freya Stark
+Jacques Marquette|Father Marquette
+Louis Jolliet|Joliet
+René-Robert de La Salle|La Salle
+Juan Sebastián Elcano|Elcano
+Pedro Álvares Cabral|Cabral
+John Smith
+George Vancouver
+Alexander Mackenzie
+Simon Fraser
+Kit Carson`),
+    angle('founders', 'history', 'people', 'Name a Founding Father.', `
+1 George Washington|Washington
+1 Thomas Jefferson|Jefferson
+1 Benjamin Franklin|Ben Franklin|Franklin
+1 John Adams
+1 Alexander Hamilton|Hamilton
+1 James Madison|Madison
+2 John Jay|Jay
+2 Samuel Adams|Sam Adams
+2 John Hancock|Hancock
+2 Patrick Henry
+2 Thomas Paine|Paine
+2 James Monroe|Monroe
+2 Paul Revere
+2 Gouverneur Morris
+2 Robert Morris
+2 George Mason|Mason
+2 Roger Sherman|Sherman
+2 John Dickinson|Dickinson
+2 Benjamin Rush|Rush
+2 Richard Henry Lee
+2 Aaron Burr|Burr
+2 Charles Carroll
+2 Elbridge Gerry|Gerry
+2 Rufus King
+2 Edmund Randolph|Randolph
+2 John Marshall
+2 Marquis de Lafayette|Lafayette
+2 Button Gwinnett
+2 Caesar Rodney
+Charles Pinckney
+Charles Cotesworth Pinckney
+James Wilson
+John Witherspoon
+Robert R. Livingston|Robert Livingston
+Oliver Ellsworth
+William Paterson
+Luther Martin
+Robert Treat Paine
+Francis Hopkinson
+Abraham Baldwin
+Silas Deane
+Peyton Randolph
+Henry Laurens
+John Rutledge
+Josiah Bartlett
+Stephen Hopkins
+Abigail Adams
+Mercy Otis Warren`),
+    angle('cloud_types', 'science', 'category', 'Name a type of cloud.', `
+1 Cumulus
+1 Stratus
+1 Cirrus
+2 Cumulonimbus|Thunderhead
+2 Nimbostratus|Nimbus
+2 Altostratus
+2 Altocumulus
+2 Cirrostratus
+2 Cirrocumulus
+2 Stratocumulus
+2 Fog
+2 Contrail
+2 Funnel cloud
+Mammatus
+Lenticular
+Shelf cloud
+Wall cloud
+Noctilucent
+Pileus
+Anvil
+Mackerel sky
+Kelvin-Helmholtz
+Asperitas`),
+    angle('vitamins', 'science', 'category', 'Name a vitamin.', `
+1 C|Vitamin C
+1 D|Vitamin D
+1 A|Vitamin A
+1 B12|Vitamin B12|B-12
+2 E|Vitamin E
+2 K|Vitamin K
+2 B6|Vitamin B6|B-6
+2 B|B complex|Vitamin B
+2 Biotin|B7|Vitamin B7
+2 Folate|Folic acid|B9|Vitamin B9
+2 Niacin|B3|Vitamin B3
+2 Riboflavin|B2|Vitamin B2
+2 Thiamine|Thiamin|B1|Vitamin B1
+2 Pantothenic acid|B5|Vitamin B5`),
+    angle('units', 'science', 'category', 'Name a unit of measurement.', `
+1 Inch
+1 Foot|Feet
+1 Yard
+1 Mile
+1 Meter|Metre
+1 Centimeter|Centimetre
+1 Pound
+1 Ounce
+1 Gallon
+1 Liter|Litre
+1 Cup
+1 Second
+1 Minute
+1 Hour
+2 Millimeter|Millimetre
+2 Kilometer|Kilometre
+2 Gram
+2 Kilogram|Kilo
+2 Ton|Tonne
+2 Milliliter|Millilitre
+2 Quart
+2 Pint
+2 Teaspoon
+2 Tablespoon
+2 Degree
+2 Acre
+2 Hectare
+2 Watt
+2 Volt
+2 Amp|Ampere
+2 Calorie
+2 Celsius
+2 Fahrenheit
+2 Kelvin
+2 Light-year|Light year
+2 Byte|Bit|Megabyte|Gigabyte|Kilobyte|Terabyte
+2 Knot
+2 Fluid ounce
+2 Day
+2 Week
+2 Month
+2 Year
+Ohm
+Joule
+Newton
+Pascal
+Fathom
+Furlong
+League
+Nautical mile
+Hertz
+Decibel
+Stone
+Carat|Karat
+Bushel
+Peck
+Barrel
+Cubit
+Hand
+Horsepower
+Lumen
+Mole
+Parsec
+Angstrom|Ångström
+Micron
+Psi
+BTU`),
+    angle('backyard_birds', 'nature', 'place', 'Name a bird you might see in a backyard.', `
+1 Robin
+1 Blue jay|Bluejay|Jay
+1 Cardinal
+1 Sparrow
+1 Crow
+1 Hummingbird
+1 Pigeon
+1 Woodpecker
+2 Finch|Goldfinch|House finch
+2 Chickadee
+2 Mourning dove|Dove
+2 Starling
+2 Wren
+2 Mockingbird
+2 Blackbird|Red-winged blackbird
+2 Oriole|Baltimore oriole
+2 Bluebird
+2 Nuthatch
+2 Titmouse|Tufted titmouse
+2 Junco
+2 Grackle
+2 Cowbird
+2 Catbird
+2 Swallow
+2 Warbler
+2 Owl
+2 Hawk
+2 Magpie
+2 Thrush
+2 Flicker
+Thrasher
+Tanager
+Grosbeak
+Towhee
+Blue tit
+Great tit
+Wagtail
+Kingfisher
+Phoebe
+Waxwing|Cedar waxwing
+Vireo
+Kinglet
+Siskin
+Bunting|Indigo bunting
+Chipping sparrow
+Killdeer
+Quail
+Wild turkey|Turkey`),
+    angle('farm_animals', 'nature', 'place', 'Name an animal you\'d see on a farm.', `
+1 Cow
+1 Pig
+1 Chicken
+1 Horse
+1 Sheep
+1 Goat
+1 Duck
+1 Turkey
+2 Donkey
+2 Rooster
+2 Goose
+2 Llama
+2 Alpaca
+2 Rabbit
+2 Mule
+2 Dog
+2 Cat
+2 Bull
+2 Ox
+2 Pony
+2 Hen
+2 Calf
+2 Lamb
+2 Piglet
+2 Barn owl|Owl
+2 Mouse|Mice
+2 Rat
+2 Bee|Bees
+Peacock
+Guinea fowl
+Emu
+Ostrich
+Bison|Buffalo
+Yak
+Water buffalo
+Quail
+Pheasant
+Steer
+Heifer
+Ram
+Ewe
+Sow
+Boar
+Billy goat
+Chick
+Foal
+Kid
+Barn cat
+Sheepdog
+Cattle`),
+    angle('zoo_animals', 'nature', 'place', 'Name an animal you\'d see at the zoo.', `
+1 Lion
+1 Tiger
+1 Elephant
+1 Giraffe
+1 Zebra
+1 Monkey
+1 Bear
+1 Penguin
+1 Gorilla
+1 Hippo|Hippopotamus
+1 Rhino|Rhinoceros
+1 Panda|Giant panda
+1 Kangaroo
+1 Flamingo
+1 Snake
+1 Chimpanzee|Chimp
+2 Polar bear
+2 Cheetah
+2 Leopard
+2 Jaguar
+2 Orangutan
+2 Koala
+2 Seal
+2 Sea lion
+2 Otter
+2 Alligator
+2 Crocodile
+2 Tortoise
+2 Turtle
+2 Camel
+2 Ostrich
+2 Peacock
+2 Parrot
+2 Meerkat
+2 Lemur
+2 Red panda
+2 Sloth
+2 Wolf
+2 Hyena
+2 Baboon
+2 Bison
+2 Bald eagle|Eagle
+2 Owl
+2 Komodo dragon
+2 Tapir
+2 Okapi
+2 Warthog
+2 Wallaby
+2 Anteater
+2 Armadillo
+2 Porcupine
+2 Capybara
+2 Gibbon
+2 Snow leopard
+2 Bat
+Llama
+Emu
+Iguana
+Tarantula
+Frog
+Toucan
+Pelican
+Gazelle
+Antelope
+Elk
+Moose
+Reindeer
+Lynx
+Bobcat
+Cougar|Mountain lion|Puma
+Hedgehog
+Wombat
+Platypus
+Gila monster
+Chameleon
+Tamarin
+Mandrill
+Gharial
+Wildebeest
+Kudu
+Aardvark`),
+    angle('hibernators', 'nature', 'trait', 'Name an animal that hibernates.', `
+1 Bear|Black bear|Brown bear|Grizzly bear|Grizzly
+1 Groundhog|Woodchuck
+1 Bat
+2 Chipmunk
+2 Hedgehog
+2 Ground squirrel|Squirrel
+2 Frog|Wood frog
+2 Turtle|Box turtle
+2 Snake|Garter snake|Rattlesnake
+2 Ladybug|Ladybird
+2 Bumblebee|Bee
+2 Dormouse
+2 Marmot
+2 Prairie dog
+2 Skunk
+2 Polar bear
+2 Hamster
+Snail
+Fat-tailed dwarf lemur|Lemur
+Poorwill|Common poorwill
+Badger
+Echidna
+Alligator
+Toad
+Salamander
+Lizard
+Mosquito
+Mourning cloak|Butterfly`),
+    angle('black_white_animals', 'nature', 'trait', 'Name an animal that\'s black and white.', `
+1 Zebra
+1 Panda|Giant panda
+1 Skunk
+1 Penguin
+1 Orca|Killer whale
+1 Dalmatian
+1 Cow|Holstein|Holstein cow|Dairy cow
+2 Magpie
+2 Badger
+2 Puffin
+2 Tapir|Malayan tapir
+2 Border collie
+2 Boston Terrier
+2 Colobus monkey|Colobus
+2 Loon
+2 Tuxedo cat|Cat
+2 Ruffed lemur|Black-and-white ruffed lemur
+2 Indri
+2 Black-and-white warbler
+2 Avocet
+2 Moorish idol
+2 Osprey`),
+    angle('halloween', 'holidays', 'time', 'Name something you\'d see on Halloween.', `
+1 Pumpkin|Jack-o'-lantern|Jack-o-lantern|Pumpkins
+1 Candy
+1 Costumes|Costume
+1 Ghost|Ghosts
+1 Witch|Witches
+1 Skeleton|Skeletons
+1 Bat|Bats
+1 Black cat
+1 Spider|Spiders
+1 Trick-or-treaters|Trick or treaters|Trick-or-treating
+1 Candy corn
+2 Spiderweb|Cobwebs|Spider webs|Webs
+2 Zombie|Zombies
+2 Vampire|Vampires|Dracula
+2 Mummy|Mummies
+2 Werewolf|Werewolves
+2 Frankenstein
+2 Scarecrow
+2 Haunted house
+2 Cauldron
+2 Broom|Broomstick
+2 Tombstone|Gravestone|Tombstones
+2 Skull|Skulls
+2 Owl
+2 Full moon|Moon
+2 Fog
+2 Hayride
+2 Corn maze
+2 Caramel apples|Candy apples
+2 Bobbing for apples
+2 Masks|Mask
+2 Pillowcase|Candy bag|Bucket
+2 Monster|Monsters
+2 Devil
+2 Goblin|Goblins
+Ghoul
+Clown
+Pirate
+Porch light
+Fake blood
+Gourds
+Hay bales
+Orange lights
+Inflatables
+Fog machine
+Fake spiders
+Princess
+Superhero`),
+    angle('valentines', 'holidays', 'time', 'Name a Valentine\'s Day gift.', `
+1 Roses|Flowers|Rose
+1 Chocolate|Chocolates|Box of chocolates
+1 Card|Valentine|Valentine's card
+1 Jewelry
+1 Teddy bear|Stuffed animal
+2 Candy hearts|Conversation hearts|Sweethearts
+2 Dinner|Dinner date
+2 Perfume
+2 Necklace
+2 Wine
+2 Champagne
+2 Balloons
+2 Lingerie
+2 Love letter|Letter
+2 Ring
+2 Bracelet
+2 Earrings
+2 Candles
+2 Spa day|Massage
+2 Gift card
+2 Chocolate-covered strawberries|Chocolate covered strawberries
+2 Heart-shaped box
+Watch
+Cologne
+Bath bombs
+Poem
+Playlist|Mixtape
+Breakfast in bed
+Photo album
+Locket
+Cupcakes
+Cookies
+Lip balm
+Pajamas
+Concert tickets|Tickets`),
+    angle('july_fourth', 'holidays', 'time', 'Name a Fourth of July tradition.', `
+1 Fireworks
+1 Parade
+1 Barbecue|BBQ|Cookout|Grilling
+1 Hot dogs|Hot dog
+1 American flag|Flag|Flags
+1 Picnic
+1 Sparklers
+2 Hamburgers|Burgers
+2 Apple pie
+2 Watermelon
+2 Corn on the cob
+2 Potato salad
+2 Lemonade
+2 Beer
+2 Cornhole|Lawn games
+2 Concert
+2 Hot dog eating contest|Nathan's hot dog eating contest
+2 Red, white and blue|Red white and blue
+2 Baseball game|Baseball
+2 Pool party|Swimming
+2 Beach
+2 Bonfire
+2 Ice cream
+2 S'mores
+2 Bunting
+2 Fireworks show
+Reading the Declaration of Independence|Declaration of Independence
+Patriotic songs
+Uncle Sam
+Boat parade
+Family reunion
+Flag pins
+Popsicles
+Ribs`),
+    angle('birthday_traditions', 'holidays', 'everyday', 'Name a birthday party tradition.', `
+1 Cake|Birthday cake
+1 Candles|Blowing out candles
+1 Singing "Happy Birthday"|Happy Birthday song|Singing Happy Birthday
+1 Presents|Gifts
+1 Balloons
+1 Party hats
+1 Making a wish|Wish
+2 Piñata|Pinata
+2 Goody bags|Party favors|Favors
+2 Games|Party games
+2 Card|Birthday card
+2 Streamers
+2 Ice cream
+2 Pin the Tail on the Donkey
+2 Musical chairs
+2 Bounce house
+2 Confetti
+2 Decorations
+2 Clown
+2 Magician
+2 Noisemakers|Party blowers|Blowers
+2 Birthday crown|Crown
+2 Banner
+2 Cupcakes
+2 Pizza
+2 Sleepover
+Face painting
+Birthday spankings
+Dinner out
+Birthday breakfast
+Surprise party
+Photo booth
+Karaoke`),
+    angle('hairstyles', 'style', 'category', 'Name a hairstyle.', `
+1 Ponytail
+1 Bun
+1 Braid|Braids
+1 Bob
+1 Pixie cut|Pixie
+1 Mohawk
+1 Mullet
+1 Buzz cut
+1 Afro
+1 Pigtails
+2 Crew cut
+2 Cornrows
+2 Dreadlocks|Locs|Dreads
+2 French braid
+2 Fishtail braid|Fishtail
+2 Bangs|Fringe
+2 Beehive
+2 Updo
+2 Chignon
+2 Top knot|Man bun
+2 Fade
+2 Pompadour
+2 Shag
+2 Layers|Layered
+2 Lob
+2 Perm
+2 Curtain bangs
+2 The Rachel|Rachel
+2 Feathered
+2 Box braids
+2 Bantu knots
+2 Comb-over|Combover
+2 Undercut
+2 Bowl cut
+2 Flat top
+2 Faux hawk|Fauxhawk
+2 Space buns
+2 Half-up half-down|Half up half down
+2 Beach waves
+Quiff
+Twist out
+Crown braid
+Victory rolls
+Finger waves
+Jheri curl
+Wedge
+Wolf cut
+Butterfly cut
+Dutch braid
+Waterfall braid
+Sleek ponytail
+Blowout
+Pageboy
+Ducktail
+High-top fade
+Frohawk
+Caesar cut
+Taper`),
+    angle('jewelry', 'style', 'category', 'Name a piece of jewelry.', `
+1 Necklace
+1 Ring
+1 Earrings|Earring
+1 Bracelet
+1 Watch
+2 Brooch|Broach
+2 Anklet
+2 Pendant
+2 Locket
+2 Choker
+2 Charm bracelet
+2 Cufflinks
+2 Tiara
+2 Crown
+2 Bangle
+2 Hoop earrings|Hoops
+2 Stud earrings|Studs
+2 Engagement ring
+2 Wedding band|Wedding ring
+2 Nose ring
+2 Belly button ring|Belly ring
+2 Toe ring
+2 Tie clip|Tie bar
+2 Pin
+2 Chain
+2 Cuff
+2 Signet ring
+2 Class ring
+2 Mood ring
+2 Pearls|String of pearls|Pearl necklace
+2 Tennis bracelet
+2 Friendship bracelet
+Ear cuff
+Lapel pin
+Amulet
+Talisman
+Medallion
+Cameo
+Body chain
+Barrette
+Hair clip
+Tie pin
+Circlet
+Diadem
+Grill|Grillz`),
+    angle('fabrics', 'style', 'category', 'Name a fabric.', `
+1 Cotton
+1 Silk
+1 Wool
+1 Denim
+1 Leather
+1 Polyester
+1 Linen
+2 Velvet
+2 Satin
+2 Lace
+2 Cashmere
+2 Nylon
+2 Rayon
+2 Spandex|Lycra|Elastane
+2 Chiffon
+2 Tulle
+2 Corduroy
+2 Flannel
+2 Fleece
+2 Jersey
+2 Suede
+2 Tweed
+2 Canvas
+2 Muslin
+2 Chenille
+2 Gingham
+2 Seersucker
+2 Taffeta
+2 Organza
+2 Crepe
+2 Twill
+2 Mohair
+2 Angora
+2 Acrylic
+2 Felt
+2 Burlap
+2 Terry cloth|Terrycloth
+2 Microfiber
+2 Velour
+2 Faux fur
+Alpaca
+Viscose
+Modal
+Bamboo
+Poplin
+Oxford cloth|Oxford
+Chambray
+Gore-Tex
+Brocade
+Damask
+Jacquard
+Georgette
+Voile
+Batiste
+Calico
+Madras
+Pashmina
+Tencel|Lyocell
+Merino
+Hemp
+Shearling
+Tartan`),
+    angle('disney_channel', 'kids', 'category', 'Name a Disney Channel show.', `
+1 Hannah Montana
+1 That's So Raven
+1 The Suite Life of Zack & Cody|Suite Life of Zack and Cody|The Suite Life
+1 Wizards of Waverly Place
+1 Lizzie McGuire
+1 Phineas and Ferb
+1 Kim Possible
+1 Good Luck Charlie
+2 Even Stevens
+2 Jessie
+2 Austin & Ally|Austin and Ally
+2 Shake It Up
+2 Sonny with a Chance
+2 Girl Meets World
+2 Liv and Maddie
+2 K.C. Undercover|KC Undercover
+2 Bunk'd|Bunkd
+2 Andi Mack
+2 Raven's Home
+2 Gravity Falls
+2 The Proud Family|Proud Family
+2 Recess
+2 Lilo & Stitch: The Series
+2 American Dragon: Jake Long|American Dragon
+2 Corey in the House
+2 JONAS|Jonas
+2 The Famous Jett Jackson
+2 Sofia the First
+2 Doc McStuffins
+2 Mickey Mouse Clubhouse
+2 Bizaardvark
+2 Stuck in the Middle
+2 Best Friends Whenever
+2 Dog with a Blog
+2 A.N.T. Farm|ANT Farm
+2 Amphibia
+2 The Owl House|Owl House
+2 Big City Greens
+2 Kiff
+2 Wizards Beyond Waverly Place
+2 The Suite Life on Deck|Suite Life on Deck
+2 So Weird
+2 Smart Guy
+2 Phil of the Future`),
+    angle('nickelodeon', 'kids', 'category', 'Name a Nickelodeon show.', `
+1 SpongeBob SquarePants|SpongeBob
+1 Rugrats
+1 iCarly
+1 Drake & Josh|Drake and Josh
+1 Hey Arnold!|Hey Arnold
+1 The Fairly OddParents|Fairly OddParents|Fairly Odd Parents
+1 Avatar: The Last Airbender|Avatar
+1 Dora the Explorer|Dora
+1 Blue's Clues
+1 PAW Patrol|Paw Patrol
+2 Victorious
+2 Zoey 101
+2 All That
+2 Kenan & Kel|Kenan and Kel
+2 Clarissa Explains It All
+2 Doug
+2 Rocko's Modern Life
+2 The Ren & Stimpy Show|Ren and Stimpy|Ren & Stimpy
+2 Jimmy Neutron|The Adventures of Jimmy Neutron
+2 Danny Phantom
+2 Invader Zim
+2 The Wild Thornberrys|Wild Thornberrys
+2 Rocket Power
+2 CatDog
+2 Aaahh!!! Real Monsters|Real Monsters
+2 Are You Afraid of the Dark?|Are You Afraid of the Dark
+2 Double Dare
+2 Legends of the Hidden Temple
+2 Salute Your Shorts
+2 The Adventures of Pete & Pete|Pete & Pete
+2 Sam & Cat|Sam and Cat
+2 Big Time Rush
+2 The Loud House|Loud House
+2 Henry Danger
+2 The Legend of Korra|Legend of Korra
+2 Teenage Mutant Ninja Turtles|TMNT
+2 Ned's Declassified School Survival Guide|Ned's Declassified
+2 Unfabulous
+2 True Jackson, VP|True Jackson
+2 The Amanda Show|Amanda Show
+2 Hey Dude
+2 Nick Arcade
+2 Figure It Out
+2 The Thundermans|Thundermans
+2 Game Shakers
+2 Bubble Guppies
+2 Wonder Pets
+2 Blaze and the Monster Machines
+2 You Can't Do That on Television
+2 Eureeka's Castle
+2 Gullah Gullah Island
+2 Allegra's Window
+2 The Angry Beavers|Angry Beavers
+2 ChalkZone
+2 My Life as a Teenage Robot
+2 As Told by Ginger
+2 The Mighty B
+2 Back at the Barnyard
+2 Fanboy & Chum Chum
+2 Harvey Beaks
+2 Breadwinners
+2 Sanjay and Craig
+2 The Penguins of Madagascar
+2 Kung Fu Panda: Legends of Awesomeness
+2 Nicky, Ricky, Dicky & Dawn
+2 School of Rock
+2 Make It Pop
+2 Knight Squad
+2 Danger Force
+2 Side Hustle
+2 Tyler Perry's Young Dylan|Young Dylan
+2 The Casagrandes|Casagrandes
+2 It's Pony`),
+    angle('childhood_toys', 'kids', 'everyday', 'Name a toy kids have loved.', `
+1 Barbie
+1 LEGO|Legos|Lego
+1 Slinky
+1 Etch A Sketch|Etch-a-Sketch
+1 Rubik's Cube
+1 Hot Wheels
+1 Furby
+1 Tamagotchi
+1 Cabbage Patch Kids|Cabbage Patch doll
+1 Beanie Babies|Beanie Baby
+1 Easy-Bake Oven|Easy Bake Oven
+1 Play-Doh|Play Doh
+1 Mr. Potato Head|Mr Potato Head
+1 Teddy bear
+1 Yo-yo|Yoyo
+1 Hula hoop
+2 Teddy Ruxpin
+2 Lite-Brite|Lite Brite
+2 Polly Pocket
+2 My Little Pony
+2 Care Bears
+2 Transformers
+2 G.I. Joe|GI Joe
+2 Frisbee
+2 Tickle Me Elmo
+2 Silly Putty
+2 View-Master|Viewmaster
+2 Lincoln Logs
+2 Tinkertoys|Tinker Toys
+2 Matchbox cars|Matchbox
+2 Nerf|Nerf gun
+2 Super Soaker
+2 Magic 8 Ball|Magic 8-Ball
+2 Spirograph
+2 Bop It
+2 Game Boy
+2 Pogs
+2 Koosh ball|Koosh
+2 Stretch Armstrong
+2 American Girl doll|American Girl
+2 Bratz
+2 Pound Puppies
+2 Strawberry Shortcake
+2 Troll dolls|Trolls
+2 Magna Doodle
+2 Speak & Spell|Speak and Spell
+2 K'Nex|Knex
+2 Jack-in-the-box
+2 Rocking horse
+2 Jump rope
+2 Pogo stick
+2 Big Wheel
+2 Skip-It
+2 Fidget spinner
+2 Squishmallows|Squishmallow
+2 Hatchimals
+2 L.O.L. Surprise!|LOL Surprise
+2 Shopkins
+2 Webkinz
+2 Pokémon cards|Pokemon cards
+2 Wooden blocks|Blocks
+2 Dollhouse
+2 Toy trains|Train set
+2 Kites|Kite
+2 Marbles
+2 Jacks
+2 Water balloons
+2 Sidewalk chalk
+2 Bubbles
+2 Baby doll
+2 Little People|Fisher-Price Little People
+2 Chatter Telephone|Fisher-Price phone
+2 Mega Bloks
+Zhu Zhu Pets
+Moon Shoes
+Glo Worm`),
+    angle('game_characters', 'games', 'people', 'Name a video game character.', `
+1 Mario
+1 Luigi
+1 Princess Peach|Peach
+1 Bowser
+1 Yoshi
+1 Donkey Kong
+1 Link
+1 Princess Zelda|Zelda
+1 Sonic|Sonic the Hedgehog
+1 Pac-Man|Pacman
+1 Pikachu
+1 Kirby
+2 Master Chief
+2 Lara Croft
+2 Samus|Samus Aran
+2 Mega Man
+2 Crash Bandicoot|Crash
+2 Spyro
+2 Steve
+2 Kratos
+2 Solid Snake|Snake
+2 Cloud Strife|Cloud
+2 Ms. Pac-Man|Ms Pac-Man
+2 Wario
+2 Toad
+2 Ganondorf|Ganon
+2 Tails
+2 Knuckles
+2 Dr. Robotnik|Eggman|Dr. Eggman
+2 Ryu
+2 Chun-Li
+2 Sub-Zero
+2 Scorpion
+2 Fox McCloud|Fox
+2 Jigglypuff
+2 Rayman
+2 Frogger
+2 Q*bert|Qbert
+2 Nathan Drake
+2 Ellie
+2 Joel
+2 Arthur Morgan
+2 Aloy
+2 Geralt|Geralt of Rivia
+2 Sackboy
+2 Ratchet
+2 Clank
+2 Banjo
+2 Kazooie
+2 Isabelle
+2 Tom Nook
+2 Pit
+2 Daisy|Princess Daisy
+2 Rosalina
+2 Diddy Kong
+2 Waluigi
+2 Shadow|Shadow the Hedgehog
+2 Marcus Fenix
+2 Duke Nukem
+2 Carmen Sandiego
+2 Agent 47
+2 Doomguy|Doom Slayer
+2 Gordon Freeman
+2 Ezio|Ezio Auditore
+2 Sora
+2 Inkling
+2 Villager
+2 Pyramid Head
+2 Leon Kennedy|Leon
+2 Jill Valentine
+2 Chris Redfield
+2 Bayonetta
+2 Lucina
+2 Captain Falcon
+2 Ness
+2 Olimar|Captain Olimar
+2 Dig Dug
+2 Simon Belmont
+2 Dante
+2 Vault Boy
+2 Claptrap
+2 Glados|GLaDOS
+2 Chell
+2 Creeper
+2 Alex
+2 Freddy Fazbear
+2 Cuphead
+2 Madeline
+2 Hollow Knight|The Knight`),
+    angle('arcade_games', 'games', 'time', 'Name a classic arcade game.', `
+1 Pac-Man|Pacman
+1 Space Invaders
+1 Donkey Kong
+1 Galaga
+1 Asteroids
+1 Frogger
+1 Pong
+1 Tetris
+1 Street Fighter|Street Fighter II
+1 Mortal Kombat
+1 Ms. Pac-Man|Ms Pac-Man
+2 Centipede
+2 Dig Dug
+2 Q*bert|Qbert
+2 Missile Command
+2 Defender
+2 Joust
+2 Tempest
+2 Galaxian
+2 BurgerTime|Burger Time
+2 Pole Position
+2 Dragon's Lair
+2 Contra
+2 Double Dragon
+2 Gauntlet
+2 Rampage
+2 Teenage Mutant Ninja Turtles|TMNT
+2 NBA Jam
+2 Golden Tee
+2 Skee-Ball|Skee Ball
+2 Whac-A-Mole|Whack-a-Mole
+2 Pinball
+2 Dance Dance Revolution|DDR
+2 Time Crisis
+2 The House of the Dead|House of the Dead
+2 Paperboy
+2 Marble Madness
+2 Robotron: 2084|Robotron
+2 Spy Hunter
+2 Punch-Out!!|Punch-Out
+2 Bubble Bobble
+2 Metal Slug
+2 Out Run|OutRun
+2 Crazy Taxi
+2 Daytona USA
+2 Big Buck Hunter
+2 The Simpsons|Simpsons arcade
+2 X-Men
+2 Killer Instinct
+2 Area 51
+2 Cruis'n USA|Cruisin USA
+2 San Francisco Rush
+2 Hydro Thunder
+2 Tron
+2 Battlezone
+2 Berzerk
+2 Breakout
+2 Lunar Lander
+2 Pengo
+2 Mappy
+2 Rally-X|Rally X
+2 1942
+2 Xevious
+2 Arkanoid
+2 Bomb Jack
+2 Kung-Fu Master
+2 Yie Ar Kung-Fu
+2 Golden Axe
+2 Final Fight
+2 Rygar
+2 Ghosts 'n Goblins|Ghosts n Goblins
+2 Elevator Action
+2 Moon Patrol
+2 Zaxxon
+2 Track & Field|Track and Field
+2 Hyper Sports
+2 Excitebike
+2 Duck Hunt
+2 Pac-Mania
+Tapper`),
+  ];
+
+
   const UNIVERSES = {
     countries: { id: 'countries', items: COUNTRIES, noun: 'a U.N. member state', short: 'U.N. member state' },
     states: { id: 'states', items: US_STATES, noun: 'a U.S. state', short: 'U.S. state' },
@@ -2370,10 +9403,12 @@ Demi`, { 1: ['Tall', 'Grande', 'Venti'], 3: ['Short', 'Trenta'], 4: ['Demi'] }, 
     squash: { id: 'squash', items: SQUASH, short: 'squash' },
     starbucks: { id: 'starbucks', items: STARBUCKS, short: 'Starbucks size' },
   };
+  for (const a of ANGLES) UNIVERSES['a_' + a.id] = { id: 'a_' + a.id, items: a.items, short: a.text };
+
 
   const R = typeof Rarity !== 'undefined' ? Rarity : require('./rarity.js');
   for (const u of Object.values(UNIVERSES)) for (const it of u.items) it.fam = (R[u.id] || {})[it.name];
 
-  return { UNIVERSES, COMMODITY, LANDLOCKED, MX_PACIFIC, CONTINENT, REGION, STATE_LISTS, ELEMENT_LISTS, PARTY, PRES_LISTS, TEAM_PLACES, ZODIAC, NEW_TESTAMENT, BEST_PICTURE_RECENT };
+  return { UNIVERSES, ANGLES, COMMODITY, LANDLOCKED, MX_PACIFIC, CONTINENT, REGION, STATE_LISTS, ELEMENT_LISTS, PARTY, PRES_LISTS, TEAM_PLACES, ZODIAC, NEW_TESTAMENT, BEST_PICTURE_RECENT };
 })();
 if (typeof module !== 'undefined') module.exports = Data;

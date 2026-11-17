@@ -71,7 +71,7 @@ for universe, items in json.loads(dump).items():
     out[universe] = {}
     for it in items:
         tier = TIER[it["tier"]]
-        score = tier if universe in TIER_ONLY else TEXT_SHARE * text_score(universe, it) + (1 - TEXT_SHARE) * tier
+        score = tier if universe in TIER_ONLY or universe.startswith("a_") else TEXT_SHARE * text_score(universe, it) + (1 - TEXT_SHARE) * tier
         out[universe][it["name"]] = round(score, 2)
 
 lines = ["/* Paco's Island: fixed familiarity scores, built by tools/rarity.py. Do not edit by hand.",

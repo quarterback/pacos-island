@@ -18,6 +18,7 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 
 **Copy**
 - All player-facing text lives in `js/copy.js`. Question wording lives in `js/prompts.js`.
+- Before adding or editing questions, read `docs/QUESTION-WRITING.md`. Vary the angle (trait, wordplay, people, place, time, everyday, crossover), keep letter questions as a twist and write for every kind of player.
 - Before committing copy changes, run `prosekeep check`, `plain-language-default check` and `red-pen-editor inspect` on an export of the copy, and fix real findings. Also check against the humanizer standard (github.com/blader/humanizer).
 - Say what is happening in plain words. No line restates a button or another line.
 - In a question, spell out an acronym the first time it appears: "a National Football League (NFL) team."
