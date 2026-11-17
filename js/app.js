@@ -285,7 +285,7 @@
       li.append(a, b); $('earlierList').append(li);
     }
     const rows = rec.answers.map((a) => `${Copy.marks[bucket(a.points)]} ${fmt(a.points || 0)}`).join('\n');
-    const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
+    const line = headline.replace(/^Paco got you/, 'Paco got me').replace(/^Paco walked you/, 'Paco walked me').replace(/^Paco drove you/, 'Paco drove me').replace(/^Paco took you/, 'Paco took me');
     $('shareText').textContent = Copy.share(day, line, rows, fmt(rarity), '+' + fmt(speed), fmt(score), clockText(secs));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));

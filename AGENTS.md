@@ -24,7 +24,7 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 - Write interface text the way Microsoft's and Salesforce's UI text guidelines do: use as few words as possible, and give a figure as a label ("41,242 points"), with no "You have" or "in all" around it. Buttons, labels, headings and fragments take no period. Full sentences in notes and dialogs keep theirs.
 
 **Facts**
-- The setting is fictional: Bahía Ixtaluz, Puerto Ixtaluz, its stops and Paco's Island. Never name a real town, beach, bay, landmark or ship in the game. Before adding a place name, search it and drop it if it matches a real place.
+- The setting is fictional: Bahía Ixtaluz, Puerto Ixtaluz, its stops, Paco's Island and Cascada Ixtalita. Never name a real town, beach, bay, landmark or ship in the game. Before adding a place name, search it and drop it if it matches a real place.
 - Real world facts belong only in the answer lists, which are trivia about the real world.
 - Answer lists must be complete for their rule. Run `node tools/check.mjs` after editing `js/data.js` or `js/prompts.js`.
 

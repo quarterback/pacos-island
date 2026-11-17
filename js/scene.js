@@ -3,8 +3,8 @@
    A 480 x 240 Pixi stage, drawn at three times that size so each art
    pixel stays sharp when CSS fits the canvas to the page. The trip's
    strip from art.js scrolls behind Paco. Score drives his position: on the
-   boat and the ATV it moves him along the stops, on the dive it takes him
-   down. If WebGL is unavailable the scene stays hidden and the game still
+   boat, the walk and the ATV it moves him along the stops, on the dive it
+   takes him down. If WebGL is unavailable the scene stays hidden and the game still
    works. */
 'use strict';
 const Scene = (() => {
@@ -36,10 +36,10 @@ const Scene = (() => {
     if (t === trip && !force && bg) return;
     trip = t;
     world.removeChildren();
-    if (!strips[t]) strips[t] = tex(t === 'boat' ? Art.coast() : t === 'atv' ? Art.hill() : Art.deep());
+    if (!strips[t]) strips[t] = tex(t === 'boat' ? Art.coast() : t === 'walk' ? Art.town() : t === 'atv' ? Art.hill() : Art.deep());
     bg = new PIXI.Sprite(strips[t]); world.addChild(bg);
-    frames = [0, 1].map((f) => tex(t === 'boat' ? Art.boat(f) : t === 'atv' ? Art.atv(f) : Art.diver(f)));
-    dots = Array.from({ length: t === 'atv' ? 0 : 14 }, () => { const s = new PIXI.Sprite(dot()); s.alpha = 0; world.addChild(s); return { s, life: 0 }; });
+    frames = [0, 1].map((f) => tex(t === 'boat' ? Art.boat(f) : t === 'walk' ? Art.walker(f) : t === 'atv' ? Art.atv(f) : Art.diver(f)));
+    dots = Array.from({ length: t === 'atv' || t === 'walk' ? 0 : 14 }, () => { const s = new PIXI.Sprite(dot()); s.alpha = 0; world.addChild(s); return { s, life: 0 }; });
     rider = new PIXI.Sprite(frames[0]); world.addChild(rider);
     current = target; place(performance.now());
   }
@@ -47,7 +47,7 @@ const Scene = (() => {
   // where Paco is for a given score, in strip pixels
   function spot(score) {
     if (trip === 'dive') return { x: 160, y: Art.DEEP.yForScore(score) };
-    const stops = Engine.TRIPS[trip].stops, geo = trip === 'boat' ? Art.COAST : Art.HILL;
+    const stops = Engine.TRIPS[trip].stops, geo = trip === 'boat' ? Art.COAST : trip === 'walk' ? Art.TOWN : Art.HILL;
     let i = 0; while (i < stops.length - 1 && score >= stops[i + 1][0]) i++;
     const a = stops[i], b = stops[i + 1];
     const f = b ? (score - a[0]) / (b[0] - a[0]) : 0;
@@ -61,6 +61,7 @@ const Scene = (() => {
     const bob = reduced ? 0 : Math.round(Math.sin(now / 420));
     if (trip === 'boat') { rider.x = Math.round(p.x - 66); rider.y = Math.round(p.y - 49 + bob); }
     else if (trip === 'atv') { rider.x = Math.round(p.x - 59); rider.y = Math.round(p.y - 73); }
+    else if (trip === 'walk') { rider.x = Math.round(p.x - 40); rider.y = Math.round(p.y - 43); }
     else { rider.x = Math.round(p.x - 43 + (reduced ? 0 : Math.sin(now / 900) * 10)); rider.y = Math.round(p.y - 24 + bob); }
     // camera
     const sw = bg.texture.width, sh = bg.texture.height;

@@ -39,11 +39,12 @@ const Copy = {
 
   where: {
     boat: (s) => `Paco got you to ${s}.`,
+    walk: (s) => `Paco walked you to ${s}.`,
     atv: (s) => `Paco drove you to ${s}.`,
     dive: (s) => `Paco took you down ${s}.`,
   },
   nextStop: (name, n) => `${name} was ${n.toLocaleString('en-US')} ${n === 1 ? 'point' : 'points'} farther.`,
-  madeIt: { boat: 'Paco got you all the way to his island.', atv: 'Paco drove you all the way to the upper waterfall.' },
+  madeIt: { boat: 'Paco got you all the way to his island.', walk: 'Paco walked you all the way to Cascada Ixtalita.', atv: 'Paco drove you all the way to the upper waterfall.' },
   lifetime: (all) => `${all.toLocaleString('en-US')} ${all === 1 ? 'point' : 'points'}`,
   sheetHead: 'Today',
   rarityTotal: 'Rarity',
@@ -55,7 +56,7 @@ const Copy = {
   hudAt: (s) => `At ${s}`,
   unlock: (n, trip) => `${n.toLocaleString('en-US')} more ${n === 1 ? 'point' : 'points'} to open the ${trip}`,
   unlocked: (trip) => `You opened the ${trip}. Pick it on tomorrow's trip.`,
-  tripShort: { boat: 'boat trip', atv: 'ATV ride', dive: 'dive' },
+  tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', dive: 'dive' },
   copyResult: 'Copy my result',
   copied: 'Copied',
   copyFailed: 'Your browser blocked copying. Select the text above and copy it.',

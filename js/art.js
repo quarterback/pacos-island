@@ -5,8 +5,9 @@
    with canvas shapes and gradients, then handed to scene.js as textures.
    Paco, his boat, his ATV and his dive gear get a soft dark rim so they
    read against the scenery. Each trip has one long background strip: the
-   coast of Bahía Ixtaluz from the Ixtaluz pier to Paco's Island, the
-   climb from the island's beach to the upper waterfall, and the water
+   coast of Bahía Ixtaluz from the Ixtaluz pier to Paco's Island, the walk
+   through the island's village to Cascada Ixtalita, the climb from the
+   island's beach to the upper waterfall, and the water
    from the surface to the canyon floor. Every place is fictional. */
 'use strict';
 const Art = (() => {
@@ -158,6 +159,14 @@ const Art = (() => {
   function icon(trip) {
     const [c, g] = canvas(96, 56);
     if (trip === 'boat') { g.fillStyle = lin(g, 0, 0, 0, 32, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 32); g.fillStyle = lin(g, 0, 32, 0, 56, [C.sea[1], C.sea[4]]); g.fillRect(0, 32, 96, 24); g.drawImage(boat(0), 2, 9, 92, 42); }
+    else if (trip === 'walk') {
+      g.fillStyle = lin(g, 0, 0, 0, 44, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 44);
+      g.fillStyle = lin(g, 0, 10, 0, 44, C.mid); g.beginPath(); g.moveTo(0, 44); g.quadraticCurveTo(30, 14, 60, 22); g.quadraticCurveTo(80, 26, 96, 12); g.lineTo(96, 44); g.closePath(); g.fill();
+      g.fillStyle = lin(g, 0, 4, 0, 40, [C.water[0], C.water[2]]); g.fillRect(80, 6, 7, 38);
+      g.fillStyle = lin(g, 0, 42, 0, 56, [C.rock[1], C.rock[3]]); g.fillRect(0, 43, 96, 13);
+      for (let x = 2; x < 96; x += 6) ell(g, x + (x % 12 ? 2 : 0), 47 + (x % 12 ? 0 : 4), 2.4, 1.3, rgba('#FFFFFF', 0.35));
+      g.drawImage(walker(0), 12, 3, 66, 40);
+    }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
     else { g.fillStyle = lin(g, 0, 0, 0, 56, [C.deep[2], C.deep[5]]); g.fillRect(0, 0, 96, 56); g.drawImage(diver(0), 8, 6, 72, 43); for (const [x, y, s] of [[80, 16, 2], [84, 9, 1.5], [82, 3, 1]]) ell(g, x, y, s, s, rgba('#FFFFFF', 0.7)); }
     return c.toDataURL();
@@ -369,6 +378,126 @@ const Art = (() => {
     return c;
   }
 
+  // ---- Paco's Island on foot: the beach to Cascada Ixtalita --------------
+  // A walk up from the village beach: past the church plaza, over the river
+  // on a footbridge, up mural stairs and a cobblestone lane past craft
+  // stalls, to a tall waterfall dropping into a rock pool.
+  const TOWN = { w: 3600, h: 290, stopX: (i) => 175 + i * 520, ground: (x) => Math.round(262 - Math.pow(Math.min(1, Math.max(0, x - 320) / 3000), 1.15) * 112) };
+  function walker(frame = 0) { return paco('stand', frame); }
+  function donkey(g, x, y) {
+    const coat = lin(g, 0, y - 30, 0, y - 10, ['#B7A796', '#8C7B6C', '#64574D']);
+    for (const lx of [x - 10, x - 5, x + 8, x + 13]) box(g, lx, y - 15, 3, 15, 1.2, '#64574D');
+    ell(g, x + 2, y - 20, 15, 8, coat); ell(g, x + 2, y - 15, 10, 3, rgba('#E9E1D5', 0.7));
+    poly(g, [[x + 13, y - 24], [x + 19, y - 34], [x + 24, y - 31], [x + 18, y - 20]], coat);
+    ell(g, x + 25, y - 31, 6, 4, coat); ell(g, x + 29, y - 30, 2.4, 2.4, '#D9CFC3');
+    poly(g, [[x + 20, y - 35], [x + 19, y - 44], [x + 23, y - 36]], '#8C7B6C'); poly(g, [[x + 23, y - 35], [x + 25, y - 43], [x + 26, y - 35]], '#8C7B6C');
+    ell(g, x + 24, y - 33, 0.9, 0.9, C.ink); line(g, [[x - 13, y - 22], [x - 17, y - 12]], '#64574D', 1.4);
+  }
+  function stall(g, x, y, cols, seed) {
+    const r = noise(seed);
+    for (const px of [x + 2, x + 40]) line(g, [[px, y], [px, y - 30]], C.wood[3], 2, 'butt');
+    box(g, x, y - 12, 42, 4, 1, lin(g, 0, y - 12, 0, y - 8, [C.wood[0], C.wood[2]]));
+    for (let i = 0; i < 7; i++) ell(g, x + 5 + i * 5.3, y - 14, 2.4, 2, C.coral[Math.floor(r() * 5)]);
+    for (let i = 0; i < 4; i++) { const hx = x + 8 + i * 9; line(g, [[hx, y - 29], [hx, y - 25]], C.ink, 0.5); ell(g, hx, y - 23.5, 3.4, 1, C.straw[1]); ell(g, hx, y - 25, 2, 1.6, C.straw[0]); }
+    for (let i = 0; i < 6; i++) poly(g, [[x - 3 + i * 8, y - 30], [x + 5 + i * 8, y - 30], [x + 4 + i * 8, y - 36], [x - 2 + i * 8, y - 36]], i % 2 ? '#FFFFFF' : cols);
+    for (let i = 0; i < 6; i++) { g.beginPath(); g.arc(x + 1 + i * 8, y - 30, 4, 0, Math.PI); g.fillStyle = i % 2 ? '#FFFFFF' : cols; g.fill(); }
+  }
+  function town() {
+    const { w, h, ground } = TOWN, S = TOWN.stopX;
+    const [c, g] = canvas(w, h); const r = noise(77);
+    skyFill(g, w, h); sun(g, 330, 44);
+    for (let x = 90; x < w; x += 280 + r() * 160) cloud(g, x, ground(x) - 200 + r() * 34, 0.9 + r() * 0.4);
+    const shape = (top, cols) => { g.beginPath(); g.moveTo(0, h); for (let x = 0; x <= w; x += 3) g.lineTo(x, top(x)); g.lineTo(w, h); g.closePath(); g.fillStyle = lin(g, 0, 60, 0, h, cols); g.fill(); };
+    const back = (x) => ground(x) - 150 + ridgeY(x, 0, 30, 0.010, 0.7), mid = (x) => ground(x) - 92 + ridgeY(x, 0, 20, 0.019, 2.4) + 3 * Math.sin(x * 0.29);
+    shape(back, C.far); canopy(g, r, 0, w, back, (x) => ground(x) - 90, 12, 10, 0.45);
+    shape(mid, C.mid); canopy(g, r, 0, w, mid, (x) => ground(x) - 40, 7, 11, 0.8);
+    // the sea and the beach at the start
+    const s0 = ground(0) - 6;
+    g.fillStyle = lin(g, 0, s0, 0, h, [C.sea[0], C.sea[2], C.sea[4]]); g.fillRect(0, s0, 92, h - s0);
+    for (let i = 0; i < 40; i++) ell(g, r() * 88, s0 + 3 + r() * 24, 2 + r() * 5, 0.8, rgba('#FFFFFF', 0.25 + r() * 0.35));
+    panga(g, 18, s0 + 6, C.stripe2); dock(g, 0, s0 - 1, 40);
+    // houses up the hillside, two rows deep
+    for (let x = S(0) + 150; x < S(5) + 160; x += 34 + r() * 22) {
+      if (Math.abs(x - S(2)) < 60 || Math.abs(x - S(1)) < 70) continue;
+      house(g, x, ground(x) - 30 - r() * 22, 20 + r() * 6, 14 + r() * 6, Math.floor(r() * 5), r() > 0.7 ? C.pink : C.roof);
+    }
+    for (let x = S(0) + 130; x < S(5) + 120; x += 46 + r() * 30) {
+      if (Math.abs(x - S(2)) < 70 || Math.abs(x - S(1)) < 80 || Math.abs(x - S(3)) < 70) continue;
+      house(g, x, ground(x) - 6, 26 + r() * 6, 18 + r() * 8, Math.floor(r() * 5), r() > 0.6 ? C.pink : C.roof);
+      if (r() > 0.5) for (let i = 0; i < 9; i++) ell(g, x + r() * 24, ground(x) - 8 - r() * 16, 2.2, 1.8, rgba(C.pink[1], 0.85));
+    }
+    // the church on the plaza: a white nave and a bell tower with pink trim
+    const cx = S(1) + 30, cy = ground(cx) - 4;
+    g.fillStyle = lin(g, cx - 30, 0, cx + 30, 0, [C.wall[0], C.wall[1], C.wall[2]]); g.fillRect(cx - 26, cy - 36, 46, 36);
+    poly(g, [[cx - 29, cy - 36], [cx + 23, cy - 36], [cx - 3, cy - 52]], lin(g, 0, cy - 52, 0, cy - 36, C.wall));
+    box(g, cx - 9, cy - 18, 12, 18, 6, lin(g, 0, cy - 18, 0, cy, ['#8A5530', '#5E3B1A']));
+    g.fillStyle = C.pink[1]; g.fillRect(cx - 26, cy - 38, 46, 2);
+    const tx = cx + 24;
+    g.fillStyle = lin(g, tx, 0, tx + 16, 0, [C.wall[0], C.wall[2]]); g.fillRect(tx, cy - 70, 16, 70);
+    g.fillStyle = C.pink[1]; g.fillRect(tx - 1, cy - 50, 18, 2); g.fillRect(tx - 1, cy - 72, 18, 2);
+    box(g, tx + 4, cy - 66, 8, 12, 4, '#3B5E7A'); ell(g, tx + 8, cy - 58, 2.6, 2.6, C.sun[2]);
+    g.beginPath(); g.ellipse(tx + 8, cy - 72, 8, 7, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, cy - 79, 0, cy - 72, [C.sun[0], C.sun[2]]); g.fill();
+    line(g, [[tx + 8, cy - 79], [tx + 8, cy - 87]], C.ink, 1); line(g, [[tx + 5, cy - 84], [tx + 11, cy - 84]], C.ink, 1);
+    for (let x = S(1) - 90; x < S(1) + 90; x += 6) { g.fillStyle = rgba(x % 12 ? '#F3E6CF' : '#E6D3B4', 0.9); g.fillRect(x, ground(x) - 1, 6, 4); }
+    ell(g, S(1) - 52, ground(S(1) - 52) - 30, 20, 16, rgba(C.leafDk, 0.5)); ell(g, S(1) - 55, ground(S(1) - 52) - 33, 17, 13, C.leaf); ell(g, S(1) - 59, ground(S(1) - 52) - 38, 9, 7, C.leafHi);
+    line(g, [[S(1) - 52, ground(S(1) - 52)], [S(1) - 52, ground(S(1) - 52) - 18]], C.wood[3], 3, 'butt');
+    // the path: sand at the beach, then cobblestones
+    const edge = S(0) + 120;
+    g.beginPath(); g.moveTo(0, h); for (let x = 0; x <= w; x += 2) g.lineTo(x, ground(x)); g.lineTo(w, h); g.closePath();
+    g.save(); g.clip();
+    // a band of path, then a planted bank below it
+    for (let x = 0; x < w; x += 4) {
+      if (x < edge) { g.fillStyle = lin(g, 0, ground(x), 0, ground(x) + 60, C.sand); g.fillRect(x, ground(x) - 1, 4, h); continue; }
+      g.fillStyle = lin(g, 0, ground(x), 0, ground(x) + 16, [C.dirt[0], C.dirt[1]]); g.fillRect(x, ground(x) - 1, 4, 18);
+      g.fillStyle = lin(g, 0, ground(x) + 16, 0, ground(x) + 90, C.near); g.fillRect(x, ground(x) + 16, 4, h);
+    }
+    for (let i = 0; i < 1600; i++) { const x = edge + r() * (w - edge), gy = ground(x) + 2 + r() * 12; ell(g, x, gy, 2.6 + r() * 1.6, 1.4 + r() * 0.6, lin(g, 0, gy - 2, 0, gy + 2, [C.rock[0], C.rock[2]])); }
+    for (let x = edge; x < w; x += 4) { g.fillStyle = rgba(C.rock[3], 0.6); g.fillRect(x, ground(x) + 15, 4, 2); }
+    canopy(g, r, edge, w, (x) => ground(x) + 18, (x) => ground(x) + 60, 6, 9);
+    g.restore();
+    for (let x = edge; x < edge + 60; x += 2) { g.fillStyle = rgba(C.sand[1], 0.9 * (1 - (x - edge) / 60)); g.fillRect(x, ground(x), 2, 24); }
+    for (let x = 0; x < w; x += 4) { g.fillStyle = rgba('#FFFFFF', 0.28); g.fillRect(x, ground(x), 4, 1.2); }
+    for (let i = 0; i < 3; i++) palapa(g, S(0) - 70 + i * 44, ground(S(0) - 70 + i * 44) + 1);
+    palm(g, S(0) + 96, ground(S(0) + 96) + 1, 46);
+    // the river, down from the hills and under a footbridge
+    const rx = S(2), rt = Math.round(mid(rx)) + 10, rg = ground(rx);
+    g.beginPath(); for (let y = rt; y <= h; y += 4) g.lineTo(rx - 4 - (y - rt) * 0.12 + Math.sin(y / 13) * 4, y); for (let y = h; y >= rt; y -= 4) g.lineTo(rx + 4 + (y - rt) * 0.12 + Math.sin(y / 13) * 4, y); g.closePath();
+    g.fillStyle = lin(g, 0, rt, 0, h, [C.water[2], C.water[3], C.sea[3]]); g.fill();
+    for (let y = rt + 8; y < h; y += 5) ell(g, rx + Math.sin(y / 13) * 4 + (r() - 0.5) * 8, y, 2.6, 0.7, rgba('#FFFFFF', 0.6));
+    canopy(g, r, rx - 30, rx + 30, () => rt - 10, () => rt + 12, 6, 9);
+    g.beginPath(); g.moveTo(rx - 44, rg + 1); g.quadraticCurveTo(rx, rg - 12, rx + 44, rg + 1); g.lineTo(rx + 44, rg + 6); g.quadraticCurveTo(rx, rg - 6, rx - 44, rg + 6); g.closePath();
+    g.fillStyle = lin(g, 0, rg - 12, 0, rg + 6, [C.wood[0], C.wood[2]]); g.fill();
+    for (let x = rx - 40; x <= rx + 40; x += 8) { const by = rg - 12 * (1 - ((x - rx) / 44) ** 2); line(g, [[x, by + 1], [x, by - 9]], C.wood[3], 1.4, 'butt'); }
+    g.beginPath(); for (let x = rx - 42; x <= rx + 42; x += 2) g.lineTo(x, rg - 9 - 12 * (1 - ((x - rx) / 44) ** 2)); g.strokeStyle = C.wood[2]; g.lineWidth = 1.6; g.stroke();
+    // mural stairs: tiled steps in bright colors, and a mural on the wall
+    const mx = S(3);
+    const wallTop = ground(mx) - 46;
+    g.fillStyle = lin(g, mx - 70, 0, mx + 70, 0, ['#FFF2BD', '#FBE38F']); g.fillRect(mx - 70, wallTop, 140, ground(mx) - wallTop);
+    ell(g, mx - 40, wallTop + 20, 14, 14, rad(g, mx - 40, wallTop + 20, 2, 14, [C.sun[0], C.sun[2], '#F28C28']));
+    for (let a = 0; a < 10; a++) { const t = a / 10 * TAU; line(g, [[mx - 40 + Math.cos(t) * 16, wallTop + 20 + Math.sin(t) * 16], [mx - 40 + Math.cos(t) * 21, wallTop + 20 + Math.sin(t) * 21]], '#F28C28', 2); }
+    for (const [fx, fy, col] of [[mx + 4, wallTop + 16, C.coral[0]], [mx + 28, wallTop + 26, C.coral[4]], [mx + 50, wallTop + 14, '#22AEC4']]) { ell(g, fx, fy, 9, 5, col); poly(g, [[fx - 8, fy], [fx - 15, fy - 5], [fx - 15, fy + 5]], col); ell(g, fx + 4, fy - 1, 1.2, 1.2, C.ink); }
+    for (let x = mx - 70; x < mx + 70; x += 7) { g.fillStyle = C.coral[Math.floor((x - mx) / 7 + 20) % 5]; g.fillRect(x, wallTop + 36, 7, 3); }
+    for (let i = 0; i < 9; i++) { const sx = mx - 64 + i * 15, sy = ground(sx); g.fillStyle = C.coral[i % 5]; g.fillRect(sx, sy, 15, 3.4); g.fillStyle = rgba('#FFFFFF', 0.5); g.fillRect(sx, sy, 15, 0.9); }
+    // a donkey tied by the lane, and bougainvillea over the walls
+    donkey(g, S(4) - 40, ground(S(4) - 40) + 1); line(g, [[S(4) - 64, ground(S(4) - 64)], [S(4) - 64, ground(S(4) - 64) - 20]], C.wood[3], 2.4, 'butt');
+    for (let i = 0; i < 40; i++) { const bx = S(4) + 20 + r() * 120; ell(g, bx, ground(bx) - 26 - r() * 14, 2.4, 2, rgba(C.pink[1 + (i % 2)], 0.9)); }
+    // craft stalls along the last stretch
+    stall(g, S(5) - 96, ground(S(5) - 96), C.pink[1], 91); stall(g, S(5) - 30, ground(S(5) - 30), '#22AEC4', 92); stall(g, S(5) + 36, ground(S(5) + 36), C.sun[2], 93);
+    // Cascada Ixtalita: a tall fall off a jungle cliff into a rock pool
+    const fx = S(6) + 110, ftop = 6, fbot = ground(fx) - 4, fw = 12;
+    rockMass(g, [[fx - 70, ftop], [fx + 120, ftop], [fx + 140, fbot + 6], [fx - 96, fbot + 6]], fx - 96, fx + 140, 71);
+    canopy(g, r, fx - 90, fx + 140, () => ftop - 4, () => ftop + 14, 6, 10);
+    for (let y = ftop; y < fbot - 20; y += 9) { canopy(g, r, fx - 100 + (y - ftop) * 0.14, fx - 72 + (y - ftop) * 0.14, () => y, () => y + 6, 6, 8); canopy(g, r, fx + 112 + (y - ftop) * 0.12, fx + 140, () => y, () => y + 6, 6, 8); }
+    g.fillStyle = lin(g, fx - fw, 0, fx + fw, 0, [C.water[2], C.water[0], C.water[1], C.water[2]]); g.fillRect(fx - fw, ftop + 4, fw * 2, fbot - ftop - 4);
+    const q = noise(72);
+    for (let i = 0; i < 90; i++) { const sx = fx - fw + q() * fw * 2, sy = ftop + 6 + q() * (fbot - ftop - 30); line(g, [[sx, sy], [sx, sy + 10 + q() * 26]], rgba('#FFFFFF', 0.35 + q() * 0.45), 0.8 + q(), 'butt'); }
+    ell(g, fx, fbot + 4, 70, 9, lin(g, 0, fbot - 5, 0, fbot + 13, [C.water[2], C.water[3], C.sea[3]]));
+    ell(g, fx, fbot - 6, fw + 30, 20, rad(g, fx, fbot - 4, 2, fw + 30, [rgba('#FFFFFF', 0.9), rgba('#FFFFFF', 0)]));
+    for (let i = 0; i < 8; i++) { const bx = fx - 72 + i * 20; ell(g, bx, fbot + 9 + (i % 2) * 2, 6, 3, lin(g, 0, fbot + 6, 0, fbot + 12, [C.rock[0], C.rock[3]])); }
+    for (let i = 0; i < 5; i++) palm(g, S(4) + 160 + i * 64, ground(S(4) + 160 + i * 64) + 1, 34 + (i % 2) * 10, i % 2 ? -1 : 1);
+    return c;
+  }
+
   // ---- under the bay: surface to the canyon floor -----------------------
   const DEEP = { w: 480, h: 1875, surface: 75, bottom: 1800 };
   const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 66000;
@@ -437,5 +566,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, paco, boat, atv, diver, icon, coast, hill, deep, COAST, HILL, DEEP };
+  return { C, paco, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();

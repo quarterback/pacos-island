@@ -96,6 +96,8 @@ const Engine = (() => {
   const TRIPS = {
     boat: { id: 'boat', name: "Boat to Paco's Island", opens: 0, stops: [
       [0, 'the Ixtaluz pier'], [7000, 'Peñas Cantoras'], [13500, 'Boca Tamarilla'], [20000, 'Caleta Pochota'], [27000, 'Playa Ondarena'], [35000, 'Pueblo Tilmeca'], [44000, 'Playa Zinzuna'], [54000, "Paco's Island"]] },
+    walk: { id: 'walk', name: 'Walk to Cascada Ixtalita', opens: 50000, stops: [
+      [0, 'the beach'], [9000, 'the church plaza'], [18000, 'the river bridge'], [27000, 'the mural stairs'], [36000, 'the cobblestone lane'], [45000, 'the craft stalls'], [54000, 'Cascada Ixtalita']] },
     atv: { id: 'atv', name: "ATV across Paco's Island", opens: 110000, stops: [
       [0, 'the beach'], [11000, 'the village'], [22500, 'the river'], [33500, 'the waterfall'], [44000, 'the jungle trail'], [54000, 'the upper waterfall']] },
     dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: 450000, marks: [
