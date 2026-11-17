@@ -235,8 +235,11 @@
     lock();
     rec.answers.push({ pid: current.q.id, name: null, skip: true, points: 0, rarity: 0, speed: 0, secs: elapsed(rec, current.i) }); save();
     $('note').className = 'note'; $('note').textContent = '';
-    const [said, echo] = Copy.stumpedLines[(Engine.dayNumber() + current.i) % Copy.stumpedLines.length];
-    $('cameoMario').textContent = said; $('cameoParrot').textContent = echo; $('cameoParrotName').textContent = Copy.parrot;
+    // Step through both lists so every line plays before one repeats.
+    const n = state.stumped = (state.stumped || 0) + 1; save();
+    $('cameoMario').textContent = Copy.stumpedMario[(n - 1) % Copy.stumpedMario.length];
+    $('cameoParrot').textContent = Copy.stumpedParrot[(n - 1) % Copy.stumpedParrot.length];
+    $('cameoParrotName').textContent = Copy.parrot;
     if (!$('cameoMarioArt').firstChild) { $('cameoMarioArt').append(Art.mario(3)); $('cameoParrotArt').append(Art.parrot(3)); }
     $('cameo').hidden = false;
     after(rec);

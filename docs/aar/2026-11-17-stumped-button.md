@@ -10,7 +10,7 @@ The owner asked for a way to move on from a question the player cannot answer: a
 ## 2. Action
 
 - **Button:** "Stumped" sits on its own row under the clock, in coral, about 120 pixels below Answer on a phone. It is outside the answer form, so Enter never presses it. It ends the question with no points, like running out of time, but records only the seconds used.
-- **Mario and the parrot:** a card under the result shows Mario saying a short line and the parrot repeating the end of it, as parrots do. Five pairs of lines in `Copy.stumpedLines` rotate by day and question.
+- **Mario and the parrot:** a card under the result shows a line from each, always encouraging, puns welcome. The owner supplied the first three of Mario's. Mario has 15 lines (`Copy.stumpedMario`) and the parrot 11 (`Copy.stumpedParrot`). A counter saved on the device steps through both lists, so every line plays before one repeats, and the two lists' different lengths keep the pairs changing.
 - **Art:** `Art.parrot` draws the macaw in the game's style: green body, red forehead, pink bare face with fine lines, dark hooked beak, blue flight feathers and a blue tail tip, on a wooden perch, facing Mario. `Art.mario` draws Mario on his own whatever the current rider.
 
 ## 3. Checks

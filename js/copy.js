@@ -40,16 +40,39 @@ const Copy = {
   forRarity: (n) => `${n.toLocaleString('en-US')} rarity`,
   forSpeed: (n) => `+ ${n.toLocaleString('en-US')} speed`,
   next: 'Next question',
-  // Stumped: skip a question. Mario and the parrot drop in; the parrot
-  // repeats the end of what Mario says.
+  // Stumped: skip a question. Mario and the parrot drop in, always on the
+  // player's side. Each list plays through before any line repeats.
   stumped: 'Stumped',
   parrot: 'The parrot',
-  stumpedLines: [
-    ['That one stumps everybody.', 'Stumps everybody!'],
-    ["Even Paco wouldn't know that one.", "Paco wouldn't know!"],
-    ['No points, but no harm done.', 'No harm done!'],
-    ["Shake it off. The next one's yours.", "Next one's yours!"],
-    ['It happens to the best of us.', 'Best of us!'],
+  stumpedMario: [
+    "I didn't know that one either.",
+    "You'll get the next one, I'm sure.",
+    'Maybe you just wanna head to the beach and skip this one?',
+    'Even Paco would be stumped. Probably.',
+    'That one was a tough shell to crack.',
+    "No worries. The tide's turning.",
+    'Shake it off like sand from your toes.',
+    "Sun's still out. You're doing fine.",
+    'Iguana tell you a secret: nobody knows that one.',
+    'Hard questions make the best stories.',
+    "Take a breath. The next one's yours.",
+    'That question was rude, honestly.',
+    "Even the fish didn't know.",
+    "Skipping is smart. That's how I got this far.",
+    "You're still my favorite passenger.",
+  ],
+  stumpedParrot: [
+    "Squawk! You've got this!",
+    'Wing it next time!',
+    'No feather off your back!',
+    'Polly wants a next question!',
+    'Beach! Beach! Beach!',
+    "You're one bright bird!",
+    'Keep your beak up!',
+    'Fly on, friend!',
+    "Toucan play at that game! I'm a macaw, but still.",
+    "Next one's yours! Squawk!",
+    'Birds of a feather get stumped together!',
   ],
   finish: 'See where Paco got you',
 
