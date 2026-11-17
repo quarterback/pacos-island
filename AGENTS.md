@@ -23,6 +23,8 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 - In a question, spell out an acronym the first time it appears: "a National Football League (NFL) team."
 - A question must never name one of its own right answers, in an example, a note or its subject. `node tools/check.mjs` catches it.
 - Follow AP style and the federal plain language guidelines: U.S. and U.N. with periods, numbers one through nine spelled out except in counts like "Question 3 of 7" and with units, times as 6 a.m. or 6:30 p.m., and no serial comma. `node tools/copy-export.mjs` prints every line for the checks.
+- Put titles of movies, TV shows, books, albums, songs and plays in quotation marks ("Friends," "The Chronicles of Narnia"), with a period or comma inside the closing mark. Game names (Monopoly, Clue) and the Bible take no quotes. Award categories are lowercase: the Oscar for best picture.
+- Tell the player what form the answer takes when it could be in doubt: "by nickname," "by last name," "by its title or its episode number." Then accept every common form of that answer as an alias.
 - Write interface text the way Microsoft's and Salesforce's UI text guidelines do: use as few words as possible, and give a figure as a label ("41,242 points"), with no "You have" or "in all" around it. Buttons, labels, headings and fragments take no period. Full sentences in notes and dialogs keep theirs.
 
 **Facts**

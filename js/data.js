@@ -1321,15 +1321,15 @@ Merida
 Moana
 Raya`, { 1: ['Cinderella', 'Snow White', 'Ariel', 'Belle', 'Jasmine', 'Mulan', 'Moana'], 2: ['Aurora', 'Rapunzel', 'Pocahontas', 'Tiana'], 4: ['Merida', 'Raya'] }, 3);
   const STAR_WARS = parse(`
-The Phantom Menace
-Attack of the Clones
-Revenge of the Sith
-A New Hope
-The Empire Strikes Back|Empire Strikes Back
-Return of the Jedi
-The Force Awakens
-The Last Jedi
-The Rise of Skywalker`, { 1: ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'], 2: ['The Phantom Menace', 'The Force Awakens'] }, 3);
+The Phantom Menace|Episode I|Episode 1|1|I|Star Wars Episode I|Star Wars Episode 1|Star Wars The Phantom Menace|Star Wars Episode I The Phantom Menace
+Attack of the Clones|Episode II|Episode 2|2|II|Star Wars Episode II|Star Wars Episode 2|Star Wars Attack of the Clones|Star Wars Episode II Attack of the Clones
+Revenge of the Sith|Episode III|Episode 3|3|III|Star Wars Episode III|Star Wars Episode 3|Star Wars Revenge of the Sith|Star Wars Episode III Revenge of the Sith
+A New Hope|Episode IV|Episode 4|4|IV|Star Wars Episode IV|Star Wars Episode 4|Star Wars A New Hope|Star Wars Episode IV A New Hope
+The Empire Strikes Back|Empire Strikes Back|Episode V|Episode 5|5|V|Star Wars Episode V|Star Wars Episode 5|Star Wars The Empire Strikes Back|Star Wars Episode V The Empire Strikes Back
+Return of the Jedi|Episode VI|Episode 6|6|VI|Star Wars Episode VI|Star Wars Episode 6|Star Wars Return of the Jedi|Star Wars Episode VI Return of the Jedi
+The Force Awakens|Episode VII|Episode 7|7|VII|Star Wars Episode VII|Star Wars Episode 7|Star Wars The Force Awakens|Star Wars Episode VII The Force Awakens
+The Last Jedi|Episode VIII|Episode 8|8|VIII|Star Wars Episode VIII|Star Wars Episode 8|Star Wars The Last Jedi|Star Wars Episode VIII The Last Jedi
+The Rise of Skywalker|Episode IX|Episode 9|9|IX|Star Wars Episode IX|Star Wars Episode 9|Star Wars The Rise of Skywalker|Star Wars Episode IX The Rise of Skywalker`, { 1: ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'], 2: ['The Phantom Menace', 'The Force Awakens'] }, 3);
   const FRIENDS = parse(`
 Rachel|Rachel Green
 Monica|Monica Geller
@@ -1636,17 +1636,17 @@ Dionysus|Dionysos
 Hestia`, { 1: ['Zeus', 'Poseidon', 'Athena', 'Apollo', 'Aphrodite', 'Hermes', 'Hera'], 2: ['Ares', 'Artemis', 'Dionysus', 'Demeter'], 4: ['Hestia', 'Hephaestus'] }, 3);
 
   const UNIVERSES = {
-    countries: { id: 'countries', items: COUNTRIES, noun: 'a UN member state', short: 'UN member state' },
-    states: { id: 'states', items: US_STATES, noun: 'a US state', short: 'US state' },
+    countries: { id: 'countries', items: COUNTRIES, noun: 'a U.N. member state', short: 'U.N. member state' },
+    states: { id: 'states', items: US_STATES, noun: 'a U.S. state', short: 'U.S. state' },
     mexico: { id: 'mexico', items: MX_STATES, noun: 'a Mexican state (Mexico City counts)', short: 'Mexican state' },
     elements: { id: 'elements', items: ELEMENTS, noun: 'a chemical element', short: 'element' },
     nba: { id: 'nba', items: NBA, noun: 'an NBA team, by nickname', short: 'NBA team' },
     nfl: { id: 'nfl', items: NFL, noun: 'an NFL team, by nickname', short: 'NFL team' },
     mlb: { id: 'mlb', items: MLB, noun: 'an MLB team, by nickname', short: 'MLB team' },
     nhl: { id: 'nhl', items: NHL, noun: 'an NHL team, by nickname', short: 'NHL team' },
-    presidents: { id: 'presidents', items: PRESIDENTS, noun: 'the last name of a US president', short: 'president' },
+    presidents: { id: 'presidents', items: PRESIDENTS, noun: 'the last name of a U.S. president', short: 'president' },
     capitals: { id: 'capitals', items: CAPITALS, noun: 'a national capital', short: 'capital' },
-    statecaps: { id: 'statecaps', items: STATE_CAPITALS, noun: 'a US state capital', short: 'state capital' },
+    statecaps: { id: 'statecaps', items: STATE_CAPITALS, noun: 'a U.S. state capital', short: 'state capital' },
     constellations: { id: 'constellations', items: CONSTELLATIONS, noun: 'one of the 88 constellations', short: 'constellation' },
     greek: { id: 'greek', items: GREEK, noun: 'a letter of the Greek alphabet', short: 'Greek letter' },
     nato: { id: 'nato', items: NATO, noun: 'a word in the NATO phonetic alphabet', short: 'NATO alphabet word' },
@@ -1659,18 +1659,18 @@ Hestia`, { 1: ['Zeus', 'Poseidon', 'Athena', 'Apollo', 'Aphrodite', 'Hermes', 'H
     ucl: { id: 'ucl', items: UCL_WINNERS, short: 'European champion club' },
     premier: { id: 'premier', items: PREMIER, short: 'Premier League club' },
     olympics: { id: 'olympics', items: OLYMPIC_HOSTS, short: 'Olympic host city' },
-    bestpicture: { id: 'bestpicture', items: BEST_PICTURE, short: 'Best Picture winner' },
+    bestpicture: { id: 'bestpicture', items: BEST_PICTURE, short: 'best picture winner' },
     pixar: { id: 'pixar', items: PIXAR, short: 'Pixar film' },
     bond: { id: 'bond', items: BOND, short: 'James Bond film' },
     princesses: { id: 'princesses', items: PRINCESSES, short: 'Disney princess' },
-    starwars: { id: 'starwars', items: STAR_WARS, short: 'Star Wars film' },
-    friends: { id: 'friends', items: FRIENDS, short: 'Friends character' },
+    starwars: { id: 'starwars', items: STAR_WARS, short: '"Star Wars" film' },
+    friends: { id: 'friends', items: FRIENDS, short: '"Friends" character' },
     avengers: { id: 'avengers', items: AVENGERS, short: 'Avenger' },
     swift: { id: 'swift', items: SWIFT, short: 'Taylor Swift album' },
     beatles: { id: 'beatles', items: BEATLES_ONES, short: 'Beatles No. 1 song' },
-    thriller: { id: 'thriller', items: THRILLER, short: 'Thriller song' },
-    potter: { id: 'potter', items: HARRY_POTTER, short: 'Harry Potter book' },
-    narnia: { id: 'narnia', items: NARNIA, short: 'Narnia book' },
+    thriller: { id: 'thriller', items: THRILLER, short: '"Thriller" song' },
+    potter: { id: 'potter', items: HARRY_POTTER, short: '"Harry Potter" book' },
+    narnia: { id: 'narnia', items: NARNIA, short: '"Narnia" book' },
     austen: { id: 'austen', items: AUSTEN, short: 'Jane Austen novel' },
     shakespeare: { id: 'shakespeare', items: SHAKESPEARE, short: 'Shakespeare play' },
     planets: { id: 'planets', items: PLANETS, short: 'planet' },
