@@ -223,6 +223,7 @@ const Art = (() => {
       g.fillStyle = lin(g, 0, 48, 0, 56, ['#6E6452', '#57503F']); g.fillRect(0, 48, 96, 8);
       g.drawImage(walker(0), 14, 10, 66, 40);
     }
+    else if (trip === 'deliver') { g.fillStyle = lin(g, 0, 0, 0, 56, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 56); g.fillStyle = lin(g, 0, 46, 0, 56, ['#D9C7A8', '#A08B6A']); g.fillRect(0, 46, 96, 10); g.drawImage(tio(0), 2, 4, 92, 59); }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
     else { g.fillStyle = lin(g, 0, 0, 0, 56, [C.deep[2], C.deep[5]]); g.fillRect(0, 0, 96, 56); g.drawImage(diver(0), 8, 6, 72, 43); for (const [x, y, s] of [[80, 16, 2], [84, 9, 1.5], [82, 3, 1]]) ell(g, x, y, s, s, rgba('#FFFFFF', 0.7)); }
     return c.toDataURL();
@@ -885,6 +886,270 @@ const Art = (() => {
     return c;
   }
 
+  // ---- deliveries with Tío ----------------------------------------------
+  // Tío, an older, strong man, pushes his wheelbarrow of supplies from the
+  // pier up through town to the cantina, with the rider sitting on top.
+  // The street climbs a hill between the bakery and the restaurant terrace.
+  // 3600 x 240.
+  const DELIVER = {
+    w: 3600, h: 240, stopX: (i) => 175 + i * 520,
+    ground: (x) => { const a = 175 + 3 * 520 + 80, b = 175 + 4 * 520 + 60, t = Math.min(1, Math.max(0, (x - a) / (b - a))); return Math.round(214 - 30 * t * t * (3 - 2 * t)); },
+  };
+  // Tío pushing the wheelbarrow, facing right. 116 x 74; the wheel and his
+  // boots touch the bottom row. frame 0 or 1 moves his legs.
+  function drawTio(g, f) {
+    const skin = ['#B98057', '#9A6440', '#6E4528'], shirt = ['#7FA8C9', '#5B86AD', '#3E6489'], pants = ['#4A515C', '#2E333B'];
+    // legs, striding
+    const step = f ? 5 : -5;
+    for (const [hip, foot, shade] of [[30, 30 - step, pants[1]], [34, 36 + step, pants[0]]]) {
+      g.beginPath(); g.moveTo(hip - 4, 44); g.lineTo(hip + 4, 44); g.lineTo(foot + 3, 70); g.lineTo(foot - 3, 70); g.closePath(); g.fillStyle = shade; g.fill();
+      box(g, foot - 4, 68, 11, 6, 2, '#3A2A1A');
+    }
+    // body, leaning into the handles
+    poly(g, [[22, 22], [38, 18], [44, 44], [26, 46]], lin(g, 22, 0, 44, 0, shirt));
+    line(g, [[30, 21], [35, 45]], rgba('#FFFFFF', 0.25), 0.8);
+    // arms, sleeves rolled, reaching the handles
+    poly(g, [[34, 22], [41, 21], [47, 30], [42, 32]], shirt[1]);
+    line(g, [[44, 31], [58, 40]], skin[1], 4.6); line(g, [[40, 30], [55, 42]], skin[2], 4.2);
+    ell(g, 59, 40.5, 3, 2.6, skin[1]);
+    // head: grey hair, a white moustache and a cap
+    ell(g, 33, 12, 7, 7.6, lin(g, 0, 5, 0, 20, skin));
+    ell(g, 28, 13, 2.4, 3.6, '#C9C6C0'); ell(g, 38.5, 11.4, 1.6, 1.8, skin[0]);
+    ell(g, 37.4, 15.6, 3.6, 1.6, '#F2F0EA'); ell(g, 36.6, 10.6, 0.8, 0.9, C.ink);
+    line(g, [[34.4, 8.6], [38.4, 8.8]], '#E9E6DE', 0.9);
+    g.beginPath(); g.ellipse(32.4, 7.4, 7.6, 5, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, 2, 0, 8, ['#E0352B', '#A3241D']); g.fill();
+    poly(g, [[37, 6.6], [45, 7.4], [44.6, 9], [36.6, 8.6]], '#A3241D');
+  }
+  function drawBarrow(g) {
+    // handles back to Tío's hands, the tray, the wheel and the stand
+    line(g, [[58, 40], [80, 46]], C.wood[3], 2.4); line(g, [[58, 42], [80, 49]], C.wood[2], 2);
+    poly(g, [[70, 42], [112, 40], [104, 58], [76, 58]], lin(g, 0, 40, 0, 58, ['#4FAE5A', '#3B8E38', '#24622A']));
+    poly(g, [[70, 42], [112, 40], [111, 43], [71, 45]], '#6CC777');
+    line(g, [[80, 58], [77, 70]], '#2E333B', 1.8);
+    ell(g, 102, 64, 8, 8, lin(g, 0, 56, 0, 72, C.tire)); ell(g, 102, 64, 3, 3, C.rim[1]);
+  }
+  function drawLoad(g, withRider) {
+    // a crate of bottles, a sack of ice and a red gas canister
+    box(g, 74, 28, 18, 14, 1.5, lin(g, 0, 28, 0, 42, [C.wood[0], C.wood[2]]));
+    for (let k = 0; k < 5; k++) { g.fillStyle = ['#3B8E38', '#C98F12', '#7A2B2A', '#3B8E38', '#C98F12'][k]; g.fillRect(76 + k * 3.2, 22, 2.2, 7); g.fillRect(76.6 + k * 3.2, 19.6, 1, 2.6); }
+    ell(g, 99, 34, 9, 8, lin(g, 0, 26, 0, 42, ['#FFFFFF', '#D9EEF6', '#A9D3E6']));
+    line(g, [[95, 27], [99, 30], [103, 27]], rgba('#7FB6D0', 0.8), 0.8);
+    box(g, 106, 24, 7, 17, 3, lin(g, 106, 0, 113, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, 108, 21, 3, 4, 1, '#4A515C');
+    if (withRider) { g.save(); g.translate(72, 1); g.scale(0.5, 0.5); drawPaco(g, 0, 0, 'stand', 0); g.restore(); }
+  }
+  // Shop-sign letters, 5 pixels tall, one pixel apart. Most are 3 wide; N is 4 and M is 5.
+  const GLYPH = { A: '010101111101101', C: '011100100100011', D: '110101101101110', E: '111100110100111', H: '101101111101101',
+    I: '111010010010111', L: '100100100100111', N: '10011101101110011001', O: '010101101101010', P: '110101110100100', R: '110101110101101', T: '111010010010010',
+    M: '1000111011101011000110001', S: '011100010001110', Y: '101101010010010', J: '001001001101010', U: '101101101101111', G: '011100101101011' };
+  function letters(g, text, cx, y, color, size = 1) {
+    const cols = (ch) => GLYPH[ch].length / 5, w = ([...text].reduce((a, ch) => a + cols(ch) + 1, 0) - 1) * size;
+    let x = Math.round(cx - w / 2);
+    g.fillStyle = color;
+    for (const ch of text) { const b = GLYPH[ch], n = cols(ch); for (let k = 0; k < b.length; k++) if (b[k] === '1') g.fillRect(x + (k % n) * size, y + Math.floor(k / n) * size, size, size); x += (n + 1) * size; }
+  }
+  // ---- pieces of the delivery town, drawn from the owner's trip photos ----
+  const PLASTER = { white: ['#FFFFFF', '#F1EEE6', '#D6D0C4'], ochre: ['#FFD65A', '#F2BC2E', '#D39A1A'], teal: ['#A6EBDA', '#74D5BF', '#45AE98'],
+    peach: ['#F6D2AE', '#E8B48A', '#C9905F'], concrete: ['#E4E0D6', '#CBC5B8', '#A9A295'], blue: ['#8DC0F2', '#4F92DD', '#2E66AD'] };
+  const STONES = ['#B9AE9C', '#8C8174', '#A89A88', '#6E655B', '#CFC4B2'];
+  // rough river stones set in mortar, as under the walls in town
+  function stoneBase(g, r, x, y, w, hh) {
+    g.save(); g.beginPath(); g.rect(x, y - hh, w, hh); g.clip();
+    g.fillStyle = '#5B534B'; g.fillRect(x, y - hh, w, hh);
+    for (let k = 0; k < (w * hh) / 10; k++) ell(g, x + r() * w, y - hh + r() * hh, 2.6 + r() * 2.2, 1.8 + r() * 1.3, STONES[Math.floor(r() * STONES.length)]);
+    g.restore();
+  }
+  function bulbs(g, x0, x1, y) {
+    g.beginPath(); g.moveTo(x0, y); g.quadraticCurveTo((x0 + x1) / 2, y + 8, x1, y); g.strokeStyle = '#2A3440'; g.lineWidth = 0.6; g.stroke();
+    for (let x = x0 + 8; x < x1 - 4; x += 14) { const t = (x - x0) / (x1 - x0), yy = y + 8 * 2 * t * (1 - t) * 2; line(g, [[x, yy], [x, yy + 3]], '#2A3440', 0.5); ell(g, x, yy + 4.6, 1.6, 2, '#FFF6D6'); }
+  }
+  // a plastered house: a concrete roof slab or a tile edge, wooden doors,
+  // barred or shuttered windows, sometimes an iron balcony and a stone base
+  function casa(g, r, x, y, w, h, wall, o) {
+    g.fillStyle = lin(g, x, 0, x + w, 0, [wall[0], [0.55, wall[1]], wall[2]]); g.fillRect(x, y - h, w, h);
+    if (o.base) stoneBase(g, r, x, y, w, 15);
+    if (o.tile) { g.fillStyle = C.roof[2]; g.fillRect(x - 3, y - h - 3, w + 6, 4); for (let k = -2; k < w + 4; k += 5) ell(g, x + k, y - h - 4, 3, 2.6, C.roof[(k / 5) & 1]); }
+    else { box(g, x - 4, y - h - 4, w + 8, 6, 1, '#ECE7DD'); g.fillStyle = '#B9B2A6'; g.fillRect(x - 4, y - h + 1, w + 8, 1.4); }
+    const n = Math.max(1, Math.floor(w / 46));
+    for (let i = 0; i < n; i++) {
+      const dx = x + (w / n) * (i + 0.5);
+      if (o.mural) continue;
+      box(g, dx - 8, y - 31, 16, 31, 1, lin(g, 0, y - 31, 0, y, ['#8A5530', '#5E3B1A']));
+      line(g, [[dx, y - 30], [dx, y]], rgba('#2E1B0C', 0.6), 0.6);
+      const wy = y - h + 14;
+      if ((i + (o.seed || 0)) % 2) { box(g, dx - 8, wy, 16, 17, 1, '#34424C'); for (let k = 1; k < 5; k++) g.fillRect(dx - 8 + k * 3.2, wy, 0.8, 17); g.fillStyle = '#1E262C'; g.fillRect(dx - 8, wy + 8, 16, 0.8); }
+      else { box(g, dx - 8, wy, 16, 17, 1, C.wood[2]); for (let k = 2; k < 17; k += 3) { g.fillStyle = C.wood[3]; g.fillRect(dx - 7, wy + k, 14, 1); } g.fillRect(dx - 0.4, wy, 0.8, 17); }
+    }
+    if (o.balcony) {
+      const by = y - h + 38; box(g, x - 2, by, w + 4, 4, 1, '#E4DFD4'); g.fillStyle = '#9E978A'; g.fillRect(x - 2, by + 3, w + 4, 1.2);
+      g.fillStyle = '#1E262C'; g.fillRect(x, by - 11, w, 1.2); for (let k = x + 1; k < x + w; k += 3.4) g.fillRect(k, by - 11, 0.8, 11);
+    }
+    if (o.bulbs) bulbs(g, x + 2, x + w - 2, y - h + 6);
+  }
+  function bananaPlant(g, x, y, s = 1) {
+    line(g, [[x, y], [x + 1, y - 26 * s]], '#6E8B3D', 3 * s);
+    for (const [ang, len] of [[-2.5, 26], [-1.9, 30], [-1.2, 28], [-0.6, 24], [-3.0, 20]]) {
+      g.save(); g.translate(x + 1, y - 26 * s); g.rotate(ang); ell(g, len * s * 0.5, 0, len * s * 0.5, 5 * s, lin(g, 0, -5, 0, 5, [C.leafHi, C.leaf, '#2E7D3A'])); line(g, [[0, 0], [len * s, 0]], rgba('#E9F7B8', 0.6), 0.6); g.restore();
+    }
+  }
+  // a white block wall on a stone base, with jungle growing behind it
+  function compound(g, r, x, y, w) {
+    canopy(g, r, x - 10, x + w + 10, () => y - 110, () => y - 40, 8, 14, 1);
+    if (r() > 0.4) palm(g, x + w * (0.2 + r() * 0.6), y - 40, 64 + r() * 20, r() > 0.5 ? 1 : -1); else bananaPlant(g, x + w / 2, y - 40, 1.3);
+    stoneBase(g, r, x, y, w, 18);
+    g.fillStyle = lin(g, 0, y - 46, 0, y - 18, ['#FBF8EF', '#E3DED2']); g.fillRect(x, y - 46, w, 28);
+    g.fillStyle = rgba('#9E978A', 0.7);
+    for (let row = 0; row < 4; row++) { const yy = y - 46 + row * 7; g.fillRect(x, yy, w, 0.7); for (let k = (row % 2) * 7; k < w; k += 14) g.fillRect(x + k, yy, 0.7, 7); }
+  }
+  // a hand-painted arrow sign; dir is 1 for right, -1 for left
+  function arrowSign(g, x, y, text, bg, fg, dir) {
+    const tw = text.length * 4 * 1.2 + 4, hw = tw / 2 + 4;
+    poly(g, [[x - hw * dir, y - 6], [x + (hw - 5) * dir, y - 6], [x + (hw + 1) * dir, y], [x + (hw - 5) * dir, y + 6], [x - hw * dir, y + 6]], bg);
+    letters(g, text, x - dir * 1, y - 3, fg, 1.2);
+  }
+  // a mule with sacks on a pack saddle, walking left
+  function mule(g, x, y) {
+    const coat = ['#A85B30', '#8A4622', '#6B3418'];
+    for (const [hx, fx, col] of [[x + 12, x + 15, coat[2]], [x - 10, x - 14, coat[2]], [x + 9, x + 7, coat[1]], [x - 13, x - 10, coat[1]]]) { line(g, [[hx, y - 22], [fx, y - 3]], col, 3.2); box(g, fx - 2, y - 4, 4.4, 4, 1, '#2A2018'); }
+    line(g, [[x + 18, y - 30], [x + 22, y - 13]], coat[2], 1.6);
+    ell(g, x, y - 28, 19, 9.5, lin(g, 0, y - 38, 0, y - 18, [coat[0], coat[1], coat[2]]));
+    poly(g, [[x - 13, y - 33], [x - 23, y - 47], [x - 16, y - 50], [x - 6, y - 35]], coat[1]);
+    ell(g, x - 26, y - 46, 7.5, 4.6, coat[1]); ell(g, x - 32, y - 44, 3.6, 3.4, '#5A2E16'); ell(g, x - 24.5, y - 48, 0.9, 0.9, C.ink);
+    poly(g, [[x - 21, y - 49], [x - 22, y - 60], [x - 18.5, y - 50]], coat[2]); poly(g, [[x - 18, y - 49], [x - 16, y - 59], [x - 15.5, y - 49]], coat[1]);
+    line(g, [[x - 30, y - 47], [x - 20, y - 44], [x - 30, y - 41]], '#7C8794', 0.8);
+    box(g, x - 9, y - 38, 18, 5, 2, '#5E4530');
+    box(g, x - 17, y - 52, 15, 17, 3, lin(g, 0, y - 52, 0, y - 35, ['#FFFFFF', '#E3DED2'])); box(g, x + 1, y - 50, 15, 16, 3, lin(g, 0, y - 50, 0, y - 34, ['#F6F2EA', '#D9D3C6']));
+    line(g, [[x - 17, y - 40], [x + 16, y - 40]], C.wood[2], 0.8);
+  }
+  // an umbrella hung open from a wire over the plaza
+  function hungUmbrella(g, x, y, col, s = 1) {
+    line(g, [[x, y - 7 * s], [x, y + 9 * s]], '#3A2A1A', 0.7);
+    g.beginPath(); g.ellipse(x, y, 10 * s, 6.5 * s, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, y - 6.5 * s, 0, y, [col[0], col[1]]); g.fill();
+    for (let k = -2; k <= 2; k++) line(g, [[x, y - 6.5 * s], [x + k * 4.4 * s, y]], rgba(col[2], 0.55), 0.5);
+    for (let k = -10; k < 10; k += 4) ell(g, x + (k + 2) * s, y + 0.4, 2 * s, 1 * s, col[1]);
+    g.beginPath(); g.arc(x - 1.2 * s, y + 9 * s, 1.2 * s, 0, Math.PI); g.strokeStyle = col[2]; g.lineWidth = 0.8; g.stroke();
+  }
+  function cafeTable(g, x, y) {
+    for (const cx of [x - 9, x + 9]) { line(g, [[cx - 3, y], [cx - 3, y - 8]], '#1E262C', 0.9); line(g, [[cx + 3, y], [cx + 3, y - 8]], '#1E262C', 0.9); g.fillStyle = '#1E262C'; g.fillRect(cx - 3.5, y - 8, 7, 1.4); g.fillRect(cx + (cx < x ? -3.5 : 2.5), y - 15, 1.2, 7); }
+    box(g, x - 8, y - 13, 16, 3, 0.5, '#6B4A2E'); line(g, [[x - 6, y - 10], [x - 6, y]], '#4A321E', 1.4); line(g, [[x + 6, y - 10], [x + 6, y]], '#4A321E', 1.4);
+    ell(g, x, y - 15, 1.6, 1.8, '#C9905F'); ell(g, x, y - 17, 1.6, 1.2, '#B77BE0');
+  }
+  function crates(g, x, y, n) {
+    for (let k = 0; k < n; k++) { const cy = y - 9 - k * 8.5 + (k === n - 1 ? 0 : 0); box(g, x + (k % 2) * 2, cy, 20, 8.5, 1, '#22272C'); g.fillStyle = '#3A424A'; for (let m = 2; m < 20; m += 3) g.fillRect(x + (k % 2) * 2 + m, cy + 1.5, 1.2, 5.5); }
+  }
+  function tio(frame = 0) {
+    const [c, g] = canvas(116, 74);
+    drawTio(g, frame); drawBarrow(g); drawLoad(g, true);
+    return rim(c);
+  }
+  function deliveries() {
+    const { w, h, ground } = DELIVER, S = DELIVER.stopX;
+    const [c, g] = canvas(w, h); const r = noise(31);
+    skyFill(g, w, h); sun(g, 300, 40);
+    for (let x = 80; x < w; x += 290 + r() * 170) cloud(g, x, 24 + r() * 26, 0.8 + r() * 0.4);
+    // green hills close behind town, thick with jungle
+    g.beginPath(); g.moveTo(0, 130); for (let x = 0; x <= w; x += 4) g.lineTo(x, ridgeY(x, 72, 34, 0.006, 2.2)); g.lineTo(w, 150); g.lineTo(0, 150); g.closePath(); g.fillStyle = lin(g, 0, 40, 0, 150, C.mid); g.fill();
+    canopy(g, r, 0, w, (x) => ridgeY(x, 78, 30, 0.006, 2.2), () => 150, 7, 11, 1);
+    // the bay and the pier at the start, a panga being unloaded
+    const sea0 = ground(0) - 4;
+    g.fillStyle = lin(g, 0, sea0 - 40, 0, h, [C.sea[0], C.sea[2], C.sea[4]]); g.fillRect(0, sea0 - 40, S(0) + 112, h);
+    for (let k = 0; k < 60; k++) ell(g, r() * (S(0) + 100), sea0 - 36 + r() * 60, 2 + r() * 5, 0.8, rgba('#FFFFFF', 0.25 + r() * 0.35));
+    panga(g, 40, sea0 - 14, C.stripe2);
+    for (let k = 0; k < 3; k++) box(g, 28 + k * 12, sea0 - 30 - (k % 2) * 6, 10, 9, 1, lin(g, 0, sea0 - 30, 0, sea0 - 20, [C.wood[0], C.wood[2]]));
+    // the town: plastered houses, with block walls and jungle between some of them
+    const order = ['white', 'ochre', 'peach', 'teal', 'concrete', 'white', 'blue', 'ochre'];
+    const busy = (x0, x1) => [1, 2, 3, 5, 6].some((k) => x1 > S(k) - 90 && x0 < S(k) + 90);
+    let i = 0;
+    for (let x = S(0) + 110; x < w - 20; i++) {
+      const fw = 64 + Math.floor(r() * 56), fy = ground(x + fw / 2) - 14;
+      if (i % 4 === 2 && !busy(x, x + fw)) { compound(g, r, x, fy, fw); x += fw; continue; }
+      casa(g, r, x, fy, fw, 72 + Math.floor(r() * 40), PLASTER[order[i % order.length]], { base: r() < 0.5, tile: r() < 0.4, balcony: r() < 0.4, bulbs: r() < 0.3, seed: i });
+      x += fw;
+    }
+    // the street: river stones following the hill
+    g.beginPath(); g.moveTo(S(0) - 30, h); for (let x = S(0) - 30; x <= w; x += 2) g.lineTo(x, ground(x) - 14); g.lineTo(w, h); g.closePath();
+    g.fillStyle = lin(g, 0, 180, 0, h, ['#9C968A', '#8A8478', '#757064']); g.fill();
+    for (let k = 0; k < 2300; k++) { const x = S(0) - 30 + r() * (w - S(0) + 30), gy = ground(x) - 11 + r() * (h - ground(x) + 11), rx = 3 + r() * 2.4, ry = 1.9 + r() * 1.2; ell(g, x, gy + 0.8, rx, ry, rgba('#5B564D', 0.6)); ell(g, x, gy, rx, ry, ['#C9C3B6', '#AAA497', '#D8D3C8', '#9C968A', '#B7AE9C'][Math.floor(r() * 5)]); ell(g, x - rx * 0.3, gy - ry * 0.35, rx * 0.4, ry * 0.3, rgba('#FFFFFF', 0.35)); }
+    dock(g, 0, sea0 - 2, S(0) + 10);
+    // hand-painted arrows near the start: back to the beach, on to the waterfall
+    arrowSign(g, S(0) + 150, ground(S(0) + 150) - 44, 'PLAYA', '#C0392B', '#FFF4D6', -1);
+    arrowSign(g, S(0) + 150, ground(S(0) + 150) - 30, 'CASCADA', '#3B8E38', '#FFD65A', 1);
+    // the ice house: a blue sign, a chest freezer and blocks of ice
+    const ix = S(1);
+    box(g, ix - 30, ground(ix) - 54, 60, 13, 2, '#1C5FA8'); letters(g, 'HIELO', ix, ground(ix) - 51, '#FFFFFF', 1.4);
+    box(g, ix - 34, ground(ix) - 34, 40, 22, 3, lin(g, 0, ground(ix) - 34, 0, ground(ix) - 12, ['#FFFFFF', '#C9D5DB'])); box(g, ix - 34, ground(ix) - 36, 40, 4, 1, '#93A7B8');
+    for (let k = 0; k < 4; k++) box(g, ix + 12 + (k % 2) * 11, ground(ix) - 22 - Math.floor(k / 2) * 10, 10, 9, 1.5, lin(g, 0, 0, 0, 1, ['#E9F7FC', '#A9D3E6']));
+    // the corner store: an open front, shelves of goods and a red soda cooler
+    const cx = S(2), cy = ground(cx) - 14;
+    box(g, cx - 44, cy - 54, 64, 54, 2, '#5E3B1A'); box(g, cx - 40, cy - 70, 82, 13, 2, '#F6E3B8'); letters(g, 'TIENDA', cx + 1, cy - 67, '#A3241D', 1.4); g.fillStyle = lin(g, 0, cy - 50, 0, cy, ['#F6E3B8', '#E2C48A']); g.fillRect(cx - 40, cy - 50, 56, 50);
+    for (const sy of [cy - 38, cy - 22]) { line(g, [[cx - 40, sy], [cx + 16, sy]], C.wood[3], 1.4); for (let k = 0; k < 9; k++) { g.fillStyle = PAPEL[(k + sy) % PAPEL.length]; g.fillRect(cx - 38 + k * 6, sy - 8, 4, 8); } }
+    box(g, cx + 24, cy - 40, 18, 40, 3, lin(g, cx + 24, 0, cx + 42, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, cx + 27, cy - 34, 12, 26, 2, rgba('#D9EEF6', 0.7));
+    // the juice stand: a blue stall with a tin roof and fruit on the counter,
+    // and a palapa next door with sacks of supplies under it
+    const jx = S(3), jy = ground(jx) - 14;
+    box(g, jx - 46, jy - 52, 70, 52, 1, lin(g, jx - 46, 0, jx + 24, 0, PLASTER.blue));
+    g.fillStyle = '#F2BC2E'; g.fillRect(jx - 42, jy - 30, 62, 30);
+    box(g, jx - 44, jy - 22, 66, 5, 1, '#F0478F'); box(g, jx - 44, jy - 17, 66, 3, 0.5, '#22AEC4');
+    for (let k = 0; k < 11; k++) ell(g, jx - 38 + k * 5.6, jy - 25, 2.6, 2.4, ['#F28C28', '#FFD65A', '#3B8E38', '#E0352B'][k % 4]);
+    box(g, jx - 44, jy - 50, 66, 11, 1, '#1C3F8A'); letters(g, 'JUGOS', jx - 11, jy - 47.5, '#FFD65A', 1.3);
+    poly(g, [[jx - 52, jy - 54], [jx + 30, jy - 54], [jx + 28, jy - 60], [jx - 50, jy - 62]], '#8A6A4E'); for (let k = jx - 50; k < jx + 28; k += 4) line(g, [[k, jy - 61.5], [k + 0.5, jy - 54]], rgba('#5E4530', 0.6), 0.6);
+    papelPicado(g, jx - 50, jx + 30, jy - 40, 9);
+    ell(g, jx + 34, jy - 6, 5, 3.4, '#22272C'); ell(g, jx + 38, jy - 10, 3, 2.8, '#22272C'); ell(g, jx + 39.5, jy - 9, 1.4, 1.6, '#FFFFFF'); ell(g, jx + 34, jy - 5, 2.6, 1.6, '#FFFFFF'); line(g, [[jx + 31, jy - 3], [jx + 31, jy]], '#22272C', 1); line(g, [[jx + 36, jy - 3], [jx + 36, jy]], '#22272C', 1); line(g, [[jx + 29.5, jy - 7], [jx + 27, jy - 11]], '#22272C', 1);
+    const px = jx + 90;
+    for (const pp of [px - 34, px + 34]) line(g, [[pp, jy], [pp, jy - 44]], C.wood[3], 2.4);
+    poly(g, [[px - 48, jy - 40], [px + 48, jy - 40], [px + 22, jy - 58], [px - 22, jy - 58]], lin(g, 0, jy - 58, 0, jy - 40, [C.straw[2], C.straw[3]]));
+    for (let k = px - 46; k < px + 46; k += 3) line(g, [[k, jy - 41], [k + (r() - 0.5) * 3, jy - 34 - r() * 5]], C.straw[3], 0.9);
+    for (let k = 0; k < 7; k++) box(g, px - 28 + (k % 4) * 13 + (k > 3 ? 6 : 0), jy - 12 - (k > 3 ? 10 : 0), 13, 12, 3, lin(g, 0, 0, 0, 1, ['#FBF8EF', '#D9D3C6']));
+    // the steep lane: a mural of the bay on a house wall, crates, and a mule
+    // carrying sacks down the hill
+    const mx0 = S(4) - 120, mx1 = S(4) - 10;
+    for (let x = mx0; x < mx1; x += 2) { const b0 = ground(x) - 14; g.fillStyle = lin(g, 0, b0 - 74, 0, b0, ['#1E2A44', '#20407A', '#2A63B0']); g.fillRect(x, b0 - 74, 2, 74); }
+    const mb = (x) => ground(x) - 14;
+    for (let x = mx0; x < mx1; x += 2) { g.fillStyle = '#3E9E63'; g.fillRect(x, mb(x) - 46 + Math.sin(x / 9) * 3, 2, 12); g.fillStyle = '#FFD65A'; g.fillRect(x, mb(x) - 34 + Math.sin(x / 9) * 3, 2, 3); g.fillStyle = '#E9F7FC'; g.fillRect(x, mb(x) - 31 + Math.sin(x / 9) * 3, 2, 1.4); }
+    palm(g, mx0 + 26, mb(mx0 + 26) - 44, 22, 1); ell(g, mx1 - 22, mb(mx1 - 22) - 62, 6, 6, '#FFD65A');
+    const tx0 = mx0 + 62, ty0 = mb(tx0) - 18;
+    ell(g, tx0, ty0, 9, 6.5, lin(g, 0, ty0 - 6, 0, ty0 + 6, ['#E9D3A0', '#B08A52'])); for (const [dx, dy] of [[-3, -2], [3, -2], [0, 2], [-5, 2], [5, 2]]) ell(g, tx0 + dx, ty0 + dy, 1.8, 1.4, '#8A6A3A');
+    ell(g, tx0 + 11, ty0 - 2, 3.4, 2.8, '#E9D3A0'); for (const [dx, dy] of [[-8, -6], [6, -7], [-8, 6], [6, 6]]) ell(g, tx0 + dx, ty0 + dy, 4, 1.8, '#E9D3A0');
+    ell(g, mx0 + 90, mb(mx0 + 90) - 20, 6, 3, '#1E262C'); ell(g, mx0 + 92, mb(mx0 + 90) - 21, 2, 1.2, '#FFFFFF');
+    crates(g, mx1 + 2, mb(mx1 + 2), 3);
+    for (let x = S(3) + 140; x < S(4) + 90; x += 6) { const gy = ground(x) - 14; g.fillStyle = lin(g, 0, gy - 7, 0, gy, [C.rock[1], C.rock[3]]); g.fillRect(x, gy - 7 + (x % 12 ? 0 : 0.6), 6.4, 7); g.fillStyle = rgba('#5B534B', 0.5); g.fillRect(x, gy - 7, 0.6, 7); }
+    mule(g, S(4) + 70, ground(S(4) + 70) - 12);
+    // the umbrella plaza: umbrellas strung on wires overhead, green patio
+    // umbrellas over cafe tables, a planter and a menu board
+    const ux = S(5), uy = ground(ux) - 14;
+    const RED = ['#FF8A80', '#E8574F', '#9E2B25'], WHITE = ['#FFFFFF', '#E3E8EC', '#7F8B95'], GREEN = ['#8ED04A', '#3B9E58', '#1D5B3C'];
+    for (const [wy, s1, list] of [[uy - 104, 1.6, [RED, RED, WHITE, RED, RED, WHITE, RED, RED]], [uy - 80, 1.25, [WHITE, RED, GREEN, WHITE, RED, GREEN, RED, WHITE, GREEN]]]) {
+      const x0 = ux - 170, x1 = ux + 170;
+      g.beginPath(); g.moveTo(x0, wy - 6); g.quadraticCurveTo(ux, wy + 8, x1, wy - 6); g.strokeStyle = '#2A3440'; g.lineWidth = 0.6; g.stroke();
+      list.forEach((col, k) => { const x = x0 + 20 + k * ((x1 - x0 - 40) / (list.length - 1)), t = (x - x0) / (x1 - x0); hungUmbrella(g, x, wy - 6 + 14 * 2 * t * (1 - t) * 2 + 8 * s1, col, s1); });
+    }
+    box(g, ux - 92, uy - 32, 14, 20, 1, '#22272C'); for (let k = 0; k < 5; k++) line(g, [[ux - 90, uy - 29 + k * 3.4], [ux - 81 + (k % 2) * -3, uy - 29 + k * 3.4]], rgba('#FFFFFF', 0.8), 0.6);
+    line(g, [[ux - 92, uy - 12], [ux - 94, uy]], '#22272C', 1); line(g, [[ux - 78, uy - 12], [ux - 76, uy]], '#22272C', 1);
+    ell(g, ux, uy - 4, 26, 6, '#F1EEE6'); g.fillStyle = '#D6D0C4'; g.fillRect(ux - 26, uy - 4, 52, 4); canopy(g, r, ux - 22, ux + 22, () => uy - 22, () => uy - 6, 5, 7, 1);
+    for (const t of [ux - 56, ux + 56]) {
+      line(g, [[t, uy], [t, uy - 50]], '#22272C', 1.2);
+      poly(g, [[t - 30, uy - 46], [t + 30, uy - 46], [t, uy - 60]], lin(g, 0, uy - 60, 0, uy - 46, ['#6FBF8E', '#3E8A63']));
+      for (let k = t - 30; k < t + 30; k += 6) ell(g, k + 3, uy - 46, 3, 1.4, '#3E8A63');
+      cafeTable(g, t - 14, uy); cafeTable(g, t + 16, uy);
+    }
+    // the michelada bar: a teal counter under the stairs, with bottles on the
+    // ledge, a blender and the menu painted on the wall
+    const kx = S(6), ky = ground(kx) - 14;
+    g.fillStyle = lin(g, kx - 70, 0, kx + 70, 0, PLASTER.teal); g.fillRect(kx - 70, ky - 104, 140, 104);
+    box(g, kx - 74, ky - 108, 148, 6, 1, '#E4DFD4');
+    letters(g, 'MICHELADAS', kx - 14 + 0.8, ky - 89 + 0.8, '#3A1F1A', 1.4); letters(g, 'MICHELADAS', kx - 14, ky - 89, '#C0392B', 1.4);
+    box(g, kx - 46, ky - 70, 54, 32, 1, '#24403A');
+    for (let k = 0; k < 7; k++) { g.fillStyle = ['#3B8E38', '#E9F7FC', '#C98F12', '#7A2B2A', '#E9F7FC', '#3B8E38', '#C98F12'][k]; g.fillRect(kx - 40 + k * 6, ky - 60, 3, 10); g.fillRect(kx - 39 + k * 6, ky - 63, 1, 3); }
+    g.fillStyle = C.wood[2]; g.fillRect(kx - 44, ky - 50, 50, 2);
+    box(g, kx - 50, ky - 40, 62, 4, 1, '#E8E4DA'); box(g, kx - 26, ky - 50, 7, 10, 2, rgba('#D9EEF6', 0.8)); box(g, kx - 27, ky - 41, 9, 2, 1, '#7C8794');
+    box(g, kx - 46, ky - 36, 54, 36, 1, lin(g, 0, ky - 36, 0, ky, ['#74D5BF', '#45AE98']));
+    for (let k = 0; k < 5; k++) { const sx = kx + 16 + k * 11, sy = ky - k * 12; box(g, sx, sy - 12, 12, 12, 0, '#B9B2A6'); g.fillStyle = '#E4DFD4'; g.fillRect(sx, sy - 12, 12, 2); }
+    line(g, [[kx + 18, ky - 22], [kx + 70, ky - 82]], '#1E262C', 1.2); for (let k = 0; k < 6; k++) line(g, [[kx + 18 + k * 10.4, ky - 22 - k * 12], [kx + 18 + k * 10.4, ky - 10 - k * 12]], '#1E262C', 0.8);
+    crates(g, kx - 92, ky, 2); crates(g, kx - 70 - 4, ky, 1);
+    box(g, kx + 74, ky - 14, 16, 14, 2, lin(g, 0, ky - 14, 0, ky, ['#FFFFFF', '#C9D5DB'])); box(g, kx + 74, ky - 15, 16, 3, 1, '#1C5FA8');
+    bananaPlant(g, kx + 112, ky, 1.2);
+    return c;
+  }
+
   const DEEP = { w: 480, h: 1875, surface: 75, bottom: 1800 };
   const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 66000;
   DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / FULL);
@@ -952,5 +1217,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();

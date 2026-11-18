@@ -36,8 +36,8 @@ const Scene = (() => {
     if (t === trip && !force && bg) return;
     trip = t;
     world.removeChildren();
-    const STRIP = { boat: Art.coast, walk: Art.town, atv: Art.hill, market: Art.market, fly: Art.flight, dive: Art.deep };
-    const RIDER = { boat: Art.boat, walk: Art.walker, atv: Art.atv, market: Art.walker, fly: Art.flier, dive: Art.diver };
+    const STRIP = { boat: Art.coast, walk: Art.town, atv: Art.hill, deliver: Art.deliveries, market: Art.market, fly: Art.flight, dive: Art.deep };
+    const RIDER = { boat: Art.boat, walk: Art.walker, atv: Art.atv, deliver: Art.tio, market: Art.walker, fly: Art.flier, dive: Art.diver };
     if (!strips[t]) strips[t] = tex(STRIP[t]());
     bg = new PIXI.Sprite(strips[t]); world.addChild(bg);
     frames = [0, 1].map((f) => tex(RIDER[t](f)));
@@ -49,7 +49,7 @@ const Scene = (() => {
   // where Paco is for a given score, in strip pixels
   function spot(score) {
     if (trip === 'dive') return { x: 160, y: Art.DEEP.yForScore(score) };
-    const stops = Engine.TRIPS[trip].stops, geo = { boat: Art.COAST, walk: Art.TOWN, atv: Art.HILL, market: Art.MARKET, fly: Art.FLIGHT }[trip];
+    const stops = Engine.TRIPS[trip].stops, geo = { boat: Art.COAST, walk: Art.TOWN, atv: Art.HILL, deliver: Art.DELIVER, market: Art.MARKET, fly: Art.FLIGHT }[trip];
     let i = 0; while (i < stops.length - 1 && score >= stops[i + 1][0]) i++;
     const a = stops[i], b = stops[i + 1];
     const f = b ? (score - a[0]) / (b[0] - a[0]) : 0;
@@ -63,6 +63,7 @@ const Scene = (() => {
     const bob = reduced ? 0 : Math.round(Math.sin(now / 420));
     if (trip === 'boat') { rider.x = Math.round(p.x - 66); rider.y = Math.round(p.y - 49 + bob); }
     else if (trip === 'atv') { rider.x = Math.round(p.x - 59); rider.y = Math.round(p.y - 73); }
+    else if (trip === 'deliver') { rider.x = Math.round(p.x - 58); rider.y = Math.round(p.y - 88); }
     else if (trip === 'walk' || trip === 'market') { rider.x = Math.round(p.x - 40); rider.y = Math.round(p.y - 43); }
     else if (trip === 'fly') { rider.x = Math.round(p.x - 44); rider.y = Math.round(p.y - 28 + (reduced ? 0 : Math.sin(now / 300) * 3)); }
     else { rider.x = Math.round(p.x - 43 + (reduced ? 0 : Math.sin(now / 900) * 10)); rider.y = Math.round(p.y - 24 + bob); }
