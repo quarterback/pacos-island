@@ -223,6 +223,7 @@ const Art = (() => {
       g.fillStyle = lin(g, 0, 48, 0, 56, ['#6E6452', '#57503F']); g.fillRect(0, 48, 96, 8);
       g.drawImage(walker(0), 14, 10, 66, 40);
     }
+    else if (trip === 'deliver') { g.fillStyle = lin(g, 0, 0, 0, 56, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 56); g.fillStyle = lin(g, 0, 46, 0, 56, ['#D9C7A8', '#A08B6A']); g.fillRect(0, 46, 96, 10); g.drawImage(tio(0), 2, 4, 92, 59); }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
     else { g.fillStyle = lin(g, 0, 0, 0, 56, [C.deep[2], C.deep[5]]); g.fillRect(0, 0, 96, 56); g.drawImage(diver(0), 8, 6, 72, 43); for (const [x, y, s] of [[80, 16, 2], [84, 9, 1.5], [82, 3, 1]]) ell(g, x, y, s, s, rgba('#FFFFFF', 0.7)); }
     return c.toDataURL();
@@ -885,6 +886,117 @@ const Art = (() => {
     return c;
   }
 
+  // ---- deliveries with Tío ----------------------------------------------
+  // Tío, an older, strong man, pushes his wheelbarrow of supplies from the
+  // pier up through town to the cantina, with the rider sitting on top.
+  // The street climbs a hill between the bakery and the restaurant terrace.
+  // 3600 x 240.
+  const DELIVER = {
+    w: 3600, h: 240, stopX: (i) => 175 + i * 520,
+    ground: (x) => { const a = 175 + 3 * 520 + 80, b = 175 + 4 * 520 + 60, t = Math.min(1, Math.max(0, (x - a) / (b - a))); return Math.round(214 - 30 * t * t * (3 - 2 * t)); },
+  };
+  // Tío pushing the wheelbarrow, facing right. 116 x 74; the wheel and his
+  // boots touch the bottom row. frame 0 or 1 moves his legs.
+  function drawTio(g, f) {
+    const skin = ['#B98057', '#9A6440', '#6E4528'], shirt = ['#7FA8C9', '#5B86AD', '#3E6489'], pants = ['#4A515C', '#2E333B'];
+    // legs, striding
+    const step = f ? 5 : -5;
+    for (const [hip, foot, shade] of [[30, 30 - step, pants[1]], [34, 36 + step, pants[0]]]) {
+      g.beginPath(); g.moveTo(hip - 4, 44); g.lineTo(hip + 4, 44); g.lineTo(foot + 3, 70); g.lineTo(foot - 3, 70); g.closePath(); g.fillStyle = shade; g.fill();
+      box(g, foot - 4, 68, 11, 6, 2, '#3A2A1A');
+    }
+    // body, leaning into the handles
+    poly(g, [[22, 22], [38, 18], [44, 44], [26, 46]], lin(g, 22, 0, 44, 0, shirt));
+    line(g, [[30, 21], [35, 45]], rgba('#FFFFFF', 0.25), 0.8);
+    // arms, sleeves rolled, reaching the handles
+    poly(g, [[34, 22], [41, 21], [47, 30], [42, 32]], shirt[1]);
+    line(g, [[44, 31], [58, 40]], skin[1], 4.6); line(g, [[40, 30], [55, 42]], skin[2], 4.2);
+    ell(g, 59, 40.5, 3, 2.6, skin[1]);
+    // head: grey hair, a white moustache and a cap
+    ell(g, 33, 12, 7, 7.6, lin(g, 0, 5, 0, 20, skin));
+    ell(g, 28, 13, 2.4, 3.6, '#C9C6C0'); ell(g, 38.5, 11.4, 1.6, 1.8, skin[0]);
+    ell(g, 37.4, 15.6, 3.6, 1.6, '#F2F0EA'); ell(g, 36.6, 10.6, 0.8, 0.9, C.ink);
+    line(g, [[34.4, 8.6], [38.4, 8.8]], '#E9E6DE', 0.9);
+    g.beginPath(); g.ellipse(32.4, 7.4, 7.6, 5, 0, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, 2, 0, 8, ['#E0352B', '#A3241D']); g.fill();
+    poly(g, [[37, 6.6], [45, 7.4], [44.6, 9], [36.6, 8.6]], '#A3241D');
+  }
+  function drawBarrow(g) {
+    // handles back to Tío's hands, the tray, the wheel and the stand
+    line(g, [[58, 40], [80, 46]], C.wood[3], 2.4); line(g, [[58, 42], [80, 49]], C.wood[2], 2);
+    poly(g, [[70, 42], [112, 40], [104, 58], [76, 58]], lin(g, 0, 40, 0, 58, ['#4FAE5A', '#3B8E38', '#24622A']));
+    poly(g, [[70, 42], [112, 40], [111, 43], [71, 45]], '#6CC777');
+    line(g, [[80, 58], [77, 70]], '#2E333B', 1.8);
+    ell(g, 102, 64, 8, 8, lin(g, 0, 56, 0, 72, C.tire)); ell(g, 102, 64, 3, 3, C.rim[1]);
+  }
+  function drawLoad(g, withRider) {
+    // a crate of bottles, a sack of ice and a red gas canister
+    box(g, 74, 28, 18, 14, 1.5, lin(g, 0, 28, 0, 42, [C.wood[0], C.wood[2]]));
+    for (let k = 0; k < 5; k++) { g.fillStyle = ['#3B8E38', '#C98F12', '#7A2B2A', '#3B8E38', '#C98F12'][k]; g.fillRect(76 + k * 3.2, 22, 2.2, 7); g.fillRect(76.6 + k * 3.2, 19.6, 1, 2.6); }
+    ell(g, 99, 34, 9, 8, lin(g, 0, 26, 0, 42, ['#FFFFFF', '#D9EEF6', '#A9D3E6']));
+    line(g, [[95, 27], [99, 30], [103, 27]], rgba('#7FB6D0', 0.8), 0.8);
+    box(g, 106, 24, 7, 17, 3, lin(g, 106, 0, 113, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, 108, 21, 3, 4, 1, '#4A515C');
+    if (withRider) { g.save(); g.translate(72, 1); g.scale(0.5, 0.5); drawPaco(g, 0, 0, 'stand', 0); g.restore(); }
+  }
+  function tio(frame = 0) {
+    const [c, g] = canvas(116, 74);
+    drawTio(g, frame); drawBarrow(g); drawLoad(g, true);
+    return rim(c);
+  }
+  function deliveries() {
+    const { w, h, ground } = DELIVER, S = DELIVER.stopX;
+    const [c, g] = canvas(w, h); const r = noise(31);
+    skyFill(g, w, h); sun(g, 300, 40);
+    for (let x = 80; x < w; x += 290 + r() * 170) cloud(g, x, 24 + r() * 26, 0.8 + r() * 0.4);
+    g.beginPath(); g.moveTo(0, 130); for (let x = 0; x <= w; x += 4) g.lineTo(x, ridgeY(x, 92, 30, 0.006, 2.2)); g.lineTo(w, 140); g.lineTo(0, 140); g.closePath(); g.fillStyle = lin(g, 0, 60, 0, 140, C.far); g.fill();
+    canopy(g, r, 0, w, (x) => ridgeY(x, 108, 18, 0.011, 0.4), () => 150, 9, 9, 0.6);
+    // the bay and the pier at the start, a panga being unloaded
+    const sea0 = ground(0) - 4;
+    g.fillStyle = lin(g, 0, sea0 - 40, 0, h, [C.sea[0], C.sea[2], C.sea[4]]); g.fillRect(0, sea0 - 40, S(0) + 112, h);
+    for (let k = 0; k < 60; k++) ell(g, r() * (S(0) + 100), sea0 - 36 + r() * 60, 2 + r() * 5, 0.8, rgba('#FFFFFF', 0.25 + r() * 0.35));
+    panga(g, 40, sea0 - 14, C.stripe2);
+    for (let k = 0; k < 3; k++) box(g, 28 + k * 12, sea0 - 30 - (k % 2) * 6, 10, 9, 1, lin(g, 0, sea0 - 30, 0, sea0 - 20, [C.wood[0], C.wood[2]]));
+    // shopfronts the length of the street, climbing with the hill
+    const walls = [HOUSE[1], HOUSE[2], HOUSE[3], HOUSE[4], C.wall, ['#FFD9B8', '#F8B98A', '#E3965E']];
+    const trims = ['#22AEC4', '#F0478F', '#3B8E38', '#F28C28', '#1C5FA8', '#C21A68'];
+    let i = 0;
+    for (let x = S(0) + 110; x < w - 40; i++) { const fw = 70 + Math.floor(r() * 50), fh = 92 + Math.floor(r() * 30); facade(g, x, ground(x + fw) - 14, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length]); x += fw; }
+    for (let x = S(0) + 110; x < w - 140; x += 150) papelPicado(g, x, x + 150, 30 + ((x / 150) % 2) * 6, 70 + x);
+    // the street: cobbles following the hill
+    g.beginPath(); g.moveTo(S(0) - 30, h); for (let x = S(0) - 30; x <= w; x += 2) g.lineTo(x, ground(x) - 14); g.lineTo(w, h); g.closePath();
+    g.fillStyle = lin(g, 0, 180, 0, h, ['#D9C7A8', '#BFA885', '#A08B6A']); g.fill();
+    for (let k = 0; k < 2600; k++) { const x = S(0) - 30 + r() * (w - S(0) + 30), gy = ground(x) - 12 + r() * (h - ground(x) + 12); ell(g, x, gy, 2.4 + r() * 1.4, 1.3 + r() * 0.6, rgba(r() > 0.5 ? '#E8DCC2' : '#A9937A', 0.75)); }
+    dock(g, 0, sea0 - 2, S(0) + 10);
+    // the ice house: a blue sign, a chest freezer and blocks of ice
+    const ix = S(1);
+    box(g, ix - 40, ground(ix) - 52, 80, 12, 2, '#1C5FA8'); for (let k = 0; k < 6; k++) ell(g, ix - 30 + k * 12, ground(ix) - 46, 2.4, 2.4, '#D9EEF6');
+    box(g, ix - 34, ground(ix) - 34, 40, 22, 3, lin(g, 0, ground(ix) - 34, 0, ground(ix) - 12, ['#FFFFFF', '#C9D5DB'])); box(g, ix - 34, ground(ix) - 36, 40, 4, 1, '#93A7B8');
+    for (let k = 0; k < 4; k++) box(g, ix + 12 + (k % 2) * 11, ground(ix) - 22 - Math.floor(k / 2) * 10, 10, 9, 1.5, lin(g, 0, 0, 0, 1, ['#E9F7FC', '#A9D3E6']));
+    // the corner store: an open front, shelves of goods and a red soda cooler
+    const cx = S(2), cy = ground(cx) - 14;
+    box(g, cx - 44, cy - 54, 64, 54, 2, '#5E3B1A'); g.fillStyle = lin(g, 0, cy - 50, 0, cy, ['#F6E3B8', '#E2C48A']); g.fillRect(cx - 40, cy - 50, 56, 50);
+    for (const sy of [cy - 38, cy - 22]) { line(g, [[cx - 40, sy], [cx + 16, sy]], C.wood[3], 1.4); for (let k = 0; k < 9; k++) { g.fillStyle = PAPEL[(k + sy) % PAPEL.length]; g.fillRect(cx - 38 + k * 6, sy - 8, 4, 8); } }
+    box(g, cx + 24, cy - 40, 18, 40, 3, lin(g, cx + 24, 0, cx + 42, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, cx + 27, cy - 34, 12, 26, 2, rgba('#D9EEF6', 0.7));
+    // the bakery: baskets of bread on a table
+    const bx = S(3), by = ground(bx) - 14;
+    box(g, bx - 36, by - 16, 72, 4, 1, C.wood[1]); line(g, [[bx - 32, by - 12], [bx - 32, by]], C.wood[3], 2); line(g, [[bx + 32, by - 12], [bx + 32, by]], C.wood[3], 2);
+    for (let k = 0; k < 4; k++) { ell(g, bx - 24 + k * 16, by - 20, 7, 4, C.straw[1]); for (let m = 0; m < 3; m++) ell(g, bx - 27 + k * 16 + m * 3, by - 23 - (m % 2), 2.6, 2, '#D98E2F'); }
+    // the steep lane: a stone wall up the hill with bougainvillea
+    for (let x = S(3) + 90; x < S(4) + 90; x += 6) { const gy = ground(x) - 14; g.fillStyle = lin(g, 0, gy - 20, 0, gy, [C.rock[1], C.rock[3]]); g.fillRect(x, gy - 20, 6, 20); if (r() > 0.4) ell(g, x + 3, gy - 22 - r() * 8, 3, 2.4, C.pink[1 + Math.floor(r() * 2)]); }
+    // the restaurant terrace: a palapa roof over tables
+    const tx2 = S(5), ty = ground(tx2) - 14;
+    for (const px of [tx2 - 46, tx2 + 46]) line(g, [[px, ty], [px, ty - 46]], C.wood[3], 2.4);
+    poly(g, [[tx2 - 60, ty - 44], [tx2 + 60, ty - 44], [tx2 + 20, ty - 66], [tx2 - 20, ty - 66]], lin(g, tx2 - 60, 0, tx2 + 60, 0, [C.straw[0], C.straw[1], C.straw[2]]));
+    for (const t of [tx2 - 24, tx2 + 24]) { line(g, [[t, ty], [t, ty - 14]], '#FFFFFF', 1.6); box(g, t - 12, ty - 16, 24, 3, 1, '#FFFFFF'); }
+    // the cantina: swing doors, a sign, stools, and crates already delivered
+    const kx = S(6), ky = ground(kx) - 14;
+    box(g, kx - 30, ky - 70, 60, 14, 2, '#7A2B2A'); ell(g, kx, ky - 63, 4, 4, '#FFE58F');
+    box(g, kx - 12, ky - 36, 11, 24, 1, C.wood[1]); box(g, kx + 1, ky - 36, 11, 24, 1, C.wood[1]);
+    for (const sx of [kx - 46, kx + 36]) { line(g, [[sx - 4, ky], [sx, ky - 14]], '#2A3440', 1.2); line(g, [[sx + 4, ky], [sx, ky - 14]], '#2A3440', 1.2); ell(g, sx, ky - 15, 5, 1.8, '#C21A68'); }
+    for (let k = 0; k < 4; k++) box(g, kx + 50 + (k % 2) * 12, ky - 10 - Math.floor(k / 2) * 10, 11, 10, 1, lin(g, 0, 0, 0, 1, [C.wood[0], C.wood[2]]));
+    palm(g, kx + 120, ky, 50, -1);
+    return c;
+  }
+
   const DEEP = { w: 480, h: 1875, surface: 75, bottom: 1800 };
   const FULL = typeof Engine !== 'undefined' ? Engine.FULL_DAY : 66000;
   DEEP.yForScore = (s) => DEEP.surface + (DEEP.bottom - DEEP.surface) * Math.min(1, s / FULL);
@@ -952,5 +1064,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();
