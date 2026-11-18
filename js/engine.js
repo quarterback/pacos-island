@@ -32,27 +32,41 @@ const Engine = (() => {
   const allNames = (item) => [item.name, ...item.aliases];
   const allowed = (len) => (len < 4 ? 0 : len <= 6 ? 1 : 2);
 
-  function findIn(items, typed) {
+  // minTypo: the shortest name that may match with a typo (parts use 6, so
+  // "king" never reads as "Kong")
+  function findIn(items, typed, minTypo = 4, exactOnly = false) {
     for (const it of items) if (allNames(it).some((n) => P.norm(n) === typed)) return { item: it, typo: false };
+    if (exactOnly) return null;
     let best = null, bestD = 99, tie = false;
     for (const it of items) for (const n of allNames(it)) {
-      const k = P.norm(n); if (k.length < 4) continue;
+      const k = P.norm(n); if (k.length < minTypo) continue;
       const d = lev(typed, k);
       if (d <= allowed(k.length) && d < bestD) { best = it; bestD = d; tie = false; } else if (d === bestD && best && best !== it) tie = true;
     }
     return best && !tie ? { item: best, typo: true } : null;
   }
 
-  // An answer also counts without a word the question names when every
-  // answer has that word: "Pennsylvania" for "Name a Monopoly property whose
-  // name ends in "Avenue."" or "Norfolk" for a terrier. A word only some
-  // answers share is kept, so "basketball" never counts as water basketball.
-  // Questions about people also take part of a name. "Aniston"
-  // counts for "Name a famous Jennifer," "Will" for "Name a famous Smith" and
-  // "Lovelace" for a famous scientist: the last name, or the name without the
-  // word the question already gives. A part shared by two answers counts for
+  // Answers never need their full name. A distinctive part counts:
+  // "Pennsylvania" for Pennsylvania Avenue, "Golden Gun" for "The Man with
+  // the Golden Gun," "Scary" for Scary Spice. A part is the front or the back
+  // of the name, or the name without words every answer shares (such as
+  // "avenue"). It needs four or more letters and must not be only small
+  // words or only words the question itself uses. When a part fits two
+  // answers, it counts for the more familiar one.
+  //
+  // Questions about people also take part of a name. "Aniston" counts for
+  // "Name a famous Jennifer," "Will" for "Name a famous Smith" and "Lovelace"
+  // for a famous scientist: the last name, or the name without the word the
+  // question already gives. A people part shared by two answers counts for
   // neither.
+  //
+  // A part may drop the question's own words from the end of a name
+  // ("Brooklyn" for Brooklyn Bridge) but not from the front, because that
+  // makes another thing: "basketball" is not water basketball. Typing only
+  // the question's own words never matches a part, and a real item typed in
+  // full is that item, never part of another answer (see match).
   const SKIP_PART = new Set(['jr', 'sr', 'ii', 'iii', 'the', 'of', 'and', 'de', 'la', 'le', 'van', 'von', 'mr', 'mrs', 'ms', 'dr']);
+  const SMALL = new Set([...SKIP_PART, 'a', 'an', 'in', 'on', 'to', 'for', 'with', 'at', 'by', 'from', 'or', 'is', 'it', 'its', 'my', 'your', 'our', 'no', 'not', 'as', 'up', 'out', 'we', 'you', 'me', 'be', 'all']);
   const partCache = new Map();
   function partNames(q) {
     if (partCache.has(q.id)) return partCache.get(q.id);
@@ -60,22 +74,43 @@ const Engine = (() => {
     // the words the question names that every answer shares, such as "avenue"
     const shared = q.answers.reduce((acc, a) => { const ws = new Set(P.norm(a.item.name).split(' ')); return acc === null ? ws : new Set([...acc].filter((x) => ws.has(x))); }, null) || new Set();
     const drop = new Set([...shared].filter((x) => given.has(x) && x.length >= 3 && !SKIP_PART.has(x)));
+    const people = q.shape === 'people';
     const owners = new Map();
+    const add = (p, item) => { if (!owners.has(p)) owners.set(p, new Set()); owners.get(p).add(item); };
     for (const a of q.answers) for (const n of allNames(a.item)) {
       const w = P.norm(n).split(' ');
       if (w.length < 2) continue;
-      const rest = w.filter((x) => !given.has(x));
+      if (people) {
+        const rest = w.filter((x) => !given.has(x));
+        const parts = [w[w.length - 1], w.slice(1).join(' '), rest.join(' ')];
+        if (rest.length < w.length) parts.push(...rest);
+        for (const p of parts) if (p.length >= 3 && !SKIP_PART.has(p) && p !== w.join(' ')) add(p, a.item);
+        continue;
+      }
+      const parts = new Set();
+      for (let k = 1; k < w.length; k++) {
+        // the front of a name: drops words from the end, such as "bridge" in Brooklyn Bridge
+        parts.add(w.slice(0, k).join(' '));
+        // the back of a name, unless that drops the question's own word from the front:
+        // "basketball" is not water basketball, "bread pudding" not chocolate bread pudding
+        if (!w.slice(0, k).some((x) => given.has(x) && !drop.has(x) && !SMALL.has(x))) parts.add(w.slice(k).join(' '));
+      }
       const kept = w.filter((x) => !drop.has(x));
-      const parts = q.shape === 'people' ? [w[w.length - 1], w.slice(1).join(' '), rest.join(' ')] : kept.length < w.length && kept.length ? [kept.join(' ')] : [];
-      if (q.shape === 'people' && rest.length < w.length) parts.push(...rest);
+      if (kept.length && kept.length < w.length) parts.add(kept.join(' '));
       for (const p of parts) {
-        if (p.length < 3 || SKIP_PART.has(p) || p === w.join(' ')) continue;
-        if (!owners.has(p)) owners.set(p, new Set());
-        owners.get(p).add(a.item);
+        const pw = p.split(' ');
+        if (p.replace(/ /g, '').length < 4) continue;
+        if (pw.every((x) => SMALL.has(x)) || pw.every((x) => given.has(x) || SMALL.has(x))) continue;
+        if (SMALL.has(pw[0]) && pw.length > 1 && SMALL.has(pw[pw.length - 1])) continue;
+        add(p, a.item);
       }
     }
+    const sh = people ? null : shares(q);
     const out = [];
-    for (const [p, its] of owners) if (its.size === 1) out.push({ name: p, aliases: [], of: [...its][0] });
+    for (const [p, its] of owners) {
+      if (its.size === 1) out.push({ name: p, aliases: [], of: [...its][0] });
+      else if (!people) out.push({ name: p, aliases: [], of: [...its].sort((x, y) => sh[y.name] - sh[x.name])[0] });
+    }
     partCache.set(q.id, out);
     return out;
   }
@@ -88,10 +123,22 @@ const Engine = (() => {
     // Lists asked by last name also take a full name: "Abraham Lincoln."
     const tries = [typed];
     if (u.surname) { const w = typed.split(' '); for (let i = 1; i < w.length; i++) tries.push(w.slice(i).join(' ')); }
-    const find = (items) => { for (const t of tries) { const h = findIn(items, t); if (h) return h; } return null; };
-    const hit = find(q.answers.map((a) => a.item));
+    const find = (items, exactOnly) => { for (const t of tries) { const h = findIn(items, t, 4, exactOnly); if (h) return h; } return null; };
+    const answers = q.answers.map((a) => a.item);
+    // 1. a right answer, exactly
+    const exactHit = find(answers, true);
+    if (exactHit) return { status: 'ok', item: exactHit.item, typo: false };
+    // 2. a real item off this list, exactly: it is that item, never a typo or
+    //    part of another answer ("Nigeria" is not Algeria; "basketball" is not
+    //    water basketball)
+    const exactOff = find(u.items, true);
+    if (exactOff) return { status: 'off', item: exactOff.item };
+    // 3. a right answer with a typo, then a part of one
+    const hit = find(answers);
     if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
-    const part = findIn(partNames(q), typed);
+    // words the question itself uses ("chocolate," "water") are never a part
+    const own = new Set(P.norm(q.text).split(' '));
+    const part = typed.split(' ').every((x) => own.has(x)) ? null : findIn(partNames(q), typed, 6);
     if (part) return { status: 'ok', item: part.item.of, typo: part.typo };
     const near = find(u.items);
     if (near) return { status: 'off', item: near.item };
