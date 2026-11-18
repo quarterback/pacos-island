@@ -107,7 +107,7 @@ const Copy = {
     dive: (s) => `Paco took you down ${s}`,
   },
   nextStop: (name, n) => `${n.toLocaleString('en-US')} ${n === 1 ? 'point' : 'points'} short of ${name}`,
-  madeIt: { boat: 'Paco got you all the way to his island', walk: 'Paco walked you all the way to Cascada Ixtalita', atv: 'Paco drove you all the way to the upper waterfall', deliver: 'Tío wheeled you all the way to the cantina', market: 'Paco walked you all the way to the church steps', fly: "Esmeralda flew you all the way to her nest" },
+  madeIt: { boat: 'Paco got you all the way to his island', walk: 'Paco walked you all the way to Cascada Ixtalita', atv: 'Paco drove you all the way to the upper waterfall', deliver: 'Tío wheeled you all the way to the michelada bar', market: 'Paco walked you all the way to the church steps', fly: "Esmeralda flew you all the way to her nest" },
   lifetime: (all) => `${all.toLocaleString('en-US')} ${all === 1 ? 'point' : 'points'}`,
   sheetHead: 'Today',
   rarityTotal: 'Rarity',

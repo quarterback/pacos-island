@@ -236,7 +236,7 @@ const Engine = (() => {
       [0, 'the beach'], [pt(11000), 'the village'], [pt(22500), 'the river'], [pt(33500), 'the waterfall'], [pt(44000), 'the jungle trail'], [pt(54000), 'the upper waterfall']] },
     // Deliveries, the market and the flight use the walk's spacing between stops.
     deliver: { id: 'deliver', name: 'Deliveries with Tío', opens: pt(150000), stops: [
-      [0, 'the pier'], [pt(9000), 'the ice house'], [pt(18000), 'the corner store'], [pt(27000), 'the bakery'], [pt(36000), 'the steep lane'], [pt(45000), 'the restaurant terrace'], [pt(54000), 'the cantina']] },
+      [0, 'the pier'], [pt(9000), 'the ice house'], [pt(18000), 'the corner store'], [pt(27000), 'the juice stand'], [pt(36000), 'the steep lane'], [pt(45000), 'the umbrella plaza'], [pt(54000), 'the michelada bar']] },
     market: { id: 'market', name: 'Night market in Pueblo Tilmeca', opens: pt(200000), stops: [
       [0, 'the bus stop'], [pt(9000), 'the taco stand'], [pt(18000), 'the empanada seller'], [pt(27000), 'the corner bar'], [pt(36000), 'the clothing shops'], [pt(45000), 'the souvenir shops'], [pt(54000), 'the church steps']] },
     fly: { id: 'fly', name: "Fly with Esmeralda", opens: pt(300000), stops: [

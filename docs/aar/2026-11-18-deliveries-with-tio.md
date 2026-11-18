@@ -31,6 +31,18 @@ The owner asked for the rough spots in the first pass to be fixed. They came fro
 - **Hill:** each house now sits at the street height under its middle, set into the slope, and the tall wall is a low stone kerb with flowers. The doors show in full.
 - Rerendered and reviewed at five times size; no page errors.
 
-## 5. Gaps
+## 5. Follow-up: the owner's trip photos
+
+The owner sent seven photos from the trip with no note. Next to them, the first street was too neat and pastel, so the strip was redrawn from them; every name stays fictional.
+
+- **Town:** plastered houses in white, ochre, peach, teal, concrete and blue (`casa()`), with concrete roof slabs or tile edges, wooden doors, barred or louvered windows, iron balconies, strings of bulbs and stone bases (`stoneBase()`). White block walls on stone bases with jungle behind them (`compound()`, `bananaPlant()`) break up the row. Thick jungle covers the hills close behind town.
+- **Street:** grey river stones with shadows and highlights in place of beige gravel.
+- **Signs:** hand-painted arrows, PLAYA back toward the pier and CASCADA onward (`arrowSign()`). The pixel font gained M, S, Y, J, U and G.
+- **Stops:** the bakery is now **the juice stand** (a blue stall with a tin roof, fruit, papel picado, a dog, and a palapa next door with sacks under it). The restaurant terrace is now **the umbrella plaza** (red, white and green umbrellas hung on wires, green patio umbrellas over café tables, a planter and a menu board). The cantina is now **the michelada bar** (teal, under a stairway with an iron railing, bottles on the ledge, a blender, MICHELADAS painted on the wall). The final heading reads "Tío wheeled you all the way to the michelada bar."
+- **The steep lane:** a mural of the bay with a sea turtle, stacked black crates, and a mule with sacks on a pack saddle walking down the hill (`mule()`).
+- Removed after review: leaf clusters meant to overhang the street floated in the sky, and a red mark on the mule's sacks read as a flag. The kerb on the hill had gaps like a fence and is now continuous. The umbrellas were enlarged so they read at play size.
+
+## 6. Gaps
+
 
 - Tío has no cameo outside his trip (for example, on the Stumped panel).
