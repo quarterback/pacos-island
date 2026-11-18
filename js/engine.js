@@ -43,22 +43,31 @@ const Engine = (() => {
     return best && !tie ? { item: best, typo: true } : null;
   }
 
-  // Questions about people also take part of a name. "Aniston" counts for
-  // "Name a famous Jennifer," "Will" for "Name a famous Smith" and "Lovelace"
-  // for a famous scientist: the last name, or the name without the word the
-  // question already gives. A part shared by two answers counts for neither.
+  // An answer also counts without a word the question names when every
+  // answer has that word: "Pennsylvania" for "Name a Monopoly property whose
+  // name ends in "Avenue."" or "Norfolk" for a terrier. A word only some
+  // answers share is kept, so "basketball" never counts as water basketball.
+  // Questions about people also take part of a name. "Aniston"
+  // counts for "Name a famous Jennifer," "Will" for "Name a famous Smith" and
+  // "Lovelace" for a famous scientist: the last name, or the name without the
+  // word the question already gives. A part shared by two answers counts for
+  // neither.
   const SKIP_PART = new Set(['jr', 'sr', 'ii', 'iii', 'the', 'of', 'and', 'de', 'la', 'le', 'van', 'von', 'mr', 'mrs', 'ms', 'dr']);
   const partCache = new Map();
   function partNames(q) {
     if (partCache.has(q.id)) return partCache.get(q.id);
     const given = new Set(P.norm(q.text).split(' '));
+    // the words the question names that every answer shares, such as "avenue"
+    const shared = q.answers.reduce((acc, a) => { const ws = new Set(P.norm(a.item.name).split(' ')); return acc === null ? ws : new Set([...acc].filter((x) => ws.has(x))); }, null) || new Set();
+    const drop = new Set([...shared].filter((x) => given.has(x) && x.length >= 3 && !SKIP_PART.has(x)));
     const owners = new Map();
     for (const a of q.answers) for (const n of allNames(a.item)) {
       const w = P.norm(n).split(' ');
       if (w.length < 2) continue;
       const rest = w.filter((x) => !given.has(x));
-      const parts = [w[w.length - 1], w.slice(1).join(' '), rest.join(' ')];
-      if (rest.length < w.length) parts.push(...rest);
+      const kept = w.filter((x) => !drop.has(x));
+      const parts = q.shape === 'people' ? [w[w.length - 1], w.slice(1).join(' '), rest.join(' ')] : kept.length < w.length && kept.length ? [kept.join(' ')] : [];
+      if (q.shape === 'people' && rest.length < w.length) parts.push(...rest);
       for (const p of parts) {
         if (p.length < 3 || SKIP_PART.has(p) || p === w.join(' ')) continue;
         if (!owners.has(p)) owners.set(p, new Set());
@@ -82,7 +91,7 @@ const Engine = (() => {
     const find = (items) => { for (const t of tries) { const h = findIn(items, t); if (h) return h; } return null; };
     const hit = find(q.answers.map((a) => a.item));
     if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
-    const part = q.shape === 'people' ? findIn(partNames(q), typed) : null;
+    const part = findIn(partNames(q), typed);
     if (part) return { status: 'ok', item: part.item.of, typo: part.typo };
     const near = find(u.items);
     if (near) return { status: 'off', item: near.item };

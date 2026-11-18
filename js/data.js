@@ -1530,12 +1530,12 @@ Baltic Avenue|Baltic
 Oriental Avenue|Oriental
 Vermont Avenue|Vermont
 Connecticut Avenue|Connecticut
-St. Charles Place|Saint Charles Place|St Charles Place
-States Avenue
+St. Charles Place|Saint Charles Place|St Charles Place|St. Charles|Saint Charles
+States Avenue|States
 Virginia Avenue|Virginia
-St. James Place|Saint James Place|St James Place
+St. James Place|Saint James Place|St James Place|St. James|Saint James
 Tennessee Avenue|Tennessee
-New York Avenue
+New York Avenue|New York
 Kentucky Avenue|Kentucky
 Indiana Avenue|Indiana
 Illinois Avenue|Illinois
