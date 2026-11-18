@@ -937,6 +937,35 @@ const Art = (() => {
     box(g, 106, 24, 7, 17, 3, lin(g, 106, 0, 113, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, 108, 21, 3, 4, 1, '#4A515C');
     if (withRider) { g.save(); g.translate(72, 1); g.scale(0.5, 0.5); drawPaco(g, 0, 0, 'stand', 0); g.restore(); }
   }
+  // Shop-sign letters, 5 pixels tall, one pixel apart.
+  const GLYPH = { A: '010101111101101', C: '011100100100011', D: '110101101101110', E: '111100110100111', H: '101101111101101',
+    I: '111010010010111', L: '100100100100111', N: '10011101101110011001', O: '010101101101010', P: '110101110100100', R: '110101110101101', T: '111010010010010' };
+  function letters(g, text, cx, y, color, size = 1) {
+    // most letters are 3 pixels wide; N is 4
+    const cols = (ch) => GLYPH[ch].length / 5, w = ([...text].reduce((a, ch) => a + cols(ch) + 1, 0) - 1) * size;
+    let x = Math.round(cx - w / 2);
+    g.fillStyle = color;
+    for (const ch of text) { const b = GLYPH[ch], n = cols(ch); for (let k = 0; k < b.length; k++) if (b[k] === '1') g.fillRect(x + (k % n) * size, y + Math.floor(k / n) * size, size, size); x += (n + 1) * size; }
+  }
+  // Extras that make each shopfront on the delivery street its own:
+  // an awning, a balcony, a hanging sign, potted plants or flowers over the roof.
+  function dress(g, r, x, y, w, h, trim, kind) {
+    if (kind === 0) {
+      for (let k = 0; k < w; k += 8) { g.fillStyle = (k / 8) % 2 ? '#FFFFFF' : trim; g.fillRect(x + k, y - 46, Math.min(8, w - k), 7); ell(g, x + k + 4, y - 39, 4, 2, (k / 8) % 2 ? '#FFFFFF' : trim); }
+    } else if (kind === 1) {
+      const by = y - h + 34; box(g, x + 4, by, w - 8, 3, 1, '#2A3440');
+      for (let k = x + 6; k < x + w - 6; k += 4) g.fillRect(k, by - 9, 1, 9); g.fillRect(x + 4, by - 10, w - 8, 1.4);
+      for (let k = x + 10; k < x + w - 10; k += 14) { box(g, k, by - 6, 6, 5, 1, '#C0623A'); ell(g, k + 3, by - 8, 4, 3, C.pink[1 + (k % 2)]); }
+    } else if (kind === 2) {
+      line(g, [[x + 4, y - 58], [x + 20, y - 58]], '#2A3440', 1.2);
+      box(g, x + 8, y - 57, 14, 12, 1, trim); ell(g, x + 15, y - 51, 3, 3, '#FFFFFF');
+    } else if (kind === 3) {
+      for (const px of [x + 6, x + w - 14]) { box(g, px, y - 10, 8, 10, 1.5, '#C0623A'); for (let m = 0; m < 5; m++) ell(g, px + 4 + (r() - 0.5) * 8, y - 14 - r() * 8, 3, 2.4, [C.leaf, C.leafHi, C.leafDk][m % 3]); }
+    } else {
+      for (let k = 0; k < w; k += 5) ell(g, x + k, y - h - 4 + r() * 6, 3.4, 3, k % 3 ? C.pink[1] : '#3B8E38');
+      for (let k = 0; k < 6; k++) ell(g, x + w - 6 - r() * 10, y - h + 4 + k * 6, 3, 2.6, C.pink[1 + (k % 2)]);
+    }
+  }
   function tio(frame = 0) {
     const [c, g] = canvas(116, 74);
     drawTio(g, frame); drawBarrow(g); drawLoad(g, true);
@@ -959,7 +988,13 @@ const Art = (() => {
     const walls = [HOUSE[1], HOUSE[2], HOUSE[3], HOUSE[4], C.wall, ['#FFD9B8', '#F8B98A', '#E3965E']];
     const trims = ['#22AEC4', '#F0478F', '#3B8E38', '#F28C28', '#1C5FA8', '#C21A68'];
     let i = 0;
-    for (let x = S(0) + 110; x < w - 40; i++) { const fw = 70 + Math.floor(r() * 50), fh = 92 + Math.floor(r() * 30); facade(g, x, ground(x + fw) - 14, fw, fh, walls[i % walls.length], trims[(i * 2) % trims.length]); x += fw; }
+    for (let x = S(0) + 110; x < w - 40; i++) {
+      const fw = 70 + Math.floor(r() * 50), fh = 92 + Math.floor(r() * 30), fy = ground(x + fw / 2) - 14, trim = trims[(i * 2) % trims.length];
+      facade(g, x, fy, fw, fh, walls[i % walls.length], trim);
+      const nearStop = [1, 2, 3, 5, 6].some((k) => Math.abs(x + fw / 2 - S(k)) < 80);
+      if (!nearStop) dress(g, r, x, fy, fw, fh, trim, i % 5);
+      x += fw;
+    }
     for (let x = S(0) + 110; x < w - 140; x += 150) papelPicado(g, x, x + 150, 30 + ((x / 150) % 2) * 6, 70 + x);
     // the street: cobbles following the hill
     g.beginPath(); g.moveTo(S(0) - 30, h); for (let x = S(0) - 30; x <= w; x += 2) g.lineTo(x, ground(x) - 14); g.lineTo(w, h); g.closePath();
@@ -968,20 +1003,21 @@ const Art = (() => {
     dock(g, 0, sea0 - 2, S(0) + 10);
     // the ice house: a blue sign, a chest freezer and blocks of ice
     const ix = S(1);
-    box(g, ix - 40, ground(ix) - 52, 80, 12, 2, '#1C5FA8'); for (let k = 0; k < 6; k++) ell(g, ix - 30 + k * 12, ground(ix) - 46, 2.4, 2.4, '#D9EEF6');
+    box(g, ix - 30, ground(ix) - 54, 60, 13, 2, '#1C5FA8'); letters(g, 'HIELO', ix, ground(ix) - 51, '#FFFFFF', 1.4);
     box(g, ix - 34, ground(ix) - 34, 40, 22, 3, lin(g, 0, ground(ix) - 34, 0, ground(ix) - 12, ['#FFFFFF', '#C9D5DB'])); box(g, ix - 34, ground(ix) - 36, 40, 4, 1, '#93A7B8');
     for (let k = 0; k < 4; k++) box(g, ix + 12 + (k % 2) * 11, ground(ix) - 22 - Math.floor(k / 2) * 10, 10, 9, 1.5, lin(g, 0, 0, 0, 1, ['#E9F7FC', '#A9D3E6']));
     // the corner store: an open front, shelves of goods and a red soda cooler
     const cx = S(2), cy = ground(cx) - 14;
-    box(g, cx - 44, cy - 54, 64, 54, 2, '#5E3B1A'); g.fillStyle = lin(g, 0, cy - 50, 0, cy, ['#F6E3B8', '#E2C48A']); g.fillRect(cx - 40, cy - 50, 56, 50);
+    box(g, cx - 44, cy - 54, 64, 54, 2, '#5E3B1A'); box(g, cx - 40, cy - 70, 82, 13, 2, '#F6E3B8'); letters(g, 'TIENDA', cx + 1, cy - 67, '#A3241D', 1.4); g.fillStyle = lin(g, 0, cy - 50, 0, cy, ['#F6E3B8', '#E2C48A']); g.fillRect(cx - 40, cy - 50, 56, 50);
     for (const sy of [cy - 38, cy - 22]) { line(g, [[cx - 40, sy], [cx + 16, sy]], C.wood[3], 1.4); for (let k = 0; k < 9; k++) { g.fillStyle = PAPEL[(k + sy) % PAPEL.length]; g.fillRect(cx - 38 + k * 6, sy - 8, 4, 8); } }
     box(g, cx + 24, cy - 40, 18, 40, 3, lin(g, cx + 24, 0, cx + 42, 0, ['#F9856F', '#E0352B', '#A3241D'])); box(g, cx + 27, cy - 34, 12, 26, 2, rgba('#D9EEF6', 0.7));
     // the bakery: baskets of bread on a table
     const bx = S(3), by = ground(bx) - 14;
+    box(g, bx - 38, by - 60, 76, 12, 2, '#5E3B1A'); letters(g, 'PANADERIA', bx, by - 57, '#FFE58F', 1.1);
     box(g, bx - 36, by - 16, 72, 4, 1, C.wood[1]); line(g, [[bx - 32, by - 12], [bx - 32, by]], C.wood[3], 2); line(g, [[bx + 32, by - 12], [bx + 32, by]], C.wood[3], 2);
     for (let k = 0; k < 4; k++) { ell(g, bx - 24 + k * 16, by - 20, 7, 4, C.straw[1]); for (let m = 0; m < 3; m++) ell(g, bx - 27 + k * 16 + m * 3, by - 23 - (m % 2), 2.6, 2, '#D98E2F'); }
     // the steep lane: a stone wall up the hill with bougainvillea
-    for (let x = S(3) + 90; x < S(4) + 90; x += 6) { const gy = ground(x) - 14; g.fillStyle = lin(g, 0, gy - 20, 0, gy, [C.rock[1], C.rock[3]]); g.fillRect(x, gy - 20, 6, 20); if (r() > 0.4) ell(g, x + 3, gy - 22 - r() * 8, 3, 2.4, C.pink[1 + Math.floor(r() * 2)]); }
+    for (let x = S(3) + 90; x < S(4) + 90; x += 6) { const gy = ground(x) - 14; g.fillStyle = lin(g, 0, gy - 7, 0, gy, [C.rock[1], C.rock[3]]); g.fillRect(x, gy - 7, 5, 7); if (r() > 0.55) ell(g, x + 3, gy - 9, 3, 2.4, C.pink[1 + Math.floor(r() * 2)]); }
     // the restaurant terrace: a palapa roof over tables
     const tx2 = S(5), ty = ground(tx2) - 14;
     for (const px of [tx2 - 46, tx2 + 46]) line(g, [[px, ty], [px, ty - 46]], C.wood[3], 2.4);
@@ -989,7 +1025,7 @@ const Art = (() => {
     for (const t of [tx2 - 24, tx2 + 24]) { line(g, [[t, ty], [t, ty - 14]], '#FFFFFF', 1.6); box(g, t - 12, ty - 16, 24, 3, 1, '#FFFFFF'); }
     // the cantina: swing doors, a sign, stools, and crates already delivered
     const kx = S(6), ky = ground(kx) - 14;
-    box(g, kx - 30, ky - 70, 60, 14, 2, '#7A2B2A'); ell(g, kx, ky - 63, 4, 4, '#FFE58F');
+    box(g, kx - 32, ky - 72, 64, 15, 2, '#7A2B2A'); letters(g, 'CANTINA', kx, ky - 68, '#FFE58F', 1.4);
     box(g, kx - 12, ky - 36, 11, 24, 1, C.wood[1]); box(g, kx + 1, ky - 36, 11, 24, 1, C.wood[1]);
     for (const sx of [kx - 46, kx + 36]) { line(g, [[sx - 4, ky], [sx, ky - 14]], '#2A3440', 1.2); line(g, [[sx + 4, ky], [sx, ky - 14]], '#2A3440', 1.2); ell(g, sx, ky - 15, 5, 1.8, '#C21A68'); }
     for (let k = 0; k < 4; k++) box(g, kx + 50 + (k % 2) * 12, ky - 10 - Math.floor(k / 2) * 10, 11, 10, 1, lin(g, 0, 0, 0, 1, [C.wood[0], C.wood[2]]));

@@ -22,8 +22,15 @@ The owner met an older, strong man on a trip who moved supplies around town in a
 - A Mario's mode endless round on the delivery trip ran to the end screen with no page errors; Mario rode in the barrow and the heading read "Tío wheeled you to the pier."
 - `plain-language-default check`, `prosekeep check` and `red-pen-editor inspect` found nothing in the new lines.
 
-## 4. Gaps
+## 4. Follow-up: the rough spots
 
-- The cantina sign has no lettering, and the shops between stops repeat the same facade style.
-- Houses on the steep lane sit with their doors partly behind the stone wall.
+The owner asked for the rough spots in the first pass to be fixed. They came from shortcuts: lettering at this pixel size needs a hand-drawn font, so the cantina sign was left as a plain box; every shopfront came from one helper with random colors; and houses on the hill sat level with the top of their slope, with a tall wall hiding the gap under them.
+
+- **Signs:** a small pixel font (`GLYPH`, `letters()`, five pixels tall, N four wide) letters HIELO, TIENDA, PANADERIA and CANTINA. An N three pixels wide read as an M, then as a lowercase n, so it got a fourth column.
+- **Shopfronts:** `dress()` gives each house between stops one of five extras in turn: a striped awning, a balcony with flower pots, a hanging blade sign, potted plants by the doors, or bougainvillea over the roof. Houses next to a stop stay plain so the stop's props stand out.
+- **Hill:** each house now sits at the street height under its middle, set into the slope, and the tall wall is a low stone kerb with flowers. The doors show in full.
+- Rerendered and reviewed at five times size; no page errors.
+
+## 5. Gaps
+
 - Tío has no cameo outside his trip (for example, on the Stumped panel).
