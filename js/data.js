@@ -4453,7 +4453,8 @@ Lacrosse
 Jai alai
 Frontenis
 Speedminton
-Pelota`),
+Pelota
+Tennis polo|Toccer`),
     angle('winter_olympics', 'sports', 'category', 'Name a Winter Olympics sport.', `
 1 Figure skating|Skating
 1 Ice hockey|Hockey
@@ -16693,7 +16694,8 @@ Swimrun`),
 2 Wheelchair tennis
 2 Goalball
 2 Box lacrosse
-2 Camogie`),
+2 Camogie
+Tennis polo|Toccer`),
     angle('day_holidays', 'holidays', 'wordplay', 'Name a holiday whose name ends in "Day."', `
 1 Labor Day
 1 Memorial Day
