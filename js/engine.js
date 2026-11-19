@@ -115,6 +115,17 @@ const Engine = (() => {
     return out;
   }
 
+  // Items from every other list in a question's subject, for rule 2b.
+  const kinCache = new Map();
+  function kinItems(q) {
+    const sub = P.subjectOf(q), key = sub + '|' + q.universe;
+    if (!kinCache.has(key)) {
+      const seen = new Set([q.universe]), out = [];
+      for (const o of P.pool) if (P.subjectOf(o) === sub && !seen.has(o.universe)) { seen.add(o.universe); out.push(...P.universe(o.universe).items); }
+      kinCache.set(key, out);
+    }
+    return kinCache.get(key);
+  }
   // status: ok (on the list), off (real, but this question rules it out), no (not on any list)
   function match(q, input) {
     const typed = P.norm(input || '');
@@ -133,13 +144,22 @@ const Engine = (() => {
     //    water basketball)
     const exactOff = find(u.items, true);
     if (exactOff) return { status: 'off', item: exactOff.item };
+    // 2b. a real item from another list in the same subject, typed exactly, is
+    //    never a typo of an answer ("toccer," a sport, is not soccer), but it
+    //    can still be part of one ("Mexico" for Mexico City)
+    const kin = find(kinItems(q), true);
     // 3. a right answer with a typo, then a part of one
-    const hit = find(answers);
+    // the same word in another form still counts: a plural, a dropped "the,"
+    // a British spelling ("Neighbours" for The Neighbors)
+    const stem = (x) => P.norm(x).replace(/^the /, '').replace(/our/g, 'or').replace(/(e?s)$/, '');
+    const variant = (h) => h && h.item.names.some((nm) => tries.some((t) => stem(nm) === stem(t)));
+    const found = find(answers), hit = kin && !variant(found) ? null : found;
     if (hit) return { status: 'ok', item: hit.item, typo: hit.typo };
     // words the question itself uses ("chocolate," "water") are never a part
     const own = new Set(P.norm(q.text).split(' '));
     const part = typed.split(' ').every((x) => own.has(x)) ? null : findIn(partNames(q), typed, 6);
     if (part) return { status: 'ok', item: part.item.of, typo: part.typo };
+    if (kin) return { status: 'off', item: kin.item };
     const near = find(u.items);
     if (near) return { status: 'off', item: near.item };
     return { status: 'no' };
