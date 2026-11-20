@@ -16,6 +16,9 @@
   --foam: #FFFFFF;
   --mist: #CDEFF5;
   --sun: #FFC43A;
+  --menu-paper: #FFF4DC;
+  --menu-pick: #F6DFAE;
+  --menu-soft: #4A4436;
   --sun-deep: #C98F12;
   --sun-lift: #FFD266;
   --ink: #0D2340;
@@ -156,13 +159,29 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .treat-answer { margin: 0 0 18px; font-weight: 600; font-size: 20px; }
 .treat-pts { margin-left: 6px; font: 700 22px/1 var(--show); color: var(--sun); font-variant-numeric: tabular-nums; }
 .treat-art { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin: 0 0 14px; }
-.treat-maria { flex: none; width: 104px; }
 .treat-item { flex: none; width: 176px; }
 .treat-art canvas { display: block; width: 100%; height: auto; }
 .treat-head { margin: 0 0 4px; font: 700 30px/1.05 var(--show); color: var(--sun); text-shadow: 2px 2px 0 var(--ink); text-align: center; }
 .treat-head:focus { outline: none; }
 .treat-note { margin: 0 0 16px; text-align: center; font-size: 17px; }
 .treat-say { margin: 0 0 20px; }
+/* Maria's menu: a paper card with every drink and plate */
+.menu-card { margin: 0 0 24px; padding: 20px 16px 8px; border-radius: 8px; background: var(--menu-paper); color: var(--ink); }
+.menu-head { margin: 0; font: 700 30px/1 var(--show); text-align: center; }
+.menu-head:focus { outline: none; }
+.menu-say { margin: 6px 0 14px; text-align: center; font-size: 16px; }
+.menu-sec { margin: 14px 0 4px; padding-bottom: 4px; border-bottom: 2px solid var(--ink); font: 700 18px/1 var(--show); }
+.menu-list { margin: 0; padding: 0; list-style: none; }
+.menu-item { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 6px 4px; border: 0; border-radius: 8px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.menu-item:hover, .menu-item:focus-visible { background: var(--menu-pick); }
+.menu-item:focus-visible { outline: 3px solid var(--ink); outline-offset: 0; }
+.menu-item canvas { display: block; width: 64px; height: auto; }
+.menu-name { display: block; font-weight: 600; font-size: 18px; }
+.menu-desc { display: block; font-size: 15px; color: var(--menu-soft); }
+/* the menu and Maria's delivery slide in, a screen of their own */
+.screen.enter { animation: screen-in 320ms ease-out; }
+@keyframes screen-in { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .screen.enter { animation: none; } }
 .result-pts { margin-top: 6px !important; font: 700 56px/1 var(--show); color: var(--sun); text-shadow: 3px 3px 0 var(--ink); font-variant-numeric: tabular-nums; }
 .result-split { margin-top: 10px !important; font-weight: 500; }
 .result-split .speed { color: var(--leaf); }

@@ -223,6 +223,7 @@ const Art = (() => {
       g.fillStyle = lin(g, 0, 48, 0, 56, ['#6E6452', '#57503F']); g.fillRect(0, 48, 96, 8);
       g.drawImage(walker(0), 14, 10, 66, 40);
     }
+    else if (trip === 'cafe') { g.fillStyle = lin(g, 0, 0, 0, 30, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 30); g.fillStyle = lin(g, 0, 30, 0, 40, [C.sea[1], C.sea[3]]); g.fillRect(0, 30, 96, 10); g.fillStyle = lin(g, 0, 40, 0, 56, [C.sand[0], C.sand[2]]); g.fillRect(0, 40, 96, 16); g.save(); g.translate(56, 2); g.scale(0.6, 0.6); drawMaria(g); g.restore(); g.drawImage(treat('jamaica', 0.6), 6, 18); }
     else if (trip === 'deliver') { g.fillStyle = lin(g, 0, 0, 0, 56, [C.sky[1], C.sky[4]]); g.fillRect(0, 0, 96, 56); g.fillStyle = lin(g, 0, 46, 0, 56, ['#D9C7A8', '#A08B6A']); g.fillRect(0, 46, 96, 10); g.drawImage(tio(0), 2, 4, 92, 59); }
     else if (trip === 'atv') { g.fillStyle = lin(g, 0, 0, 0, 48, [C.near[0], C.near[1], C.near[2]]); g.fillRect(0, 0, 96, 48); g.fillStyle = lin(g, 0, 46, 0, 56, [C.dirt[0], C.dirt[2]]); g.fillRect(0, 47, 96, 9); g.drawImage(atv(0), 10, 0, 76, 50); }
     else { g.fillStyle = lin(g, 0, 0, 0, 56, [C.deep[2], C.deep[5]]); g.fillRect(0, 0, 96, 56); g.drawImage(diver(0), 8, 6, 72, 43); for (const [x, y, s] of [[80, 16, 2], [84, 9, 1.5], [82, 3, 1]]) ell(g, x, y, s, s, rgba('#FFFFFF', 0.7)); }
@@ -944,8 +945,88 @@ const Art = (() => {
     elote: (g) => { plate(g, 32, 42); g.save(); g.translate(32, 32); g.rotate(-0.5); ell(g, 0, 0, 18, 6.4, '#F7C83A'); for (let k = -15; k <= 15; k += 3) for (const dy of [-3, 0, 3]) ell(g, k, dy, 1.2, 1.2, '#FFE08A'); for (let k = 0; k < 9; k++) ell(g, -14 + k * 3.4, (k % 3) - 1, 1, 0.8, '#E0352B'); ell(g, 0, -1, 14, 2, rgba('#FFFFFF', 0.5)); line(g, [[18, 0], [26, 0]], C.wood[1], 2.4); g.restore(); },
     quesadilla: (g) => { plate(g, 32, 42); g.beginPath(); g.moveTo(14, 38); g.arc(32, 38, 18, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, 20, 0, 38, ['#F6D58E', '#E2B45A']); g.fill(); for (let k = 0; k < 7; k++) ell(g, 20 + k * 4, 30 + (k % 2) * 4, 1.6, 1.2, '#B5782E'); ell(g, 24, 38, 4, 1.6, '#FFE58F'); ell(g, 40, 38, 4, 1.4, '#FFE58F'); ell(g, 50, 40, 4, 2.6, '#6BBE3C'); },
   };
-  // drinks and plates take turns
-  const MENU = ['horchata', 'tacos', 'jamaica', 'ceviche', 'coco', 'chilaquiles', 'limonada', 'zarandeado', 'cafe', 'conchas', 'mango', 'flan', 'sandia', 'elote', 'quesadilla'];
+  // ---- vacation mode's lane: a stroll down the beach to Maria's café ----
+  // 3600 x 240, flat: a boardwalk across the sand with the bay behind it.
+  const CAFE = { w: 3600, h: 240, stopX: (i) => 175 + i * 520, ground: () => 214 };
+  function cafeLane() {
+    const { w, h } = CAFE, S = CAFE.stopX, gy = 214;
+    const [c, g] = canvas(w, h); const r = noise(57);
+    skyFill(g, w, h); sun(g, 520, 46);
+    for (let x = 60; x < w; x += 260 + r() * 200) cloud(g, x, 22 + r() * 30, 0.7 + r() * 0.5);
+    // a far headland and the bay
+    g.beginPath(); g.moveTo(0, 128); for (let x = 0; x <= w; x += 4) g.lineTo(x, ridgeY(x, 112, 16, 0.004, 1.3)); g.lineTo(w, 132); g.lineTo(0, 132); g.closePath(); g.fillStyle = lin(g, 0, 90, 0, 132, C.far); g.fill();
+    g.fillStyle = lin(g, 0, 130, 0, 176, [C.sea[1], C.sea[2], C.sea[3]]); g.fillRect(0, 130, w, 46);
+    for (let k = 0; k < 420; k++) ell(g, r() * w, 134 + r() * 38, 2 + r() * 6, 0.8, rgba('#FFFFFF', 0.25 + r() * 0.4));
+    for (let x = 0; x < w; x += 6) ell(g, x, 175 + Math.sin(x / 23) * 1.4, 5, 1.6, rgba(C.foam, 0.85));
+    // sand, with shells
+    g.fillStyle = lin(g, 0, 174, 0, h, [C.sand[0], C.sand[1], C.sand[2]]); g.fillRect(0, 176, w, h - 176);
+    for (let k = 0; k < 900; k++) ell(g, r() * w, 180 + r() * 58, 0.8 + r() * 1.2, 0.6, rgba(r() > 0.5 ? '#FFFFFF' : '#C9A060', 0.5));
+    for (let k = 0; k < 40; k++) ell(g, r() * w, 182 + r() * 20, 1.6, 1.2, ['#FFB7C9', '#FFFFFF', '#F6DC98'][k % 3]);
+    // the boardwalk
+    box(g, 0, gy - 6, w, 10, 1, lin(g, 0, gy - 6, 0, gy + 4, [C.wood[0], C.wood[1]]));
+    for (let x = 0; x < w; x += 7) { g.fillStyle = rgba(C.wood[3], 0.5); g.fillRect(x, gy - 6, 0.8, 10); }
+    g.fillStyle = rgba(C.wood[3], 0.6); g.fillRect(0, gy + 4, w, 1.4);
+    // beach life between the stops: umbrellas and towels, sandcastles,
+    // surfboards, a panga pulled up on the sand; boats and pelicans on the bay
+    for (let x = 300; x < w - 260; x += 170 + r() * 90) ell(g, x, 144 + r() * 14, 5 + r() * 4, 1.6, rgba('#FFFFFF', 0.9)), line(g, [[x, 142], [x, 130 + r() * 4]], '#FFFFFF', 0.8);
+    for (let k = 0; k < 14; k++) { const bx = r() * w, by = 40 + r() * 50; line(g, [[bx - 5, by], [bx, by - 2.4], [bx + 5, by]], rgba(C.ink, 0.6), 0.9); }
+    const busy = (x) => [0, 1, 2, 3, 4, 5, 6].some((k) => Math.abs(x - S(k)) < 110);
+    let kind = 0;
+    for (let x = 120; x < w - 60; x += 110 + r() * 70) {
+      if (busy(x)) continue;
+      const k = kind++ % 4, by = 190 + r() * 6;
+      if (k === 0) { line(g, [[x, by + 6], [x + 3, by - 30]], '#E3E8EC', 1.2); g.beginPath(); g.moveTo(x - 20, by - 24); g.quadraticCurveTo(x + 3, by - 44, x + 26, by - 24); g.closePath(); g.fillStyle = ['#F0478F', '#22AEC4', '#FFD65A', '#F28C28'][Math.floor(r() * 4)]; g.fill(); box(g, x - 16, by + 2, 26, 8, 1, ['#FFFFFF', '#F28C28', '#3B9E58'][Math.floor(r() * 3)]); }
+      else if (k === 1) { box(g, x - 10, by - 4, 20, 10, 1, C.sand[2]); box(g, x - 6, by - 12, 12, 8, 1, C.sand[1]); for (const tx3 of [x - 10, x - 2, x + 6]) box(g, tx3, by - 7, 4, 3, 0.5, C.sand[2]); line(g, [[x, by - 12], [x, by - 22]], C.wood[3], 0.8); poly(g, [[x, by - 22], [x + 7, by - 20], [x, by - 18]], '#E0352B'); }
+      else if (k === 2) { for (const [dx, col] of [[-6, '#22AEC4'], [4, '#F28C28']]) { g.save(); g.translate(x + dx, by + 4); g.rotate(dx * 0.02); ell(g, 0, -16, 4, 18, col); line(g, [[0, -32], [0, 0]], rgba('#FFFFFF', 0.7), 0.8); g.restore(); } }
+      else panga(g, x - 30, by - 4, C.stripe);
+    }
+    // the beach path: a palm and a hand-painted arrow to the café
+    palm(g, S(0) - 60, gy - 8, 60, 1); arrowSign(g, S(0) + 40, gy - 34, 'CAFE', '#F0478F', '#FFF4D6', 1); line(g, [[S(0) + 34, gy - 28], [S(0) + 34, gy - 6]], C.wood[2], 2);
+    // the hammocks, slung between two palms
+    const hx = S(1);
+    palm(g, hx - 40, gy - 8, 64, -1); palm(g, hx + 40, gy - 8, 64, 1);
+    g.beginPath(); g.moveTo(hx - 36, gy - 50); g.quadraticCurveTo(hx, gy - 14, hx + 36, gy - 50); g.quadraticCurveTo(hx, gy - 24, hx - 36, gy - 50); g.closePath(); g.fillStyle = lin(g, hx - 36, 0, hx + 36, 0, ['#F0478F', '#FFD65A', '#22AEC4', '#F28C28']); g.fill();
+    for (const [x0, x1] of [[hx - 36, hx - 30], [hx + 30, hx + 36]]) line(g, [[x0, gy - 50], [x1, gy - 46]], '#8F6638', 0.8);
+    // the coconut stand: a cart under an umbrella
+    const kx = S(2);
+    line(g, [[kx, gy - 6], [kx, gy - 56]], '#E3E8EC', 1.4);
+    g.beginPath(); g.moveTo(kx - 30, gy - 50); g.quadraticCurveTo(kx, gy - 70, kx + 30, gy - 50); g.closePath(); g.fillStyle = '#E0352B'; g.fill(); for (let k = -24; k < 30; k += 12) { g.beginPath(); g.moveTo(kx, gy - 62); g.lineTo(kx + k, gy - 51); g.lineTo(kx + k + 6, gy - 51); g.closePath(); g.fillStyle = '#FFFFFF'; g.fill(); }
+    box(g, kx - 22, gy - 26, 44, 18, 2, lin(g, 0, gy - 26, 0, gy - 8, ['#4F92DD', '#2E66AD'])); ell(g, kx - 14, gy - 4, 4, 4, '#3A4048'); ell(g, kx + 14, gy - 4, 4, 4, '#3A4048');
+    for (let k = 0; k < 7; k++) ell(g, kx - 16 + (k % 4) * 10 + (k > 3 ? 5 : 0), gy - 30 - (k > 3 ? 7 : 0), 5, 4.4, lin(g, 0, gy - 40, 0, gy - 26, ['#8ED04A', '#3B8E38']));
+    // the tide pools: dark rocks at the water's edge, a starfish and a crab
+    const tx = S(3);
+    for (const [dx, rw] of [[-46, 18], [-16, 26], [22, 20], [50, 14]]) { ell(g, tx + dx, gy - 26, rw, 9, lin(g, 0, gy - 34, 0, gy - 18, [C.rock[3], C.rock[5]])); ell(g, tx + dx - 2, gy - 28, rw * 0.5, 3, rgba(C.sea[1], 0.85)); }
+    for (let k = 0; k < 5; k++) { const t = k / 5 * TAU - Math.PI / 2; line(g, [[tx - 18, gy - 22], [tx - 18 + Math.cos(t) * 5, gy - 22 + Math.sin(t) * 5]], '#F28C28', 2.2); }
+    ell(g, tx + 26, gy - 16, 4, 2.6, '#E0352B'); for (const s2 of [-1, 1]) { line(g, [[tx + 26 + s2 * 3, gy - 17], [tx + 26 + s2 * 6, gy - 20]], '#E0352B', 1); line(g, [[tx + 26 + s2 * 3, gy - 15], [tx + 26 + s2 * 6, gy - 13]], '#E0352B', 0.8); }
+    // the volleyball net
+    const vx = S(4);
+    for (const px of [vx - 44, vx + 44]) line(g, [[px, gy - 6], [px, gy - 56]], '#E3E8EC', 2);
+    g.fillStyle = rgba('#FFFFFF', 0.55); for (let y = gy - 54; y < gy - 34; y += 4) g.fillRect(vx - 44, y, 88, 0.6); for (let x = vx - 44; x < vx + 44; x += 4) g.fillRect(x, gy - 54, 0.6, 20);
+    g.fillStyle = '#FFFFFF'; g.fillRect(vx - 44, gy - 56, 88, 2.4);
+    ell(g, vx + 22, gy - 74, 5, 5, '#FFFFFF'); line(g, [[vx + 18, gy - 74], [vx + 26, gy - 74]], '#22AEC4', 1); line(g, [[vx + 22, gy - 78], [vx + 22, gy - 70]], '#FFD65A', 1);
+    // the shady palms, with beach chairs and towels
+    const px2 = S(5);
+    for (const [dx, hh, lean] of [[-50, 70, -1], [-14, 82, 1], [30, 64, 1], [62, 74, -1]]) palm(g, px2 + dx, gy - 8, hh, lean);
+    for (const [dx, col] of [[-34, '#22AEC4'], [10, '#F0478F']]) { poly(g, [[px2 + dx, gy - 8], [px2 + dx + 22, gy - 8], [px2 + dx + 26, gy - 22], [px2 + dx + 4, gy - 12]], col); line(g, [[px2 + dx + 2, gy - 8], [px2 + dx + 2, gy - 2]], C.wood[2], 1.2); line(g, [[px2 + dx + 22, gy - 8], [px2 + dx + 22, gy - 2]], C.wood[2], 1.2); }
+    // Maria's café: a palapa roof over a counter, a menu board, tables and Maria herself
+    const mx = S(6);
+    for (const pp of [mx - 70, mx + 70]) line(g, [[pp, gy - 6], [pp, gy - 84]], C.wood[3], 3);
+    poly(g, [[mx - 96, gy - 80], [mx + 96, gy - 80], [mx + 40, gy - 116], [mx - 40, gy - 116]], lin(g, 0, gy - 116, 0, gy - 80, [C.straw[1], C.straw[2], C.straw[3]]));
+    for (let k = mx - 94; k < mx + 94; k += 3) line(g, [[k, gy - 81], [k + (r() - 0.5) * 3, gy - 74 - r() * 4]], C.straw[3], 0.9);
+    box(g, mx - 34, gy - 98, 68, 14, 2, '#F0478F'); letters(g, 'CAFE MARIA', mx, gy - 94.6, '#FFF4D6', 1.2);
+    g.save(); g.translate(mx - 42, gy - 62); g.scale(0.62, 0.62); drawMaria(g); g.restore();
+    box(g, mx - 60, gy - 40, 76, 32, 2, lin(g, 0, gy - 40, 0, gy - 8, ['#2FB3A3', '#1E8579'])); box(g, mx - 64, gy - 44, 84, 6, 1, C.wood[1]);
+    for (let k = 0; k < 6; k++) ell(g, mx - 54 + k * 12, gy - 24, 2.4, 2.4, ['#F0478F', '#FFD65A', '#22AEC4'][k % 3]);
+    for (let k = 0; k < 4; k++) { box(g, mx - 52 + k * 7, gy - 52, 5, 8, 1, rgba('#E9F7FC', 0.75)); g.fillStyle = ['#D63A5E', '#FFFDF6', '#FFC25A', '#A7D84A'][k]; g.fillRect(mx - 51 + k * 7, gy - 49, 3, 4.6); }
+    box(g, mx + 26, gy - 58, 26, 34, 2, '#22272C'); for (let k = 0; k < 6; k++) line(g, [[mx + 30, gy - 52 + k * 5], [mx + 46 - (k % 3) * 4, gy - 52 + k * 5]], rgba('#FFFFFF', 0.8), 0.8); line(g, [[mx + 30, gy - 24], [mx + 28, gy - 6]], C.wood[2], 1.6); line(g, [[mx + 48, gy - 24], [mx + 50, gy - 6]], C.wood[2], 1.6);
+    for (const tx2 of [mx + 92, mx + 150]) { line(g, [[tx2, gy - 6], [tx2, gy - 44]], '#E3E8EC', 1.2); g.beginPath(); g.moveTo(tx2 - 24, gy - 38); g.quadraticCurveTo(tx2, gy - 54, tx2 + 24, gy - 38); g.closePath(); g.fillStyle = tx2 > mx + 100 ? '#22AEC4' : '#FFD65A'; g.fill(); box(g, tx2 - 12, gy - 20, 24, 3, 1, '#FFFFFF'); line(g, [[tx2, gy - 17], [tx2, gy - 6]], '#FFFFFF', 1.2); }
+    palm(g, mx + 200, gy - 8, 76, -1);
+    return c;
+  }
+
+  // the menu as it's printed: drinks, then plates
+  const DRINKS = ['horchata', 'jamaica', 'coco', 'limonada', 'cafe', 'mango', 'sandia'];
+  const PLATES = ['tacos', 'ceviche', 'chilaquiles', 'zarandeado', 'conchas', 'flan', 'elote', 'quesadilla'];
   function treat(id, scale = 1) { const [c, g] = canvas(64 * scale, 56 * scale); g.scale(scale, scale); MENU_ART[id](g); return c; }
 
   // ---- deliveries with Tío ----------------------------------------------
@@ -1002,7 +1083,7 @@ const Art = (() => {
   // Shop-sign letters, 5 pixels tall, one pixel apart. Most are 3 wide; N is 4 and M is 5.
   const GLYPH = { A: '010101111101101', C: '011100100100011', D: '110101101101110', E: '111100110100111', H: '101101111101101',
     I: '111010010010111', L: '100100100100111', N: '10011101101110011001', O: '010101101101010', P: '110101110100100', R: '110101110101101', T: '111010010010010',
-    M: '1000111011101011000110001', S: '011100010001110', Y: '101101010010010', J: '001001001101010', U: '101101101101111', G: '011100101101011' };
+    M: '1000111011101011000110001', F: '111100110100100', ' ': '000000000000000', S: '011100010001110', Y: '101101010010010', J: '001001001101010', U: '101101101101111', G: '011100101101011' };
   function letters(g, text, cx, y, color, size = 1) {
     const cols = (ch) => GLYPH[ch].length / 5, w = ([...text].reduce((a, ch) => a + cols(ch) + 1, 0) - 1) * size;
     let x = Math.round(cx - w / 2);
@@ -1279,5 +1360,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, maria, treat, MENU, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, maria, treat, DRINKS, PLATES, cafeLane, CAFE, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();

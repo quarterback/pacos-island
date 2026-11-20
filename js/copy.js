@@ -15,7 +15,7 @@ const Copy = {
     'Rarer answers earn more points, up to 108,000.',
     'Your marks: 🐚 common, 🦀 uncommon, 🐢 rare, 🦎 a deep cut, 🥥 island time, 🌊 no answer.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
-    'Vacation mode has no clock. Maria brings a drink or a plate from her café for every right answer.',
+    "Vacation mode has no clock. After every right answer, pick a drink or a plate from Maria's menu.",
   ],
   tripLegend: 'Choose a trip',
   tripOpens: (n) => `Opens at ${n.toLocaleString('en-US')} points`,
@@ -105,11 +105,12 @@ const Copy = {
     atv: (s) => `Paco drove you to ${s}`,
     deliver: (s) => `Tío wheeled you to ${s}`,
     market: (s) => `Paco walked you to ${s}`,
+    cafe: (s) => `Paco strolled with you to ${s}`,
     fly: (s) => `Esmeralda flew you to ${s}`,
     dive: (s) => `Paco took you down ${s}`,
   },
   nextStop: (name, n) => `${n.toLocaleString('en-US')} ${n === 1 ? 'point' : 'points'} short of ${name}`,
-  madeIt: { boat: 'Paco got you all the way to his island', walk: 'Paco walked you all the way to Cascada Ixtalita', atv: 'Paco drove you all the way to the upper waterfall', deliver: 'Tío wheeled you all the way to the michelada bar', market: 'Paco walked you all the way to the church steps', fly: "Esmeralda flew you all the way to her nest" },
+  madeIt: { boat: 'Paco got you all the way to his island', walk: 'Paco walked you all the way to Cascada Ixtalita', atv: 'Paco drove you all the way to the upper waterfall', deliver: 'Tío wheeled you all the way to the michelada bar', market: 'Paco walked you all the way to the church steps', fly: "Esmeralda flew you all the way to her nest", cafe: "Paco strolled with you all the way to Maria's café" },
   lifetime: (all) => `${all.toLocaleString('en-US')} ${all === 1 ? 'point' : 'points'}`,
   sheetHead: 'Today',
   rarityTotal: 'Rarity',
@@ -121,7 +122,7 @@ const Copy = {
   hudAt: (s) => `At ${s}`,
   unlock: (n, trip) => `${n.toLocaleString('en-US')} more ${n === 1 ? 'point' : 'points'} to open the ${trip}`,
   unlocked: (trip) => `You opened the ${trip}. Pick it on tomorrow's trip.`,
-  tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', deliver: 'deliveries', market: 'night market', fly: 'flight', dive: 'dive' },
+  tripShort: { boat: 'boat trip', walk: 'walk', atv: 'ATV ride', deliver: 'deliveries', market: 'night market', fly: 'flight', dive: 'dive', cafe: 'beach stroll' },
   copyResult: 'Copy my result',
   // the benchmark: a field of simulated players on the same questions
   beat: (n) => `Better than ${n}% of simulated players`,
@@ -155,7 +156,7 @@ const Copy = {
     mario: "Mario's mode",
     marioNote: '40 seconds a question, half points',
     vacation: 'Vacation mode',
-    vacationNote: 'No clock, easier questions',
+    vacationNote: 'Play the game at your own pace',
   },
   // Vacation mode: its own daily set with no clock, the easiest questions and
   // points for rarity alone. Maria, who runs the café by the beach, hosts it
@@ -164,10 +165,15 @@ const Copy = {
   vacation: {
     mark: '🌺',
     tag: '🌺 Vacation mode',
-    intro: 'Maria runs the café by the beach. Have a drink and take your time. Points come only from how rare your answer is.',
+    intro: 'Maria runs the café by the beach. Points come only from how rare your answer is.',
     progress: (i) => `🌺 Question ${i} of 7`,
     maria: 'Maria',
-    // Maria's lines when she brings a treat, in turn
+    // the menu after a right answer: pick anything and Maria brings it
+    menuHead: 'Café Maria',
+    menuSay: "Everything's on the house. What'll it be?",
+    drinks: 'Drinks',
+    plates: 'Plates',
+    // Maria's lines when she brings what you picked, in turn
     serve: [
       'Sit back. The next question can wait.',
       'Take all the time you need.',
@@ -182,7 +188,7 @@ const Copy = {
       'No worries. Have another sip.',
       'Even my regulars miss that one.',
       "Skip it. The view's the same either way.",
-      "Next one's yours. I can tell.",
+      'The next one has your name on it.',
       'That one can wait for your next vacation.',
       'Questions come and go. The beach stays.',
     ],
