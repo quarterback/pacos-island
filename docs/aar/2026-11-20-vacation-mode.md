@@ -25,7 +25,22 @@ The owner wanted a way to play for people who hate timers and speed bonuses, wit
 - Paco's daily mode still shows the clock and the rarity-and-speed result, and Mario's endless round on the delivery trip still ends normally.
 - `plain-language-default check`, `prosekeep check` and `red-pen-editor inspect` found nothing in the new copy.
 
-## 4. Gaps
+## 4. Follow-up: Maria's own lane
+
+The owner played it on a phone and said Maria should live in the main picture, with Vacation mode taking her own lane like every other trip, not appearing as a big portrait in the panel below.
+
+- **The lane:** a new trip, "Stroll to Maria's café" (`cafe`, flagged `vacation`), is the only trip Vacation mode takes and never shows for the other levels. `Art.cafeLane` draws a beach boardwalk with the bay behind it: the beach path with a CAFE arrow, a hammock between palms, a coconut stand, tide pools with a starfish and a crab, a volleyball net, shady palms with beach chairs, and Maria's palapa café with a CAFE MARIA sign, a menu board, tables and Maria at the counter. Umbrellas, sandcastles, surfboards and pangas fill the sand between stops, with sailboats and pelicans on the bay. Stops are closer together than other trips (216,000 points to the café), since vacation days score lower.
+- **Maria in the scene (`Scene.host`):** after a right answer she steps onto the boardwalk beside Paco, facing him, with the treat on her tray. On Stumped she stands beside him with an empty tray and speaks from the panel without a portrait. She leaves when the next question starts.
+- **The panel:** the treat screen keeps the treat drawn large, its name, its English words and Maria's line; the portrait is gone.
+- Vacation days saved before the lane existed now use it. The pixel font gained F and a space. Headings read "Paco strolled with you to the hammocks."
+
+## 5. Checks for the follow-up
+
+- `node tools/check.mjs`: 1,075 questions, 310 openers, 0 problems.
+- A full vacation day at phone size: the café lane, Maria beside Paco with each treat and on Stumped, no page errors. Paco's and Mario's modes and endless mode list the seven usual trips and not the café lane.
+
+## 6. Gaps
+
 
 - Maria's portrait and the treats were reviewed at phone size only.
 - Lifetime points from vacation days open trips like any other day, though vacation days score lower.

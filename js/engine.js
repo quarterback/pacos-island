@@ -265,6 +265,11 @@ const Engine = (() => {
       [0, 'the Ixtaluz lighthouse'], [pt(9000), 'Peñas Cantoras'], [pt(18000), 'Boca Tamarilla'], [pt(27000), 'Playa Ondarena'], [pt(36000), 'Pueblo Tilmeca'], [pt(45000), "Paco's Island"], [pt(54000), "Esmeralda's nest"]] },
     dive: { id: 'dive', name: 'Dive into Bahía Ixtaluz', opens: pt(450000), marks: [
       [12, 'Reef at Peñas Cantoras'], [41, 'The old ferry wreck'], [60, 'Deep reef'], [300, 'Canyon wall'], [1400, 'Canyon floor']] },
+    // Vacation mode's own lane, and the only trip it takes: a stroll down the
+    // beach to Maria's café. Vacation points are rarity alone, so the stops
+    // sit closer together than on the other trips.
+    cafe: { id: 'cafe', name: "Stroll to Maria's café", opens: 0, vacation: true, stops: [
+      [0, 'the beach path'], [pt(6000), 'the hammocks'], [pt(12000), 'the coconut stand'], [pt(18000), 'the tide pools'], [pt(24000), 'the volleyball net'], [pt(30000), 'the shady palms'], [pt(40000), "Maria's café"]] },
   };
   const FULL_DAY = pt(66000);
   const depth = (s) => Math.round(1400 * Math.pow(Math.min(s, FULL_DAY) / FULL_DAY, 2));
@@ -275,8 +280,9 @@ const Engine = (() => {
     const i = stops.indexOf(at), next = stops[i + 1] || null;
     return { label: at[1], index: i, next: next ? { label: next[1], need: next[0] - score } : null };
   }
-  const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
-  const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
+  // Trips that open with lifetime points; the café lane belongs to vacation mode alone.
+  const opened = (lifetime) => Object.values(TRIPS).filter((t) => !t.vacation && lifetime >= t.opens).map((t) => t.id);
+  const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => !t.vacation && lifetime < t.opens) || null;
 
   return { dayNumber, nextReset, POINTS, pt, field, beats, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, vacationScore, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();

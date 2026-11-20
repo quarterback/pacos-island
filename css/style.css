@@ -156,7 +156,6 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .treat-answer { margin: 0 0 18px; font-weight: 600; font-size: 20px; }
 .treat-pts { margin-left: 6px; font: 700 22px/1 var(--show); color: var(--sun); font-variant-numeric: tabular-nums; }
 .treat-art { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin: 0 0 14px; }
-.treat-maria { flex: none; width: 104px; }
 .treat-item { flex: none; width: 176px; }
 .treat-art canvas { display: block; width: 100%; height: auto; }
 .treat-head { margin: 0 0 4px; font: 700 30px/1.05 var(--show); color: var(--sun); text-shadow: 2px 2px 0 var(--ink); text-align: center; }

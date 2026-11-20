@@ -35,6 +35,9 @@
   const newRecord = (qids, trip, level) => ({ trip, level, qids, answers: [], started: {}, done: false, counted: false });
   const levelOf = (rec) => (rec && (rec.level === 'mario' || rec.level === 'vacation') ? rec.level : 'paco');
   const isVacation = (rec) => levelOf(rec) === 'vacation';
+  // Vacation mode always strolls to Maria's café; the other levels take the
+  // trip the player picked, never the café lane.
+  const tripFor = () => (state.level === 'vacation' ? 'cafe' : state.trip === 'cafe' ? 'boat' : state.trip);
   const secondsFor = (rec) => Engine.LEVELS[levelOf(rec)].seconds;
   const dayKey = () => (state.level === 'mario' ? `${day}m` : state.level === 'vacation' ? `${day}v` : String(day));
   function tidy() {
@@ -55,6 +58,8 @@
     }
   }
   tidy();
+  // Vacation days started before the café lane existed took the picked trip
+  for (const r of [...Object.values(state.days), ...Object.values(state.endless.rounds)]) if (r.level === 'vacation') r.trip = 'cafe';
   // Saves from when the easier level was briefly called Carlos's mode
   if (state.level === 'carlos') state.level = 'mario';
   for (const [k, r] of Object.entries(state.days)) { if (r.level === 'carlos') r.level = 'mario'; if (k.endsWith('c')) { state.days[k.slice(0, -1) + 'm'] = r; delete state.days[k]; } }
@@ -67,8 +72,8 @@
   const roundDone = () => !roundRec() || roundRec().done;
   function today() {
     let rec;
-    if (mode === 'endless') { if (!roundRec()) newRound(state.trip); rec = roundRec(); }
-    else rec = (state.days[dayKey()] ||= newRecord(Prompts.forDay(day, state.level).map((q) => q.id), state.trip, state.level));
+    if (mode === 'endless') { if (!roundRec()) newRound(tripFor()); rec = roundRec(); }
+    else rec = (state.days[dayKey()] ||= newRecord(Prompts.forDay(day, state.level).map((q) => q.id), tripFor(), state.level));
     questions = rec.qids.map((id) => Prompts.get(id));
     return rec;
   }
@@ -154,14 +159,15 @@
     $('modeEndless').textContent = Copy.endless.name; $('modeEndlessNote').textContent = Copy.endless.note;
     $('mode-daily').checked = !endless; $('mode-endless').checked = endless;
     $('leaveBtn').hidden = !picking; $('leaveBtn').textContent = Copy.endless.leave;
-    const open = endless ? Object.keys(Engine.TRIPS) : Engine.opened(state.lifetime);
+    const vacationLane = state.level === 'vacation';
+    const open = vacationLane ? ['cafe'] : endless ? Object.values(Engine.TRIPS).filter((t) => !t.vacation).map((t) => t.id) : Engine.opened(state.lifetime);
     const box = $('trips'); box.querySelectorAll('.trip').forEach((n) => n.remove());
-    for (const t of Object.values(Engine.TRIPS)) {
+    for (const t of Object.values(Engine.TRIPS).filter((x) => !!x.vacation === vacationLane)) {
       const row = document.createElement('div'); row.className = 'trip' + (open.includes(t.id) ? '' : ' locked');
       const inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'trip'; inp.id = 'trip-' + t.id; inp.value = t.id;
       inp.disabled = !open.includes(t.id) || !!(rec && rec.answers.length);
-      inp.checked = (rec ? rec.trip : state.trip) === t.id;
-      inp.addEventListener('change', () => { state.trip = t.id; save(); Scene.setTrip(t.id); Scene.score(0, true); });
+      inp.checked = (rec ? rec.trip : tripFor()) === t.id;
+      inp.addEventListener('change', () => { if (!t.vacation) state.trip = t.id; save(); Scene.setTrip(t.id); Scene.score(0, true); });
       const img = document.createElement('img'); img.alt = ''; img.src = Art.icon(t.id);
       const lab = document.createElement('label'); lab.htmlFor = inp.id; lab.textContent = t.name;
       row.append(inp, img, lab);
@@ -171,7 +177,7 @@
     $('startBtn').textContent = endless ? (rec && rec.answers.length ? Copy.endless.resume(E().round) : Copy.endless.start(nextN))
       : rec && rec.done ? Copy.seeResults : rec && rec.answers.length ? Copy.resume : Copy.start;
     $('hud').hidden = true;
-    Scene.setTrip(rec ? rec.trip : state.trip); Scene.score(rec ? dayScore(rec) : 0, true);
+    Scene.host(null); Scene.setTrip(rec ? rec.trip : tripFor()); Scene.score(rec ? dayScore(rec) : 0, true);
     swap('title');
   }
   function setLevel(lv) {
@@ -185,10 +191,10 @@
   musicBtn.setAttribute('aria-pressed', String(Music.isOn()));
   musicBtn.addEventListener('click', () => { Music.toggle(); musicBtn.setAttribute('aria-pressed', String(Music.isOn())); });
   $('startBtn').addEventListener('click', () => {
-    if (mode === 'endless' && roundDone()) newRound(state.trip);
+    if (mode === 'endless' && roundDone()) newRound(tripFor());
     picking = false;
     const rec = today();
-    if (!rec.answers.length) { rec.trip = state.trip; save(); }
+    if (!rec.answers.length) { rec.trip = tripFor(); save(); }
     if (rec.done) showEnd(); else showQuestion();
   });
 
@@ -199,7 +205,7 @@
   // Play another round: keep the trip just played.
   $('againBtn').addEventListener('click', () => {
     const trip = today().trip; mode = 'endless'; state.mode = 'endless'; picking = false;
-    state.trip = trip; newRound(trip); showQuestion();
+    if (trip !== 'cafe') state.trip = trip; newRound(trip); showQuestion();
   });
   // Home: back to the start screen from the end of a set.
   $('homeBtn').addEventListener('click', () => { picking = false; showTitle(); });
@@ -217,7 +223,7 @@
     const rec = today(), i = rec.answers.length;
     if (i >= 7) return finish();
     const q = questions[i]; current = { q, i };
-    swap('play'); tripBar(rec); squares(rec, i);
+    swap('play'); tripBar(rec); squares(rec, i); Scene.host(null);
     $('qCount').textContent = mode === 'endless' ? Copy.endless.progress(E().round, i + 1) : isVacation(rec) ? Copy.vacation.progress(i + 1) : Copy.progress(i + 1);
     $('qText').textContent = q.text;
     $('answerLabel').textContent = Copy.answerLabel;
@@ -273,7 +279,8 @@
     $('cameoParrot').textContent = Copy.stumpedParrot[(n - 1) % Copy.stumpedParrot.length];
     $('cameoParrotName').textContent = Copy.parrot;
     if (!$('cameoParrotArt').firstChild) $('cameoParrotArt').append(Art.parrot(3));
-    $('cameoMarioArt').replaceChildren(vac ? Art.maria(2) : Art.mario(3));
+    $('cameoMarioArt').replaceChildren(vac ? '' : Art.mario(3)); $('cameoMarioArt').hidden = vac;
+    if (vac) Scene.host(true);
     $('cameo').hidden = false;
     after(rec);
   });
@@ -321,7 +328,7 @@
     swap('treat'); tripBar(rec);
     $('treatCount').textContent = Copy.vacation.progress(rec.answers.length);
     $('treatAnswer').textContent = typo ? Copy.typo(name) : name; $('treatPts').textContent = Copy.points(pts);
-    $('treatMaria').replaceChildren(Art.maria(3)); $('treatItem').replaceChildren(Art.treat(id, 4));
+    $('treatItem').replaceChildren(Art.treat(id, 4)); Scene.host(id);
     $('treatHead').textContent = dish; $('treatNote').textContent = about;
     $('treatWho').textContent = Copy.vacation.maria; $('treatSay').textContent = Copy.vacation.serve[served % Copy.vacation.serve.length];
     $('treatBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
@@ -338,6 +345,7 @@
   }
   function showEnd() {
     const rec = today(), score = dayScore(rec), r = Engine.reached(rec.trip, score);
+    Scene.host(null);
     swap('end'); tripBar(rec);
     // Mario takes the trip in his mode
     const who = (line) => (levelOf(rec) === 'mario' ? line.replace(/^Paco/, 'Mario') : line);

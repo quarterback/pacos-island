@@ -5,11 +5,16 @@
    strip from art.js scrolls behind Paco. Score drives his position: on the
    boat, the walk and the ATV it moves him along the stops, on the dive it
    takes him down. If WebGL is unavailable the scene stays hidden and the game still
-   works. */
+   works.
+
+   In vacation mode Paco strolls the beach to Maria's café, and Maria steps
+   into the scene beside him when she brings a treat or has a word for him
+   (host). */
 'use strict';
 const Scene = (() => {
   const W = 480, H = 240, RES = 3;
   let app = null, ready = false, world, bg, rider, frames = [], dots = [];
+  let host = null, hosting = null; // Maria beside Paco, and what she's carrying
   let trip = 'boat', target = 0, current = 0, lastFrameAt = 0, frame = 0;
   const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const strips = {};
@@ -36,20 +41,21 @@ const Scene = (() => {
     if (t === trip && !force && bg) return;
     trip = t;
     world.removeChildren();
-    const STRIP = { boat: Art.coast, walk: Art.town, atv: Art.hill, deliver: Art.deliveries, market: Art.market, fly: Art.flight, dive: Art.deep };
-    const RIDER = { boat: Art.boat, walk: Art.walker, atv: Art.atv, deliver: Art.tio, market: Art.walker, fly: Art.flier, dive: Art.diver };
+    const STRIP = { boat: Art.coast, walk: Art.town, atv: Art.hill, deliver: Art.deliveries, market: Art.market, fly: Art.flight, dive: Art.deep, cafe: Art.cafeLane };
+    const RIDER = { boat: Art.boat, walk: Art.walker, atv: Art.atv, deliver: Art.tio, market: Art.walker, fly: Art.flier, dive: Art.diver, cafe: Art.walker };
     if (!strips[t]) strips[t] = tex(STRIP[t]());
     bg = new PIXI.Sprite(strips[t]); world.addChild(bg);
     frames = [0, 1].map((f) => tex(RIDER[t](f)));
     dots = Array.from({ length: t === 'boat' || t === 'dive' ? 14 : 0 }, () => { const s = new PIXI.Sprite(dot()); s.alpha = 0; world.addChild(s); return { s, life: 0 }; });
     rider = new PIXI.Sprite(frames[0]); world.addChild(rider);
+    host = null; if (hosting) showHost(hosting.item);
     current = target; place(performance.now());
   }
 
   // where Paco is for a given score, in strip pixels
   function spot(score) {
     if (trip === 'dive') return { x: 160, y: Art.DEEP.yForScore(score) };
-    const stops = Engine.TRIPS[trip].stops, geo = { boat: Art.COAST, walk: Art.TOWN, atv: Art.HILL, deliver: Art.DELIVER, market: Art.MARKET, fly: Art.FLIGHT }[trip];
+    const stops = Engine.TRIPS[trip].stops, geo = { boat: Art.COAST, walk: Art.TOWN, atv: Art.HILL, deliver: Art.DELIVER, market: Art.MARKET, fly: Art.FLIGHT, cafe: Art.CAFE }[trip];
     let i = 0; while (i < stops.length - 1 && score >= stops[i + 1][0]) i++;
     const a = stops[i], b = stops[i + 1];
     const f = b ? (score - a[0]) / (b[0] - a[0]) : 0;
@@ -64,9 +70,11 @@ const Scene = (() => {
     if (trip === 'boat') { rider.x = Math.round(p.x - 66); rider.y = Math.round(p.y - 49 + bob); }
     else if (trip === 'atv') { rider.x = Math.round(p.x - 59); rider.y = Math.round(p.y - 73); }
     else if (trip === 'deliver') { rider.x = Math.round(p.x - 58); rider.y = Math.round(p.y - 88); }
-    else if (trip === 'walk' || trip === 'market') { rider.x = Math.round(p.x - 40); rider.y = Math.round(p.y - 43); }
+    else if (trip === 'walk' || trip === 'market' || trip === 'cafe') { rider.x = Math.round(p.x - 40); rider.y = Math.round(p.y - 43); }
     else if (trip === 'fly') { rider.x = Math.round(p.x - 44); rider.y = Math.round(p.y - 28 + (reduced ? 0 : Math.sin(now / 300) * 3)); }
     else { rider.x = Math.round(p.x - 43 + (reduced ? 0 : Math.sin(now / 900) * 10)); rider.y = Math.round(p.y - 24 + bob); }
+    // Maria stands just ahead of Paco, facing him, her tray between them
+    if (host) { host.x = rider.x + 74; host.y = rider.y + 44 - 61; }
     // camera
     const sw = bg.texture.width, sh = bg.texture.height;
     if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 100))); }
@@ -95,7 +103,19 @@ const Scene = (() => {
   }
 
   function score(s, instant) { target = s; if (instant || reduced) current = s; }
+  // Maria in the scene: with a treat on her tray (a menu id), with an empty
+  // tray (true), or gone (null).
+  function showHost(item) {
+    hosting = item ? { item } : null;
+    if (!ready) return;
+    if (host) { world.removeChild(host); host = null; }
+    if (!item) return;
+    host = new PIXI.Container();
+    const m = new PIXI.Sprite(tex(Art.maria(0.7))); m.scale.x = -1; m.x = m.width; host.addChild(m);
+    if (typeof item === 'string') { const t = new PIXI.Sprite(tex(Art.treat(item, 0.56))); t.x = -18; t.y = 23 - t.height + 6; host.addChild(t); }
+    world.addChild(host); place(performance.now());
+  }
   // Redraw the rider, after Art.setRider switches between Paco and Mario.
   function refresh() { if (ready) setTrip(trip, true); }
-  return { init, setTrip, score, refresh, get ready() { return ready; } };
+  return { init, setTrip, score, refresh, host: showHost, get ready() { return ready; } };
 })();
