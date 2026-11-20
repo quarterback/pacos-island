@@ -155,7 +155,7 @@ const Copy = {
     mario: "Mario's mode",
     marioNote: '40 seconds a question, half points',
     vacation: 'Vacation mode',
-    vacationNote: 'No clock, easier questions',
+    vacationNote: 'Play the game at your own pace',
   },
   // Vacation mode: its own daily set with no clock, the easiest questions and
   // points for rarity alone. Maria, who runs the café by the beach, hosts it
