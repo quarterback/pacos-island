@@ -420,7 +420,8 @@
     // Island time points get their own line, so the lines still add up.
     $('islandRow').hidden = !island; $('islandLabel').textContent = Copy.islandTime; $('islandTotal').textContent = '+' + fmt(island);
     $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
-    $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
+    // vacation mode has no clock, so the time spent means nothing to the score
+    $('timeRow').hidden = vac; $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
     // the simulated players race the clock, so vacation days skip the comparison
     $('endBeat').textContent = vac ? '' : Copy.beat(beatOf(rec));
     $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
@@ -435,7 +436,8 @@
     $('againBtn').textContent = Copy.endless.again; $('changeTripBtn').textContent = Copy.endless.changeTrip; $('leaveEndBtn').textContent = Copy.endless.leave;
     $('changeTripBtn').hidden = !endless; $('leaveEndBtn').hidden = !endless;
     $('againBtn').classList.toggle('primary', endless); $('againBtn').classList.toggle('quiet', !endless);
-    $('share').hidden = endless;
+    // every round can be shared: the day's set, or an endless round
+    $('share').hidden = false;
     // A rough set in Paco's mode suggests Mario's easier one: under 12,000
     // points, or three or more questions with no answer in time (skipped
     // or answered in island time).
@@ -455,7 +457,8 @@
     const marks = rec.answers.map((a) => markOf(a, levelOf(rec))).join('');
     // each entry stays on one line when the key wraps
     $('markKey').innerHTML = ''; Copy.markKey(markAt(levelOf(rec)).map(fmt), vac).forEach((item, i) => { if (i) $('markKey').append(' · '); const sp = document.createElement('span'); sp.textContent = item; $('markKey').append(sp); });
-    $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), { mario: Copy.marioTag, vacation: Copy.vacation.tag }[levelOf(rec)] || '', marks, fmt(score));
+    const tag = [endless ? Copy.endless.shareTag(E().round) : '', { mario: Copy.marioTag, vacation: Copy.vacation.tag }[levelOf(rec)] || ''].filter(Boolean).join(', ');
+    $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), tag, marks, fmt(score));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();
