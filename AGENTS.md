@@ -32,6 +32,7 @@ Set by the owner, Ron Bronson. Agents follow these on every run.
 - The setting is fictional: Bahía Ixtaluz, Puerto Ixtaluz, its stops, Paco's Island and Cascada Ixtalita. Never name a real town, beach, bay, landmark or ship in the game. Before adding a place name, search it and drop it if it matches a real place.
 - Real world facts belong only in the answer lists, which are trivia about the real world.
 - Answer lists must be complete for their rule. Run `node tools/check.mjs` after editing `js/data.js` or `js/prompts.js`.
+- Before adding, removing or changing questions or answers, run `node tools/lock-days.mjs` on the unchanged code, so the daily sets already played (through tomorrow) stay as players saw them. Then make the change and run `python3 tools/rarity.py` if any answer was added or renamed.
 
 **Credits and records**
 - The game credit is "A game by Ron Bronson." Agents and AI tools get no credit in the game, the README or commit trailers.

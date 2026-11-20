@@ -19,7 +19,7 @@ const Prompts = (() => {
   const words = (s) => norm(s).split(' ').filter(Boolean);
 
   // ---- the combined team list, for questions across leagues ----
-  const LEAGUES = ['nba', 'nfl', 'mlb', 'nhl'];
+  const LEAGUES = ['nba', 'nfl', 'mlb', 'nhl', 'pwhl', 'nwsl', 'mlv'];
   const teamMap = new Map();
   for (const lg of LEAGUES) for (const it of D.UNIVERSES[lg].items) {
     const k = it.name;
@@ -33,7 +33,7 @@ const Prompts = (() => {
   // Subjects, so a set doesn't lean on one kind of knowledge.
   const SUBJECT = {
     countries: 'geo', capitals: 'geo', states: 'geo', statecaps: 'geo', mexico: 'geo',
-    nba: 'sports', nfl: 'sports', mlb: 'sports', nhl: 'sports', teams: 'sports',
+    nba: 'sports', nfl: 'sports', mlb: 'sports', nhl: 'sports', teams: 'sports', pwhl: 'sports', nwsl: 'sports', mlv: 'sports',
     elements: 'science', constellations: 'science',
     presidents: 'history', bible: 'books', greek: 'words', nato: 'words',
     nflcities: 'sports', nbacities: 'sports', mlbcities: 'sports', nhlcities: 'sports', worldcup: 'sports', ucl: 'sports', premier: 'sports', olympics: 'sports',
@@ -192,6 +192,7 @@ const Prompts = (() => {
     ['nfl.all', 'nfl', 'Name a National Football League (NFL) team.', () => true],
     ['mlb.all', 'mlb', 'Name a Major League Baseball (MLB) team.', () => true],
     ['nhl.all', 'nhl', 'Name a National Hockey League (NHL) team.', () => true],
+    ['nwsl.all', 'nwsl', "Name a National Women's Soccer League (NWSL) team.", () => true],
     ['nflcities.all', 'nflcities', 'Name a city with a National Football League (NFL) team.', () => true],
     ['nbacities.all', 'nbacities', 'Name a city with a National Basketball Association (NBA) team.', () => true],
     ['mlbcities.all', 'mlbcities', 'Name a city with a Major League Baseball (MLB) team.', () => true],
@@ -234,8 +235,8 @@ const Prompts = (() => {
     ['olympians.all', 'olympians', 'Name a Greek god.', () => true],
     ['bills.all', 'bills', 'Name a face on U.S. paper money.', () => true],
     ['teams.shared', 'teams', 'Name a team nickname used in two sports.', (n, it) => it.leagues.length > 1],
-    ['teams.birds', 'teams', 'Name a pro team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks'])],
-    ['teams.weather', 'teams', 'Name a pro team named after the weather or the sky.', byNames(['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars'])],
+    ['teams.birds', 'teams', 'Name a pro team named after a bird.', byNames(['Hawks', 'Pelicans', 'Cardinals', 'Falcons', 'Ravens', 'Eagles', 'Seahawks', 'Blue Jays', 'Orioles', 'Penguins', 'Ducks', 'Goldeneyes'])],
+    ['teams.weather', 'teams', 'Name a pro team named after the weather or the sky.', byNames(['Thunder', 'Heat', 'Suns', 'Hurricanes', 'Lightning', 'Stars', 'Frost', 'Supernovas'])],
     ['teams.california', 'teams', 'Name a pro team from California.', byNames(D.TEAM_PLACES.california)],
     ['teams.texas', 'teams', 'Name a pro team from Texas.', byNames(D.TEAM_PLACES.texas)],
     ['teams.florida', 'teams', 'Name a pro team from Florida.', byNames(D.TEAM_PLACES.florida)],
@@ -439,9 +440,18 @@ const Prompts = (() => {
   // Daily sets: a fixed run built ahead. Unseen questions come first, then
   // the ones seen longest ago. A list in yesterday's set sits out today if it
   // can.
+  // Days already played are locked in js/locked-days.js (tools/lock-days.mjs),
+  // so adding or changing questions never reshuffles a day someone has seen.
+  // Later days carry on from the last locked one.
+  const LOCKED = typeof LockedDays !== 'undefined' ? LockedDays : require('./locked-days.js');
   const buildDays = (level, seed) => {
     const days = [], lastDay = new Map();
-    for (let d = 0; d < 365; d++) {
+    for (const ids of LOCKED[level] || []) {
+      const set = ids.map((id) => pool.find((q) => q.id === id));
+      if (set.some((q) => !q)) break;
+      set.forEach((q) => lastDay.set(q.id, days.length)); days.push(set);
+    }
+    for (let d = days.length; d < 365; d++) {
       const last = new Set(days.length ? days[days.length - 1].flatMap((q) => [q.universe, 's:' + subjectOf(q)]) : []);
       const set = makeSet(seed + d * 7919, null, level, (id) => (lastDay.has(id) ? d - lastDay.get(id) : Infinity), last);
       days.push(set); set.forEach((q) => lastDay.set(q.id, d));
