@@ -228,6 +228,7 @@ const Copy = {
     resume: (round) => `Finish round ${round}`,
     progress: (round, i) => `Round ${round}, question ${i} of 7`,
     sheetHead: (round) => `Round ${round}`,
+    shareTag: (round) => `endless round ${round}`,
     passedMark: (mark, depth) => `You passed ${mark} at ${depth}.`,
     earlierHead: 'Earlier rounds',
     earlierRow: (round, trip) => `Round ${round}, ${trip}`,
