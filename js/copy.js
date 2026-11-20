@@ -15,7 +15,7 @@ const Copy = {
     'Rarer answers earn more points, up to 108,000.',
     'Your marks: 🐚 common, 🦀 uncommon, 🐢 rare, 🦎 a deep cut, 🥥 island time, 🌊 no answer.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
-    'Vacation mode has no clock. Maria brings a drink or a plate from her café for every right answer.',
+    "Vacation mode has no clock. After every right answer, pick a drink or a plate from Maria's menu.",
   ],
   tripLegend: 'Choose a trip',
   tripOpens: (n) => `Opens at ${n.toLocaleString('en-US')} points`,
@@ -168,7 +168,12 @@ const Copy = {
     intro: 'Maria runs the café by the beach. Have a drink and take your time. Points come only from how rare your answer is.',
     progress: (i) => `🌺 Question ${i} of 7`,
     maria: 'Maria',
-    // Maria's lines when she brings a treat, in turn
+    // the menu after a right answer: pick anything and Maria brings it
+    menuHead: 'Café María',
+    menuSay: "Everything's on the house. What'll it be?",
+    drinks: 'Drinks',
+    plates: 'Plates',
+    // Maria's lines when she brings what you picked, in turn
     serve: [
       'Sit back. The next question can wait.',
       'Take all the time you need.',

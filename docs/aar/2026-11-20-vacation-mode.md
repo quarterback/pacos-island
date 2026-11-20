@@ -39,7 +39,21 @@ The owner played it on a phone and said Maria should live in the main picture, w
 - `node tools/check.mjs`: 1,075 questions, 310 openers, 0 problems.
 - A full vacation day at phone size: the café lane, Maria beside Paco with each treat and on Stumped, no page errors. Paco's and Mario's modes and endless mode list the seven usual trips and not the café lane.
 
-## 6. Gaps
+## 6. Follow-up: ordering from the menu
+
+The owner asked for the menu itself to show after each right answer, like a real menu, so the player picks what they want, sees it happen in the picture and then moves on, with real screen transitions: a game within the game.
+
+- **The menu screen:** after a right answer in vacation mode, a cream paper card, Café María ("Everything's on the house. What'll it be?"), lists the seven drinks and eight plates under Drinks and Plates, each with its drawing, Spanish name and English words. Every row is a button.
+- **The delivery:** the pick is saved with the answer (`treat`). In the scene Maria walks in from the right, bobbing as she walks, and stops beside Paco with it on her tray. The next screen shows the pick drawn large, its name and her line.
+- **Transitions:** the menu and delivery screens slide up and fade in over 320 milliseconds; with reduced motion they appear at once, and Maria is already beside Paco.
+- The day-ordered treats from the first version are gone; players choose. Contrast on the card: ink on paper 14.4 to 1, the descriptions 8.9 to 1, and on the highlighted row 12.1 and 7.4 to 1.
+
+## 7. Checks for the menu
+
+- A full vacation day at phone size: seven questions with one Stumped, a different pick from the menu after each right answer, each pick saved, Maria's walk caught in frames at about 0.2, 0.7, 1.2 and 1.6 seconds. No page errors.
+
+## 8. Gaps
+
 
 
 - Maria's portrait and the treats were reviewed at phone size only.

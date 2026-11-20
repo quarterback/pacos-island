@@ -1024,8 +1024,9 @@ const Art = (() => {
     return c;
   }
 
-  // drinks and plates take turns
-  const MENU = ['horchata', 'tacos', 'jamaica', 'ceviche', 'coco', 'chilaquiles', 'limonada', 'zarandeado', 'cafe', 'conchas', 'mango', 'flan', 'sandia', 'elote', 'quesadilla'];
+  // the menu as it's printed: drinks, then plates
+  const DRINKS = ['horchata', 'jamaica', 'coco', 'limonada', 'cafe', 'mango', 'sandia'];
+  const PLATES = ['tacos', 'ceviche', 'chilaquiles', 'zarandeado', 'conchas', 'flan', 'elote', 'quesadilla'];
   function treat(id, scale = 1) { const [c, g] = canvas(64 * scale, 56 * scale); g.scale(scale, scale); MENU_ART[id](g); return c; }
 
   // ---- deliveries with Tío ----------------------------------------------
@@ -1359,5 +1360,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, maria, treat, MENU, cafeLane, CAFE, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, maria, treat, DRINKS, PLATES, cafeLane, CAFE, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();

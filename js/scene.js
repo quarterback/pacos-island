@@ -14,7 +14,7 @@
 const Scene = (() => {
   const W = 480, H = 240, RES = 3;
   let app = null, ready = false, world, bg, rider, frames = [], dots = [];
-  let host = null, hosting = null; // Maria beside Paco, and what she's carrying
+  let host = null, hosting = null, hostAt = 0; // Maria beside Paco, what she's carrying, and when she set off
   let trip = 'boat', target = 0, current = 0, lastFrameAt = 0, frame = 0;
   const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const strips = {};
@@ -73,8 +73,13 @@ const Scene = (() => {
     else if (trip === 'walk' || trip === 'market' || trip === 'cafe') { rider.x = Math.round(p.x - 40); rider.y = Math.round(p.y - 43); }
     else if (trip === 'fly') { rider.x = Math.round(p.x - 44); rider.y = Math.round(p.y - 28 + (reduced ? 0 : Math.sin(now / 300) * 3)); }
     else { rider.x = Math.round(p.x - 43 + (reduced ? 0 : Math.sin(now / 900) * 10)); rider.y = Math.round(p.y - 24 + bob); }
-    // Maria stands just ahead of Paco, facing him, her tray between them
-    if (host) { host.x = rider.x + 74; host.y = rider.y + 44 - 61; }
+    // Maria walks in from the right and stops just ahead of Paco, facing him,
+    // her tray between them
+    if (host) {
+      const k = reduced ? 1 : Math.min(1, (now - hostAt) / 1400), ease = 1 - Math.pow(1 - k, 2);
+      host.x = Math.round(rider.x + 74 + (1 - ease) * 220);
+      host.y = rider.y + 44 - 61 - (k < 1 ? Math.abs(Math.round(Math.sin(now / 110) * 1.5)) : 0);
+    }
     // camera
     const sw = bg.texture.width, sh = bg.texture.height;
     if (trip === 'dive') { world.x = -Math.round((sw - W) / 2); world.y = -Math.max(0, Math.min(sh - H, Math.round(p.y - 100))); }
@@ -110,7 +115,7 @@ const Scene = (() => {
     if (!ready) return;
     if (host) { world.removeChild(host); host = null; }
     if (!item) return;
-    host = new PIXI.Container();
+    host = new PIXI.Container(); hostAt = performance.now();
     const m = new PIXI.Sprite(tex(Art.maria(0.7))); m.scale.x = -1; m.x = m.width; host.addChild(m);
     if (typeof item === 'string') { const t = new PIXI.Sprite(tex(Art.treat(item, 0.56))); t.x = -18; t.y = 23 - t.height + 6; host.addChild(t); }
     world.addChild(host); place(performance.now());

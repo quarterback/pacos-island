@@ -211,7 +211,12 @@
   $('homeBtn').addEventListener('click', () => { picking = false; showTitle(); });
   $('changeTripBtn').addEventListener('click', () => { mode = 'endless'; state.mode = 'endless'; picking = true; save(); showTitle(); });
 
-  function swap(id) { for (const s of ['title', 'play', 'treat', 'end', 'scores']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
+  // Screens swap at once; the menu and Maria's delivery slide in (slide).
+  function swap(id, slide) {
+    for (const s of ['title', 'play', 'menu', 'treat', 'end', 'scores']) { $(s).hidden = s !== id; $(s).classList.remove('enter'); }
+    if (slide) { void $(id).offsetWidth; $(id).classList.add('enter'); }
+    window.scrollTo(0, 0);
+  }
 
   // ---- a question ----
   let timer = null, current = null;
@@ -300,7 +305,7 @@
     const how = Engine.commonness(Engine.shares(current.q), m.item.name);
     const sc = isVacation(rec) ? Engine.vacationScore(how.c) : island ? Engine.islandScore(levelOf(rec)) : Engine.score(how.c, secs, levelOf(rec));
     rec.answers.push({ pid: current.q.id, name: m.item.name, ...(island ? { island: true } : {}), points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
-    if (isVacation(rec)) return showTreat(rec, m.item.name, sc.total, m.typo);
+    if (isVacation(rec)) return showMenu(rec, m.item.name, sc.total, m.typo);
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
     $('resultRarity').textContent = island ? Copy.islandTime : Copy.forRarity(sc.rarity);
@@ -318,17 +323,40 @@
   }
   $('nextBtn').addEventListener('click', () => (today().answers.length >= 7 ? finish() : showQuestion()));
 
-  // ---- Maria's treats ----
-  // In vacation mode, a right answer goes to Maria's café: she brings a drink
-  // or a plate, a new one for each right answer. The day's menu runs in its
-  // own order, so everyone gets the same treats on the same day.
-  function showTreat(rec, name, pts, typo) {
-    const served = rec.answers.filter((a) => a.name).length - 1;
-    const id = Art.MENU[(day * 4 + served) % Art.MENU.length], [dish, about] = Copy.vacation.menu[id];
-    swap('treat'); tripBar(rec);
+  // ---- Maria's café ----
+  // In vacation mode, a right answer opens Maria's menu. Pick anything and
+  // she walks it over to Paco in the scene, then on to the next question.
+  function showMenu(rec, name, pts, typo) {
+    swap('menu', true); tripBar(rec);
+    $('menuCount').textContent = Copy.vacation.progress(rec.answers.length);
+    $('menuAnswer').textContent = typo ? Copy.typo(name) : name; $('menuPts').textContent = Copy.points(pts);
+    $('menuHead').textContent = Copy.vacation.menuHead; $('menuSay').textContent = Copy.vacation.menuSay;
+    $('menuDrinksHead').textContent = Copy.vacation.drinks; $('menuPlatesHead').textContent = Copy.vacation.plates;
+    for (const [list, ids] of [['menuDrinks', Art.DRINKS], ['menuPlates', Art.PLATES]]) {
+      $(list).replaceChildren(...ids.map((id) => {
+        const [dish, about] = Copy.vacation.menu[id];
+        const li = document.createElement('li'), btn = document.createElement('button'), art = Art.treat(id, 2), txt = document.createElement('span');
+        btn.type = 'button'; btn.className = 'menu-item'; art.setAttribute('aria-hidden', 'true');
+        const n = document.createElement('span'); n.className = 'menu-name'; n.textContent = dish;
+        const d = document.createElement('span'); d.className = 'menu-desc'; d.textContent = about;
+        txt.append(n, d); btn.append(art, txt);
+        btn.addEventListener('click', () => order(id));
+        li.append(btn); return li;
+      }));
+    }
+    $('menuHead').focus({ preventScroll: true });
+  }
+  function order(id) {
+    const rec = today(), last = rec.answers[rec.answers.length - 1];
+    if (!last || !last.name || last.treat) return;
+    last.treat = id; save();
+    showTreat(rec, id);
+  }
+  function showTreat(rec, id) {
+    const [dish, about] = Copy.vacation.menu[id], served = rec.answers.filter((a) => a.treat).length - 1;
+    swap('treat', true); tripBar(rec); Scene.host(id);
     $('treatCount').textContent = Copy.vacation.progress(rec.answers.length);
-    $('treatAnswer').textContent = typo ? Copy.typo(name) : name; $('treatPts').textContent = Copy.points(pts);
-    $('treatItem').replaceChildren(Art.treat(id, 4)); Scene.host(id);
+    $('treatItem').replaceChildren(Art.treat(id, 4));
     $('treatHead').textContent = dish; $('treatNote').textContent = about;
     $('treatWho').textContent = Copy.vacation.maria; $('treatSay').textContent = Copy.vacation.serve[served % Copy.vacation.serve.length];
     $('treatBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
