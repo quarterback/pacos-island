@@ -165,11 +165,11 @@ const Copy = {
   vacation: {
     mark: '🌺',
     tag: '🌺 Vacation mode',
-    intro: 'Maria runs the café by the beach. Have a drink and take your time. Points come only from how rare your answer is.',
+    intro: 'Maria runs the café by the beach. Points come only from how rare your answer is.',
     progress: (i) => `🌺 Question ${i} of 7`,
     maria: 'Maria',
     // the menu after a right answer: pick anything and Maria brings it
-    menuHead: 'Café María',
+    menuHead: 'Café Maria',
     menuSay: "Everything's on the house. What'll it be?",
     drinks: 'Drinks',
     plates: 'Plates',
@@ -188,7 +188,7 @@ const Copy = {
       'No worries. Have another sip.',
       'Even my regulars miss that one.',
       "Skip it. The view's the same either way.",
-      "Next one's yours. I can tell.",
+      'The next one has your name on it.',
       'That one can wait for your next vacation.',
       'Questions come and go. The beach stays.',
     ],

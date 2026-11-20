@@ -43,7 +43,7 @@ The owner played it on a phone and said Maria should live in the main picture, w
 
 The owner asked for the menu itself to show after each right answer, like a real menu, so the player picks what they want, sees it happen in the picture and then moves on, with real screen transitions: a game within the game.
 
-- **The menu screen:** after a right answer in vacation mode, a cream paper card, Café María ("Everything's on the house. What'll it be?"), lists the seven drinks and eight plates under Drinks and Plates, each with its drawing, Spanish name and English words. Every row is a button.
+- **The menu screen:** after a right answer in vacation mode, a cream paper card, Café Maria ("Everything's on the house. What'll it be?"), lists the seven drinks and eight plates under Drinks and Plates, each with its drawing, Spanish name and English words. Every row is a button.
 - **The delivery:** the pick is saved with the answer (`treat`). In the scene Maria walks in from the right, bobbing as she walks, and stops beside Paco with it on her tray. The next screen shows the pick drawn large, its name and her line.
 - **Transitions:** the menu and delivery screens slide up and fade in over 320 milliseconds; with reduced motion they appear at once, and Maria is already beside Paco.
 - The day-ordered treats from the first version are gone; players choose. Contrast on the card: ink on paper 14.4 to 1, the descriptions 8.9 to 1, and on the highlighted row 12.1 and 7.4 to 1.
@@ -52,7 +52,17 @@ The owner asked for the menu itself to show after each right answer, like a real
 
 - A full vacation day at phone size: seven questions with one Stumped, a different pick from the menu after each right answer, each pick saved, Maria's walk caught in frames at about 0.2, 0.7, 1.2 and 1.6 seconds. No page errors.
 
-## 8. Gaps
+## 8. Follow-up: editorial review
+
+The owner asked that the vacation copy pass the editorial tools and follow the same rules as the rest of the game.
+
+- `tools/copy-export.mjs` had no sample for the new progress line, so the export printed "Question the upper waterfall of 7"; it now samples `vacation.progress`, and every vacation line is in the export.
+- `plain-language-default check`, `prosekeep check` and `red-pen-editor inspect` ran on the full export (730 lines) and on the vacation copy alone. The full-export findings are the known ones: run-on "sentences" made by joining labels, "Testament" in the Bible question, and the same progress line on two screens. One was real: Maria's Stumped line "Next one's yours." could appear on the same panel as Esmeralda's "Next one's yours!" (on the 10th Stumped). It is now "The next one has your name on it."
+- Read against `AGENTS.md`: Maria's intro said "Have a drink and take your time" on the same screen as the level note "Play the game at your own pace," restating it; the intro now reads "Maria runs the café by the beach. Points come only from how rare your answer is." The menu heading said "Café María" while she is Maria everywhere else, including the café sign; it is now "Café Maria." Labels, buttons and menu descriptions take no period, full sentences keep theirs, and there are no serial commas.
+- After the fixes, the vacation copy alone passes all three tools with no findings.
+
+## 9. Gaps
+
 
 
 
