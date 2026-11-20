@@ -357,6 +357,8 @@ const Prompts = (() => {
     paco: ['opener', 'opener', 'gentle', 'medium', 'medium', 'medium', 'hard'],
     starter: ['opener', 'opener', 'gentle', 'gentle', 'medium', 'medium', 'medium'],
     mario: ['opener', 'opener', 'gentle', 'gentle', 'gentle', 'gentle', 'gentle'],
+    // Vacation mode, easier than Mario's: all seven from the easiest questions.
+    vacation: ['opener', 'opener', 'opener', 'opener', 'opener', 'opener', 'opener'],
   };
   const live = pool.filter((q) => !q.retired);
   const byLevel = { opener: live.filter((q) => q.opener), easy: [], medium: [], hard: [] };
@@ -383,11 +385,11 @@ const Prompts = (() => {
     const rests = [fresh, (q) => !lastLists.has(q.universe), () => true];
     // Letter questions are a twist, so a round holds at most one, and none
     // for new players or in Mario's mode.
-    const LETTER_MAX = { paco: 1, starter: 0, mario: 0 }[level] ?? 1;
+    const LETTER_MAX = { paco: 1, starter: 0, mario: 0, vacation: 0 }[level] ?? 1;
     // No more than two questions of one kind in a round (three plain
     // category questions).
     const SHAPE_MAX = { category: 3, letter: LETTER_MAX };
-    const TRICKY_MAX = { paco: 1, starter: 0, mario: 0 }[level] ?? 1;
+    const TRICKY_MAX = { paco: 1, starter: 0, mario: 0, vacation: 0 }[level] ?? 1;
     const tricky = (q) => q.kind === 'letter' && !simple(q);
     // The order of preference: unseen questions within the letter limit,
     // then the slot's own level before a nearby one, then resting yesterday's
@@ -458,12 +460,12 @@ const Prompts = (() => {
     }
     return days;
   };
-  const DAYS = buildDays('paco', 20261117), MARIO_DAYS = buildDays('mario', 20261118);
+  const DAYS = buildDays('paco', 20261117), MARIO_DAYS = buildDays('mario', 20261118), VACATION_DAYS = buildDays('vacation', 20261120);
 
   const byId = new Map(pool.map((q) => [q.id, q]));
-  const forDay = (n, level = 'paco') => (level === 'mario' ? MARIO_DAYS : DAYS)[(n - 1) % DAYS.length];
+  const forDay = (n, level = 'paco') => ({ mario: MARIO_DAYS, vacation: VACATION_DAYS }[level] || DAYS)[(n - 1) % DAYS.length];
   const get = (id) => byId.get(id);
   const universe = (id) => UNI[id];
-  return { pool, DAYS, MARIO_DAYS, forDay, makeSet, get, universe, norm, letters, subjectOf };
+  return { pool, DAYS, MARIO_DAYS, VACATION_DAYS, forDay, makeSet, get, universe, norm, letters, subjectOf };
 })();
 if (typeof module !== 'undefined') module.exports = Prompts;

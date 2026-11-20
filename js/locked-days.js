@@ -17,5 +17,12 @@ const LockedDays = {
     ["a_govt_agencies.all","a_horse_movies.all","a_thanksgiving.all","a_coffee_drinks.all","a_hawaii_islands.all","a_disney_broadway.all","a_saturday_cartoons.all"],
     ["a_netflix_shows.all","a_first_aid.all","a_french_desserts.all","a_vitamins.all","a_austen_characters.all","a_big_cats.all","a_nobel_categories.all"],
   ],
+  vacation: [
+    ["a_paintings.all","a_designers.all","a_famous_kates.all","teams.canada","a_ny_movies.all","rainbow.all","a_desert_animals.all"],
+    ["a_car_brands.all","a_kitchen_things.all","a_office_chars.all","countries.tea","a_potter_characters.all","a_wedding_things.all","grease.all"],
+    ["destinys.all","a_painters.all","a_streep_movies.all","a_horned_animals.all","a_animated_oscar.all","birthstones.all","reindeer.all"],
+    ["a_govt_agencies.all","bible.all","nato.all","a_wall_plugs.all","a_famous_dans.all","a_organs.all","a_pirate_gear.all"],
+    ["planets.all","starbucks.all","a_peanut_candy.all","a_apple_products.all","a_sitcoms_00s.all","a_blue_shades.all","a_national_parks.all"],
+  ],
 };
 if (typeof module !== 'undefined') module.exports = LockedDays;

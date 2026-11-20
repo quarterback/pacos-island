@@ -200,13 +200,15 @@ const Engine = (() => {
   const rarityPoints = (c) => RARITY_MAX * Math.exp(-Math.pow(Math.max(0, c) / SCALE, SHAPE));
   const speedFactor = (seconds) => { const t = Math.max(0, seconds - HOLD) / FADE; return Math.exp(-t * t * t); };
   // Levels. Mario's mode, the easier one, gives more time and pays half.
-  const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, mario: { seconds: 40, pay: 0.5 } };
+  // Vacation mode has no clock: an answer scores its rarity points alone.
+  const LEVELS = { paco: { seconds: SECONDS, pay: 1 }, mario: { seconds: 40, pay: 0.5 }, vacation: { seconds: Infinity, pay: 1 } };
   function score(c, seconds, level = 'paco') {
     const R = rarityPoints(c), pay = LEVELS[level].pay;
     const bonus = speedFactor(seconds) * (SPEED_FLAT + SPEED_SHARE * R);
     const total = Math.round((R + bonus) * pay), rarity = Math.round(R * pay);
     return { total, rarity, speed: total - rarity };
   }
+  const vacationScore = (c) => { const R = Math.round(rarityPoints(c)); return { total: R, rarity: R, speed: 0 }; };
   const islandScore = (level = 'paco') => ({ total: Math.round(ISLAND * LEVELS[level].pay), rarity: 0, speed: 0 });
   // ---- the benchmark ----
   // A field of simulated players on one set of questions. Each gives an
@@ -276,6 +278,6 @@ const Engine = (() => {
   const opened = (lifetime) => Object.values(TRIPS).filter((t) => lifetime >= t.opens).map((t) => t.id);
   const nextTrip = (lifetime) => Object.values(TRIPS).find((t) => lifetime < t.opens) || null;
 
-  return { dayNumber, nextReset, POINTS, pt, field, beats, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
+  return { dayNumber, nextReset, POINTS, pt, field, beats, SECONDS, LEVELS, RARITY_MAX, ISLAND, score, vacationScore, islandScore, speedFactor, commonness, rarityPoints, match, shares, TRIPS, FULL_DAY, depth, reached, opened, nextTrip, lev };
 })();
 if (typeof module !== 'undefined') module.exports = Engine;

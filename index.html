@@ -57,6 +57,7 @@
       <legend id="levelLegend"></legend>
       <div class="mode"><input type="radio" name="level" id="level-paco" value="paco"><label for="level-paco" id="levelPaco"></label><span class="mode-note" id="levelPacoNote"></span></div>
       <div class="mode"><input type="radio" name="level" id="level-mario" value="mario"><label for="level-mario" id="levelMario"></label><span class="mode-note" id="levelMarioNote"></span></div>
+      <div class="mode"><input type="radio" name="level" id="level-vacation" value="vacation"><label for="level-vacation" id="levelVacation"></label><span class="mode-note" id="levelVacationNote"></span></div>
     </fieldset>
     <fieldset class="trips modes" id="modes" hidden>
       <legend id="modeLegend"></legend>
@@ -101,11 +102,21 @@
       <p class="result-split"><span id="resultRarity"></span> <span id="resultSpeed" class="speed"></span></p>
       <p class="sr" id="resultSay" role="status" aria-live="polite"></p>
       <div class="cameo" id="cameo" hidden>
-        <div class="cameo-who"><span class="cameo-art" id="cameoMarioArt"></span><p><strong>Mario</strong> <span id="cameoMario"></span></p></div>
+        <div class="cameo-who"><span class="cameo-art" id="cameoMarioArt"></span><p><strong id="cameoMarioName">Mario</strong> <span id="cameoMario"></span></p></div>
         <div class="cameo-who parrot"><p><strong id="cameoParrotName"></strong> <span id="cameoParrot"></span></p><span class="cameo-art" id="cameoParrotArt"></span></div>
       </div>
       <button class="btn primary wide" id="nextBtn" type="button"></button>
     </div>
+  </section>
+
+  <section id="treat" class="screen" hidden aria-labelledby="treatHead">
+    <p class="q-count" id="treatCount"></p>
+    <p class="treat-answer"><span id="treatAnswer"></span> <span class="treat-pts" id="treatPts"></span></p>
+    <div class="treat-art"><span class="treat-maria" id="treatMaria"></span><span class="treat-item" id="treatItem"></span></div>
+    <h2 class="treat-head" id="treatHead" tabindex="-1"></h2>
+    <p class="treat-note" id="treatNote"></p>
+    <div class="cameo-who treat-say"><p><strong id="treatWho"></strong> <span id="treatSay"></span></p></div>
+    <button class="btn primary wide" id="treatBtn" type="button"></button>
   </section>
 
   <section id="end" class="screen" hidden aria-labelledby="endHead">
@@ -116,8 +127,8 @@
     <h2 class="sub" id="sheetHead"></h2>
     <ol class="sheet" id="sheet"></ol>
     <dl class="totals">
-      <div><dt id="rarityLabel"></dt><dd id="rarityTotal"></dd></div>
-      <div><dt id="speedLabel"></dt><dd id="speedTotal"></dd></div>
+      <div id="rarityRow"><dt id="rarityLabel"></dt><dd id="rarityTotal"></dd></div>
+      <div id="speedRow"><dt id="speedLabel"></dt><dd id="speedTotal"></dd></div>
       <div id="islandRow" hidden><dt id="islandLabel"></dt><dd id="islandTotal"></dd></div>
       <div class="grand"><dt id="totalLabel"></dt><dd id="grandTotal"></dd></div>
       <div><dt id="timeLabel"></dt><dd id="timeTotal"></dd></div>

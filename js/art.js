@@ -886,6 +886,68 @@ const Art = (() => {
     return c;
   }
 
+  // ---- Maria's café ------------------------------------------------------
+  // Maria runs the café by the beach and hosts vacation mode. She stands
+  // facing right, holding out a tray. 52 x 86.
+  function drawMaria(g) {
+    const skin = ['#C98B62', '#A86F48', '#7E5034'];
+    // skirt and apron
+    poly(g, [[12, 50], [36, 50], [44, 84], [4, 84]], lin(g, 0, 50, 0, 84, ['#2FB3A3', '#1E8579']));
+    for (let k = 0; k < 6; k++) { g.fillStyle = ['#F0478F', '#FFD65A', '#F28C28'][k % 3]; g.fillRect(6 + k * 6.4, 78, 4, 2.4); }
+    poly(g, [[15, 50], [33, 50], [36, 76], [12, 76]], lin(g, 0, 50, 0, 76, ['#FFFFFF', '#EDE7DA']));
+    line(g, [[13, 51], [35, 51]], '#F0478F', 1.4);
+    box(g, 11, 82, 8, 3, 1, '#5E3B1A'); box(g, 27, 82, 8, 3, 1, '#5E3B1A');
+    // blouse with embroidery at the neck
+    poly(g, [[13, 30], [35, 30], [37, 51], [11, 51]], lin(g, 0, 30, 0, 51, ['#FFFFFF', '#F1EEE6']));
+    for (let k = 0; k < 7; k++) ell(g, 16 + k * 2.6, 31.5 + Math.sin(k) * 0.8, 1.1, 1.1, ['#F0478F', '#3B9E58', '#FFD65A', '#22AEC4'][k % 4]);
+    // the back arm at her side, the front arm holding out the tray
+    line(g, [[14, 32], [11, 46]], skin[1], 4);
+    poly(g, [[31, 31], [38, 32], [40, 38], [33, 39]], '#F6F2EA');
+    line(g, [[37, 37], [48, 36]], skin[0], 3.6);
+    ell(g, 48, 34.6, 3, 2.4, skin[0]);
+    ell(g, 46, 33, 8, 1.6, lin(g, 0, 31, 0, 35, ['#E3E8EC', '#9AA6B0']));
+    // head: dark hair in a bun with a hibiscus, gold earrings and a smile
+    ell(g, 24, 20, 8.4, 9, lin(g, 0, 12, 0, 29, skin));
+    g.beginPath(); g.ellipse(23, 17, 9, 7.4, 0, Math.PI * 1.02, Math.PI * 2.05); g.closePath(); g.fillStyle = '#2E1E16'; g.fill();
+    ell(g, 16.6, 20, 2.6, 6, '#2E1E16'); ell(g, 17, 9.6, 5.4, 4.6, '#3A2618');
+    for (let k = 0; k < 5; k++) { const t = k / 5 * TAU; ell(g, 13 + Math.cos(t) * 2.6, 11 + Math.sin(t) * 2.6, 2.2, 1.6, '#E0352B'); } ell(g, 13, 11, 1.2, 1.2, '#FFD65A');
+    ell(g, 28.4, 19, 1, 1.1, C.ink); line(g, [[26.6, 16.6], [29.6, 16.4]], '#2E1E16', 0.8);
+    g.beginPath(); g.arc(28.6, 22.6, 2.2, 0.15 * Math.PI, 0.85 * Math.PI); g.strokeStyle = '#8A2B2A'; g.lineWidth = 0.9; g.stroke();
+    ell(g, 30.6, 21.4, 1.6, 1, rgba('#F0478F', 0.35)); ell(g, 20, 24.4, 1.2, 1.6, '#FFD65A');
+    line(g, [[22, 28], [26, 28]], skin[2], 2.6);
+  }
+  function maria(scale = 1) { const [c, g] = canvas(52 * scale, 86 * scale); g.scale(scale, scale); drawMaria(g); return c; }
+
+  // Maria's menu: drinks and plates, each drawn on a 64 x 56 card.
+  const glass = (g, x, y, w, h, liquid, top = 0.18) => {
+    poly(g, [[x, y], [x + w, y], [x + w - 3, y + h], [x + 3, y + h]], rgba('#E9F7FC', 0.55));
+    poly(g, [[x + 1.4, y + h * top], [x + w - 1.4, y + h * top], [x + w - 3.6, y + h - 1.6], [x + 3.6, y + h - 1.6]], liquid);
+    line(g, [[x + 3.4, y + 3], [x + 5, y + h - 4]], rgba('#FFFFFF', 0.7), 1.2);
+    ell(g, x + w / 2, y + h, w / 2 - 3, 1.6, rgba('#7FB6D0', 0.5));
+  };
+  const plate = (g, cx, cy, rx = 27) => { ell(g, cx, cy + 2, rx, rx * 0.36, rgba(C.ink, 0.18)); ell(g, cx, cy, rx, rx * 0.36, lin(g, 0, cy - 10, 0, cy + 10, ['#FFFFFF', '#DCE3E8'])); ell(g, cx, cy, rx * 0.72, rx * 0.25, '#F4F7F9'); };
+  const straw = (g, x0, y0, x1, y1, col = '#F0478F') => { line(g, [[x0, y0], [x1, y1]], col, 1.8); line(g, [[x0, y0], [x1, y1]], rgba('#FFFFFF', 0.5), 0.6); };
+  const MENU_ART = {
+    horchata: (g) => { glass(g, 20, 12, 24, 38, lin(g, 0, 18, 0, 50, ['#FFFDF6', '#EFE3CF'])); for (let k = 0; k < 6; k++) ell(g, 25 + k * 3, 19.4 + (k % 2), 1, 0.7, '#B07A45'); line(g, [[38, 6], [36, 24]], '#8A5530', 2.2); straw(g, 27, 4, 29, 24); },
+    jamaica: (g) => { glass(g, 20, 12, 24, 38, lin(g, 0, 18, 0, 50, ['#D63A5E', '#8E1838'])); for (let k = 0; k < 3; k++) box(g, 24 + k * 6, 22 + k * 5, 5, 5, 1, rgba('#FFFFFF', 0.45)); for (let k = 0; k < 5; k++) { const t = k / 5 * TAU; ell(g, 44 + Math.cos(t) * 3.4, 12 + Math.sin(t) * 3.4, 3.2, 2.4, '#E0352B'); } ell(g, 44, 12, 1.4, 1.4, '#FFD65A'); straw(g, 28, 4, 30, 24, '#22AEC4'); },
+    coco: (g) => { ell(g, 32, 34, 18, 16, lin(g, 0, 18, 0, 50, ['#8ED04A', '#3B8E38', '#1D5B3C'])); ell(g, 32, 21, 9, 3.6, '#F4F7E8'); ell(g, 26, 30, 4, 6, rgba('#FFFFFF', 0.25)); straw(g, 34, 4, 33, 22, '#FFD65A'); for (let k = 0; k < 5; k++) { const t = k / 5 * TAU; ell(g, 22 + Math.cos(t) * 2.6, 20 + Math.sin(t) * 2.6, 2.4, 1.8, '#F0478F'); } ell(g, 22, 20, 1, 1, '#FFD65A'); },
+    limonada: (g) => { glass(g, 20, 12, 24, 38, lin(g, 0, 18, 0, 50, ['#D9F59A', '#A7D84A'])); for (let k = 0; k < 3; k++) box(g, 24 + k * 6, 20 + k * 6, 5, 5, 1, rgba('#FFFFFF', 0.5)); g.beginPath(); g.arc(44, 12, 7, 0, TAU); g.fillStyle = '#6BBE3C'; g.fill(); g.beginPath(); g.arc(44, 12, 5.4, 0, TAU); g.fillStyle = '#E2F7A8'; g.fill(); for (let k = 0; k < 6; k++) { const t = k / 6 * TAU; line(g, [[44, 12], [44 + Math.cos(t) * 5, 12 + Math.sin(t) * 5]], '#9BD43C', 0.7); } straw(g, 28, 4, 30, 24); },
+    cafe: (g) => { box(g, 18, 22, 26, 26, 6, lin(g, 18, 0, 44, 0, ['#D2804A', '#A85A2E', '#7A3E1E'])); g.beginPath(); g.arc(46, 34, 6, -1.3, 1.3); g.strokeStyle = '#A85A2E'; g.lineWidth = 3; g.stroke(); ell(g, 31, 23, 11, 2.6, '#4A2A16'); for (let k = 0; k < 4; k++) ell(g, 22 + k * 6, 34, 1.4, 1.4, '#FFD65A'); for (const sx of [26, 33]) line(g, [[sx, 18], [sx - 2, 12], [sx + 1, 6]], rgba('#FFFFFF', 0.6), 1.2); line(g, [[38, 10], [42, 24]], '#8A5530', 2.2); },
+    mango: (g) => { glass(g, 20, 12, 24, 38, lin(g, 0, 18, 0, 50, ['#FFC25A', '#F28C28']), 0.08); ell(g, 32, 13, 11, 3, '#FFD65A'); poly(g, [[40, 4], [50, 10], [42, 15]], '#F7B733'); ell(g, 44, 10, 4, 3, '#F28C28'); straw(g, 27, 2, 29, 20, '#3B9E58'); },
+    sandia: (g) => { glass(g, 20, 12, 24, 38, lin(g, 0, 18, 0, 50, ['#FF8DA1', '#E0476B'])); g.beginPath(); g.moveTo(36, 12); g.arc(44, 12, 9, 0, Math.PI); g.closePath(); g.fillStyle = '#3B8E38'; g.fill(); g.beginPath(); g.moveTo(37.6, 12); g.arc(44, 12, 7.2, 0, Math.PI); g.closePath(); g.fillStyle = '#F2546E'; g.fill(); for (const [dx, dy] of [[-3, 3], [0, 5], [3, 3]]) ell(g, 44 + dx, 12 + dy, 0.8, 1.1, '#2A1A16'); straw(g, 27, 4, 29, 24); },
+    tacos: (g) => { plate(g, 32, 40); for (const [x, t] of [[22, -0.15], [40, 0.15]]) { g.save(); g.translate(x, 34); g.rotate(t); g.beginPath(); g.ellipse(0, 0, 11, 9, 0, Math.PI, 0); g.closePath(); g.fillStyle = '#F2D38A'; g.fill(); ell(g, 0, -1, 9, 3, '#8ED04A'); ell(g, -3, -3, 3, 2, '#F6E3B8'); ell(g, 3, -3, 3, 2, '#F6E3B8'); ell(g, 0, -4, 2, 1.2, '#E0352B'); g.restore(); } ell(g, 48, 42, 4, 2.6, '#6BBE3C'); },
+    ceviche: (g) => { ell(g, 32, 42, 20, 6, rgba(C.ink, 0.18)); g.beginPath(); g.ellipse(32, 30, 18, 6, 0, 0, Math.PI); g.lineTo(22, 44); g.lineTo(42, 44); g.closePath(); g.fillStyle = rgba('#E9F7FC', 0.7); g.fill(); ell(g, 32, 30, 18, 6, '#F3E9D2'); for (let k = 0; k < 9; k++) ell(g, 20 + k * 3, 29 + (k % 3) - 1, 2, 1.6, ['#F28C6A', '#8ED04A', '#E0352B', '#FFFFFF'][k % 4]); poly(g, [[38, 27], [52, 10], [56, 22]], '#F2C46A'); for (let k = 0; k < 4; k++) ell(g, 46 + k * 2, 18 + (k % 2) * 2, 0.8, 0.8, '#C9952E'); ell(g, 14, 42, 4.4, 2.6, '#6BBE3C'); },
+    chilaquiles: (g) => { plate(g, 32, 40); for (let k = 0; k < 10; k++) poly(g, [[16 + k * 3.4, 38], [20 + k * 3.4, 30 + (k % 3) * 2], [23 + k * 3.4, 39]], k % 2 ? '#E0632B' : '#C9452A'); ell(g, 32, 33, 7, 4.4, '#FFFFFF'); ell(g, 33, 32.4, 2.8, 2.2, '#FFC43A'); for (let k = 0; k < 6; k++) ell(g, 20 + k * 5, 37 - (k % 2), 1.4, 0.9, '#FFFDF6'); },
+    zarandeado: (g) => { plate(g, 32, 40, 29); g.beginPath(); g.ellipse(30, 36, 18, 6.4, 0, 0, TAU); g.fillStyle = lin(g, 0, 30, 0, 42, ['#E8813A', '#B5502A']); g.fill(); poly(g, [[46, 36], [55, 30], [55, 42]], '#B5502A'); ell(g, 15, 35, 1.2, 1.2, C.ink); for (let k = 0; k < 4; k++) line(g, [[20 + k * 6, 32], [24 + k * 6, 40]], rgba('#5E2A16', 0.6), 1.2); ell(g, 12, 42, 4, 2.6, '#6BBE3C'); },
+    conchas: (g) => { plate(g, 32, 42); for (const [x, y, col] of [[22, 34, '#F7C6D9'], [42, 34, '#FFFDF6'], [32, 28, '#E7B06A']]) { ell(g, x, y + 3, 10, 6, '#D99A4E'); g.beginPath(); g.ellipse(x, y + 2, 10, 7, 0, Math.PI, 0); g.closePath(); g.fillStyle = col; g.fill(); for (let k = -1; k <= 1; k++) line(g, [[x + k * 4, y - 3], [x + k * 5, y + 2]], rgba('#9A6F2A', 0.4), 0.7); } },
+    flan: (g) => { plate(g, 32, 42); g.beginPath(); g.moveTo(20, 40); g.lineTo(23, 24); g.lineTo(41, 24); g.lineTo(44, 40); g.closePath(); g.fillStyle = lin(g, 0, 24, 0, 40, ['#FFE08A', '#F2BC2E']); g.fill(); ell(g, 32, 24, 9, 2.6, '#9A4A16'); line(g, [[25, 25], [24, 32]], '#9A4A16', 1.6); line(g, [[38, 25], [40, 34]], '#9A4A16', 1.4); ell(g, 32, 42, 14, 2.4, rgba('#9A4A16', 0.6)); ell(g, 30, 22, 2, 1.2, '#E0352B'); },
+    elote: (g) => { plate(g, 32, 42); g.save(); g.translate(32, 32); g.rotate(-0.5); ell(g, 0, 0, 18, 6.4, '#F7C83A'); for (let k = -15; k <= 15; k += 3) for (const dy of [-3, 0, 3]) ell(g, k, dy, 1.2, 1.2, '#FFE08A'); for (let k = 0; k < 9; k++) ell(g, -14 + k * 3.4, (k % 3) - 1, 1, 0.8, '#E0352B'); ell(g, 0, -1, 14, 2, rgba('#FFFFFF', 0.5)); line(g, [[18, 0], [26, 0]], C.wood[1], 2.4); g.restore(); },
+    quesadilla: (g) => { plate(g, 32, 42); g.beginPath(); g.moveTo(14, 38); g.arc(32, 38, 18, Math.PI, 0); g.closePath(); g.fillStyle = lin(g, 0, 20, 0, 38, ['#F6D58E', '#E2B45A']); g.fill(); for (let k = 0; k < 7; k++) ell(g, 20 + k * 4, 30 + (k % 2) * 4, 1.6, 1.2, '#B5782E'); ell(g, 24, 38, 4, 1.6, '#FFE58F'); ell(g, 40, 38, 4, 1.4, '#FFE58F'); ell(g, 50, 40, 4, 2.6, '#6BBE3C'); },
+  };
+  // drinks and plates take turns
+  const MENU = ['horchata', 'tacos', 'jamaica', 'ceviche', 'coco', 'chilaquiles', 'limonada', 'zarandeado', 'cafe', 'conchas', 'mango', 'flan', 'sandia', 'elote', 'quesadilla'];
+  function treat(id, scale = 1) { const [c, g] = canvas(64 * scale, 56 * scale); g.scale(scale, scale); MENU_ART[id](g); return c; }
+
   // ---- deliveries with Tío ----------------------------------------------
   // Tío, an older, strong man, pushes his wheelbarrow of supplies from the
   // pier up through town to the cantina, with the rider sitting on top.
@@ -1217,5 +1279,5 @@ const Art = (() => {
     return c;
   }
 
-  return { C, setRider, paco, mario, parrot, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
+  return { C, setRider, paco, mario, parrot, maria, treat, MENU, flier, flight, market, FLIGHT, MARKET, tio, deliveries, DELIVER, boat, atv, diver, walker, icon, coast, hill, town, deep, COAST, HILL, TOWN, DEEP };
 })();
