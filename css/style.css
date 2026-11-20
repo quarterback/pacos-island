@@ -152,6 +152,17 @@ body { margin: 0; color: var(--foam); background: var(--bay); font: 400 17px/1.4
 .result { margin-top: 4px; }
 .result p { margin: 0; }
 .result-name { font-weight: 600; font-size: 22px; }
+/* Vacation mode: Maria brings a treat between questions */
+.treat-answer { margin: 0 0 18px; font-weight: 600; font-size: 20px; }
+.treat-pts { margin-left: 6px; font: 700 22px/1 var(--show); color: var(--sun); font-variant-numeric: tabular-nums; }
+.treat-art { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin: 0 0 14px; }
+.treat-maria { flex: none; width: 104px; }
+.treat-item { flex: none; width: 176px; }
+.treat-art canvas { display: block; width: 100%; height: auto; }
+.treat-head { margin: 0 0 4px; font: 700 30px/1.05 var(--show); color: var(--sun); text-shadow: 2px 2px 0 var(--ink); text-align: center; }
+.treat-head:focus { outline: none; }
+.treat-note { margin: 0 0 16px; text-align: center; font-size: 17px; }
+.treat-say { margin: 0 0 20px; }
 .result-pts { margin-top: 6px !important; font: 700 56px/1 var(--show); color: var(--sun); text-shadow: 3px 3px 0 var(--ink); font-variant-numeric: tabular-nums; }
 .result-split { margin-top: 10px !important; font-weight: 500; }
 .result-split .speed { color: var(--leaf); }

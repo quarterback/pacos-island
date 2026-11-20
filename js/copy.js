@@ -15,6 +15,7 @@ const Copy = {
     'Rarer answers earn more points, up to 108,000.',
     'Your marks: 🐚 common, 🦀 uncommon, 🐢 rare, 🦎 a deep cut, 🥥 island time, 🌊 no answer.',
     'Answer in the first 5 seconds for the full speed bonus. It fades fast after 10 seconds.',
+    'Vacation mode has no clock. Maria brings a drink or a plate from her café for every right answer.',
   ],
   tripLegend: 'Choose a trip',
   tripOpens: (n) => `Opens at ${n.toLocaleString('en-US')} points`,
@@ -37,6 +38,7 @@ const Copy = {
     days: (n) => `${n.toLocaleString('en-US')} ${n === 1 ? 'day' : 'days'}`,
     everyDay: 'Every day',
     mario: "Mario's mode",
+    vacation: 'Vacation mode',
   },
   // iPhone Safari deletes a site's saved data after seven days without a visit
   keepTip: "Safari deletes saved scores after seven days without a visit. Add Paco's Island to your Home Screen to keep them.",
@@ -125,7 +127,8 @@ const Copy = {
   beat: (n) => `Better than ${n}% of simulated players`,
   beatShort: (n) => `better than ${n}%`,
   // the key to the marks, with that level's thresholds
-  markKey: (t) => ['🌊 No answer', `🐚 Under ${t[0]}`, `🦀 Under ${t[1]}`, `🐢 Under ${t[2]}`, `🦎 ${t[2]} and up`, '🥥 Island time'],
+  // Vacation mode has no clock, so no island time.
+  markKey: (t, vacation) => ['🌊 No answer', `🐚 Under ${t[0]}`, `🦀 Under ${t[1]}`, `🐢 Under ${t[2]}`, `🦎 ${t[2]} and up`, ...(vacation ? [] : ['🥥 Island time'])],
   copied: 'Copied',
   copyFailed: 'Your browser blocked copying. Select the text above and copy it.',
   noAnswer: 'No answer',
@@ -140,7 +143,7 @@ const Copy = {
   islandMark: '🥥',
   markAhead: '🏝️',
   // Shared result, MapTap style: link and date, the row of marks, the score.
-  share: (date, mario, marks, total) => `pacoisland.fun ${date}${mario ? `, Mario's mode` : ''}\n${marks}\nFinal score: ${total}`,
+  share: (date, tag, marks, total) => `pacoisland.fun ${date}${tag ? `, ${tag}` : ''}\n${marks}\nFinal score: ${total}`,
   // AP style date: "Nov. 17," "March 3."
   apDate: (d) => `${['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'][d.getUTCMonth()]} ${d.getUTCDate()}`,
 
@@ -151,6 +154,56 @@ const Copy = {
     pacoNote: '25 seconds a question, full points',
     mario: "Mario's mode",
     marioNote: '40 seconds a question, half points',
+    vacation: 'Vacation mode',
+    vacationNote: 'No clock, easier questions',
+  },
+  // Vacation mode: its own daily set with no clock, the easiest questions and
+  // points for rarity alone. Maria, who runs the café by the beach, hosts it
+  // and brings a drink or a plate for every right answer. Its mark is the
+  // hibiscus.
+  vacation: {
+    mark: '🌺',
+    tag: '🌺 Vacation mode',
+    intro: 'Maria runs the café by the beach. Have a drink and take your time. Points come only from how rare your answer is.',
+    progress: (i) => `🌺 Question ${i} of 7`,
+    maria: 'Maria',
+    // Maria's lines when she brings a treat, in turn
+    serve: [
+      'Sit back. The next question can wait.',
+      'Take all the time you need.',
+      'No clock at my café.',
+      'Put your feet up. You earned it.',
+      'Enjoy the breeze, then the next one.',
+      'Nobody rushes on vacation.',
+      "Sip slow. I'll be right here.",
+    ],
+    // on Stumped, in place of Mario
+    stumped: [
+      'No worries. Have another sip.',
+      'Even my regulars miss that one.',
+      "Skip it. The view's the same either way.",
+      "Next one's yours. I can tell.",
+      'That one can wait for your next vacation.',
+      'Questions come and go. The beach stays.',
+    ],
+    // the menu, in Spanish with a few words of English
+    menu: {
+      horchata: ['Horchata', 'Rice milk with cinnamon'],
+      jamaica: ['Agua de jamaica', 'Iced hibiscus tea'],
+      coco: ['Coco frío', 'A cold coconut with a straw'],
+      limonada: ['Limonada', 'Fresh limeade'],
+      cafe: ['Café de olla', 'Coffee spiced with cinnamon'],
+      mango: ['Licuado de mango', 'A mango smoothie'],
+      sandia: ['Agua de sandía', 'A watermelon cooler'],
+      tacos: ['Tacos de pescado', 'Fish tacos'],
+      ceviche: ['Ceviche', 'Shrimp in lime juice, with a tostada'],
+      chilaquiles: ['Chilaquiles', 'Tortilla chips in red salsa with an egg'],
+      zarandeado: ['Pescado zarandeado', 'Grilled snapper with lime'],
+      conchas: ['Conchas', 'Sweet rolls with a sugar shell'],
+      flan: ['Flan', 'Caramel custard'],
+      elote: ['Elote', 'Grilled corn with chile and lime'],
+      quesadilla: ['Quesadilla', 'Melted cheese in a warm tortilla'],
+    },
   },
   marioIntro: "Mario is Paco's twin brother. His questions are easier.",
   suggestMario: "Mario's questions are easier.",

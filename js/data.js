@@ -688,12 +688,75 @@ Biden`, {
     the1800s: ['Adams', 'Jefferson', 'Madison', 'Monroe', 'Jackson', 'Van Buren', 'Harrison', 'Tyler', 'Polk', 'Taylor', 'Fillmore', 'Pierce', 'Buchanan', 'Lincoln', 'Johnson', 'Grant', 'Hayes', 'Garfield', 'Arthur', 'Cleveland', 'McKinley'],
   };
   // Team nicknames by where the team plays.
+  // Women's pro leagues and pro volleyball, by nickname. Lists are the
+  // 2026-27 Professional Women's Hockey League (PWHL), the 2026 National
+  // Women's Soccer League (NWSL) and the 2027 Major League Volleyball (MLV)
+  // lineup, which drops the San Diego Mojo and adds four teams.
+  const PWHL = parse(`
+Fleet|Boston Fleet
+Havoc|Hamilton Havoc
+Victoire|Montreal Victoire|Montréal Victoire
+Sirens|New York Sirens
+Charge|Ottawa Charge
+Sceptres|Toronto Sceptres
+Clutch|Detroit Clutch
+Frost|Minnesota Frost
+Sea Lions|San Jose Sea Lions
+Torrent|Seattle Torrent
+Goldeneyes|Vancouver Goldeneyes
+Vanguards|Vegas Vanguards|Las Vegas Vanguards`, {
+    3: ['Frost', 'Sceptres', 'Victoire', 'Fleet', 'Charge', 'Sirens'],
+    5: ['Havoc', 'Clutch', 'Sea Lions', 'Vanguards'],
+  }, 4);
+  const NWSL = parse(`
+Angel City|Angel City FC|ACFC
+Bay FC|Bay
+Legacy|Boston Legacy|Boston Legacy FC
+Stars|Chicago Stars|Chicago Stars FC
+Summit|Denver Summit|Denver Summit FC
+Gotham|Gotham FC|NJ/NY Gotham FC|NJ/NY Gotham
+Dash|Houston Dash
+Current|Kansas City Current|KC Current
+Courage|North Carolina Courage|NC Courage
+Pride|Orlando Pride
+Thorns|Portland Thorns|Portland Thorns FC
+Racing Louisville|Racing|Racing Louisville FC|Louisville
+Wave|San Diego Wave|San Diego Wave FC
+Reign|Seattle Reign|Seattle Reign FC|OL Reign
+Royals|Utah Royals|Utah Royals FC
+Spirit|Washington Spirit`, {
+    3: ['Thorns', 'Pride', 'Spirit', 'Current', 'Reign', 'Wave', 'Angel City', 'Gotham', 'Courage'],
+    5: ['Legacy', 'Summit'],
+  }, 4);
+  const MLV = parse(`
+Vibe|Atlanta Vibe
+Fury|Columbus Fury
+Pulse|Dallas Pulse
+Rise|Grand Rapids Rise
+Ignite|Indy Ignite|Indianapolis Ignite
+Supernovas|Omaha Supernovas
+Valkyries|Orlando Valkyries
+Thrill|Vegas Thrill|Las Vegas Thrill
+Flight|DC Flight|D.C. Flight|Washington Flight
+Thunder|Los Angeles Thunder|LA Thunder
+Forge|Minnesota Forge
+Rumble|NorCal Rumble|Northern California Rumble`, {
+    4: ['Vibe', 'Fury', 'Rise', 'Supernovas', 'Valkyries'],
+    5: ['Flight', 'Thunder', 'Forge', 'Rumble'],
+  }, 5);
+
+  // Pro teams by state or country, across the NBA, NFL, MLB, NHL, PWHL, NWSL
+  // and MLV. The New York Sirens and Gotham FC play in New Jersey.
   const TEAM_PLACES = {
-    california: ['Warriors', 'Lakers', 'Clippers', 'Kings', '49ers', 'Rams', 'Chargers', 'Dodgers', 'Angels', 'Padres', 'Giants', 'Athletics', 'Ducks', 'Sharks'],
-    texas: ['Mavericks', 'Rockets', 'Spurs', 'Cowboys', 'Texans', 'Rangers', 'Astros', 'Stars'],
-    florida: ['Heat', 'Magic', 'Dolphins', 'Jaguars', 'Buccaneers', 'Marlins', 'Rays', 'Panthers', 'Lightning'],
+    california: ['Warriors', 'Lakers', 'Clippers', 'Kings', '49ers', 'Rams', 'Chargers', 'Dodgers', 'Angels', 'Padres', 'Giants', 'Athletics', 'Ducks', 'Sharks',
+      'Angel City', 'Bay FC', 'Wave', 'Sea Lions', 'Thunder', 'Rumble'],
+    texas: ['Mavericks', 'Rockets', 'Spurs', 'Cowboys', 'Texans', 'Rangers', 'Astros', 'Stars',
+      'Dash', 'Pulse'],
+    florida: ['Heat', 'Magic', 'Dolphins', 'Jaguars', 'Buccaneers', 'Marlins', 'Rays', 'Panthers', 'Lightning',
+      'Pride', 'Valkyries'],
     newYork: ['Knicks', 'Nets', 'Giants', 'Jets', 'Bills', 'Yankees', 'Mets', 'Rangers', 'Islanders', 'Sabres'],
-    canada: ['Raptors', 'Blue Jays', 'Maple Leafs', 'Canadiens', 'Senators', 'Jets', 'Oilers', 'Flames', 'Canucks'],
+    canada: ['Raptors', 'Blue Jays', 'Maple Leafs', 'Canadiens', 'Senators', 'Jets', 'Oilers', 'Flames', 'Canucks',
+      'Havoc', 'Victoire', 'Charge', 'Sceptres', 'Goldeneyes'],
     pennsylvania: ['76ers', 'Eagles', 'Steelers', 'Phillies', 'Pirates', 'Flyers', 'Penguins'],
   };
 
@@ -17075,6 +17138,9 @@ Mike and Dave Need Wedding Dates`),
     nfl: { id: 'nfl', items: NFL, noun: 'an NFL team, by nickname', short: 'NFL team' },
     mlb: { id: 'mlb', items: MLB, noun: 'an MLB team, by nickname', short: 'MLB team' },
     nhl: { id: 'nhl', items: NHL, noun: 'an NHL team, by nickname', short: 'NHL team' },
+    pwhl: { id: 'pwhl', items: PWHL, short: 'PWHL team' },
+    nwsl: { id: 'nwsl', items: NWSL, short: 'NWSL team' },
+    mlv: { id: 'mlv', items: MLV, short: 'MLV team' },
     presidents: { id: 'presidents', items: PRESIDENTS, surname: true, noun: 'the last name of a U.S. president', short: 'president' },
     capitals: { id: 'capitals', items: CAPITALS, noun: 'a national capital', short: 'capital' },
     statecaps: { id: 'statecaps', items: STATE_CAPITALS, noun: 'a U.S. state capital', short: 'state capital' },

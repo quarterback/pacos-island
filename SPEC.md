@@ -57,6 +57,8 @@ The title screen offers two levels:
 - **Paco's mode** is the full game: two openers, three medium and two hard questions, 25 seconds each, full points.
 - **Mario's mode** is the easier one. Mario is Paco's iguana twin brother and his rival on the island; he is teal with an orange bandana, and in his mode he takes the trips. His sets have two openers and five easy questions, with no letter counting and no "has no letter" rules. Each question gets 40 seconds, and every score is halved.
 
+- **Vacation mode** is the easiest, for players who'd rather not race a clock. Maria, who runs the café by the beach, hosts it. There is no clock, so no speed bonus and no island time, and a right answer scores its rarity points alone. Its sets are seven openers, the easiest questions, with no letter questions. After every right answer Maria brings a drink or a plate from her menu, drawn on its own screen between questions; the menu of 15 runs in a different order each day, so everyone gets the same treats on the same day. On Stumped, Maria drops in in place of Mario. Its marks sit lower, since there is no speed bonus: 🐚 under 13,500, 🦀 under 40,500, 🐢 under 75,600, 🦎 75,600 and up. Shares carry "🌺 Vacation mode," and the end screen skips the comparison with simulated players, who race the clock.
+
 Each level has its own daily set. After a rough set in Paco's mode, under 64,800 points or three or more questions with no answer in time (skipped or answered in island time), the end screen suggests Mario's mode. Shares from Mario's mode say so: "Paco's Island, day 1, Mario's mode." The level is locked while a set is under way.
 
 ### A set of seven

@@ -8,7 +8,11 @@
    Test mode adds endless mode: a new set of seven each round, with every
    trip open, saved apart from the daily game. Each round adds to lifetime
    points. Set TEST_MODE to false to hide it. Screens:
-   docs/endless-mode-screens.md. */
+   docs/endless-mode-screens.md.
+
+   Vacation mode is a third level with its own daily set: no clock, the
+   easiest questions, points for rarity alone, and Maria brings a drink or a
+   plate from her café for every right answer. */
 'use strict';
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -29,9 +33,10 @@
   // Levels: Paco's mode, or Mario's easier mode. Each daily level has its
   // own set and record; endless rounds keep the level they were played at.
   const newRecord = (qids, trip, level) => ({ trip, level, qids, answers: [], started: {}, done: false, counted: false });
-  const levelOf = (rec) => (rec && rec.level === 'mario' ? 'mario' : 'paco');
+  const levelOf = (rec) => (rec && (rec.level === 'mario' || rec.level === 'vacation') ? rec.level : 'paco');
+  const isVacation = (rec) => levelOf(rec) === 'vacation';
   const secondsFor = (rec) => Engine.LEVELS[levelOf(rec)].seconds;
-  const dayKey = () => (state.level === 'mario' ? `${day}m` : String(day));
+  const dayKey = () => (state.level === 'mario' ? `${day}m` : state.level === 'vacation' ? `${day}v` : String(day));
   function tidy() {
     const ok = (r) => r.qids && r.qids.every((id) => Prompts.get(id));
     for (const k of Object.keys(state.days)) if (!ok(state.days[k])) delete state.days[k];
@@ -91,7 +96,10 @@
   // Mark thresholds in points; Mario's mode pays half, so his are half, and a
   // mark means the same thing at either level.
   const MARK_AT = [5000, 12000, 20000].map(Engine.pt);
-  const markAt = (level) => MARK_AT.map((n) => (level === 'mario' ? Math.round(n / 2) : n));
+  // Vacation points are rarity alone, so its marks sit lower: about a common
+  // answer, a half-common one, one in 10 players and a deep cut.
+  const VACATION_AT = [2500, 7500, 14000].map(Engine.pt);
+  const markAt = (level) => (level === 'vacation' ? VACATION_AT : MARK_AT.map((n) => (level === 'mario' ? Math.round(n / 2) : n)));
   const bucket = (pts, level) => { const t = markAt(level); return !pts ? 0 : pts < t[0] ? 1 : pts < t[1] ? 2 : pts < t[2] ? 3 : 4; };
   // An answer's mark: island time answers get their own, skips get the wave.
   const markKey = (a, level) => (a.island ? 'island' : String(bucket(a.points, level)));
@@ -122,7 +130,8 @@
   function showTitle() {
     $('titleHead').textContent = Copy.title;
     // The title screen carries the pitch; here only Mario's mode needs an introduction.
-    $('intro').textContent = state.level === 'mario' ? Copy.marioIntro : ''; $('intro').hidden = state.level !== 'mario';
+    const intro = { mario: Copy.marioIntro, vacation: Copy.vacation.intro }[state.level] || '';
+    $('intro').textContent = intro; $('intro').hidden = !intro;
     $('howHead').textContent = Copy.howHeading;
     $('howList').innerHTML = ''; for (const line of Copy.how) { const li = document.createElement('li'); li.textContent = line; $('howList').append(li); }
     $('credit').textContent = Copy.credit;
@@ -134,7 +143,8 @@
     $('levelLegend').textContent = Copy.level.legend;
     $('levelPaco').textContent = Copy.level.paco; $('levelPacoNote').textContent = Copy.level.pacoNote;
     $('levelMario').textContent = Copy.level.mario; $('levelMarioNote').textContent = Copy.level.marioNote;
-    for (const lv of ['paco', 'mario']) { const r = $('level-' + lv); r.checked = state.level === lv; r.disabled = !!(rec && rec.answers.length && !rec.done); }
+    $('levelVacation').textContent = Copy.level.vacation; $('levelVacationNote').textContent = Copy.level.vacationNote;
+    for (const lv of ['paco', 'mario', 'vacation']) { const r = $('level-' + lv); r.checked = state.level === lv; r.disabled = !!(rec && rec.answers.length && !rec.done); }
     const nextN = E().round + (roundDone() ? 1 : 0);
     $('tripLegend').textContent = picking ? Copy.endless.tripLegend(nextN) : Copy.tripLegend;
     for (const id of ['titleHead', 'intro', 'how', 'credit']) $(id).hidden = picking;
@@ -167,7 +177,7 @@
   function setLevel(lv) {
     state.level = lv; save(); Art.setRider(lv); Scene.refresh(); showTitle();
   }
-  for (const lv of ['paco', 'mario']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
+  for (const lv of ['paco', 'mario', 'vacation']) $('level-' + lv).addEventListener('change', () => setLevel(lv));
   $('suggestBtn').addEventListener('click', () => { picking = false; setLevel('mario'); });
   // Music is off until the player turns it on; Music remembers the choice.
   const musicBtn = $('musicBtn');
@@ -195,7 +205,7 @@
   $('homeBtn').addEventListener('click', () => { picking = false; showTitle(); });
   $('changeTripBtn').addEventListener('click', () => { mode = 'endless'; state.mode = 'endless'; picking = true; save(); showTitle(); });
 
-  function swap(id) { for (const s of ['title', 'play', 'end', 'scores']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
+  function swap(id) { for (const s of ['title', 'play', 'treat', 'end', 'scores']) $(s).hidden = s !== id; window.scrollTo(0, 0); }
 
   // ---- a question ----
   let timer = null, current = null;
@@ -208,7 +218,7 @@
     if (i >= 7) return finish();
     const q = questions[i]; current = { q, i };
     swap('play'); tripBar(rec); squares(rec, i);
-    $('qCount').textContent = mode === 'endless' ? Copy.endless.progress(E().round, i + 1) : Copy.progress(i + 1);
+    $('qCount').textContent = mode === 'endless' ? Copy.endless.progress(E().round, i + 1) : isVacation(rec) ? Copy.vacation.progress(i + 1) : Copy.progress(i + 1);
     $('qText').textContent = q.text;
     $('answerLabel').textContent = Copy.answerLabel;
     $('answerBtn').textContent = Copy.answer;
@@ -217,7 +227,8 @@
     $('result').hidden = true; $('clock').hidden = false; $('clock').classList.remove('island'); $('cameo').hidden = true;
     $('stumpedBtn').hidden = false; $('stumpedBtn').textContent = Copy.stumped; $('stumpedBtn').disabled = false;
     if (!rec.started[i]) { rec.started[i] = Date.now(); save(); }
-    runClock(rec.started[i], secondsFor(rec));
+    // vacation mode has no clock
+    if (isVacation(rec)) { clearInterval(timer); $('clock').hidden = true; } else runClock(rec.started[i], secondsFor(rec));
     $('answerInput').focus();
   }
   function runClock(startedAt, SECONDS) {
@@ -256,10 +267,13 @@
     $('note').className = 'note'; $('note').textContent = '';
     // Step through both lists so every line plays before one repeats.
     const n = state.stumped = (state.stumped || 0) + 1; save();
-    $('cameoMario').textContent = Copy.stumpedMario[(n - 1) % Copy.stumpedMario.length];
+    const vac = isVacation(rec), lines = vac ? Copy.vacation.stumped : Copy.stumpedMario;
+    $('cameoMarioName').textContent = vac ? Copy.vacation.maria : 'Mario';
+    $('cameoMario').textContent = lines[(n - 1) % lines.length];
     $('cameoParrot').textContent = Copy.stumpedParrot[(n - 1) % Copy.stumpedParrot.length];
     $('cameoParrotName').textContent = Copy.parrot;
-    if (!$('cameoMarioArt').firstChild) { $('cameoMarioArt').append(Art.mario(3)); $('cameoParrotArt').append(Art.parrot(3)); }
+    if (!$('cameoParrotArt').firstChild) $('cameoParrotArt').append(Art.parrot(3));
+    $('cameoMarioArt').replaceChildren(vac ? Art.maria(2) : Art.mario(3));
     $('cameo').hidden = false;
     after(rec);
   });
@@ -277,8 +291,9 @@
     lock();
     note.className = 'note good'; note.textContent = m.typo ? Copy.typo(m.item.name) : '';
     const how = Engine.commonness(Engine.shares(current.q), m.item.name);
-    const sc = island ? Engine.islandScore(levelOf(rec)) : Engine.score(how.c, secs, levelOf(rec));
+    const sc = isVacation(rec) ? Engine.vacationScore(how.c) : island ? Engine.islandScore(levelOf(rec)) : Engine.score(how.c, secs, levelOf(rec));
     rec.answers.push({ pid: current.q.id, name: m.item.name, ...(island ? { island: true } : {}), points: sc.total, rarity: sc.rarity, speed: sc.speed, secs }); save();
+    if (isVacation(rec)) return showTreat(rec, m.item.name, sc.total, m.typo);
     $('resultName').textContent = m.item.name;
     countUp($('resultPts'), sc.total);
     $('resultRarity').textContent = island ? Copy.islandTime : Copy.forRarity(sc.rarity);
@@ -296,6 +311,24 @@
   }
   $('nextBtn').addEventListener('click', () => (today().answers.length >= 7 ? finish() : showQuestion()));
 
+  // ---- Maria's treats ----
+  // In vacation mode, a right answer goes to Maria's café: she brings a drink
+  // or a plate, a new one for each right answer. The day's menu runs in its
+  // own order, so everyone gets the same treats on the same day.
+  function showTreat(rec, name, pts, typo) {
+    const served = rec.answers.filter((a) => a.name).length - 1;
+    const id = Art.MENU[(day * 4 + served) % Art.MENU.length], [dish, about] = Copy.vacation.menu[id];
+    swap('treat'); tripBar(rec);
+    $('treatCount').textContent = Copy.vacation.progress(rec.answers.length);
+    $('treatAnswer').textContent = typo ? Copy.typo(name) : name; $('treatPts').textContent = Copy.points(pts);
+    $('treatMaria').replaceChildren(Art.maria(3)); $('treatItem').replaceChildren(Art.treat(id, 4));
+    $('treatHead').textContent = dish; $('treatNote').textContent = about;
+    $('treatWho').textContent = Copy.vacation.maria; $('treatSay').textContent = Copy.vacation.serve[served % Copy.vacation.serve.length];
+    $('treatBtn').textContent = rec.answers.length >= 7 ? Copy.finish : Copy.next;
+    $('treatHead').focus({ preventScroll: true });
+  }
+  $('treatBtn').addEventListener('click', () => (today().answers.length >= 7 ? finish() : showQuestion()));
+
   // ---- the end of the day ----
   function finish() {
     const rec = today();
@@ -308,6 +341,7 @@
     swap('end'); tripBar(rec);
     // Mario takes the trip in his mode
     const who = (line) => (levelOf(rec) === 'mario' ? line.replace(/^Paco/, 'Mario') : line);
+    const vac = isVacation(rec);
     const headline = who(rec.trip !== 'dive' && !r.next ? Copy.madeIt[rec.trip] : Copy.where[rec.trip](r.label));
     $('endHead').textContent = headline;
     const endless = mode === 'endless';
@@ -320,7 +354,7 @@
     const sheet = $('sheet'); sheet.innerHTML = '';
     let rarity = 0, speed = 0, island = 0, secs = 0;
     questions.forEach((q, i) => {
-      const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: secondsFor(rec) };
+      const a = rec.answers[i] || { name: null, points: 0, rarity: 0, speed: 0, secs: vac ? 0 : secondsFor(rec) };
       rarity += a.rarity || 0; speed += a.speed || 0; secs += a.secs || 0; if (a.island) island += a.points || 0;
       // one row per question: the answer and its points, opening to the question and every right answer
       const li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary');
@@ -329,7 +363,7 @@
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(a.points || 0);
       const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
       sum.append(sq, nm, pt, ca);
-      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = a.island ? Copy.islandTime : `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; sum.append(sp); }
+      if (a.name) { const sp = document.createElement('span'); sp.className = 'split'; sp.textContent = a.island ? Copy.islandTime : `${Copy.forRarity(a.rarity)} ${Copy.forSpeed(a.speed)}`; if (!vac) sum.append(sp); }
       const more = document.createElement('div'); more.className = 'more';
       const pq = document.createElement('p'); pq.className = 'a-q'; pq.textContent = q.text;
       const ph = document.createElement('p'); ph.className = 'a-head'; ph.textContent = Copy.allHead;
@@ -343,13 +377,16 @@
       });
       more.append(pq, ph, all); det.append(sum, more); li.append(det); sheet.append(li);
     });
+    // vacation points are all rarity, so only the total shows
+    $('rarityRow').hidden = vac; $('speedRow').hidden = vac;
     $('rarityLabel').textContent = Copy.rarityTotal; $('rarityTotal').textContent = fmt(rarity);
     $('speedLabel').textContent = Copy.speedTotal; $('speedTotal').textContent = '+' + fmt(speed);
     // Island time points get their own line, so the lines still add up.
     $('islandRow').hidden = !island; $('islandLabel').textContent = Copy.islandTime; $('islandTotal').textContent = '+' + fmt(island);
     $('totalLabel').textContent = Copy.total; countUp($('grandTotal'), score);
     $('timeLabel').textContent = Copy.time; $('timeTotal').textContent = clockText(secs);
-    $('endBeat').textContent = Copy.beat(beatOf(rec));
+    // the simulated players race the clock, so vacation days skip the comparison
+    $('endBeat').textContent = vac ? '' : Copy.beat(beatOf(rec));
     $('endLifetime').textContent = endless ? '' : Copy.lifetime(state.lifetime);
     const before = state.lifetime - score, nt = Engine.nextTrip(state.lifetime), justOpened = Object.values(Engine.TRIPS).find((t) => t.opens > before && t.opens <= state.lifetime);
     $('endKeep').hidden = endless || !keepTipNeeded(); $('endKeep').textContent = Copy.keepTip;
@@ -381,8 +418,8 @@
     }
     const marks = rec.answers.map((a) => markOf(a, levelOf(rec))).join('');
     // each entry stays on one line when the key wraps
-    $('markKey').innerHTML = ''; Copy.markKey(markAt(levelOf(rec)).map(fmt)).forEach((item, i) => { if (i) $('markKey').append(' · '); const sp = document.createElement('span'); sp.textContent = item; $('markKey').append(sp); });
-    $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), levelOf(rec) === 'mario', marks, fmt(score));
+    $('markKey').innerHTML = ''; Copy.markKey(markAt(levelOf(rec)).map(fmt), vac).forEach((item, i) => { if (i) $('markKey').append(' · '); const sp = document.createElement('span'); sp.textContent = item; $('markKey').append(sp); });
+    $('shareText').textContent = Copy.share(Copy.apDate(new Date(Date.UTC(2026, 10, 15 + day))), { mario: Copy.marioTag, vacation: Copy.vacation.tag }[levelOf(rec)] || '', marks, fmt(score));
     $('copyBtn').textContent = Copy.copyResult; $('moveBtn').textContent = Copy.moveHeading; $('copyNote').textContent = '';
     $('comeBack').textContent = endless ? '' : Copy.comeBack(Copy.apTime(Engine.nextReset()));
     $('endHead').focus();
@@ -415,7 +452,7 @@
   const dateOf = (n) => Copy.apDate(new Date(Date.UTC(2026, 10, 15 + n)));
   function finishedDays() {
     return Object.entries(state.days).filter(([, r]) => r.done)
-      .map(([k, r]) => ({ day: parseInt(k, 10), mario: k.endsWith('m'), rec: r, score: dayScore(r) }))
+      .map(([k, r]) => ({ day: parseInt(k, 10), mario: k.endsWith('m'), vacation: k.endsWith('v'), rec: r, score: dayScore(r) }))
       .filter((d) => Number.isFinite(d.day))
       .sort((a, b) => b.day - a.day || a.mario - b.mario);
   }
@@ -451,7 +488,7 @@
       const pt = document.createElement('span'); pt.className = 'pts'; pt.textContent = fmt(d.score);
       const ca = document.createElement('span'); ca.className = 'caret'; ca.setAttribute('aria-hidden', 'true');
       const what = document.createElement('span'); what.className = 'what';
-      const trip = Engine.TRIPS[d.rec.trip]; what.textContent = [trip ? trip.name : '', d.mario ? Copy.scores.mario : '', Copy.beatShort(beatOf(d.rec))].filter(Boolean).join(', ');
+      const trip = Engine.TRIPS[d.rec.trip]; what.textContent = [trip ? trip.name : '', d.mario ? Copy.scores.mario : '', d.vacation ? Copy.scores.vacation : '', d.vacation ? '' : Copy.beatShort(beatOf(d.rec))].filter(Boolean).join(', ');
       sum.append(sq, when, pt, ca, what);
       const more = document.createElement('div'); more.className = 'more';
       d.rec.qids.forEach((id, i) => {
